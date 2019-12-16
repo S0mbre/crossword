@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--XPF document for the Thursday, September 11, 2008 New York Times crossword.-->
+<!--Conforms to Universal Crossword Puzzle Format XPF. See www.xwordinfo.com/XPF for details and licensing information.-->
+<!--Generated on 6/23/2019 at 4:45 AM-->
+<Puzzles Version="1.0">
+  <Puzzle>
+    <Title>NY Times, Thu, Sep 11, 2008</Title>
+    <Author>Caleb Madison</Author>
+    <Editor>Will Shortz</Editor>
+    <Publisher>The New York Times</Publisher>
+    <Copyright>(c) 2008, The New York Times</Copyright>
+    <Date>9/11/2008</Date>
+    <Size>
+      <Rows>15</Rows>
+      <Cols>15</Cols>
+    </Size>
+    <Grid>
+      <Row>GREW.ANAIS.LABS</Row>
+      <Row>LARA.NOSCH.EBON</Row>
+      <Row>ANIL.ESTEE.ADUE</Row>
+      <Row>RACKETEERS.DOLE</Row>
+      <Row>ETHOS.......MER</Row>
+      <Row>...FAM.RAP.LIV.</Row>
+      <Row>CHEF.IRENE.ONAN</Row>
+      <Row>COLA.LOSTS.SARS</Row>
+      <Row>SLAM.ATEST.ALDA</Row>
+      <Row>.LIE.NEA.OWN...</Row>
+      <Row>AYN.......AGATE</Row>
+      <Row>TWEE.VAMPIREBAT</Row>
+      <Row>TOMA.EDUCT.LASH</Row>
+      <Row>HOAR.RESTS.ETTA</Row>
+      <Row>EDYS.ANDSO.SEEN</Row>
+    </Grid>
+    <Circles>
+      <Circle Row="1" Col="8" />
+      <Circle Row="4" Col="3" />
+      <Circle Row="4" Col="12" />
+      <Circle Row="12" Col="4" />
+      <Circle Row="12" Col="13" />
+    </Circles>
+    <RebusEntries>
+      <Rebus Row="2" Col="8" Short="S">STAR</Rebus>
+      <Rebus Row="8" Col="8" Short="S">STAR</Rebus>
+      <Rebus Row="14" Col="8" Short="S">STAR</Rebus>
+    </RebusEntries>
+    <Clues>
+      <Clue Row="1" Col="1" Num="1" Dir="Across" Ans="GREW"><![CDATA[Waxed]]></Clue>
+      <Clue Row="1" Col="6" Num="5" Dir="Across" Ans="ANAIS"><![CDATA[First name in erotica]]></Clue>
+      <Clue Row="1" Col="12" Num="10" Dir="Across" Ans="LABS"><![CDATA[They might be chocolate]]></Clue>
+      <Clue Row="2" Col="1" Num="14" Dir="Across" Ans="LARA"><![CDATA[___ Flynn Boyle of &quot;Twin Peaks&quot;]]></Clue>
+      <Clue Row="2" Col="6" Num="15" Dir="Across" Ans="NOSTARCH"><![CDATA[Request at a laundry]]></Clue>
+      <Clue Row="2" Col="12" Num="16" Dir="Across" Ans="EBON"><![CDATA[Like some keys]]></Clue>
+      <Clue Row="3" Col="1" Num="17" Dir="Across" Ans="ANIL"><![CDATA[Dye plant]]></Clue>
+      <Clue Row="3" Col="6" Num="18" Dir="Across" Ans="ESTEE"><![CDATA[Popular women&#39;s fragrance]]></Clue>
+      <Clue Row="3" Col="12" Num="19" Dir="Across" Ans="ADUE"><![CDATA[Together, in music]]></Clue>
+      <Clue Row="4" Col="1" Num="20" Dir="Across" Ans="RACKETEERS"><![CDATA[Makes people offers they can&#39;t refuse?]]></Clue>
+      <Clue Row="4" Col="12" Num="22" Dir="Across" Ans="DOLE"><![CDATA[Apportionment]]></Clue>
+      <Clue Row="5" Col="1" Num="23" Dir="Across" Ans="ETHOS"><![CDATA[Set of values]]></Clue>
+      <Clue Row="5" Col="13" Num="24" Dir="Across" Ans="MER"><![CDATA[View from Marseille]]></Clue>
+      <Clue Row="6" Col="4" Num="25" Dir="Across" Ans="FAM"><![CDATA[Relatives, slangily]]></Clue>
+      <Clue Row="6" Col="8" Num="27" Dir="Across" Ans="RAP"><![CDATA[You might end up with a bum one]]></Clue>
+      <Clue Row="6" Col="12" Num="30" Dir="Across" Ans="LIV"><![CDATA[Actress Tyler]]></Clue>
+      <Clue Row="7" Col="1" Num="31" Dir="Across" Ans="CHEF"><![CDATA[Child, for one]]></Clue>
+      <Clue Row="7" Col="6" Num="34" Dir="Across" Ans="IRENE"><![CDATA[Adler who outwitted Sherlock Holmes]]></Clue>
+      <Clue Row="7" Col="12" Num="36" Dir="Across" Ans="ONAN"><![CDATA[___ impulse]]></Clue>
+      <Clue Row="8" Col="1" Num="38" Dir="Across" Ans="COLA"><![CDATA[___ + grenadine + maraschino cherry = Roy Rogers cocktail]]></Clue>
+      <Clue Row="8" Col="6" Num="39" Dir="Across" Ans="LOSTARTS"><![CDATA[Illumination of manuscripts, and others]]></Clue>
+      <Clue Row="8" Col="12" Num="40" Dir="Across" Ans="SARS"><![CDATA[Headline-making illness of 2002-03]]></Clue>
+      <Clue Row="9" Col="1" Num="41" Dir="Across" Ans="SLAM"><![CDATA[Dis]]></Clue>
+      <Clue Row="9" Col="6" Num="42" Dir="Across" Ans="ATEST"><![CDATA[Mushroom maker, for short]]></Clue>
+      <Clue Row="9" Col="12" Num="43" Dir="Across" Ans="ALDA"><![CDATA[Tony nominee for &quot;Glengarry Glen Ross&quot;]]></Clue>
+      <Clue Row="10" Col="2" Num="44" Dir="Across" Ans="LIE"><![CDATA[Interrogator&#39;s discovery]]></Clue>
+      <Clue Row="10" Col="6" Num="45" Dir="Across" Ans="NEA"><![CDATA[Cultural org.]]></Clue>
+      <Clue Row="10" Col="10" Num="46" Dir="Across" Ans="OWN"><![CDATA[Retain]]></Clue>
+      <Clue Row="11" Col="1" Num="48" Dir="Across" Ans="AYN"><![CDATA[Rand who created Dagny Taggart]]></Clue>
+      <Clue Row="11" Col="11" Num="49" Dir="Across" Ans="AGATE"><![CDATA[Striped quartz]]></Clue>
+      <Clue Row="12" Col="1" Num="53" Dir="Across" Ans="TWEE"><![CDATA[___ pop, music genre since the 1980s]]></Clue>
+      <Clue Row="12" Col="6" Num="55" Dir="Across" Ans="VAMPIREBAT"><![CDATA[Nocturnal bloodsucker]]></Clue>
+      <Clue Row="13" Col="1" Num="60" Dir="Across" Ans="TOMA"><![CDATA[Tony Musante TV series]]></Clue>
+      <Clue Row="13" Col="6" Num="61" Dir="Across" Ans="EDUCT"><![CDATA[Extracted chemical]]></Clue>
+      <Clue Row="13" Col="12" Num="62" Dir="Across" Ans="LASH"><![CDATA[Punishment unit]]></Clue>
+      <Clue Row="14" Col="1" Num="63" Dir="Across" Ans="HOAR"><![CDATA[Frost]]></Clue>
+      <Clue Row="14" Col="6" Num="64" Dir="Across" Ans="RESTARTS"><![CDATA[Options during computer woes]]></Clue>
+      <Clue Row="14" Col="12" Num="65" Dir="Across" Ans="ETTA"><![CDATA[James of jazz]]></Clue>
+      <Clue Row="15" Col="1" Num="66" Dir="Across" Ans="EDYS"><![CDATA[Competitor of Ben &amp; Jerry&#39;s]]></Clue>
+      <Clue Row="15" Col="6" Num="67" Dir="Across" Ans="ANDSO"><![CDATA[&quot;Thus ...&quot;]]></Clue>
+      <Clue Row="15" Col="12" Num="68" Dir="Across" Ans="SEEN"><![CDATA[Spotted]]></Clue>
+      <Clue Row="1" Col="1" Num="1" Dir="Down" Ans="GLARE"><![CDATA[Ruiner of many a photo]]></Clue>
+      <Clue Row="1" Col="2" Num="2" Dir="Down" Ans="RANAT"><![CDATA[Charged]]></Clue>
+      <Clue Row="1" Col="3" Num="3" Dir="Down" Ans="ERICH"><![CDATA[Filmmaker Von Stroheim]]></Clue>
+      <Clue Row="1" Col="4" Num="4" Dir="Down" Ans="WALKOFFAME"><![CDATA[Theme of this puzzle]]></Clue>
+      <Clue Row="1" Col="6" Num="5" Dir="Down" Ans="ANET"><![CDATA[Without ___ (riskily)]]></Clue>
+      <Clue Row="1" Col="7" Num="6" Dir="Down" Ans="NOSE"><![CDATA[It may be wrinkled]]></Clue>
+      <Clue Row="1" Col="8" Num="7" Dir="Down" Ans="ASTARTE"><![CDATA[Ancient Semitic fertility goddess]]></Clue>
+      <Clue Row="1" Col="9" Num="8" Dir="Down" Ans="ICER"><![CDATA[Bakery employee]]></Clue>
+      <Clue Row="1" Col="10" Num="9" Dir="Down" Ans="SHES"><![CDATA[Elvis Presley&#39;s &quot;___ Not You&quot;]]></Clue>
+      <Clue Row="1" Col="12" Num="10" Dir="Down" Ans="LEAD"><![CDATA[Detective&#39;s need]]></Clue>
+      <Clue Row="1" Col="13" Num="11" Dir="Down" Ans="ABDOMINAL"><![CDATA[Like some six-packs]]></Clue>
+      <Clue Row="1" Col="14" Num="12" Dir="Down" Ans="BOULEVARD"><![CDATA[See 32-Down]]></Clue>
+      <Clue Row="1" Col="15" Num="13" Dir="Down" Ans="SNEER"><![CDATA[Vile smile]]></Clue>
+      <Clue Row="4" Col="5" Num="21" Dir="Down" Ans="ESA"><![CDATA[That, to Tomás]]></Clue>
+      <Clue Row="6" Col="6" Num="26" Dir="Down" Ans="MILAN"><![CDATA[Home of &quot;The Last Supper&quot;]]></Clue>
+      <Clue Row="6" Col="8" Num="27" Dir="Down" Ans="RESTAREA"><![CDATA[Place for picnicking and dog-walking]]></Clue>
+      <Clue Row="6" Col="9" Num="28" Dir="Down" Ans="ANTS"><![CDATA[Hill dwellers]]></Clue>
+      <Clue Row="6" Col="10" Num="29" Dir="Down" Ans="PESTO"><![CDATA[___ alla genovese (sauce)]]></Clue>
+      <Clue Row="6" Col="12" Num="30" Dir="Down" Ans="LOSANGELES"><![CDATA[City where 32- and 12-Down is found]]></Clue>
+      <Clue Row="7" Col="1" Num="31" Dir="Down" Ans="CCS"><![CDATA[Also sends to, as an e-mail]]></Clue>
+      <Clue Row="7" Col="2" Num="32" Dir="Down" Ans="HOLLYWOOD"><![CDATA[With 12-Down, locale of the 4-Down]]></Clue>
+      <Clue Row="7" Col="3" Num="33" Dir="Down" Ans="ELAINEMAY"><![CDATA[&quot;Ishtar&quot; director]]></Clue>
+      <Clue Row="7" Col="7" Num="35" Dir="Down" Ans="ROTE"><![CDATA[You might give a speech by this]]></Clue>
+      <Clue Row="7" Col="15" Num="37" Dir="Down" Ans="NSA"><![CDATA[Ultrasecret org.]]></Clue>
+      <Clue Row="10" Col="11" Num="47" Dir="Down" Ans="WAR"><![CDATA[&quot;That mad game the world so loves to play,&quot; to Jonathan Swift]]></Clue>
+      <Clue Row="11" Col="1" Num="48" Dir="Down" Ans="ATTHE"><![CDATA[___ ready]]></Clue>
+      <Clue Row="11" Col="13" Num="50" Dir="Down" Ans="ABATE"><![CDATA[Peter out]]></Clue>
+      <Clue Row="11" Col="14" Num="51" Dir="Down" Ans="TASTE"><![CDATA[It&#39;s often unaccounted for]]></Clue>
+      <Clue Row="11" Col="15" Num="52" Dir="Down" Ans="ETHAN"><![CDATA[Allen in American history]]></Clue>
+      <Clue Row="12" Col="4" Num="54" Dir="Down" Ans="EARS"><![CDATA[All ___]]></Clue>
+      <Clue Row="12" Col="6" Num="55" Dir="Down" Ans="VERA"><![CDATA[Lynn who sang &quot;We&#39;ll Meet Again&quot;]]></Clue>
+      <Clue Row="12" Col="7" Num="56" Dir="Down" Ans="ADEN"><![CDATA[Port near the Red Sea]]></Clue>
+      <Clue Row="12" Col="8" Num="57" Dir="Down" Ans="MUSTARD"><![CDATA[Yellow squirt?]]></Clue>
+      <Clue Row="12" Col="9" Num="58" Dir="Down" Ans="PCTS"><![CDATA[Pie chart figs.]]></Clue>
+      <Clue Row="12" Col="10" Num="59" Dir="Down" Ans="ITSO"><![CDATA[&quot;Wishing won&#39;t make ___&quot;]]></Clue>
+    </Clues>
+    <Notepad><![CDATA[TEEN PUZZLEMAKER WEEK<br />All the daily crosswords this week, Monday through Saturday, have been contributed by puzzlemakers under the age of 20. Today's crossword is by Caleb Madison, 15, of New York City. He is a sophomore at Bard High School in Manhattan. This is his fourth puzzle for The Times.<br /><br />When this puzzle is done, connect the circled letters in alphabetical order, and then back to the start, to reveal something seen on the 32-Down 4-Down.]]></Notepad>
+  </Puzzle>
+</Puzzles>
