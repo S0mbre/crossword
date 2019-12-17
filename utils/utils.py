@@ -5,8 +5,8 @@
 pass
 """
 
-import sys
-import os
+import sys, os, subprocess
+from datetime import datetime
 from .globalvars import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 
@@ -31,6 +31,20 @@ def walk_dir(root_path, recurse, file_types, file_process_function):
                 if file_process_function:
                     if not file_process_function(os.path.join(d, f)): return
         if not recurse: break
+
+def run_exe(args, nowait=False, capture_output=True, encoding=ENCODING, timeout=None, **kwargs):
+    if nowait:
+        return os.spawnl(os.P_NOWAIT, *args if isinstance(args, list) or isinstance(args, tuple) else args)
+    else:
+        return subprocess.run(args, capture_output=capture_output, encoding=encoding, timeout=timeout, **kwargs)
+
+def datetime_to_str(dt=None, strformat='%Y-%m-%d %H-%M-%S'):
+    if dt is None: dt = datetime.now()
+    return dt.strftime(strformat)
+
+def str_to_datetime(text, strformat='%Y-%m-%d %H-%M-%S'):
+    return datetime.strptime(text, strformat)
+
 
 ### ---------------------------- GUI ---------------------------- ###
 

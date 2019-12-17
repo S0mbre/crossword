@@ -6,4 +6,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 log.*
+*.log
 build.bat
+update.json
+autosaved.xpf

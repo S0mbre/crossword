@@ -150,6 +150,11 @@ class CWSettings:
             'openfile': True, 'img_resolution': 72, 'pdf_resolution': 1200,
             'mm_per_cell': 20, 'img_output_quality': 95, 'svg_title': '<t>',
             'svg_description': '', 'clear_cw': True
+        },
+    'update':
+        {
+            'check_every': 1, 'auto_update': False, 
+            'only_major_versions': False
         }
     } # settings
          

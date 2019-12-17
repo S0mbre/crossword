@@ -9,6 +9,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport, QtSvg
 from subprocess import Popen
 import os, json, re, threading, math, traceback
 from utils.utils import *
+from utils.update import Updater
 from guisettings import CWSettings
 from dbapi import Sqlitedb
 from forms import (MsgBox, LoadCwDialog, CwTable, CrosswordMenu, 
@@ -48,6 +49,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                     on_gen_validate=self.on_gen_validate,
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error)
+        self.updater = Updater(CWSettings.settings['update'], self.close)
         self.initUI()
         
     def _log(self, what, end='\n'):
@@ -321,6 +323,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusbar_pbar.setVisible(False)
         self.statusbar_l1 = QtWidgets.QLabel(self.statusbar)
         self.statusbar.addPermanentWidget(self.statusbar_l1)
+        self.statusbar_l2 = QtWidgets.QLabel(self.statusbar)
+        self.statusbar.addPermanentWidget(self.statusbar_l2)
         self.statusbar.addWidget(self.statusbar_pbar)
         #self.layout_hgrid3.addWidget(self.statusbar)
         self.setStatusBar(self.statusbar)
@@ -1420,6 +1424,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def showEvent(self, event):    
         # show 
         event.accept()
+
+        # update status bar
+        self.statusbar_l1.setText(f"v. {APP_VERSION}")
+        new_update = self.updater.check_update()
+        if new_update:
+            self.statusbar_l2.setText(f"Update available: {new_update['version']}")
         
     def closeEvent(self, event):
         # save cw
@@ -1815,7 +1825,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(bool)        
     def on_act_update(self, checked):
-        MsgBox('on_act_update', self)
+        # todo: add dialog confirmation
+        self.updater.update()
     
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):

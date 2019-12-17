@@ -246,5 +246,10 @@
 		"svg_title": "<t>",
 		"svg_description": "",
 		"clear_cw": true
+	},
+	"update": {
+		"check_every": 1,
+		"auto_update": false,
+		"only_major_versions": false
 	}
 }

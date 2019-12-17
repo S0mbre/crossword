@@ -15,7 +15,6 @@ APP_NAME = 'pyCross'
 
 # git repo
 GIT_REPO = 'https://github.com/S0mbre/crossword.git'
-GIT_UPDATE_COMMAND = f"pip install --upgrade git+{GIT_REPO}"
 
 # debug messages
 DEBUGGING = True
@@ -46,7 +45,8 @@ if COLORED_OUTPUT and not COLOR_INITIATED:
         COLORED_OUTPUT = False
 
 SETTINGS_FILE = 'settings.json'        
-DEFAULT_SETTINGS_FILE = 'defsettings.json'        
+DEFAULT_SETTINGS_FILE = 'defsettings.json'      
+UPDATE_FILE = 'update.json'  
 SAVEDCW_FILE = 'autosaved.xpf'
 DICFOLDER = 'assets/dic'
 ICONFOLDER = 'assets/icons'

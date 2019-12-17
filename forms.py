@@ -498,6 +498,7 @@ class SettingsDialog(BasicDialog):
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Import & Export']))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Plugins']))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Printing']))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Updating']))
         self.tree.itemSelectionChanged.connect(self.on_tree_select)
         
         self.central_widget = QtWidgets.QWidget()
@@ -1231,6 +1232,25 @@ class SettingsDialog(BasicDialog):
         self.page_printing.setWidget(self.widget_layout_printing)
         self.stacked.addWidget(self.page_printing)
 
+        # 11. Updating
+        self.page_updating = QtWidgets.QWidget()
+        self.layout_updating = QtWidgets.QFormLayout()
+        self.layout_updating.setSpacing(10)
+
+        self.spin_update_period = QtWidgets.QSpinBox()
+        self.spin_update_period.setRange(-1, 365)
+        self.spin_update_period.setSuffix(' days')
+        self.spin_update_period.setToolTip('Set to -1 to disable update checks')
+        self.chb_update_auto = QtWidgets.QCheckBox('')
+        self.chb_update_major_only = QtWidgets.QCheckBox('')
+
+        self.layout_updating.addRow('Check for updates every', self.spin_update_period)
+        self.layout_updating.addRow('Check / update major releases only', self.chb_update_major_only)
+        self.layout_updating.addRow('Auto update', self.chb_update_auto)
+
+        self.page_updating.setLayout(self.layout_updating)
+        self.stacked.addWidget(self.page_updating)
+
     def _fill_clue_cols(self):
         self.lw_clues_cols.clear()
         for col in CWSettings.settings['clues']['columns']:
@@ -1250,7 +1270,8 @@ class SettingsDialog(BasicDialog):
         """
         
         settings = {'gui': {}, 'cw_settings': {}, 'grid_style': {}, 'cell_format': {}, 
-                    'wordsrc': {}, 'clues': {}, 'lookup': {}, 'printing': {}, 'export': {}}
+                    'wordsrc': {}, 'clues': {}, 'lookup': {}, 'printing': {}, 'export': {},
+                    'update': {}}
         
         # user interface
         settings['gui']['theme'] = self.combo_apptheme.currentText()
@@ -1718,6 +1739,11 @@ class SettingsDialog(BasicDialog):
         settings['printing']['clue_letters_font']['font_italic'] = font.italic()
         color = color_from_stylesheet(self.btn_print_clue_sizehint_color.styleSheet(), 'background-color', 'black')
         settings['printing']['clue_letters_font']['color'] = color.rgba()
+
+        # update
+        settings['update']['check_every'] = self.spin_update_period.value()
+        settings['update']['only_major_versions'] = self.chb_update_major_only.isChecked()
+        settings['update']['auto_update'] = self.chb_update_auto.isChecked()
         
         return settings
 
@@ -2203,7 +2229,14 @@ class SettingsDialog(BasicDialog):
             style = font_to_stylesheet(font, self.btn_print_clue_sizehint_font.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clue_letters_font']['color']), style, 'color')
             self.btn_print_clue_sizehint_font.setStyleSheet(style)
-                
+
+        # Updating
+        if page is None or page == 'Updating':
+            
+            settings = CWSettings.settings['update']
+            self._set_spin_value_safe(self.spin_update_period, settings['check_every'])
+            self.chb_update_auto.setChecked(settings['auto_update'])
+            self.chb_update_major_only.setChecked(settings['only_major_versions'])
     
     def addoredit_wordsrc(self, src, src_item=None):
         """
@@ -2255,6 +2288,8 @@ class SettingsDialog(BasicDialog):
             self.stacked.setCurrentIndex(8)
         elif txt == 'Printing':
             self.stacked.setCurrentIndex(9)
+        elif txt == 'Updating':
+            self.stacked.setCurrentIndex(10)
         elif txt in ('Sources', 'User interface'):
             item.setExpanded(True)
             self.tree.setCurrentItem(item.child(0))

@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			210,
-			8
+			344,
+			117
 		],
 		"win_size": [
-			1497,
-			896
+			1229,
+			713
 		]
 	},
 	"cw_settings": {
@@ -22,7 +22,7 @@
 		"show": true,
 		"line": 1,
 		"line_color": 4288716964,
-		"line_width": 4,
+		"line_width": 1,
 		"active_cell_color": 4294967040,
 		"header": false,
 		"cell_size": 50,
@@ -151,7 +151,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 305
+				"width": 176
 			}
 		]
 	},
@@ -189,12 +189,12 @@
 			12,
 			20
 		],
-		"layout": "portrait",
+		"layout": "auto",
 		"font_embed": true,
 		"antialias": true,
 		"print_cw": true,
 		"print_clues": true,
-		"clear_cw": false,
+		"clear_cw": true,
 		"print_clue_letters": true,
 		"print_info": true,
 		"color_print": true,
@@ -239,12 +239,17 @@
 	},
 	"export": {
 		"openfile": true,
-		"clear_cw": false,
+		"clear_cw": true,
 		"img_resolution": 72,
 		"pdf_resolution": 1200,
 		"mm_per_cell": 20,
 		"img_output_quality": 95,
 		"svg_title": "<t>",
 		"svg_description": ""
+	},
+	"update": {
+		"check_every": 1,
+		"only_major_versions": false,
+		"auto_update": false
 	}
 }
