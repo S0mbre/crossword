@@ -12,11 +12,12 @@ import os, subprocess, json
 class Updater:
 
     def __init__(self, update_settings, quit_app_method, 
-                 on_get_recent=None, on_before_update=None):
+                 on_get_recent=None, on_before_update=None, on_norecent=None):
         self.update_settings = update_settings
         self.quit_app_method = quit_app_method
         self.on_get_recent = on_get_recent
         self.on_before_update = on_before_update
+        self.on_norecent = on_norecent
         self.git_installed = self._check_git()        
         self._init_update_info()
 
@@ -29,15 +30,17 @@ class Updater:
                 self.update_info = json.load(infile)                
         else:
             self.update_info = {'last_update': '', 'last_check': '', 
-                                'recent_version': {'version': '', 'description': '', 'date': ''}}
+                                'recent_version': {'version': '', 'tag': '', 'description': '', 'date': ''}}
             
     def _write_update_info(self):
         with open(os.path.abspath(UPDATE_FILE), 'w', encoding=ENCODING) as outfile:
             json.dump(self.update_info, outfile, ensure_ascii=False, indent='\t')
 
-    def _parse_version(self, version_str, max_versions=2):
-        version_str = ''.join([c for c in version_str if c in list('0123456789.')])
-        print(version_str.split('.'))
+    def _strip_version_az(self, version_str):
+        return ''.join([c for c in version_str if c in list('0123456789.')])
+
+    def _parse_version(self, version_str, max_versions=4):
+        version_str = self._strip_version_az(version_str)
         return tuple([int(v) for v in version_str.split('.')][:max_versions])
 
     def _compare_versions(self, v1, v2, major_only=False):
@@ -69,7 +72,11 @@ class Updater:
         res = run_exe(['git', 'tag', '--list', rec_vers, '-n99'])
         tag_descr = res.stdout.strip()
         if tag_descr: tag_descr = tag_descr[len(rec_vers):]
-        return {'version': rec_vers, 'description': tag_descr}
+        res = run_exe(['git', 'log', '-1', '--format=%at', rec_vers])
+        date_ts = res.stdout.strip()
+        tag_dt = datetime_to_str(datetime.fromtimestamp(int(date_ts))) if date_ts else ''
+        return {'version': self._strip_version_az(rec_vers), 'tag': rec_vers, 
+                'description': tag_descr, 'date': tag_dt}
 
     def _reset_to_version(self, version_str):
         if not version_str or not self.git_installed: return None
@@ -85,9 +92,7 @@ class Updater:
     def check_update(self, force=False):
         if not force and not self._update_check_required():
             return None
-        recent_vers = self._get_recent_version()
-        if self.on_get_recent and not self.on_get_recent(recent_vers):
-            return None
+        recent_vers = self._get_recent_version()        
         if 'error' in recent_vers:
             print(recent_vers['error'])
             return None
@@ -95,6 +100,8 @@ class Updater:
         if self._compare_versions(APP_VERSION, recent_vers['version'], 
                                  self.update_settings['only_major_versions']) == '<':
             res = recent_vers
+        if self.on_get_recent and res and not self.on_get_recent(res):
+            return None
         self.update_info['last_check'] = datetime_to_str()
         self.update_info['recent_version'] = res or ''
         self._write_update_info()
@@ -102,12 +109,14 @@ class Updater:
 
     def update(self, force=False):
         vers = self.check_update(force)
-        if not vers: return
-        if self.on_before_update and not self.on_before_update(vers): 
+        if not vers: 
+            if self.on_norecent: self.on_norecent()
+            return
+        if self.on_before_update and not self.on_before_update(APP_VERSION, vers): 
             return
         self.update_info['last_update'] = datetime_to_str()
         self._write_update_info()
-        if not self._reset_to_version(vers['version']) is None:
+        if not self._reset_to_version(vers['tag']) is None:
             self.quit_app_method()
 
     

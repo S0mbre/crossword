@@ -2598,6 +2598,24 @@ class CwTable(QtWidgets.QTableWidget):
         # override mouse wheel for zooming
         event.ignore()
     """
+
+##############################################################################
+######          ClickableLabel
+############################################################################## 
+
+class ClickableLabel(QtWidgets.QLabel):
+
+    clicked = QtCore.pyqtSignal(QtGui.QMouseEvent)
+    dblclicked = QtCore.pyqtSignal(QtGui.QMouseEvent)
+
+    def __init__(self, parent: QtWidgets.QWidget=None, flags: QtCore.Qt.WindowFlags=QtCore.Qt.WindowFlags()):
+        super().__init__(parent)
+
+    def mousePressEvent(self, event):
+        self.clicked.emit(event)
+
+    def mouseDoubleClickEvent(self, event):
+        self.dblclicked.emit(event)
         
         
 ##############################################################################

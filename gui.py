@@ -12,7 +12,7 @@ from utils.utils import *
 from utils.update import Updater
 from guisettings import CWSettings
 from dbapi import Sqlitedb
-from forms import (MsgBox, LoadCwDialog, CwTable, CrosswordMenu, 
+from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu, 
                     SettingsDialog, WordSuggestDialog, PrintPreviewDialog,
                     CwInfoDialog, DefLookupDialog, ReflectGridDialog)
 from crossword import Word, Crossword, CWError, FILLER, FILLER2, BLANK
@@ -49,7 +49,8 @@ class MainWindow(QtWidgets.QMainWindow):
                                     on_gen_validate=self.on_gen_validate,
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error)
-        self.updater = Updater(CWSettings.settings['update'], self.close)
+        self.updater = Updater(CWSettings.settings['update'], self.close, 
+            self.on_get_recent, self.on_before_update, self.on_noupdate_available)
         self.initUI()
         
     def _log(self, what, end='\n'):
@@ -323,7 +324,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusbar_pbar.setVisible(False)
         self.statusbar_l1 = QtWidgets.QLabel(self.statusbar)
         self.statusbar.addPermanentWidget(self.statusbar_l1)
-        self.statusbar_l2 = QtWidgets.QLabel(self.statusbar)
+        self.statusbar_l2 = ClickableLabel(self.statusbar)
+        self.statusbar_l2.dblclicked.connect(self.on_statusbar_l2_dblclicked)
+        color_to_stylesheet(QtGui.QColor(QtCore.Qt.darkGreen), self.statusbar_l2.styleSheet(), 'color')
+        self.statusbar_l2.setStyleSheet('color: maroon;')
+        self.statusbar_l2.setToolTip('Double-click to update')
         self.statusbar.addPermanentWidget(self.statusbar_l2)
         self.statusbar.addWidget(self.statusbar_pbar)
         #self.layout_hgrid3.addWidget(self.statusbar)
@@ -1418,6 +1423,23 @@ class MainWindow(QtWidgets.QMainWindow):
                     width = CWSettings.settings['clues']['columns'][i]['width']
                     if width > 0:
                         self.tvClues.setColumnWidth(i, width) 
+
+    def on_get_recent(self, new_version):
+        if 'version' in new_version:
+            self.statusbar_l2.setText(f"Update ready: v. {new_version['version']}")
+        return True
+
+    def on_before_update(self, curr_version, new_version):
+        option = QtWidgets.QMessageBox.question(self, 'Confirm update',
+                f"APPLICATION UPDATE AVAILABLE:{NEWLINE}"
+                f"{new_version['description']}{NEWLINE}"
+                f"Do you wish to update your current version {curr_version} "
+                f"to version {new_version['version']}{NEWLINE}"
+                f"(release date: {new_version['date']})?")
+        return option == QtWidgets.QMessageBox.Yes
+
+    def on_noupdate_available(self):
+        MsgBox('No updates are available', self)
         
     # ----- Overrides (events, etc) ----- #
     
@@ -1427,9 +1449,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # update status bar
         self.statusbar_l1.setText(f"v. {APP_VERSION}")
-        new_update = self.updater.check_update()
-        if new_update:
-            self.statusbar_l2.setText(f"Update available: {new_update['version']}")
+        if CWSettings.settings['update']['auto_update']:
+            self.on_act_update(False)
+        else:
+            self.updater.check_update()
         
     def closeEvent(self, event):
         # save cw
@@ -1825,12 +1848,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(bool)        
     def on_act_update(self, checked):
-        # todo: add dialog confirmation
-        self.updater.update()
-    
+        self.updater.update(True)
+   
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
         MsgBox('on_act_help', self)
+
+    @QtCore.pyqtSlot(QtGui.QMouseEvent)
+    def on_statusbar_l2_dblclicked(self, event):
+        if not self.statusbar_l2.text(): return
+        self.on_act_update(False)
         
     @QtCore.pyqtSlot(int)
     def on_slider_cw_scale(self, value):

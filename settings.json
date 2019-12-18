@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			344,
-			117
+			370,
+			98
 		],
 		"win_size": [
-			1229,
-			713
+			1289,
+			756
 		]
 	},
 	"cw_settings": {
@@ -151,7 +151,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 176
+				"width": 205
 			}
 		]
 	},
