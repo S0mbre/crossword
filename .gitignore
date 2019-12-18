@@ -1,13 +1,13 @@
+*.py[cod]
+*$py.class
 build/
 dist/
 *.egg-info/
 __pycache__/
 */__pycache__/
-*.py[cod]
-*$py.class
+assets/*.txt
 log.*
 *.log
-*.bat
-*.sh
 update.json
 autosaved.xpf
+build.bat
