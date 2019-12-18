@@ -34,7 +34,7 @@ def walk_dir(root_path, recurse, file_types, file_process_function):
 
 def run_exe(args, nowait=False, capture_output=True, encoding=ENCODING, timeout=None, **kwargs):
     if nowait:
-        return os.spawnl(os.P_NOWAIT, *args if isinstance(args, list) or isinstance(args, tuple) else args)
+        return subprocess.Popen(args, creationflags=(subprocess.DETACHED_PROCESS | subprocess.CREATE_NO_WINDOW), **kwargs).pid
     else:
         return subprocess.run(args, capture_output=capture_output, encoding=encoding, timeout=timeout, **kwargs)
 

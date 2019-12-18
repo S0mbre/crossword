@@ -37,7 +37,6 @@ class Updater:
 
     def _parse_version(self, version_str, max_versions=2):
         version_str = ''.join([c for c in version_str if c in list('0123456789.')])
-        print(version_str.split('.'))
         return tuple([int(v) for v in version_str.split('.')][:max_versions])
 
     def _compare_versions(self, v1, v2, major_only=False):
@@ -85,9 +84,7 @@ class Updater:
     def check_update(self, force=False):
         if not force and not self._update_check_required():
             return None
-        recent_vers = self._get_recent_version()
-        if self.on_get_recent and not self.on_get_recent(recent_vers):
-            return None
+        recent_vers = self._get_recent_version()        
         if 'error' in recent_vers:
             print(recent_vers['error'])
             return None
@@ -95,6 +92,8 @@ class Updater:
         if self._compare_versions(APP_VERSION, recent_vers['version'], 
                                  self.update_settings['only_major_versions']) == '<':
             res = recent_vers
+        if self.on_get_recent and res and not self.on_get_recent(res):
+            return None
         self.update_info['last_check'] = datetime_to_str()
         self.update_info['recent_version'] = res or ''
         self._write_update_info()
@@ -103,7 +102,7 @@ class Updater:
     def update(self, force=False):
         vers = self.check_update(force)
         if not vers: return
-        if self.on_before_update and not self.on_before_update(vers): 
+        if self.on_before_update and not self.on_before_update(APP_VERSION, vers): 
             return
         self.update_info['last_update'] = datetime_to_str()
         self._write_update_info()

@@ -49,7 +49,8 @@ class MainWindow(QtWidgets.QMainWindow):
                                     on_gen_validate=self.on_gen_validate,
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error)
-        self.updater = Updater(CWSettings.settings['update'], self.close)
+        self.updater = Updater(CWSettings.settings['update'], self.close, 
+            self.on_get_recent, self.on_before_update)
         self.initUI()
         
     def _log(self, what, end='\n'):
@@ -324,6 +325,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusbar_l1 = QtWidgets.QLabel(self.statusbar)
         self.statusbar.addPermanentWidget(self.statusbar_l1)
         self.statusbar_l2 = QtWidgets.QLabel(self.statusbar)
+        self.statusbar_l2.setStyleSheet('color: maroon;')
         self.statusbar.addPermanentWidget(self.statusbar_l2)
         self.statusbar.addWidget(self.statusbar_pbar)
         #self.layout_hgrid3.addWidget(self.statusbar)
@@ -1418,6 +1420,18 @@ class MainWindow(QtWidgets.QMainWindow):
                     width = CWSettings.settings['clues']['columns'][i]['width']
                     if width > 0:
                         self.tvClues.setColumnWidth(i, width) 
+
+    def on_get_recent(self, new_version):
+        if 'version' in new_version:
+            self.statusbar_l2.setText(new_version['version'])
+            if 'description' in new_version:
+                MsgBox(new_version['description'], self, f"Verson {new_version['version']}")
+        return True
+
+    def on_before_update(self, curr_version, new_version):
+        option = QtWidgets.QMessageBox.question(self, 'Confirm update',
+                f"Do you wish to update your current version {curr_version} to version {new_version['version']}?")
+        return option == QtWidgets.QMessageBox.Yes
         
     # ----- Overrides (events, etc) ----- #
     
@@ -1826,7 +1840,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)        
     def on_act_update(self, checked):
         # todo: add dialog confirmation
-        self.updater.update()
+        self.updater.update(True)
     
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
