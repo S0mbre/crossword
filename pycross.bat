@@ -1,1 +1,0 @@
-python cwordg.py

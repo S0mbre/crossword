@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
-"""
-pass
-"""
 
 import sys, os, subprocess
 from datetime import datetime
@@ -29,7 +26,7 @@ def walk_dir(root_path, recurse, file_types, file_process_function):
             ext = os.path.splitext(f)[1][1:].lower()
             if (not file_types) or (ext in file_types):
                 if file_process_function:
-                    if not file_process_function(os.path.join(d, f)): return
+                    file_process_function(os.path.join(d, f))
         if not recurse: break
 
 def run_exe(args, nowait=False, capture_output=True, encoding=ENCODING, 

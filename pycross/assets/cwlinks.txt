@@ -1,0 +1,11 @@
+CW puzzle formats:
+* PUZ (*.puz) - binary (NY Times):  https://code.google.com/archive/p/puz/wikis/FileFormat.wiki
+* IPUZ (*.ipuz) - json (open): http://www.ipuz.org/ 
+* XPF (*.xpf) - xml (NY Times): https://www.xwordinfo.com/XPF/
+* NYTJSON (*.nytjson, *.json) - json (NY Times): https://www.xwordinfo.com/JSON/
+* YACDF (*.yacdf, *.yaml) - yaml (Financial Times): https://labs.ft.com/experiment/2018/03/26/crossword-data-format.html
+
+Crossword Compiler App: https://www.crossword-compiler.com/features.html
+Crossword Links: https://crosswordfiend.com/crossword-links/
+NYT Crosswords: https://www.xwordinfo.com/
+FT Crosswords: https://labs.ft.com/crosswords/

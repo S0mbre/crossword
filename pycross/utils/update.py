@@ -94,7 +94,7 @@ class Updater:
             return None
         recent_vers = self._get_recent_version()        
         if 'error' in recent_vers:
-            print(recent_vers['error'])
+            #print(recent_vers['error'])
             return None
         res = None
         if self._compare_versions(APP_VERSION, recent_vers['version'], 

@@ -5,9 +5,9 @@ dist/
 *.egg-info/
 __pycache__/
 */__pycache__/
-assets/*.txt
-log.*
-*.log
-update.json
-autosaved.xpf
+pycross/assets/*.txt
+*/*.log
+*/*.json
+*/autosaved.xpf
+*/*.bat1
 build.bat

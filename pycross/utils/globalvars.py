@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
-"""
-This file is part of the ycaptcha project hosted at https://github.com/S0mbre/ycaptcha
 
-This module contains the global variables used in any other modules.
-"""
+# debug messages
+DEBUGGING = True
 
 # version
 APP_VERSION = '0.1'
@@ -16,36 +14,11 @@ APP_NAME = 'pyCross'
 # git repo
 GIT_REPO = 'https://github.com/S0mbre/crossword.git'
 
-# debug messages
-DEBUGGING = True
-
 # default encoding
 ENCODING = 'utf-8'
 
-# for colorama colored console output
-COLORED_OUTPUT = False           # will work only if colorama is installed; set to False to switch off colored output
-COLOR_INITIATED = False
-COLOR_PROMPT = ''
-COLOR_HELP = ''
-COLOR_ERR = ''
-COLOR_STRESS = ''
-COLOR_BRIGHT = ''
-
-if COLORED_OUTPUT and not COLOR_INITIATED:
-    try:
-        import colorama
-        colorama.init(autoreset=True)
-        COLOR_PROMPT = colorama.Fore.LIGHTGREEN_EX
-        COLOR_HELP = colorama.Fore.YELLOW
-        COLOR_ERR = colorama.Fore.RED
-        COLOR_STRESS = colorama.Fore.CYAN
-        COLOR_BRIGHT = colorama.Style.BRIGHT
-        COLOR_INITIATED = True
-    except ImportError:
-        COLORED_OUTPUT = False
-
-SETTINGS_FILE = 'settings.json'        
-DEFAULT_SETTINGS_FILE = 'defsettings.json'      
+SETTINGS_FILE = 'settings.json'
+DEFAULT_SETTINGS_FILE = 'defsettings.json'
 UPDATE_FILE = 'update.json'  
 SAVEDCW_FILE = 'autosaved.xpf'
 DICFOLDER = 'assets/dic'

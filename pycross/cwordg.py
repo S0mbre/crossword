@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 22 11:38:25 2019
+# Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
+# GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-@author: iskander.shafikov
-"""
-
+import sys, traceback
 from utils.utils import *
-import sys
-import traceback
 from gui import QtWidgets, MainWindow
 
 ## ******************************************************************************** ##

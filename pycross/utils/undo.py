@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Oct  7 14:14:40 2019
-
-@author: iskander.shafikov
-"""
+# Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
+# GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 import copy
 ## ******************************************************************************** ##        
