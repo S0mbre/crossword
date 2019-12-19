@@ -1,7 +1,6 @@
 *.py[cod]
 *$py.class
 build/
-dist/
 *.egg-info/
 __pycache__/
 */__pycache__/
@@ -9,5 +8,4 @@ pycross/assets/*.txt
 */*.log
 */*.json
 */autosaved.xpf
-*/*.bat1
-build.bat
+*.bat

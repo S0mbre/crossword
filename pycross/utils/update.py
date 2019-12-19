@@ -2,92 +2,163 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from .globalvars import (APP_VERSION, GIT_REPO, ENCODING, UPDATE_FILE)
-from .utils import *
 from datetime import datetime
-import os, subprocess, json
+from pathlib import Path, PurePath
+import os, sys, subprocess, json, shutil, argparse
 
-# git fetch -q git reset --hard -q <VERSION>
+ENCODING = 'utf-8'
+GIT_ERROR = 'You do not appear to have a valid version of git installed!\nPlease install git from https://git-scm.com/'
+PIP_INSTALL = 'install --upgrade --src="{}" -e git+{}@{}#egg={}'
 
 class Updater:
 
-    def __init__(self, update_settings, quit_app_method, 
-                 on_get_recent=None, on_before_update=None, on_norecent=None):
-        self.update_settings = update_settings
-        self.quit_app_method = quit_app_method
+    def __init__(self, app_name, app_version, git_repo, update_file,
+                 check_every=1, check_major_versions=True, src_dir='', 
+                 on_get_recent=None, on_before_update=None, on_norecent=None,
+                 on_update_log=None, on_update_error=None):
+
+        self.app_name = app_name
+        self.app_version = app_version
+        self.git_repo = git_repo
+        self.update_file = Path(update_file).resolve()
+        self.check_every = check_every
+        self.check_major_versions = check_major_versions
+        self.src_dir = Path(src_dir) if src_dir else Path(__file__).parents[2]
+        self.src_dir = self.src_dir.resolve()
         self.on_get_recent = on_get_recent
         self.on_before_update = on_before_update
         self.on_norecent = on_norecent
+        self.on_update_log = on_update_log
+        self.on_update_error = on_update_error
+        self.update_info = {'last_update': '', 'last_check': '', 
+                            'recent_version': {'version': '', 'hash': '', 'branch': '',
+                                               'description': '', 'date': ''}}
         self.git_installed = self._check_git()        
         self._init_update_info()
 
     def __del__(self):
         self._write_update_info()
 
-    def _init_update_info(self):
-        if os.path.isfile(UPDATE_FILE):
-             with open(os.path.abspath(UPDATE_FILE), 'r', encoding=ENCODING, errors='replace') as infile:
-                self.update_info = json.load(infile)                
+    def _run_exe(self, args, external=False, capture_output=True, encoding=ENCODING, 
+            creationflags=subprocess.CREATE_NO_WINDOW, timeout=None, shell=False, **kwargs):
+        if external:
+            return subprocess.Popen(args, 
+                creationflags=(subprocess.DETACHED_PROCESS | creationflags), 
+                encoding=encoding, shell=shell, **kwargs)
         else:
-            self.update_info = {'last_update': '', 'last_check': '', 
-                                'recent_version': {'version': '', 'tag': '', 'description': '', 'date': ''}}
+            return subprocess.run(args, 
+                capture_output=capture_output, encoding=encoding, 
+                timeout=timeout, shell=shell, **kwargs)
+
+    def _datetime_to_str(self, dt=None, strformat='%Y-%m-%d %H-%M-%S'):
+        if dt is None: dt = datetime.now()
+        return dt.strftime(strformat)
+
+    def _str_to_datetime(self, text, strformat='%Y-%m-%d %H-%M-%S'):
+        return datetime.strptime(text, strformat)
+
+    def _check_git(self):
+        try:
+            res = self._run_exe(['git', '--version'])
+            return res.returncode == 0
+        except:
+            return False
+
+    def _init_update_info(self):
+        if self.update_file.exists():
+             with open(str(self.update_file), 'r', encoding=ENCODING) as infile:
+                self.update_info.update(json.load(infile))
             
     def _write_update_info(self):
-        with open(os.path.abspath(UPDATE_FILE), 'w', encoding=ENCODING) as outfile:
+        with open(str(self.update_file), 'w', encoding=ENCODING) as outfile:
             json.dump(self.update_info, outfile, ensure_ascii=False, indent='\t')
 
     def _strip_version_az(self, version_str):
         return ''.join([c for c in version_str if c in list('0123456789.')])
 
-    def _parse_version(self, version_str, max_versions=4):
+    def _parse_version(self, version_str, max_versions=-1):
         version_str = self._strip_version_az(version_str)
-        return tuple([int(v) for v in version_str.split('.')][:max_versions])
+        if max_versions > 0:
+            return tuple([int(v) for v in version_str.split('.')][:max_versions])
+        else:
+            return tuple([int(v) for v in version_str.split('.')])
 
-    def _compare_versions(self, v1, v2, major_only=False):
-        tv1 = self._parse_version(v1)
-        tv2 = self._parse_version(v2)        
+    def _compare_versions(self, v1, v2, max_versions=-1, major_only=False):
+        tv1 = self._parse_version(v1, max_versions)
+        tv2 = self._parse_version(v2, max_versions)        
         l = min(len(tv1), len(tv2))
+        if major_only: l = min(l, 1)
         tv1 = tv1[:l] 
         tv2 = tv2[:l] 
-        if l == 0: return '='
-        if major_only: l = 1
-        for i in range(l):
-            if tv1[i] < tv2[i]: return '<'
-            if tv1[i] > tv2[i]: return '>'
+        if tv1 < tv2: return '<'
+        if tv1 > tv2: return '>'
         return '='
 
-    def _check_git(self):
-        res = run_exe(['git', '--version'])
-        return res.returncode == 0
+    def _get_remote_branches(self, exclude_starting_with=('master',), include_starting_with=('release',)):
+        if not self.git_installed: return None
+        res = self._run_exe(['git', 'ls-remote', '--heads'])
+        res = res.stdout.strip().splitlines()
+        branches = {}
+        for l in res:
+            entry = l.split()
+            if len(entry) != 2: continue
+            br = entry[1].split('/')[-1]
+            include = True
+            if exclude_starting_with:
+                for e in exclude_starting_with:
+                    if br.startswith(e):
+                        include = False
+                        break
+            if not include: continue
+            include = False
+            if include_starting_with:
+                for i in include_starting_with:
+                    if br.startswith(i):
+                        include = True
+                        break
+            if not include: continue
+            branches[self._parse_version(br)] = (br, entry[0])
+        return branches
 
     def _get_recent_version(self):
-        if not self.git_installed:
-            return {'error': 'You do not appear to have a valid version of git installed!\nPlease install git from https://git-scm.com/'}
-        res = run_exe(os.path.abspath('git_get_recent.bat'))
-        if res.returncode != 0:
-            return {'error': res.stderr}
-        rec_vers = res.stdout.strip()
-        if not rec_vers:
-            return {'error': 'No version tags found in remote repository!'}
-        res = run_exe(['git', 'tag', '--list', rec_vers, '-n99'])
-        tag_descr = res.stdout.strip()
-        if tag_descr: tag_descr = tag_descr[len(rec_vers):]
-        res = run_exe(['git', 'log', '-1', '--format=%at', rec_vers])
-        date_ts = res.stdout.strip()
-        tag_dt = datetime_to_str(datetime.fromtimestamp(int(date_ts))) if date_ts else ''
-        return {'version': self._strip_version_az(rec_vers), 'tag': rec_vers, 
-                'description': tag_descr, 'date': tag_dt}
+        if not self.git_installed: return {'error': GIT_ERROR}
+        branches = self._get_remote_branches()
+        if not branches:
+            return {'error': 'No release branches in repository!'}
 
-    def _reset_to_version(self, version_str):
-        if not version_str or not self.git_installed: return None
-        return run_exe([os.path.abspath('git_reset_to_version.bat'), version_str], True)
+        # make sorted list, where latest version will be at top
+        branches = sorted(branches.items(), key=lambda t: t[0], reverse=True)
+        # get latest
+        recent_br = branches[0]
+        # get date
+        res = self._run_exe(['git', 'log', '-1', '--format=%at', recent_br[1][0]])
+        date_ts = res.stdout.strip()
+
+        return {'version': ''.join(recent_br[0]), 'hash': recent_br[1][1], 
+                'branch': recent_br[1][0], 'description': '', 
+                'date': self._datetime_to_str(datetime.fromtimestamp(int(date_ts))) if date_ts else ''}
+
+    def _run_pip(self, *pip_commands):
+        args = [sys.executable, '-m', 'pip'] + list(pip_commands)
+        return self._run_exe(args)
+    
+    def _update_from_branch(self, branch_name):
+        if not branch_name or not self.git_installed: return None
+        res = self._run_pip('install', '--upgrade', f'--src="{self.src_dir}"',
+                            '-e', f'git+{self.git_repo}@{branch_name}#egg={self.app_name}')
+        out = res.stdout.strip()
+        err = res.stderr.strip()
+        if out and self.on_update_log:
+            self.on_update_log(out)
+        if err and self.on_update_error:
+            self.on_update_error(err)
+        return res
 
     def _update_check_required(self):
         dt_now = datetime.now()
-        dt_lastcheck = str_to_datetime(self.update_info['last_check']) if self.update_info['last_check'] else None
+        dt_lastcheck = self._str_to_datetime(self.update_info['last_check']) if self.update_info['last_check'] else None
         return dt_lastcheck is None or \
-            (self.update_settings['check_every'] > 0 and \
-            (dt_now - dt_lastcheck).days >= self.update_settings['check_every'])
+               (self.check_every > 0 and (dt_now - dt_lastcheck).days >= self.check_every)
 
     def check_update(self, force=False):
         if not force and not self._update_check_required():
@@ -96,33 +167,54 @@ class Updater:
         if 'error' in recent_vers:
             #print(recent_vers['error'])
             return None
+
         res = None
-        if self._compare_versions(APP_VERSION, recent_vers['version'], 
-                                 self.update_settings['only_major_versions']) == '<':
+        if self._compare_versions(self.app_version, recent_vers['version'], 
+                                 self.check_major_versions) == '<':
             res = recent_vers
+
         if self.on_get_recent and res and not self.on_get_recent(res):
             return None
-        self.update_info['last_check'] = datetime_to_str()
+
+        self.update_info['last_check'] = self._datetime_to_str()
         self.update_info['recent_version'] = res or ''
         self._write_update_info()
+
         return res    
 
     def update(self, force=False):
         vers = self.check_update(force)
         if not vers: 
             if self.on_norecent: self.on_norecent()
-            return
-        if self.on_before_update and not self.on_before_update(APP_VERSION, vers): 
-            return
-        self.update_info['last_update'] = datetime_to_str()
+            return False
+
+        if self.on_before_update and not self.on_before_update(self.app_version, vers): 
+            return False
+
+        self.update_info['last_update'] = self._datetime_to_str()
         self._write_update_info()
-        if not self._reset_to_version(vers['tag']) is None:
-            self.quit_app_method()
-
+        
+        res = self._update_from_branch(vers['branch'])
+        return res.returncode == 0
     
+## ******************************************************************************** ##
 
+def copyself(dest):
+    """
+    Copies this file (update.py) to the given folder (dest).
+    Returns the full destination file path on success and None otherwise.
+    """
+    new_path = PurePath.joinpath(Path(dest).resolve(), PurePath(__file__).name)
+    shutil.copy(__file__, str(new_path))
+    return str(new_path) if Path(new_path).exists() else None
     
+## ******************************************************************************** ##
 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument()
+
+    args = parser.parse_args()
 
 
 

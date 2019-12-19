@@ -30,13 +30,15 @@ def walk_dir(root_path, recurse, file_types, file_process_function):
         if not recurse: break
 
 def run_exe(args, nowait=False, capture_output=True, encoding=ENCODING, 
-            creationflags=subprocess.CREATE_NO_WINDOW, timeout=None, **kwargs):
-    if nowait:
-        return subprocess.Popen(args, creationflags=(subprocess.DETACHED_PROCESS | creationflags), 
-                                encoding=encoding, **kwargs)
-    else:
-        return subprocess.run(args, capture_output=capture_output, encoding=encoding, 
-                              timeout=timeout, **kwargs)
+            creationflags=subprocess.CREATE_NO_WINDOW, timeout=None, shell=False, **kwargs):
+        if nowait:
+            return subprocess.Popen(args, 
+                creationflags=(subprocess.DETACHED_PROCESS | creationflags), 
+                encoding=encoding, shell=shell, **kwargs)
+        else:
+            return subprocess.run(args, 
+                capture_output=capture_output, encoding=encoding, 
+                timeout=timeout, shell=shell, **kwargs)
 
 def datetime_to_str(dt=None, strformat='%Y-%m-%d %H-%M-%S'):
     if dt is None: dt = datetime.now()
