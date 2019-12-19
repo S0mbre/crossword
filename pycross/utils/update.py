@@ -21,10 +21,11 @@ class Updater:
         self.app_version = app_version
         self.git_repo = git_repo
         self.update_file = Path(update_file).resolve()
+        print(f"Update file = {str(self.update_file)}")
         self.check_every = check_every
         self.check_major_versions = check_major_versions
-        self.src_dir = Path(src_dir) if src_dir else Path(__file__).parents[2]
-        self.src_dir = self.src_dir.resolve()
+        self.src_dir = Path(src_dir).resolve() if src_dir else Path(__file__).resolve().parents[2]
+        print(f"Src = {str(self.src_dir)}")
         self.on_get_recent = on_get_recent
         self.on_before_update = on_before_update
         self.on_norecent = on_norecent
@@ -35,9 +36,6 @@ class Updater:
                                                'description': '', 'date': ''}}
         self.git_installed = self._check_git()        
         self._init_update_info()
-
-    def __del__(self):
-        self._write_update_info()
 
     def _run_exe(self, args, external=False, capture_output=True, encoding=ENCODING, 
             creationflags=subprocess.CREATE_NO_WINDOW, timeout=None, shell=False, **kwargs):
@@ -196,25 +194,72 @@ class Updater:
         
         res = self._update_from_branch(vers['branch'])
         return res.returncode == 0
+
+    def copyself(self, dest):
+        """
+        Copies this file (update.py) to the given folder (dest).
+        Returns the full destination file path on success and None otherwise.
+        """
+        this_file = Path(__file__).resolve()
+        new_path = Path(PurePath.joinpath(Path(dest).resolve(), this_file.name))
+
+        print(f"Copying '{str(this_file)}' to '{str(new_path)}'...")
+        #new_path.replace(this_file)
+        try:
+            new_path.unlink()
+        except:
+            pass
+        shutil.copy(str(this_file), str(new_path))
+        return str(new_path) if new_path.exists() else None
+    
+
     
 ## ******************************************************************************** ##
 
-def copyself(dest):
-    """
-    Copies this file (update.py) to the given folder (dest).
-    Returns the full destination file path on success and None otherwise.
-    """
-    new_path = PurePath.joinpath(Path(dest).resolve(), PurePath(__file__).name)
-    shutil.copy(__file__, str(new_path))
-    return str(new_path) if Path(new_path).exists() else None
-    
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('appname', help='Application name')
+    parser.add_argument('version', help='Application current version, e.g. "0.1"')
+    parser.add_argument('repo', help='Git repo url, e.g. "https://github.com/.../project.git"')
+    parser.add_argument('updatefile', help='Full or relative path to update.json')
+    parser.add_argument('-m', '--major', action='store_true', help='Check only major versions')
+    parser.add_argument('-c', '--copy', default='', help='Directory to copy this file to')
+    parser.add_argument('-s', '--source', default='', help='Path to app source directory (containing .git directory)')
+    parser.add_argument('-u', '--update', action='store_true', help='Start updating app')
+    parser.add_argument('-d', '--deleteself', action='store_true', help='Commit suicide ater completon')
+    args_obj = parser.parse_args()
+
+    updater = Updater(args_obj.appname, args_obj.version, args_obj.repo, args_obj.updatefile,
+        check_major_versions=args_obj.major, src_dir=args_obj.source,
+        on_update_log=lambda out: print(out), on_update_error=lambda out: print(out))
+
+    if args_obj.copy:
+        new_file = updater.copyself(args_obj.copy)
+        if not new_file:
+            return
+        args = [sys.executable, f'\"{new_file}\"', 
+            args_obj.appname, args_obj.version, args_obj.repo, f'\"{updater.update_file}\"', '-d']
+        args.append(f'-s=\"{str(updater.src_dir)}\"')
+        if args_obj.major: args.append('-m')
+        if args_obj.update: args.append('-u')
+        args += ['>', f'\"{args_obj.copy}\\1.txt\"']
+        print(' '.join(args))
+
+        updater._run_exe(args, True)
+        return
+
+    print(f"Hello from '{__file__}'!")
+    print(os.getcwd())
+    print(updater.check_update(True))
+
+    if args_obj.deleteself:
+        print('Deleting myself...')
+
 ## ******************************************************************************** ##
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument()
+    sys.exit(main())
 
-    args = parser.parse_args()
 
 
 
