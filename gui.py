@@ -50,7 +50,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error)
         self.updater = Updater(CWSettings.settings['update'], self.close, 
-            self.on_get_recent, self.on_before_update, self.on_noupdate_available)
+        self.on_get_recent, self.on_before_update, self.on_noupdate_available)
         self.initUI()
         
     def _log(self, what, end='\n'):
