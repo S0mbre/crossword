@@ -4,7 +4,7 @@
 
 from datetime import datetime
 from pathlib import Path, PurePath
-import os, sys, subprocess, json, shutil, argparse
+import os, sys, subprocess, json, shutil, argparse, traceback
 
 ENCODING = 'utf-8'
 GIT_ERROR = 'You do not appear to have a valid version of git installed!\nPlease install git from https://git-scm.com/'
@@ -41,14 +41,18 @@ class Updater:
 
     def _run_exe(self, args, external=False, capture_output=True, encoding=ENCODING, 
             creationflags=subprocess.CREATE_NO_WINDOW, timeout=None, shell=False, **kwargs):
-        if external:
-            return subprocess.Popen(args, 
-                creationflags=(subprocess.DETACHED_PROCESS | creationflags), 
-                encoding=encoding, shell=shell, **kwargs)
-        else:
-            return subprocess.run(args, 
-                capture_output=capture_output, encoding=encoding, 
-                timeout=timeout, shell=shell, **kwargs)
+        try:
+            if external:
+                return subprocess.Popen(args, 
+                    creationflags=(subprocess.DETACHED_PROCESS | creationflags), 
+                    encoding=encoding, shell=shell, **kwargs)
+            else:
+                return subprocess.run(args, 
+                    capture_output=capture_output, encoding=encoding, 
+                    timeout=timeout, shell=shell, **kwargs)
+        except Exception as err:
+            traceback.print_exc(file=self.print_to)
+            raise
 
     def _datetime_to_str(self, dt=None, strformat='%Y-%m-%d %H-%M-%S'):
         if dt is None: dt = datetime.now()
@@ -95,16 +99,16 @@ class Updater:
         return '='
 
     def _run_git(self, *args):
-        gitargs = ['git', f'--git-dir="{str(self.git_dir)}"']
+        gitargs = ['git', f'--git-dir={str(self.git_dir)}']
         gitargs += list(args)
         print(f"Running {' '.join(gitargs)}...", file=self.print_to)
         return self._run_exe(gitargs)
 
     def _get_remote_branches(self, exclude_starting_with=('master',), include_starting_with=('release',)):
         if not self.git_installed: return None
-        res = self._run_git('ls-remote', '--heads')
+        res = self._run_git('ls-remote', '--heads')        
         res = res.stdout.strip().splitlines()
-        print(res, file=self.print_to)
+        #print(res, file=self.print_to)
         branches = {}
         for l in res:
             entry = l.split()
@@ -134,33 +138,42 @@ class Updater:
             return {'error': 'No release branches in repository!'}
 
         # make sorted list, where latest version will be at top
-        branches = sorted(branches.items(), key=lambda t: t[0], reverse=True)
+        branches = sorted(branches.items(), key=lambda t: t[0], reverse=True)        
         # get latest
         recent_br = branches[0]
         # get date
-        res = self._run_git('log', '-1', '--format=%at', recent_br[1][0])
+        res = self._run_git('log', '-1', '--format=%at', recent_br[1][1])
         date_ts = res.stdout.strip()
 
-        return {'version': ''.join(recent_br[0]), 'hash': recent_br[1][1], 
+        return {'version': self._strip_version_az(recent_br[1][0]), 
+                'hash': recent_br[1][1], 
                 'branch': recent_br[1][0], 'description': '', 
                 'date': self._datetime_to_str(datetime.fromtimestamp(int(date_ts))) if date_ts else ''}
 
     def _run_pip(self, *pip_commands):
         args = [sys.executable, '-m', 'pip'] + list(pip_commands)
         print(f"Running {' '.join(args)}...", file=self.print_to)
-        return self._run_exe(args)
+        return self._run_exe(args, capture_output=False, 
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding=None)
     
     def _update_from_branch(self, branch_name):
         if not branch_name or not self.git_installed: return None
-        res = self._run_pip('install', '--upgrade', f'--src="{self.src_dir}"',
-                            '-e', f'git+{self.git_repo}@{branch_name}#egg={self.app_name}')
-        out = res.stdout.strip()
-        err = res.stderr.strip()
+        os.chdir(os.path.abspath(os.sep))
+        print(f"Working dir = '{os.getcwd()}'", file=self.print_to)
 
-        if out and self.on_update_log:
-            self.on_update_log(out)
-        if err and self.on_update_error:
-            self.on_update_error(err)
+        
+        res = self._run_pip('install', '--upgrade', f'--src="{str(self.src_dir.parents[0])}"', '-I', '-qqq',
+                            '-e', f'git+{self.git_repo}@{branch_name}#egg={str(self.src_dir.name)}')
+        
+        """
+        sout = res.stdout.strip()
+        serr = res.stderr.strip()
+
+        if sout and self.on_update_log:
+            self.on_update_log(sout)
+        if serr and self.on_update_error:
+            self.on_update_error(serr)
+        """
 
         return res
 
@@ -202,6 +215,7 @@ class Updater:
             return False      
         
         res = self._update_from_branch(vers['branch'])
+        print(f"Result = {res.returncode}", file=self.print_to)
         ok = (res.returncode == 0)
         if ok:
             self.update_info['last_update'] = self._datetime_to_str()
@@ -253,10 +267,9 @@ def main():
         args_obj.output = Path(args_obj.output).resolve()
         out_file = open(str(args_obj.output), 'a' if args_obj.copy else 'w', encoding=ENCODING)
 
-    try:
-        if args_obj.update and not args_obj.copy:
-            raise Exception('Update impossible without copying out update.py! Please set the destination folder location: -c="<PATH>".')
+    print(f"Running with {vars(args_obj)} ...", file=out_file)
 
+    try:
         updater = Updater(args_obj.appname, args_obj.version, args_obj.repo, args_obj.updatefile,
             check_major_versions=args_obj.major, src_dir=args_obj.source,
             on_update_log=lambda out: print(out, file=out_file), 
@@ -269,11 +282,11 @@ def main():
                 raise Exception('Could not copy update.py to new location!')
             args = [QUOTEME(sys.executable), QUOTEME(new_file), 
                 args_obj.appname, args_obj.version, args_obj.repo, QUOTEME(updater.update_file)]
-            args.append('-s=' + QUOTEME(str(updater.src_dir)))
+            args.append('-s ' + QUOTEME(str(updater.src_dir)))
             if args_obj.major: args.append('-m')
             if args_obj.update: args.append('-u')
-            if args_obj.restart: args.append('-r=' + QUOTEME(str(Path(args_obj.restart).resolve())))
-            args.append('-o=' + QUOTEME(str(args_obj.output)))
+            if args_obj.restart: args.append('-r ' + QUOTEME(str(Path(args_obj.restart).resolve())))
+            args.append('-o ' + QUOTEME(str(args_obj.output)))
             s_args = ' '.join(args)
             print(f"Running {s_args}...", file=out_file)
             updater._run_exe(s_args, True, shell=True)
@@ -289,7 +302,7 @@ def main():
             def on_before_update(old_version, new_version):
                 print(f"Updating from version {old_version} to {new_version['version']}...", file=out_file)
                 return True
-
+                        
             updater.on_norecent = on_norecent
             updater.on_before_update = on_before_update
             updater.update(True)
@@ -298,6 +311,7 @@ def main():
             if args_obj.restart:
                 args = [QUOTEME(sys.executable), QUOTEME(args_obj.restart)]
                 s_args = ' '.join(args)
+                os.chdir(updater.src_dir)
                 updater._run_exe(s_args, True, shell=True)
 
         print(f"Exiting '{__file__}'...", file=out_file)

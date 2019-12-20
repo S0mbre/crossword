@@ -68,7 +68,10 @@ class QThreadStump(QtCore.QThread):
         if start_now: self.start()
     
     def __del__(self):
-        self.wait()
+        try:
+            self.wait()
+        except:
+            pass
 
     def init(self, default_priority=QtCore.QThread.NormalPriority, 
              on_start=None, on_finish=None, on_run=None, on_error=None,

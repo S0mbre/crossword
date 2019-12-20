@@ -1869,16 +1869,17 @@ class MainWindow(QtWidgets.QMainWindow):
         # prepare CLI args for update.py
         temp_dir = CWSettings.settings['update']['temp_dir'] or get_tempdir()
         args = [QUOTEME(sys.executable), 'utils/update.py', APP_NAME, APP_VERSION, GIT_REPO, 'update.json']
-        args.append('-c="' + temp_dir + '"')
+        args.append('-c ' + QUOTEME(temp_dir))
         if CWSettings.settings['update']['only_major_versions']:
             args.append('-m')
         if CWSettings.settings['update']['logfile']:
-            args.append('-o="' + CWSettings.settings['update']['logfile'] + '"')
+            args.append('-o ' + QUOTEME(CWSettings.settings['update']['logfile']))
         if CWSettings.settings['update']['restart_on_update']:
-            args.append('-r')
+            args.append('-r ../cwordg.py')
         args.append('-u')
         # call update.py
         s_args = ' '.join(args)
+        print(s_args)
         self.updater._run_exe(s_args, True, shell=True)
         # close self
         self.close()
