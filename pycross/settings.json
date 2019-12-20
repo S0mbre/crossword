@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			420,
-			95
+			322,
+			99
 		],
 		"win_size": [
-			1195,
-			728
+			1329,
+			737
 		]
 	},
 	"cw_settings": {
@@ -151,7 +151,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 159
+				"width": 224
 			}
 		]
 	},
@@ -239,7 +239,7 @@
 	},
 	"export": {
 		"openfile": true,
-		"clear_cw": false,
+		"clear_cw": true,
 		"img_resolution": 72,
 		"pdf_resolution": 1200,
 		"mm_per_cell": 20,
@@ -250,6 +250,9 @@
 	"update": {
 		"check_every": 1,
 		"only_major_versions": false,
-		"auto_update": false
+		"auto_update": false,
+		"restart_on_update": true,
+		"temp_dir": "",
+		"logfile": "update.log"
 	}
 }

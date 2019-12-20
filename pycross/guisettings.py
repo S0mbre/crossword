@@ -151,7 +151,8 @@ class CWSettings:
     'update':
         {
             'check_every': 1, 'auto_update': False, 
-            'only_major_versions': False
+            'only_major_versions': False, 'temp_dir': '',
+            'logfile': 'update.log', 'restart_on_update': True
         }
     } # settings
          

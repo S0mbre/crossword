@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			363,
-			166
+			300,
+			300
 		],
 		"win_size": [
-			1195,
-			728
+			800,
+			500
 		]
 	},
 	"cw_settings": {
@@ -131,27 +131,27 @@
 			{
 				"name": "Direction",
 				"visible": true,
-				"width": 100
+				"width": -1
 			},
 			{
 				"name": "No",
 				"visible": true,
-				"width": 100
+				"width": -1
 			},
 			{
 				"name": "Clue",
 				"visible": true,
-				"width": 100
+				"width": -1
 			},
 			{
 				"name": "Letters",
 				"visible": true,
-				"width": 100
+				"width": -1
 			},
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 159
+				"width": -1
 			}
 		]
 	},
@@ -250,6 +250,9 @@
 	"update": {
 		"check_every": 1,
 		"auto_update": false,
-		"only_major_versions": false
+		"only_major_versions": false,
+		"temp_dir": "",
+		"logfile": "update.log",
+		"restart_on_update": true
 	}
 }

@@ -3,6 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 import sys, os, subprocess
+import tempfile
 from datetime import datetime
 from .globalvars import *
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -46,6 +47,9 @@ def datetime_to_str(dt=None, strformat='%Y-%m-%d %H-%M-%S'):
 
 def str_to_datetime(text, strformat='%Y-%m-%d %H-%M-%S'):
     return datetime.strptime(text, strformat)
+
+def get_tempdir():
+    return os.path.abspath(tempfile.gettempdir())
 
 
 ### ---------------------------- GUI ---------------------------- ###

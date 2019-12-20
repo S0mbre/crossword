@@ -49,9 +49,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.updater = Updater(APP_NAME, APP_VERSION, GIT_REPO, UPDATE_FILE,
             CWSettings.settings['update']['check_every'], 
             CWSettings.settings['update']['only_major_versions'],
-            on_get_recent=self.on_get_recent, 
-            on_before_update=self.on_before_update, 
-            on_norecent=self.on_noupdate_available)
+            on_get_recent=self.on_get_recent)
         self.initUI()
         
     def _log(self, what, end='\n'):
@@ -337,6 +335,18 @@ class MainWindow(QtWidgets.QMainWindow):
         
     def UI_create_context_menus(self):
         self.menu_crossword = CrosswordMenu(self, on_triggered=self.on_menu_crossword)
+
+    def delete_temp_files(self):
+        """
+        Clears any temps left by the app's previous launches.
+        """
+        temp_dir = CWSettings.settings['update']['temp_dir'] or get_tempdir()
+        temp_files = [os.path.join(temp_dir, 'update.py')]
+        for filepath in temp_files:
+            try:
+                os.remove(filepath)
+            except:
+                continue
         
     def apply_config(self, save_settings=True):
         """
@@ -1429,24 +1439,16 @@ class MainWindow(QtWidgets.QMainWindow):
         if 'version' in new_version:
             self.statusbar_l2.setText(f"Update ready: v. {new_version['version']}")
         return True
-
-    def on_before_update(self, curr_version, new_version):
-        option = QtWidgets.QMessageBox.question(self, 'Confirm update',
-                f"APPLICATION UPDATE AVAILABLE:{NEWLINE}"
-                f"{new_version['description']}{NEWLINE}"
-                f"Do you wish to update your current version {curr_version} "
-                f"to version {new_version['version']}{NEWLINE}"
-                f"(release date: {new_version['date']})?")
-        return option == QtWidgets.QMessageBox.Yes
-
-    def on_noupdate_available(self):
-        MsgBox('No updates are available', self)
+    
         
     # ----- Overrides (events, etc) ----- #
     
     def showEvent(self, event):    
         # show 
         event.accept()
+
+        # clear temps
+        self.delete_temp_files()
 
         # update status bar
         self.statusbar_l1.setText(f"v. {APP_VERSION}")
@@ -1849,7 +1851,37 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(bool)        
     def on_act_update(self, checked):
-        self.updater.update(True)
+
+        def QUOTEME(path):
+            return f'\"{path}\"'
+
+        # check for update on demand
+        new_version = self.updater.check_update(True)
+        if not new_version:
+            MsgBox('No updates are available', self)
+            return
+        # ask confirmation
+        option = QtWidgets.QMessageBox.question(self, 'Application update',
+                f"Do you wish to update your current version {APP_VERSION} "
+                f"to version {new_version['version']}{NEWLINE}"
+                f"(release date: {new_version['date']})?")
+        if option != QtWidgets.QMessageBox.Yes: return
+        # prepare CLI args for update.py
+        temp_dir = CWSettings.settings['update']['temp_dir'] or get_tempdir()
+        args = [QUOTEME(sys.executable), 'utils/update.py', APP_NAME, APP_VERSION, GIT_REPO, 'update.json']
+        args.append('-c="' + temp_dir + '"')
+        if CWSettings.settings['update']['only_major_versions']:
+            args.append('-m')
+        if CWSettings.settings['update']['logfile']:
+            args.append('-o="' + CWSettings.settings['update']['logfile'] + '"')
+        if CWSettings.settings['update']['restart_on_update']:
+            args.append('-r')
+        args.append('-u')
+        # call update.py
+        s_args = ' '.join(args)
+        self.updater._run_exe(s_args, True, shell=True)
+        # close self
+        self.close()
    
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):

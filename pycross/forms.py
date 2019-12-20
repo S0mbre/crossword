@@ -179,7 +179,8 @@ class LoadCwDialog(BasicDialog):
         """
         Browse for pattern file.
         """
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', os.getcwd(), 'All files (*.*)')
+        current_dir = self.le_pattern.text()
+        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', current_dir or os.getcwd(), 'All files (*.*)')
         if selected_path[0]:
             self.le_pattern.setText(selected_path[0].replace('/', os.sep))
     
@@ -188,9 +189,11 @@ class LoadCwDialog(BasicDialog):
         """
         Browse for cw file.
         """
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', os.getcwd(), 'Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)')
+        current_dir = self.le_file.text()
+        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', current_dir or os.getcwd(), 'Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)')
         if selected_path[0]:
             self.le_file.setText(selected_path[0].replace('/', os.sep))
+    
             
 ##############################################################################
 ######          WordSrcDialog
@@ -1244,10 +1247,36 @@ class SettingsDialog(BasicDialog):
         self.spin_update_period.setToolTip('Set to -1 to disable update checks')
         self.chb_update_auto = QtWidgets.QCheckBox('')
         self.chb_update_major_only = QtWidgets.QCheckBox('')
+        self.chb_update_restart = QtWidgets.QCheckBox('')
+        self.le_update_tempdir = QtWidgets.QLineEdit('')
+        self.le_update_tempdir.setToolTip('Temp directory (leave empty for default)')
+        self.act_update_tempdir_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
+        self.act_update_tempdir_browse.setToolTip('Browse')
+        self.act_update_tempdir_browse.triggered.connect(self.on_act_update_tempdir_browse)
+        self.btn_update_tempdir_browse = QtWidgets.QToolButton()
+        self.btn_update_tempdir_browse.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.btn_update_tempdir_browse.setDefaultAction(self.act_update_tempdir_browse)
+        self.layout_update_tempdir = QtWidgets.QHBoxLayout()
+        self.layout_update_tempdir.addWidget(self.le_update_tempdir)
+        self.layout_update_tempdir.addWidget(self.btn_update_tempdir_browse)
+        self.le_update_logfile = QtWidgets.QLineEdit('')
+        self.le_update_logfile.setToolTip('Log file for update operations')
+        self.act_update_log_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
+        self.act_update_log_browse.setToolTip('Browse')
+        self.act_update_log_browse.triggered.connect(self.on_act_update_log_browse)
+        self.btn_update_log_browse = QtWidgets.QToolButton()
+        self.btn_update_log_browse.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.btn_update_log_browse.setDefaultAction(self.act_update_log_browse)
+        self.layout_update_log = QtWidgets.QHBoxLayout()
+        self.layout_update_log.addWidget(self.le_update_logfile)
+        self.layout_update_log.addWidget(self.btn_update_log_browse)
 
         self.layout_updating.addRow('Check for updates every', self.spin_update_period)
         self.layout_updating.addRow('Check / update major releases only', self.chb_update_major_only)
         self.layout_updating.addRow('Auto update', self.chb_update_auto)
+        self.layout_updating.addRow('Restart on update', self.chb_update_restart)
+        self.layout_updating.addRow('Temp directory', self.layout_update_tempdir)
+        self.layout_updating.addRow('Log file', self.layout_update_log)
 
         self.page_updating.setLayout(self.layout_updating)
         self.stacked.addWidget(self.page_updating)
@@ -1745,6 +1774,9 @@ class SettingsDialog(BasicDialog):
         settings['update']['check_every'] = self.spin_update_period.value()
         settings['update']['only_major_versions'] = self.chb_update_major_only.isChecked()
         settings['update']['auto_update'] = self.chb_update_auto.isChecked()
+        settings['update']['restart_on_update'] = self.chb_update_restart.isChecked()
+        settings['update']['temp_dir'] = self.le_update_tempdir.text()
+        settings['update']['logfile'] = os.path.relpath(self.le_update_logfile.text(), os.path.dirname(__file__)) if self.le_update_logfile.text() else ''
         
         return settings
 
@@ -2238,6 +2270,9 @@ class SettingsDialog(BasicDialog):
             self._set_spin_value_safe(self.spin_update_period, settings['check_every'])
             self.chb_update_auto.setChecked(settings['auto_update'])
             self.chb_update_major_only.setChecked(settings['only_major_versions'])
+            self.chb_update_restart.setChecked(settings['restart_on_update'])
+            self.le_update_tempdir.setText(settings['temp_dir'])
+            self.le_update_logfile.setText(settings['logfile'])
     
     def addoredit_wordsrc(self, src, src_item=None):
         """
@@ -2574,7 +2609,30 @@ class SettingsDialog(BasicDialog):
     @QtCore.pyqtSlot() 
     def on_btn_export_auto_resolution_pdf(self):
         self.spin_export_resolution_pdf.setValue(1200)
-        
+
+    @QtCore.pyqtSlot(bool)        
+    def on_act_update_tempdir_browse(self, checked):
+        """
+        Browse for temp dir.
+        """
+        current_dir = self.le_update_tempdir.text()
+        default_dir = get_tempdir().replace('/', os.sep).lower()
+        selected_path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select directory', current_dir or default_dir)
+        selected_path = selected_path.replace('/', os.sep).lower()
+        if selected_path:
+            self.le_file.setText(selected_path if selected_path != default_dir else '')
+
+    @QtCore.pyqtSlot(bool)        
+    def on_act_update_log_browse(self, checked):
+        """
+        Browse for log file.
+        """
+        current_file = os.path.abspath(self.le_update_logfile.text())
+        default_file = os.path.join(os.getcwd(), 'update.log')
+        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Select file', current_file or default_file, 'All files (*.*)')
+        if not selected_path[0]: return
+        selected_path =  os.path.relpath(selected_path[0], os.path.dirname(__file__)).replace('/', os.sep)
+        self.le_update_logfile.setText(selected_path)
         
 ##############################################################################
 ######          CwTable

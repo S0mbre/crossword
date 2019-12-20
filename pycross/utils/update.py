@@ -15,17 +15,19 @@ class Updater:
     def __init__(self, app_name, app_version, git_repo, update_file,
                  check_every=1, check_major_versions=True, src_dir='', 
                  on_get_recent=None, on_before_update=None, on_norecent=None,
-                 on_update_log=None, on_update_error=None):
+                 on_update_log=None, on_update_error=None, print_to=sys.stdout):
 
         self.app_name = app_name
         self.app_version = app_version
         self.git_repo = git_repo
         self.update_file = Path(update_file).resolve()
-        print(f"Update file = {str(self.update_file)}")
+        self.print_to = print_to
+        #print(f"Update file = {str(self.update_file)}", file=self.print_to)
         self.check_every = check_every
         self.check_major_versions = check_major_versions
         self.src_dir = Path(src_dir).resolve() if src_dir else Path(__file__).resolve().parents[2]
-        print(f"Src = {str(self.src_dir)}")
+        self.git_dir = PurePath.joinpath(self.src_dir, PurePath('.git/'))
+        #print(f"Git dir = {str(self.git_dir)}", file=self.print_to)
         self.on_get_recent = on_get_recent
         self.on_before_update = on_before_update
         self.on_norecent = on_norecent
@@ -92,10 +94,17 @@ class Updater:
         if tv1 > tv2: return '>'
         return '='
 
+    def _run_git(self, *args):
+        gitargs = ['git', f'--git-dir="{str(self.git_dir)}"']
+        gitargs += list(args)
+        print(f"Running {' '.join(gitargs)}...", file=self.print_to)
+        return self._run_exe(gitargs)
+
     def _get_remote_branches(self, exclude_starting_with=('master',), include_starting_with=('release',)):
         if not self.git_installed: return None
-        res = self._run_exe(['git', 'ls-remote', '--heads'])
+        res = self._run_git('ls-remote', '--heads')
         res = res.stdout.strip().splitlines()
+        print(res, file=self.print_to)
         branches = {}
         for l in res:
             entry = l.split()
@@ -129,7 +138,7 @@ class Updater:
         # get latest
         recent_br = branches[0]
         # get date
-        res = self._run_exe(['git', 'log', '-1', '--format=%at', recent_br[1][0]])
+        res = self._run_git('log', '-1', '--format=%at', recent_br[1][0])
         date_ts = res.stdout.strip()
 
         return {'version': ''.join(recent_br[0]), 'hash': recent_br[1][1], 
@@ -138,6 +147,7 @@ class Updater:
 
     def _run_pip(self, *pip_commands):
         args = [sys.executable, '-m', 'pip'] + list(pip_commands)
+        print(f"Running {' '.join(args)}...", file=self.print_to)
         return self._run_exe(args)
     
     def _update_from_branch(self, branch_name):
@@ -146,10 +156,12 @@ class Updater:
                             '-e', f'git+{self.git_repo}@{branch_name}#egg={self.app_name}')
         out = res.stdout.strip()
         err = res.stderr.strip()
+
         if out and self.on_update_log:
             self.on_update_log(out)
         if err and self.on_update_error:
             self.on_update_error(err)
+
         return res
 
     def _update_check_required(self):
@@ -163,7 +175,7 @@ class Updater:
             return None
         recent_vers = self._get_recent_version()        
         if 'error' in recent_vers:
-            #print(recent_vers['error'])
+            print(recent_vers['error'], file=self.print_to)
             return None
 
         res = None
@@ -187,13 +199,15 @@ class Updater:
             return False
 
         if self.on_before_update and not self.on_before_update(self.app_version, vers): 
-            return False
-
-        self.update_info['last_update'] = self._datetime_to_str()
-        self._write_update_info()
+            return False      
         
         res = self._update_from_branch(vers['branch'])
-        return res.returncode == 0
+        ok = (res.returncode == 0)
+        if ok:
+            self.update_info['last_update'] = self._datetime_to_str()
+            self._write_update_info()
+
+        return ok
 
     def copyself(self, dest):
         """
@@ -203,7 +217,7 @@ class Updater:
         this_file = Path(__file__).resolve()
         new_path = Path(PurePath.joinpath(Path(dest).resolve(), this_file.name))
 
-        print(f"Copying '{str(this_file)}' to '{str(new_path)}'...")
+        #print(f"Copying '{str(this_file)}' to '{str(new_path)}'...", file=self.print_to)
         #new_path.replace(this_file)
         try:
             new_path.unlink()
@@ -217,6 +231,10 @@ class Updater:
 ## ******************************************************************************** ##
 
 def main():
+
+    def QUOTEME(path):
+        return f'\"{path}\"'
+
     parser = argparse.ArgumentParser()
     parser.add_argument('appname', help='Application name')
     parser.add_argument('version', help='Application current version, e.g. "0.1"')
@@ -226,34 +244,69 @@ def main():
     parser.add_argument('-c', '--copy', default='', help='Directory to copy this file to')
     parser.add_argument('-s', '--source', default='', help='Path to app source directory (containing .git directory)')
     parser.add_argument('-u', '--update', action='store_true', help='Start updating app')
-    parser.add_argument('-d', '--deleteself', action='store_true', help='Commit suicide ater completon')
+    parser.add_argument('-o', '--output', default='', help='Path to output file for console output (empty = STDOUT)')
+    parser.add_argument('-r', '--restart', default='', help='Path to cwordg.py to restart (if empty the app will not be restarted)')
     args_obj = parser.parse_args()
 
-    updater = Updater(args_obj.appname, args_obj.version, args_obj.repo, args_obj.updatefile,
-        check_major_versions=args_obj.major, src_dir=args_obj.source,
-        on_update_log=lambda out: print(out), on_update_error=lambda out: print(out))
+    out_file = sys.stdout
+    if args_obj.output:
+        args_obj.output = Path(args_obj.output).resolve()
+        out_file = open(str(args_obj.output), 'a' if args_obj.copy else 'w', encoding=ENCODING)
 
-    if args_obj.copy:
-        new_file = updater.copyself(args_obj.copy)
-        if not new_file:
+    try:
+        if args_obj.update and not args_obj.copy:
+            raise Exception('Update impossible without copying out update.py! Please set the destination folder location: -c="<PATH>".')
+
+        updater = Updater(args_obj.appname, args_obj.version, args_obj.repo, args_obj.updatefile,
+            check_major_versions=args_obj.major, src_dir=args_obj.source,
+            on_update_log=lambda out: print(out, file=out_file), 
+            on_update_error=lambda out: print(out, file=out_file),
+            print_to=out_file)
+
+        if args_obj.copy:
+            new_file = updater.copyself(args_obj.copy)
+            if not new_file: 
+                raise Exception('Could not copy update.py to new location!')
+            args = [QUOTEME(sys.executable), QUOTEME(new_file), 
+                args_obj.appname, args_obj.version, args_obj.repo, QUOTEME(updater.update_file)]
+            args.append('-s=' + QUOTEME(str(updater.src_dir)))
+            if args_obj.major: args.append('-m')
+            if args_obj.update: args.append('-u')
+            if args_obj.restart: args.append('-r=' + QUOTEME(str(Path(args_obj.restart).resolve())))
+            args.append('-o=' + QUOTEME(str(args_obj.output)))
+            s_args = ' '.join(args)
+            print(f"Running {s_args}...", file=out_file)
+            updater._run_exe(s_args, True, shell=True)
+            print(f"Exiting '{__file__}'...\n\n", file=out_file)
+            if args_obj.output: out_file.close()
             return
-        args = [sys.executable, f'\"{new_file}\"', 
-            args_obj.appname, args_obj.version, args_obj.repo, f'\"{updater.update_file}\"', '-d']
-        args.append(f'-s=\"{str(updater.src_dir)}\"')
-        if args_obj.major: args.append('-m')
-        if args_obj.update: args.append('-u')
-        args += ['>', f'\"{args_obj.copy}\\1.txt\"']
-        print(' '.join(args))
 
-        updater._run_exe(args, True)
-        return
+        if args_obj.update:
 
-    print(f"Hello from '{__file__}'!")
-    print(os.getcwd())
-    print(updater.check_update(True))
+            def on_norecent():
+                print('No recent versions found on server!', file=out_file)
 
-    if args_obj.deleteself:
-        print('Deleting myself...')
+            def on_before_update(old_version, new_version):
+                print(f"Updating from version {old_version} to {new_version['version']}...", file=out_file)
+                return True
+
+            updater.on_norecent = on_norecent
+            updater.on_before_update = on_before_update
+            updater.update(True)
+            updater._write_update_info()
+
+            if args_obj.restart:
+                args = [QUOTEME(sys.executable), QUOTEME(args_obj.restart)]
+                s_args = ' '.join(args)
+                updater._run_exe(s_args, True, shell=True)
+
+        print(f"Exiting '{__file__}'...", file=out_file)
+
+    except Exception as err:
+        print(str(err), file=out_file)
+
+    finally:
+        if args_obj.output: out_file.close()
 
 ## ******************************************************************************** ##
 
