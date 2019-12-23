@@ -8,4 +8,4 @@ pycross/assets/*.txt
 */*.log
 */*.json
 */autosaved.xpf
-*.bat
+/*.bat

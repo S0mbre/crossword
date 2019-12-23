@@ -4,7 +4,7 @@
 
 import sys, os, subprocess
 import tempfile
-from datetime import datetime
+from datetime import datetime, time
 from .globalvars import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 
@@ -45,8 +45,15 @@ def datetime_to_str(dt=None, strformat='%Y-%m-%d %H-%M-%S'):
     if dt is None: dt = datetime.now()
     return dt.strftime(strformat)
 
+def timestamp_to_str(ts=None, strformat='%Y-%m-%d %H-%M-%S'):
+    if ts is None: ts = time.time()
+    return datetime_to_str(datetime.fromtimestamp(ts), strformat)
+
 def str_to_datetime(text, strformat='%Y-%m-%d %H-%M-%S'):
     return datetime.strptime(text, strformat)
+
+def str_to_timestamp(text, strformat='%Y-%m-%d %H-%M-%S'):
+    return str_to_datetime(text, strformat).timestamp()
 
 def get_tempdir():
     return os.path.abspath(tempfile.gettempdir())

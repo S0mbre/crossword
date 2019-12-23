@@ -47,9 +47,11 @@ class MainWindow(QtWidgets.QMainWindow):
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error)
         self.updater = Updater(APP_NAME, APP_VERSION, GIT_REPO, UPDATE_FILE,
+            os.path.abspath(CWSettings.settings['update']['logfile']),
             CWSettings.settings['update']['check_every'], 
             CWSettings.settings['update']['only_major_versions'],
-            on_get_recent=self.on_get_recent)
+            on_get_recent=self.on_get_recent, on_before_update=self.on_before_update,
+            on_norecent=self.on_norecent)
         self.initUI()
         
     def _log(self, what, end='\n'):
@@ -340,8 +342,22 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         Clears any temps left by the app's previous launches.
         """
-        temp_dir = CWSettings.settings['update']['temp_dir'] or get_tempdir()
-        temp_files = [os.path.join(temp_dir, 'update.py')]
+        # update.log
+        updatelog = os.path.join(os.path.dirname(__file__), 'update.log')
+        # check update info
+        try:
+            s = ''
+            with open(updatelog, 'r', encoding=ENCODING) as filein:
+                s = filein.read()
+            if 'UPDATE SUCCEEDED' in s:                
+                ts = os.path.getmtime(updatelog)
+                self.updater.update_info['last_update'] = timestamp_to_str(ts)
+                self.updater._write_update_info()
+        except Exception as err:
+            print(err)
+
+        # clear all
+        temp_files = [updatelog]
         for filepath in temp_files:
             try:
                 os.remove(filepath)
@@ -1453,6 +1469,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # update status bar
         self.statusbar_l1.setText(f"v. {APP_VERSION}")
         if CWSettings.settings['update']['auto_update']:
+            self.updater.on_norecent = None
             self.on_act_update(False)
         else:
             self.updater.check_update()
@@ -1567,6 +1584,16 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.twCw.setCurrentItem(next_item)
             else:
                 self.reformat_cells()
+
+    def on_before_update(self, old_version, new_version):
+        option = QtWidgets.QMessageBox.question(self, 'Application update',
+                f"Do you wish to update your current version {old_version} "
+                f"to version {new_version['version']}{NEWLINE}"
+                f"(release date: {new_version['date']})?")
+        return option == QtWidgets.QMessageBox.Yes
+
+    def on_norecent(self):
+        MsgBox('No updates are available', self)
                         
     # ----- Slots ----- #
     
@@ -1850,37 +1877,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.apply_config()
 
     @QtCore.pyqtSlot(bool)        
-    def on_act_update(self, checked):
-
-        def QUOTEME(path):
-            return f'\"{path}\"'
-
-        # check for update on demand
-        new_version = self.updater.check_update(True)
-        if not new_version:
-            MsgBox('No updates are available', self)
-            return
-        # ask confirmation
-        option = QtWidgets.QMessageBox.question(self, 'Application update',
-                f"Do you wish to update your current version {APP_VERSION} "
-                f"to version {new_version['version']}{NEWLINE}"
-                f"(release date: {new_version['date']})?")
-        if option != QtWidgets.QMessageBox.Yes: return
-        # prepare CLI args for update.py
-        temp_dir = CWSettings.settings['update']['temp_dir'] or get_tempdir()
-        args = [QUOTEME(sys.executable), 'utils/update.py', APP_NAME, APP_VERSION, GIT_REPO, 'update.json']
-        args.append('-c ' + QUOTEME(temp_dir))
-        if CWSettings.settings['update']['only_major_versions']:
-            args.append('-m')
-        if CWSettings.settings['update']['logfile']:
-            args.append('-o ' + QUOTEME(CWSettings.settings['update']['logfile']))
-        if CWSettings.settings['update']['restart_on_update']:
-            args.append('-r ../cwordg.py')
-        args.append('-u')
-        # call update.py
-        s_args = ' '.join(args)
-        print(s_args)
-        self.updater._run_exe(s_args, True, shell=True)
+    def on_act_update(self, checked):       
+        # run update
+        self.updater.update(True)
         # close self
         self.close()
    
