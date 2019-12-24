@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			321,
-			68
+			331,
+			78
 		],
 		"win_size": [
-			1329,
-			737
+			1432,
+			714
 		]
 	},
 	"cw_settings": {
@@ -100,7 +100,29 @@
 	},
 	"wordsrc": {
 		"maxres": 500,
-		"sources": [],
+		"sources": [
+			{
+				"active": true,
+				"name": "en",
+				"type": "db",
+				"file": "en",
+				"dbtype": "SQLite",
+				"dblogin": "",
+				"dbpass": "",
+				"dbtables": {
+					"words": {
+						"table": "twords",
+						"fwords": "word",
+						"fpos": "idpos"
+					},
+					"pos": {
+						"table": "tpos",
+						"fid": "id",
+						"fpos": "pos"
+					}
+				}
+			}
+		],
 		"excluded": {
 			"words": [],
 			"regex": false
@@ -131,17 +153,17 @@
 			{
 				"name": "Direction",
 				"visible": true,
-				"width": 100
+				"width": 85
 			},
 			{
 				"name": "No",
 				"visible": true,
-				"width": 100
+				"width": 41
 			},
 			{
 				"name": "Clue",
 				"visible": true,
-				"width": 100
+				"width": 339
 			},
 			{
 				"name": "Letters",
@@ -151,7 +173,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 224
+				"width": 109
 			}
 		]
 	},
@@ -189,7 +211,7 @@
 			12,
 			20
 		],
-		"layout": "auto",
+		"layout": "portrait",
 		"font_embed": true,
 		"antialias": true,
 		"print_cw": true,

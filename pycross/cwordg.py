@@ -3,7 +3,6 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 import sys, traceback
-from utils.utils import *
 from gui import QtWidgets, MainWindow
 
 ## ******************************************************************************** ##
@@ -12,7 +11,7 @@ def main():
     
     try:
         app = QtWidgets.QApplication(sys.argv)
-        gui = MainWindow()
+        MainWindow()
         sys.exit(app.exec())
         
     except SystemExit as err:        

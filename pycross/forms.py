@@ -4,8 +4,8 @@
 
 from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport
 from utils.utils import *
-from utils.onlinedic import MWDict, YandexDict
-from utils.google import GoogleSearch
+from utils.globalvars import *
+from utils.onlineservices import MWDict, YandexDict, GoogleSearch
 from crossword import BLANK, CWInfo
 from guisettings import CWSettings
 import os, copy, json
@@ -51,6 +51,8 @@ class BasicDialog(QtWidgets.QDialog):
         self.setLayout(self.layout_main)
         if geometry:
             self.setGeometry(*geometry) 
+        else:
+            self.adjustSize()
         if title:
             self.setWindowTitle(title)      
         if icon:
@@ -74,7 +76,7 @@ class BasicDialog(QtWidgets.QDialog):
 class LoadCwDialog(BasicDialog):
     
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__((300, 300, 300, 100), 'Load crossword', 'crossword.png', 
+        super().__init__(None, 'Load crossword', 'crossword.png', 
               parent, flags)
         
     def addMainLayout(self):
@@ -209,7 +211,7 @@ class WordSrcDialog(BasicDialog):
     
     def __init__(self, src=None, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.src = src
-        super().__init__((300, 300, 500, 400), 'Word Source', 'database-3.png', 
+        super().__init__(None, 'Word Source', 'database-3.png', 
               parent, flags)
         if self.src: self.from_src(self.src)
                 
@@ -458,17 +460,16 @@ class SettingsDialog(BasicDialog):
     def __init__(self, mainwindow=None, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
         self.default_settings = self.load_default_settings()
-        super().__init__((300, 300, 700, 500), 'Settings', 'settings-5.png', 
+        super().__init__(None, 'Settings', 'settings-5.png', 
               parent, flags)
         
     def load_default_settings(self):
         """
         Loads the default settings from 'defsettings.json'.
         """
-        sfile = os.path.abspath(DEFAULT_SETTINGS_FILE)
-        defsettings = CWSettings.validate_file(sfile)
+        defsettings = CWSettings.validate_file(DEFAULT_SETTINGS_FILE)
         if defsettings: return defsettings
-        CWSettings.save_to_file(sfile) 
+        CWSettings.save_to_file(DEFAULT_SETTINGS_FILE) 
         return copy.deepcopy(CWSettings.settings)
                 
     def addMainLayout(self):
@@ -480,7 +481,7 @@ class SettingsDialog(BasicDialog):
         self.tree.setMinimumWidth(100)
         self.tree.setMaximumWidth(200)
         
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Engine']))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Generation']))
         item = QtWidgets.QTreeWidgetItem(['Sources'])
         item.setFlags(QtCore.Qt.ItemIsEnabled)
         item.addChild(QtWidgets.QTreeWidgetItem(['Source management']))
@@ -538,7 +539,7 @@ class SettingsDialog(BasicDialog):
         """
         Adds pages to self.stacked.
         """
-        # 1. Engine
+        # 1. Generation
         self.page_generation = QtWidgets.QWidget()
         self.layout_generation = QtWidgets.QFormLayout()
         self.layout_generation.setSpacing(10)
@@ -1799,7 +1800,7 @@ class SettingsDialog(BasicDialog):
             settings = CWSettings.settings
         
         # engine
-        if page is None or page == 'Engine':
+        if page is None or page == 'Generation':
             # timeout
             self._set_spin_value_safe(self.spin_gen_timeout, settings['cw_settings']['timeout'])
             # method
@@ -2304,7 +2305,7 @@ class SettingsDialog(BasicDialog):
         item = self.tree.currentItem()
         if not item: return
         txt = item.text(0)
-        if txt == 'Engine':
+        if txt == 'Generation':
             self.stacked.setCurrentIndex(0)
         elif txt == 'Source management':
             self.stacked.setCurrentIndex(1)
@@ -2627,7 +2628,7 @@ class SettingsDialog(BasicDialog):
         """
         Browse for log file.
         """
-        current_file = os.path.abspath(self.le_update_logfile.text())
+        current_file = make_abspath(self.le_update_logfile.text())
         default_file = os.path.join(os.getcwd(), 'update.log')
         selected_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Select file', current_file or default_file, 'All files (*.*)')
         if not selected_path[0]: return
@@ -2691,57 +2692,24 @@ class CrosswordMenu(QtWidgets.QMenu):
         
     def initActions(self):
         #self.setTitle('')
-        self.act_cm_new = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/crossword.png"), 'New')
-        self.act_cm_new.setShortcut(QtGui.QKeySequence('Ctrl+n'))
-        self.act_cm_open = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/folder-15.png"), 'Open')
-        self.act_cm_open.setShortcut(QtGui.QKeySequence('Ctrl+o'))
-        self.act_cm_save = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), 'Save')
-        self.act_cm_save.setShortcut(QtGui.QKeySequence('Ctrl+s'))
-        self.act_cm_saveas = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/share-1.png"), 'Save As...')
-        self.act_cm_saveas.setShortcut(QtGui.QKeySequence('Ctrl+Shift+s'))
+        self.addAction(self.mainwindow.act_edit)
         self.addSeparator()
-        self.act_cm_gen = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), 'Generate')
-        self.act_cm_gen.setShortcut(QtGui.QKeySequence('Ctrl+g'))
-        self.act_cm_stop = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), 'Stop generation')
-        self.act_cm_stop.setShortcut(QtGui.QKeySequence('Ctrl+z'))
+        self.addAction(self.mainwindow.act_clear)
+        self.addAction(self.mainwindow.act_clear_wd)
+        self.addAction(self.mainwindow.act_erase_wd)
         self.addSeparator()
-        self.act_cm_clear = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/dust.png"), 'Clear')
-        self.act_cm_clear.setShortcut(QtGui.QKeySequence('Ctrl+d'))
+        self.addAction(self.mainwindow.act_suggest)
+        self.addAction(self.mainwindow.act_lookup)
+        self.addAction(self.mainwindow.act_editclue)
         self.addSeparator()
-        self.act_cm_clear_wd = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/minus.png"), 'Clear word')
-        self.act_cm_clear_wd.setShortcut(QtGui.QKeySequence('Ctrl+Del'))
-        self.act_cm_erase_wd = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), 'Erase word')
-        self.act_cm_erase_wd.setShortcut(QtGui.QKeySequence('Ctrl+Shift+Del'))
-        self.act_cm_suggest = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/magic-wand.png"), 'Suggest word')
-        self.act_cm_suggest.setShortcut(QtGui.QKeySequence('Ctrl+q'))
-        self.act_cm_gotoclue = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/key.png"), 'Edit clue')
-        self.act_cm_gotoclue.setShortcut(QtGui.QKeySequence('Ctrl+k'))
+        self.addAction(self.mainwindow.act_addrow)
+        self.addAction(self.mainwindow.act_delrow)
         self.addSeparator()
-        self.act_cm_info = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/info1.png"), 'Edit info')
-        self.act_cm_info.setShortcut(QtGui.QKeySequence('Ctrl+i'))
-        self.act_cm_print = self.addAction(QtGui.QIcon(f"{ICONFOLDER}/print.png"), 'Print...')  
-        self.act_cm_print.setShortcut(QtGui.QKeySequence('Ctrl+p'))
-        self.update_actions()
-
-    def update_actions(self):
-        b_cw = not self.mainwindow.cw is None
-        gen_running = self.mainwindow.gen_thread.isRunning()
-        self.act_cm_new.setEnabled(not gen_running)
-        self.act_cm_open.setEnabled(not gen_running)
-        self.act_cm_save.setEnabled(b_cw and not gen_running and (self.mainwindow.cw_modified or not self.mainwindow.cw_file))
-        self.act_cm_saveas.setEnabled(b_cw and not gen_running)
-        self.act_cm_gen.setEnabled(b_cw and not gen_running and bool(self.mainwindow.wordsrc))
-        self.act_cm_stop.setEnabled(b_cw and gen_running)
-        self.act_cm_clear.setEnabled(b_cw and not gen_running)
-        self.act_cm_clear_wd.setEnabled(b_cw and not gen_running and not self.mainwindow.current_word is None)       
-        self.act_cm_erase_wd.setEnabled(b_cw and not gen_running and not self.mainwindow.current_word is None)      
-        self.act_cm_suggest.setEnabled(b_cw and not gen_running and not self.mainwindow.current_word is None and bool(self.mainwindow.wordsrc))      
-        self.act_cm_gotoclue.setEnabled(b_cw and not gen_running and not self.mainwindow.current_word is None)      
-        self.act_cm_info.setEnabled(b_cw and not gen_running)
-        self.act_cm_print.setEnabled(b_cw and not gen_running)
-                
-    def showEvent(self, event):        
-        super().showEvent(event)     
+        self.addAction(self.mainwindow.act_addcol)        
+        self.addAction(self.mainwindow.act_delcol)
+        self.addSeparator()
+        self.addAction(self.mainwindow.act_reflect)
+   
 
 ##############################################################################
 ######          WordSuggestDialog
@@ -2767,7 +2735,7 @@ class WordSuggestDialog(BasicDialog):
         self.getresults = getresults 
         self.results = []
         self.selected = ''
-        super().__init__((300, 300, 300, 300), 'Word Lookup', 'magic-wand.png', 
+        super().__init__(None, 'Word Lookup', 'magic-wand.png', 
               parent, flags)
 
     def addMainLayout(self):
@@ -2914,7 +2882,7 @@ class PrintPreviewDialog(BasicDialog):
             raise Exception('Crossword not available!')
         self.printer = printer
         self.mainwindow = mainwindow
-        super().__init__((300, 300, 500, 500), f"Printing to: {self.printer.printerName()}", 'binoculars.png', 
+        super().__init__(None, f"Printing to: {self.printer.printerName()}", 'binoculars.png', 
               parent, flags)
 
     def showEvent(self, event):      
@@ -3185,7 +3153,7 @@ class CwInfoDialog(BasicDialog):
     
     def __init__(self, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
-        super().__init__((300, 300, 300, 300), 'Crossword Info', 'info1.png', 
+        super().__init__(None, 'Crossword Info', 'info1.png', 
               parent, flags)
                 
     def addMainLayout(self):
@@ -3252,7 +3220,7 @@ class DefLookupDialog(BasicDialog):
         self.google_engine = None
         self.setlang(lang)
 
-        super().__init__((300, 300, 400, 400), 'Word Lookup', 'worldwide.png', 
+        super().__init__(None, 'Word Lookup', 'worldwide.png', 
               parent, flags)
         
         self.load_threads = {'dics': QThreadStump(on_start=self.on_dics_load_start, on_finish=self.on_dics_load_finish, on_run=self.on_dics_load_run, on_error=self.on_thread_error),
@@ -3590,7 +3558,7 @@ class DefLookupDialog(BasicDialog):
 class ReflectGridDialog(BasicDialog):
     
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__((300, 300, 400, 200), 'Duplicate Grid', 'windows-1.png', 
+        super().__init__(None, 'Duplicate Grid', 'windows-1.png', 
               parent, flags)
         
     def addMainLayout(self):
@@ -3677,3 +3645,65 @@ class ReflectGridDialog(BasicDialog):
     @QtCore.pyqtSlot(bool)
     def on_actdir(self, checked):
         self.update_dir_icons()
+
+##############################################################################
+######          AboutDialog
+##############################################################################
+
+class AboutDialog(QtWidgets.QDialog):
+    
+    def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
+        super().__init__(parent, flags)
+        self.initUI(None, 'About', 'main.png')
+        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
+        
+    def addMainLayout(self):
+        self.layout_controls = QtWidgets.QFormLayout()
+
+        self.l_appname = QtWidgets.QLabel(APP_NAME)
+        self.l_appname.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse | QtCore.Qt.TextSelectableByKeyboard)
+        self.l_appversion = QtWidgets.QLabel(APP_VERSION)
+        self.l_appversion.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse | QtCore.Qt.TextSelectableByKeyboard)
+        self.l_author = QtWidgets.QLabel(APP_AUTHOR)
+        self.l_author.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse | QtCore.Qt.TextSelectableByKeyboard)
+        self.l_email = QtWidgets.QLabel(f'<a href="mailto:{APP_EMAIL}">{APP_EMAIL}</a>')
+        self.l_email.setToolTip(f"Send mail to {APP_EMAIL}")
+        self.l_email.setTextFormat(QtCore.Qt.RichText)
+        self.l_email.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
+        self.l_email.setOpenExternalLinks(True)
+        self.l_github = QtWidgets.QLabel(f'<a href="{GIT_REPO}">{GIT_REPO}</a>')
+        self.l_github.setToolTip(f"Visit {GIT_REPO}")
+        self.l_github.setTextFormat(QtCore.Qt.RichText)
+        self.l_github.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
+        self.l_github.setOpenExternalLinks(True)
+
+        self.layout_controls.addRow('App name:', self.l_appname)
+        self.layout_controls.addRow('Version:', self.l_appversion)
+        self.layout_controls.addRow('Author:', self.l_author)
+        self.layout_controls.addRow('Email:', self.l_email)
+        self.layout_controls.addRow('Website:', self.l_github)
+        
+    def initUI(self, geometry=None, title=None, icon=None):
+        
+        self.addMainLayout()
+        
+        self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), 'OK', None)
+        self.btn_OK.setMaximumWidth(150)
+        self.btn_OK.setDefault(True)
+        self.btn_OK.clicked.connect(self.accept)
+        self.layout_bottom = QtWidgets.QHBoxLayout()
+        self.layout_bottom.addWidget(self.btn_OK, alignment=QtCore.Qt.AlignHCenter)
+        
+        self.layout_main = QtWidgets.QVBoxLayout()
+        self.layout_main.addLayout(self.layout_controls)
+        self.layout_main.addLayout(self.layout_bottom)
+        
+        self.setLayout(self.layout_main)
+        if geometry:
+            self.setGeometry(*geometry) 
+        if title:
+            self.setWindowTitle(title)      
+        if icon:
+            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}")) 
+
+        self.adjustSize()

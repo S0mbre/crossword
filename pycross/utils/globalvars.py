@@ -2,6 +2,13 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
+import os
+
+def make_abspath(filename, root=''):
+    # default root = pycross\
+    if not root: root = os.path.dirname(os.path.dirname(__file__))
+    return os.path.abspath(os.path.join(root, filename))
+
 # debug messages
 DEBUGGING = True
 
@@ -14,15 +21,21 @@ APP_NAME = 'pyCross'
 # git repo
 GIT_REPO = 'https://github.com/S0mbre/crossword.git'
 
+# author
+APP_AUTHOR = 'Iskander Shafikov (S0mbre)'
+
+# email
+APP_EMAIL = 's00mbre@gmail.com'
+
 # default encoding
 ENCODING = 'utf-8'
 
-SETTINGS_FILE = 'settings.json'
-DEFAULT_SETTINGS_FILE = 'defsettings.json'
-UPDATE_FILE = 'update.json'  
-SAVEDCW_FILE = 'autosaved.xpf'
-DICFOLDER = 'assets/dic'
-ICONFOLDER = 'assets/icons'
+SETTINGS_FILE = make_abspath('settings.json')
+DEFAULT_SETTINGS_FILE = make_abspath('defsettings.json')
+UPDATE_FILE = make_abspath('update.json')
+SAVEDCW_FILE = make_abspath('autosaved.xpf')
+DICFOLDER = make_abspath('assets/dic')
+ICONFOLDER = make_abspath('assets/icons')
 LANG = {'en': 'English', 'ru': 'Russian', 'fr': 'French', 'es': 'Spanish', 'de': 'German', 'it': 'Italian'}
 POS = [('N', 'noun'), ('V', 'verb'), ('ADV', 'adverb'), ('ADJ', 'adjective'), ('P', 'participle'), 
        ('PRON', 'pronoun'), ('I', 'interjection'), ('C', 'conjuction'), ('PREP', 'preposition'), 
@@ -73,6 +86,9 @@ GOOGLE_KEY = 'AIzaSyAcc_B34Mv7Z4UoVuAMYCEiA9n14_SuEjU'        # Google Search JS
 GOOGLE_CSE = '012413034625838642915:je3epsydo2r'              # Google CSE identifier
 GOOGLE_HTTP = 'https://www.googleapis.com/customsearch/v1?key={}&cx={}&prettyPrint=true&q={}'
 GOOGLE_DAILY_REQ = 100                                        # daily limit, see https://developers.google.com/custom-search/v1/overview
+
+SHAREAHOLIC_KEY = 'abf1b67f10817416ba9fee9b76455bef'
+SHAREAHOLIC_HTTP = 'https://www.shareaholic.com/api/share/?v=1&apitype=1&apikey={}&service={}&title={}&link={}&shortener={}&notes={}&tags={}'
 
 GOOGLE_LANG_LR = {'lang_ar': 'Arabic', 'lang_bg': 'Bulgarian', 'lang_ca': 'Catalan', 'lang_cs': 'Czech',
     'lang_da': 'Danish', 'lang_de': 'German', 'lang_el': 'Greek', 'lang_en': 'English',

@@ -154,8 +154,9 @@ class Updater:
 
         shellfile = PurePath.joinpath(Path(__file__).parent, 'update.bat' if sys.platform.startswith('win') else 'update.sh')
         logfile = f' > "{self.log_file}"' if self.log_file else ''
-        self._run_exe(f'{str(shellfile)} {branch_or_commit}{logfile}', external=True, 
-            capture_output=False, shell=True)
+        args = f'{str(shellfile)} {branch_or_commit}{logfile}'
+        #print(args, file=self.print_to)
+        self._run_exe(args, external=True, capture_output=False, shell=True)
 
     def _update_check_required(self):
         dt_now = datetime.now()
@@ -189,10 +190,10 @@ class Updater:
         vers = self.check_update(force)
         if not vers: 
             if self.on_norecent: self.on_norecent()
-            return
+            return False
 
         if self.on_before_update and not self.on_before_update(self.app_version, vers): 
-            return 
+            return False
 
         #self.update_info['last_update'] = self._datetime_to_str()
         #self._write_update_info()   

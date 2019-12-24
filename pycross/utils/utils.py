@@ -5,19 +5,19 @@
 import sys, os, subprocess
 import tempfile
 from datetime import datetime, time
-from .globalvars import *
+from .globalvars import ENCODING, FONT_WEIGHTS
 from PyQt5 import QtGui, QtCore, QtWidgets
 
 ### ---------------------------- COMMON ---------------------------- ###
 
 def print_err(what, file=sys.stderr):
-    print(COLOR_ERR + what, file=file)
+    print(what, file=file)
 
 def print_dbg(what, file=sys.stdout):    
-    print(COLOR_STRESS + what, file=file)
+    print(what, file=file)
         
 def print_help(what, file=sys.stdout):
-    print(COLOR_HELP + what, file=file)
+    print(what, file=file)
 
 def walk_dir(root_path, recurse, file_types, file_process_function):
     """
@@ -58,6 +58,10 @@ def str_to_timestamp(text, strformat='%Y-%m-%d %H-%M-%S'):
 def get_tempdir():
     return os.path.abspath(tempfile.gettempdir())
 
+def make_abspath(filename, root=''):
+    # default root = pycross\
+    if not root: root = os.path.dirname(os.path.dirname(__file__))
+    return os.path.abspath(os.path.join(root, filename))
 
 ### ---------------------------- GUI ---------------------------- ###
 
@@ -115,6 +119,8 @@ class QThreadStump(QtCore.QThread):
                 self.on_run()
             except Exception as err:
                 self.sig_error.emit(self, str(err))
+
+## ------------------------------------------------------------------------ ##            
         
 def make_font(family, size=-1, weight=-1, italic=False, font_unit='pt'):
     font = QtGui.QFont(family)
