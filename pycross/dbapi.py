@@ -49,7 +49,7 @@ class Sqlitedb:
         
     def connect(self):
         if not os.path.isfile(self.dbpath):
-            #print(COLOR_ERR + f'Database path {self.dbpath} is unavailable!')
+            #print(f'Database path {self.dbpath} is unavailable!')
             return False
         try:
             self.disconnect()
@@ -57,7 +57,7 @@ class Sqlitedb:
             #print(f'Connected to database {self.dbpath}')
             return True
         except Exception as err:
-            #print(COLOR_ERR + str(err))
+            #print(str(err))
             self.disconnect()
             return False
         except:
@@ -88,7 +88,7 @@ class Sqlitedb:
             return False
         
         except Exception as err:
-            print(COLOR_ERR + str(err))
+            print(str(err))
             self.disconnect()
             return False
         
@@ -109,7 +109,7 @@ class Sqlitedb:
             #print(f'Created objects for database: {self.dbpath}')
             return True
         except Exception as err:
-            print(COLOR_ERR + f'DATABASE ERROR: {str(err)}')
+            print(f'DATABASE ERROR: {str(err)}')
             self.disconnect()
             return False
         except:
@@ -168,7 +168,9 @@ class Sqlitedb:
                 in the sequential order of the regex list.
             - commit_each (int): threshold of insert operations after which the transaction will be committed
             - on_word (callable): callback function to be called when a word is imported into the DB            
-            - on_commit (callable): 
+                Callback type is: (word: str, part_of_speech: str, records_committed: int) -> None
+            - on_commit (callable): callback function to be called when a next portion of records is written to the DB
+                Callback type is: (records_committed: int, dic_file: str) -> None
         """
         poses = self.get_pos()
         for pos in posrules:
@@ -229,7 +231,7 @@ class Sqlitedb:
                                         pos = 'MISC'
                                         
                         except Exception as err:
-                            print(COLOR_ERR + f'DATABASE ERROR: {str(err)}')
+                            print(f'DATABASE ERROR: {str(err)}')
                             break
                         
                     else:
@@ -251,7 +253,7 @@ class Sqlitedb:
                             # call on_word
                             if on_word: on_word(word, pos, cnt)
                         except Exception as err:
-                            print(COLOR_ERR + f'DATABASE ERROR: {str(err)}')
+                            print(f'DATABASE ERROR: {str(err)}')
                             break
                     
         finally:   
@@ -264,10 +266,16 @@ class Sqlitedb:
     def add_all_from_hunspell(self, languages=None, on_commit=None, on_dict_add=None):
         """
         Inserts ALL Hunspell dictionaries found in 'assets/dic'.
+            - languages (iterable): list of languages to import, e.g. ['en', 'fr'] (others found will be skipped)
+                Default = None (import all found dicts)
+            - on_commit (callable): callback function to be called when a next portion of records is written to the DB
+                Callback type is: (records_committed: int, dic_file: str) -> None
+            - on_dict_add (callable): callback function to be called when a next dictionary has been imported
+                Callback type is: (dic_file: str, lang: str, records_from_file: int, total_records: int) -> None
         """
         old_dbpath = getattr(self, 'dbpath', None)
         cnt = 0
-        for r, d, f in os.walk(DICFOLDER):
+        for r, _, f in os.walk(DICFOLDER):
             for file in f:
                 if file.lower().endswith('.dic'):                    
                     dicfile = os.path.abspath(os.path.join(r, file))
@@ -282,7 +290,7 @@ class Sqlitedb:
                         cnt += k
                         if on_dict_add: on_dict_add(dicfile, lang, k, cnt)
                     except Exception as err:
-                        print(COLOR_ERR + str(err))
+                        print(str(err))
                         break
                     
         self.setpath(old_dbpath, fullpath=True)

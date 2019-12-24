@@ -1109,14 +1109,6 @@ class MainWindow(QtWidgets.QMainWindow):
         # settings
         export_settings = CWSettings.settings['export']
 
-        # save current words
-        self.cw.words.save()
-
-        # clear grid if needed
-        if export_settings['clear_cw']:
-            self.cw.words.clear()  
-            self.update_cw_grid()
-
         # deselect words
         self.twCw.clearSelection()
         self.current_word = None
@@ -1126,53 +1118,35 @@ class MainWindow(QtWidgets.QMainWindow):
         scale_factor = export_settings['img_resolution'] / 25.4 * export_settings['mm_per_cell']
         cw_size = QtCore.QSize(self.twCw.columnCount() * scale_factor, self.twCw.rowCount() * scale_factor)
         
-        try:
-            ext = os.path.splitext(filepath)[1][1:].lower()        
-            if ext == 'svg':
-                # svg                
-                svg_generator = QtSvg.QSvgGenerator()
-                svg_generator.setFileName(filepath)
-                svg_generator.setResolution(export_settings['img_resolution'])
-                svg_generator.setSize(cw_size)
-                svg_generator.setViewBox(QtCore.QRect(QtCore.QPoint(0, 0), cw_size))
-                svg_generator.setTitle(self._apply_macros(export_settings['svg_title'], self.cw.words))
-                svg_generator.setDescription(self._apply_macros(export_settings['svg_description'], self.cw.words))
-                painter = QtGui.QPainter()
-                if painter.begin(svg_generator):
-                    self._paint_cwgrid(painter, svg_generator.viewBoxF())
-                    painter.end()
-            
-            elif ext in ('jpg', 'png', 'tif', 'tiff', 'bmp'):
-                # image                     
-                img = QtGui.QImage(cw_size, QtGui.QImage.Format_ARGB32)
-                painter = QtGui.QPainter()
-                if painter.begin(img):
-                    self._paint_cwgrid(painter, QtCore.QRectF(img.rect()))
-                    painter.end()    
-                    img.save(filepath, quality=export_settings['img_output_quality'])  
-
-        finally:
-            # restore crossword words
-            if export_settings['clear_cw']:
-                self.cw.words.restore()
-                self.update_cw_grid()
+        ext = os.path.splitext(filepath)[1][1:].lower()        
+        if ext == 'svg':
+            # svg                
+            svg_generator = QtSvg.QSvgGenerator()
+            svg_generator.setFileName(filepath)
+            svg_generator.setResolution(export_settings['img_resolution'])
+            svg_generator.setSize(cw_size)
+            svg_generator.setViewBox(QtCore.QRect(QtCore.QPoint(0, 0), cw_size))
+            svg_generator.setTitle(self._apply_macros(export_settings['svg_title'], self.cw.words))
+            svg_generator.setDescription(self._apply_macros(export_settings['svg_description'], self.cw.words))
+            painter = QtGui.QPainter()
+            if painter.begin(svg_generator):
+                self._paint_cwgrid(painter, svg_generator.viewBoxF(), export_settings['clear_cw'])
+                painter.end()
+        
+        elif ext in ('jpg', 'png', 'tif', 'tiff', 'bmp'):
+            # image                     
+            img = QtGui.QImage(cw_size, QtGui.QImage.Format_ARGB32)
+            painter = QtGui.QPainter()
+            if painter.begin(img):
+                self._paint_cwgrid(painter, QtCore.QRectF(img.rect()), export_settings['clear_cw'])
+                painter.end()    
+                img.save(filepath, quality=export_settings['img_output_quality'])  
         
     def print_cw(self, pdf_file=None, show_preview=True):
         """
         Prints CW (and optionally clues) to file or printer.     
         """
         settings = CWSettings.settings['printing']
-        # the 2 settings below may be changed in the preview dialog, so we'll store them
-        print_cw = settings['print_cw']
-        clear_cw = settings['clear_cw']
-
-        # save current words
-        self.cw.words.save()
-
-        # clear grid if needed
-        if print_cw and clear_cw:
-            self.cw.words.clear()  
-            self.update_cw_grid()
 
         # deselect words
         self.twCw.clearSelection()
@@ -1204,38 +1178,26 @@ class MainWindow(QtWidgets.QMainWindow):
                                     QtPrintSupport.QAbstractPrintDialog.PrintShowPageSize |
                                     QtPrintSupport.QAbstractPrintDialog.PrintCollateCopies)
 
-                if not dia_print.exec(): 
-                    if print_cw and clear_cw:
-                        self.cw.words.restore()
-                        self.update_cw_grid()
-                    return
-
+                if not dia_print.exec(): return
                 printer = dia_print.printer()
 
             else:
                 printer.setResolution(CWSettings.settings['export']['pdf_resolution'])
                 printer.setPageSize(QtGui.QPageSize(QtGui.QPageSize.A4))
 
-            try:
-                if show_preview:
-                    dia_preview = PrintPreviewDialog(printer, self, self)
-                    dia_preview.ppreview.paintRequested.connect(self.on_preview_paint)
-                    if dia_preview.exec():
-                        dia_preview.write_settings()
-                        dia_preview.ppreview.print()  
-                else:
-                    self.on_preview_paint(printer)
+            if show_preview:
+                dia_preview = PrintPreviewDialog(printer, self, self)
+                dia_preview.ppreview.paintRequested.connect(self.on_preview_paint)
+                if dia_preview.exec():
+                    dia_preview.write_settings()
+                    dia_preview.ppreview.print()  
+            else:
+                self.on_preview_paint(printer)
 
-                if settings['openfile'] and printer.outputFormat() == QtPrintSupport.QPrinter.PdfFormat:
-                    pdf_file = printer.outputFileName()
-                    if os.path.isfile(pdf_file):
-                        Popen(f'cmd.exe /c "{pdf_file}"')
-                    
-            finally:            
-                if print_cw and clear_cw:
-                    # restore grid
-                    self.cw.words.restore()
-                    self.update_cw_grid()
+            if settings['openfile'] and printer.outputFormat() == QtPrintSupport.QPrinter.PdfFormat:
+                pdf_file = printer.outputFileName()
+                if os.path.isfile(pdf_file):
+                    run_exe(pdf_file, True, False, shell=True)                    
 
         except Exception as err:            
             MsgBox(str(err), self, 'Error', QtWidgets.QMessageBox.Critical)
@@ -1324,7 +1286,7 @@ class MainWindow(QtWidgets.QMainWindow):
             if settings['print_cw']:   
                 painter.translate(paper_rect.topLeft())
                 cw_rect = page_rect.adjusted(-margins.left(), top_offset - margins.top(), -margins.right(), -top_offset - margins.bottom())
-                self._paint_cwgrid(painter, cw_rect)
+                self._paint_cwgrid(painter, cw_rect, settings['clear_cw'])
 
                 """
                 # alternative method: render widget directly
@@ -1440,7 +1402,7 @@ class MainWindow(QtWidgets.QMainWindow):
         finally:
             painter.end()
 
-    def _paint_cwgrid(self, painter, cliprect=None):
+    def _paint_cwgrid(self, painter, cliprect=None, clear_cw=True):
         """
         Paints cw grid by painter, constrained by cliprect (QRectF).
         """
@@ -1501,7 +1463,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                     QtCore.Qt.AlignCenter, str(w.num))
 
                 # draw text
-                if ch != BLANK and ch != FILLER:
+                if not clear_cw and ch != BLANK and ch != FILLER:
                     ch = ch.upper() if CWSettings.settings['grid_style']['char_case'] == 'upper' else ch.lower()
                     painter.setPen(pen_cell_font)
                     painter.setFont(font_cell)

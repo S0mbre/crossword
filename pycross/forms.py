@@ -479,7 +479,7 @@ class SettingsDialog(BasicDialog):
         self.tree.setColumnCount(1)
         self.tree.setHeaderHidden(True)
         self.tree.setMinimumWidth(100)
-        self.tree.setMaximumWidth(200)
+        self.tree.setMaximumWidth(500)
         
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Generation']))
         item = QtWidgets.QTreeWidgetItem(['Sources'])
@@ -666,6 +666,7 @@ class SettingsDialog(BasicDialog):
         # 5. UI > Grid
         self.page_grid = QtWidgets.QScrollArea()
         self.page_grid.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.page_grid.setWidgetResizable(True)
         self.layout_grid = QtWidgets.QFormLayout()
         
         self.spin_cwscale = QtWidgets.QSpinBox()
@@ -823,6 +824,7 @@ class SettingsDialog(BasicDialog):
         # 6. Clues
         self.page_clues = QtWidgets.QScrollArea()
         self.page_clues.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.page_clues.setWidgetResizable(True)
         self.layout_clues = QtWidgets.QFormLayout()
 
         self.btn_clue_normal_bg_color = QtWidgets.QPushButton('')
@@ -932,6 +934,7 @@ class SettingsDialog(BasicDialog):
         # 7. Definition lookup
         self.page_lookup = QtWidgets.QScrollArea()
         self.page_lookup.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.page_lookup.setWidgetResizable(True)
         self.layout_lookup = QtWidgets.QVBoxLayout()
 
         # def language
@@ -1114,6 +1117,7 @@ class SettingsDialog(BasicDialog):
         # 10. Printing
         self.page_printing = QtWidgets.QScrollArea()
         self.page_printing.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.page_printing.setWidgetResizable(True)
         self.layout_printing = QtWidgets.QVBoxLayout()
         self.layout_printing.setSpacing(10)
 

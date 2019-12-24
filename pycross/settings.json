@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			331,
-			78
+			379,
+			62
 		],
 		"win_size": [
-			1432,
-			714
+			2131,
+			1221
 		]
 	},
 	"cw_settings": {
@@ -153,27 +153,27 @@
 			{
 				"name": "Direction",
 				"visible": true,
-				"width": 85
+				"width": 200
 			},
 			{
 				"name": "No",
 				"visible": true,
-				"width": 41
+				"width": 200
 			},
 			{
 				"name": "Clue",
 				"visible": true,
-				"width": 339
+				"width": 200
 			},
 			{
 				"name": "Letters",
-				"visible": true,
-				"width": 100
+				"visible": false,
+				"width": 0
 			},
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 109
+				"width": 362
 			}
 		]
 	},
@@ -217,7 +217,7 @@
 		"print_cw": true,
 		"print_clues": true,
 		"clear_cw": true,
-		"print_clue_letters": true,
+		"print_clue_letters": false,
 		"print_info": true,
 		"color_print": true,
 		"openfile": true,
