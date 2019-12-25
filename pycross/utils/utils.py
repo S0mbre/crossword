@@ -2,7 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import sys, os, subprocess
+import sys, os, subprocess, traceback
 import tempfile
 from datetime import datetime, time
 from .globalvars import ENCODING, FONT_WEIGHTS
@@ -19,14 +19,20 @@ def print_dbg(what, file=sys.stdout):
 def print_help(what, file=sys.stdout):
     print(what, file=file)
 
-def walk_dir(root_path, recurse, file_types, file_process_function):
+def walk_dir(root_path, abs_path=True, recurse=True, dir_process_function=None, 
+             file_process_function=None, file_types=None):
     """
     """
-    for d, dirs, files in os.walk(os.path.abspath(root_path)):
-        for f in files:
-            ext = os.path.splitext(f)[1][1:].lower()
-            if (not file_types) or (ext in file_types):
-                if file_process_function:
+    if abs_path:
+        root_path = os.path.abspath(root_path)
+    for (d, dirs, files) in os.walk(root_path):
+        if dir_process_function:
+            for d_ in dirs:
+                dir_process_function(os.path.join(d, d_))
+        if file_process_function:
+            for f in files:
+                ext = os.path.splitext(f)[1][1:].lower()
+                if (not file_types) or (ext in file_types):                
                     file_process_function(os.path.join(d, f))
         if not recurse: break
 
@@ -46,7 +52,7 @@ def run_exe(args, external=False, capture_output=True, stdout=subprocess.PIPE, e
                 capture_output=capture_output, encoding=encoding, 
                 timeout=timeout, shell=shell, **kwargs)
     except Exception as err:
-        traceback.print_exc()
+        traceback.print_exc(limit=None)
         raise
 
 def datetime_to_str(dt=None, strformat='%Y-%m-%d %H-%M-%S'):

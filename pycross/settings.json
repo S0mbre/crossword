@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			379,
-			62
+			309,
+			103
 		],
 		"win_size": [
-			2131,
-			1221
+			1360,
+			700
 		]
 	},
 	"cw_settings": {
@@ -153,17 +153,17 @@
 			{
 				"name": "Direction",
 				"visible": true,
-				"width": 200
+				"width": 83
 			},
 			{
 				"name": "No",
 				"visible": true,
-				"width": 200
+				"width": 41
 			},
 			{
 				"name": "Clue",
 				"visible": true,
-				"width": 200
+				"width": 319
 			},
 			{
 				"name": "Letters",

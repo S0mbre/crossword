@@ -2,7 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import sys, traceback
+import os, sys, traceback
 from gui import QtWidgets, MainWindow
 
 ## ******************************************************************************** ##
@@ -10,6 +10,8 @@ from gui import QtWidgets, MainWindow
 def main():
     
     try:
+        # change working dir to current for correct calls to git
+        os.chdir(os.path.dirname(__file__))
         app = QtWidgets.QApplication(sys.argv)
         MainWindow()
         sys.exit(app.exec())
