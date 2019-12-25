@@ -546,10 +546,10 @@ class MainWindow(QtWidgets.QMainWindow):
                     if not db.setpath(src['file'], fullpath=(not src['file'].lower() in LANG), recreate=False, connect=True):
                         self._log(f"DB path {src['file']} unavailable!")
                         continue
-                    self.wordsrc.add(DBWordsource(src['dbtables'], db))
+                    self.wordsrc.add(DBWordsource(src['dbtables'], db, shuffle=src['shuffle']))
                     
             elif src['type'] == 'file':
-                self.wordsrc.add(TextfileWordsource(src['file'], enc=src['encoding'], delimiter=src['delim']))
+                self.wordsrc.add(TextfileWordsource(src['file'], enc=src['encoding'], delimiter=src['delim'], shuffle=src['shuffle']))
                 
             elif src['type'] == 'list' and src['words']:
                 words = []
@@ -559,7 +559,9 @@ class MainWindow(QtWidgets.QMainWindow):
                         words.append((w[0], tuple(w[1:]) if len(w) > 1 else None))
                 else:
                     words = src['words']
-                self.wordsrc.add(TextWordsource(words))
+                self.wordsrc.add(TextWordsource(words, shuffle=src['shuffle']))
+
+        self.wordsrc.fetch('       ')
         
     def update_cw(self, rescale=True):
         """

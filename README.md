@@ -51,6 +51,7 @@ It doesn't require that you have Git or any of the extra Python packages mention
   I recommend (as many do) installing packages into python's virtual environment using *virtualenv* or the inbuilt *venv*:
   
   Create a new virtual environment:
+  
   **Linux / Mac**
   ```bash
   cd myprojects

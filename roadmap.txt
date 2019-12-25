@@ -1,4 +1,4 @@
-* [v. 0.2] configure shuffle / no shuffle of word sources
+* + [v. 0.2] configure shuffle / no shuffle of word sources
 * [v. 0.2] display generation progress in progress bar
 * [v. 0.2] show / output cw stats: % complete, % clues complete, complexity index, etc...
 * [v. 0.2] publish on... (cloud + social)
@@ -19,6 +19,9 @@
 		https://www.shareaholic.com/api/
 * [v. 0.2] cw solving mode (hide replies, check as you type)
 * [v. 0.2] timed solving
+* [v. 0.2] highlight in cw:
+	* words not found in current sources
+	* words with wrong replies (in solving mode)
 * [v. 0.3] support of keywords in crossword (mark in grid and output to separate edit field)
 * [v. 0.3] interactive games and top solver ranking (use cloud service)
 * [v. 0.3] help docs (online / offline)

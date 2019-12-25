@@ -10,7 +10,6 @@ from operator import itemgetter
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 import json
-import numpy as np
 
 ## ******************************************************************************** ##
 
@@ -920,6 +919,51 @@ class Wordgrid:
     
     def tostr(self):
         return '\n'.join([''.join(row) for row in self.grid]) if self.grid else ''
+
+    def _cell_count(self, condition=None):
+        """
+        Return number of blocked cells (FILLER, FILLER2).
+        """
+        c = 0
+        for y in range(self.height):
+            for x in range(self.width):
+                if (condition is None) or (condition(y, x) == True):
+                    c += 1
+        return c
+
+    def _word_count(self, condition=None):
+        c = 0
+        for w in self.words:
+            if (condition is None) or (condition(w) == True):
+                c += 1
+        return c
+    
+    def _word_lengths(self):
+        """
+        Return an array of word lengths.
+        """
+        return [len(w) for w in self.words]
+
+    def update_stats(self):
+        """
+        Updates self.stats dict with current handy statistics.
+        """
+        self.stats = {}
+        self.stats['grid_width'] = self.width
+        self.stats['grid_height'] = self.height
+        self.stats['cell_count'] = self.height * self.width
+        self.stats['filler_cell_count'] = self._cell_count(lambda r, c: self.grid[r][c] in (FILLER, FILLER2))
+        self.stats['word_count'] = len(self.words)
+        self.stats['complete_word_count'] = self._word_count(self.is_word_complete)
+        self.stats['blank_word_count'] = self._word_count(self.is_word_blank)
+        self.stats['across_word_count'] = self._word_count(lambda w: w.dir == 'h')
+        self.stats['down_word_count'] = self.stats['word_count'] - self.stats['across_word_count']
+        wls = self._word_lengths()
+        self.stats['word_lengths'] = wls
+        self.stats['mean_word_length'] = np.mean(wls)
+        self.stats['min_word_length'] = min(wls)
+        self.stats['max_word_length'] = max(wls)
+        self.stats['withclues_word_count'] = self._word_count(lambda w: bool(w.clue))       
 
     def save(self):
         """

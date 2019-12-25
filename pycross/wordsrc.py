@@ -10,12 +10,14 @@ import itertools
 
 class Wordsource:
     
-    def __init__(self, max_fetch=None):
+    def __init__(self, max_fetch=None, shuffle=True):
         """
         * max_fetch (int): maximum number of suggestions returned from the word source
             (None means no limit on suggestions, which may be time/resource consuming!)
+        * shuffle (bool): if True, fetched words will be shuffled
         """
         self.max_fetch = max_fetch
+        self.shuffle_words = shuffle
         self.active = True
         
     def isvalid(self):
@@ -27,8 +29,9 @@ class Wordsource:
         
     def shuffle(self, suggestions):
         if not suggestions: return []
-        np.random.seed()
-        np.random.shuffle(suggestions)
+        if self.shuffle_words:
+            np.random.seed()
+            np.random.shuffle(suggestions)
         return suggestions
     
     def fetch(self, word=None, blank=' ', pos=None, filter_func=None, shuffle=True, truncate=True):
@@ -52,7 +55,7 @@ class Wordsource:
 
 class DBWordsource(Wordsource):
     
-    def __init__(self, tables, db, diconnect_on_destroy=True, max_fetch=None):
+    def __init__(self, tables, db, diconnect_on_destroy=True, max_fetch=None, shuffle=True):
         self.db = db
         if not self.db.connect():
             raise Exception('Cannot connect to db!')
@@ -60,7 +63,7 @@ class DBWordsource(Wordsource):
         self.tables = tables
         self.diconnect_on_destroy = diconnect_on_destroy
         self.cur = None
-        super().__init__(max_fetch)
+        super().__init__(max_fetch, shuffle)
         
     def __del__(self):
         if self.diconnect_on_destroy and self.conn:
@@ -114,13 +117,13 @@ class DBWordsource(Wordsource):
         
 class TextWordsource(Wordsource):
     
-    def __init__(self, words=[], max_fetch=None):
+    def __init__(self, words=[], max_fetch=None, shuffle=True):
         self.bpos = words and isinstance(words[0], tuple) and len(words[0]) == 2
         if words:
             self.words = [(w.lower(), list(p)) for (w, p) in words] if self.bpos else [(w.lower(), None) for w in words]
         else:
             self.words = []
-        super().__init__(max_fetch)
+        super().__init__(max_fetch, shuffle)
         
     def isvalid(self):
         return bool(self.words)
@@ -150,7 +153,7 @@ class TextWordsource(Wordsource):
 
 class TextfileWordsource(TextWordsource):
 
-    def __init__(self, path, enc='utf-8', delimiter=' ', max_fetch=None):           
+    def __init__(self, path, enc='utf-8', delimiter=' ', max_fetch=None, shuffle=True):           
         self.words = []
         self.bpos = False
         with open(path, 'r', encoding=enc, newline='') as fin:
@@ -158,7 +161,7 @@ class TextfileWordsource(TextWordsource):
             for row in reader:
                 self.words.append((row[0], row[1:] if len(row) > 1 else None))
                 if len(row) > 1 and not self.bpos: self.bpos = True
-        Wordsource.__init__(self, max_fetch)
+        Wordsource.__init__(self, max_fetch, shuffle)
                 
 ## ******************************************************************************** ##
         
@@ -167,6 +170,7 @@ class MultiWordsource(Wordsource):
     def __init__(self, order='prefer-last', max_fetch=None):
         self.order = order
         self.sources = []
+        # leave default value of 'shuffle', it's not used here
         super().__init__(max_fetch)
         
     def isvalid(self):
@@ -174,7 +178,7 @@ class MultiWordsource(Wordsource):
         
     def add(self, source, position=None):
         if position is None:
-            if self.order != 'prefer-first':
+            if self.order == 'prefer-last':
                 self.sources.append(source)
             else:
                 self.sources.insert(0, source)
@@ -194,12 +198,12 @@ class MultiWordsource(Wordsource):
     def truncate(self, suggestions):
         if not suggestions: return []
         if not self.max_fetch: return suggestions
-        return suggestions[:self.max_fetch] if self.order == 'prefer-first' else suggestions[-self.max_fetch:]
+        return suggestions[:self.max_fetch]
         
     def fetch(self, word=None, blank=' ', pos=None, filter_func=None, shuffle=True, truncate=True):
         if not self.isvalid(): return []
-        suggestions = set(itertools.chain.from_iterable((src.fetch(word, blank, pos, filter_func, shuffle, False) for src in self.sources)))
-        suggestions = list(suggestions)
+        sources = self.sources if self.order == 'prefer-first' else reversed(self.sources)
+        suggestions = list(dict.fromkeys(itertools.chain.from_iterable((src.fetch(word, blank, pos, filter_func, shuffle, False) for src in sources))))
         return self.truncate(suggestions) if suggestions and truncate else suggestions
     
     def check(self, word, pos=None, filter_func=None):

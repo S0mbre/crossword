@@ -206,7 +206,8 @@ class WordSrcDialog(BasicDialog):
     """
     src = {'active': True|False, 'name': '<name>', 'type': 'db|file|list', 'file': '<path>', 
     'dbtype': '<sqlite>', 'dblogin': '', 'dbpass': '', 'dbtables': SQL_TABLES, 
-    'haspos': True|False, 'encoding': 'utf-8', 'delim': ' ', 'words': []}
+    'haspos': True|False, 'encoding': 'utf-8', 'shuffle': True|False, 
+    'delim': ' ', 'words': []}
     """
     
     def __init__(self, src=None, parent=None, flags=QtCore.Qt.WindowFlags()):
@@ -260,12 +261,14 @@ class WordSrcDialog(BasicDialog):
         self.combo_dbtype.setCurrentIndex(0)
         self.le_dbuser = QtWidgets.QLineEdit('')
         self.le_dbpass = QtWidgets.QLineEdit('')
-        self.le_dbtables = QtWidgets.QLineEdit(str(SQL_TABLES))
+        self.le_dbtables = QtWidgets.QLineEdit(json.dumps(SQL_TABLES))
+        self.chb_db_shuffle = QtWidgets.QCheckBox()
         self.layout_db.addRow('Path', self.le_dbfile)
         self.layout_db.addRow('Type', self.combo_dbtype)
         self.layout_db.addRow('User', self.le_dbuser)
         self.layout_db.addRow('Password', self.le_dbpass)
         self.layout_db.addRow('Tables', self.le_dbtables)
+        self.layout_db.addRow('Shuffle', self.chb_db_shuffle)
         self.page_db.setLayout(self.layout_db)
         self.stacked.addWidget(self.page_db)
         
@@ -281,9 +284,11 @@ class WordSrcDialog(BasicDialog):
         self.combo_file_delim.addItems(['SPACE', 'TAB', ';', ',', ':'])
         self.combo_file_delim.setEditable(True)
         self.combo_file_delim.setCurrentIndex(0)
+        self.chb_file_shuffle = QtWidgets.QCheckBox()
         self.layout_file.addRow('Path', self.le_txtfile)
         self.layout_file.addRow('Encoding', self.combo_fileenc)
         self.layout_file.addRow('Delimiter', self.combo_file_delim)
+        self.layout_file.addRow('Shuffle', self.chb_file_shuffle)
         self.page_file.setLayout(self.layout_file)
         self.stacked.addWidget(self.page_file)
         
@@ -300,9 +305,11 @@ class WordSrcDialog(BasicDialog):
         self.te_wlist.setStyleSheet('font: 14pt "Courier";color: black')
         self.te_wlist.setAcceptRichText(False)
         self.te_wlist.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
+        self.chb_list_shuffle = QtWidgets.QCheckBox()
         self.layout_list.addRow('Delimiter', self.combo_list_delim)
         self.layout_list.addRow('Has parts of speech', self.chb_haspos)
         self.layout_list.addRow('Words', self.te_wlist)
+        self.layout_list.addRow('Shuffle', self.chb_list_shuffle)
         self.page_list.setLayout(self.layout_list)
         self.stacked.addWidget(self.page_list)
                 
@@ -318,6 +325,7 @@ class WordSrcDialog(BasicDialog):
             self.le_dbuser.setText(self.src['dblogin'])
             self.le_dbpass.setText(self.src['dbpass'])
             self.le_dbtables.setText(str(self.src['dbtables']))
+            self.chb_db_shuffle.setChecked(self.src['shuffle'])
             
         elif self.src['type'] == 'file':
             self.rb_type_file.setChecked(True)
@@ -331,6 +339,7 @@ class WordSrcDialog(BasicDialog):
             else:
                 delim = delim[0]
             self.combo_file_delim.setCurrentText(delim)
+            self.chb_file_shuffle.setChecked(self.src['shuffle'])
             
         elif self.src['type'] == 'list':
             self.rb_type_list.setChecked(True)
@@ -344,6 +353,7 @@ class WordSrcDialog(BasicDialog):
             self.combo_list_delim.setCurrentText(delim)
             self.chb_haspos.setChecked(self.src['haspos'])
             self.te_wlist.setPlainText('\n'.join(self.src['words']))
+            self.chb_list_shuffle.setChecked(self.src['shuffle'])
             
         # activate page
         self.rb_toggled(True)
@@ -358,7 +368,8 @@ class WordSrcDialog(BasicDialog):
             self.src['dbtype'] = self.combo_dbtype.currentText()
             self.src['dblogin'] = self.le_dbuser.text()
             self.src['dbpass'] = self.le_dbpass.text()
-            self.src['dbtables'] = eval(self.le_dbtables.text())
+            self.src['dbtables'] = json.loads(self.le_dbtables.text())
+            self.src['shuffle'] = self.chb_db_shuffle.isChecked()
                 
         elif self.rb_type_file.isChecked():
             self.src['type'] = 'file'
@@ -372,6 +383,7 @@ class WordSrcDialog(BasicDialog):
             else:
                 delim = delim[0]
             self.src['delim'] = delim
+            self.src['shuffle'] = self.chb_file_shuffle.isChecked()
             
         else:
             self.src['type'] = 'list'
@@ -385,6 +397,7 @@ class WordSrcDialog(BasicDialog):
             self.src['delim'] = delim
             self.src['haspos'] = self.chb_haspos.isChecked()
             self.src['words'] = self.te_wlist.toPlainText().strip().split('\n')
+            self.src['shuffle'] = self.chb_list_shuffle.isChecked()
     
     def validate(self):
         if not self.le_name.text().strip():
@@ -397,7 +410,7 @@ class WordSrcDialog(BasicDialog):
                 'DB file path must be valid!', QtWidgets.QMessageBox.Ok, self).exec()
                 return False
             try:
-                d = eval(self.le_dbtables.text())
+                d = json.loads(self.le_dbtables.text())
                 if not isinstance(d, dict): raise Exception()
             except:
                 QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
@@ -1352,7 +1365,7 @@ class SettingsDialog(BasicDialog):
         settings['wordsrc']['sources'] = []        
         for row in reversed(range(self.lw_sources.count())):
             item = self.lw_sources.item(row)
-            src = eval(item.data(QtCore.Qt.UserRole))
+            src = json.loads(item.data(QtCore.Qt.UserRole))
             src['active'] = (item.checkState() == QtCore.Qt.Checked)
             if not src or not isinstance(src, dict):
                 print('No user data in src!')
@@ -2288,7 +2301,7 @@ class SettingsDialog(BasicDialog):
         item = src_item if src_item else QtWidgets.QListWidgetItem()
         item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
         item.setText(src['name'])
-        item.setData(QtCore.Qt.UserRole, str(src))
+        item.setData(QtCore.Qt.UserRole, json.dumps(src))
         if src['type'] == 'db':
             iconpic = 'database-3.png'
         elif src['type'] == 'file':
@@ -2434,7 +2447,7 @@ class SettingsDialog(BasicDialog):
         item = self.lw_sources.currentItem()
         if not item: return
         try:
-            src = eval(item.data(QtCore.Qt.UserRole))
+            src = json.loads(item.data(QtCore.Qt.UserRole))
             if not src or not isinstance(src, dict):
                 print('No user data in src!')
                 return
