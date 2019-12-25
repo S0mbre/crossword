@@ -428,7 +428,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.updater.update_info['last_update'] = timestamp_to_str(ts)
                 self.updater._write_update_info()
         except Exception as err:
-            self._log(err)
+            pass
+            #self._log(err)
 
         # clear all
         temp_files = [updatelog]
@@ -524,6 +525,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_info.setEnabled(b_cw and not gen_running)
         self.act_print.setEnabled(b_cw and not gen_running)
         self.act_config.setEnabled(not gen_running)
+        self.act_update.setEnabled(not gen_running and self.updater.git_installed)
         self.act_help.setEnabled(not gen_running)
         self.twCw.setEnabled(b_cw and not gen_running)
         self.tvClues.setEnabled(b_cw and not gen_running)
@@ -1516,11 +1518,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # update status bar
         self.statusbar_l1.setText(f"v. {APP_VERSION}")
-        if CWSettings.settings['update']['auto_update']:
-            self.updater.on_norecent = None
-            self.on_act_update(False)
-        else:
-            self.updater.check_update()
+        if self.updater.git_installed:
+            if CWSettings.settings['update']['auto_update']:
+                self.updater.on_norecent = None
+                self.on_act_update(False)
+            else:
+                self.updater.check_update()
         
     def closeEvent(self, event):
         # save cw
@@ -1923,7 +1926,8 @@ class MainWindow(QtWidgets.QMainWindow):
             self.apply_config()
 
     @QtCore.pyqtSlot(bool)        
-    def on_act_update(self, checked):       
+    def on_act_update(self, checked):    
+        if not self.updater.git_installed: return
         # run update
         if self.updater.update(True) == False: return
         # close self

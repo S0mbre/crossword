@@ -21,7 +21,6 @@ class Updater:
         self.git_repo = git_repo
         self.update_file = Path(update_file).resolve()
         self.log_file = Path(log_file).resolve()
-        print(self.log_file)
         self.print_to = print_to
         #print(f"Update file = {str(self.update_file)}", file=self.print_to)
         self.check_every = check_every
@@ -63,7 +62,7 @@ class Updater:
 
     def _check_git(self):
         try:
-            res = self._run_exe(['git', '--version'])
+            res = self._run_exe(['git', 'status'])
             return res.returncode == 0
         except:
             return False
@@ -72,6 +71,8 @@ class Updater:
         if self.update_file.exists():
              with open(str(self.update_file), 'r', encoding=ENCODING) as infile:
                 self.update_info.update(json.load(infile))
+        else:
+            self._write_update_info()
             
     def _write_update_info(self):
         with open(str(self.update_file), 'w', encoding=ENCODING) as outfile:

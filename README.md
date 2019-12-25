@@ -29,11 +29,24 @@ You must have the following applications / packages installed in your system:
 * Python packages: *PyQt5*, *numpy*, and *requests* 
 * Git (should be pre-installed on most modern Linux and Mac systems, alternatively install from the [git website](https://git-scm.com/downloads))
 
+The latter two (extra packages and Git) are *optional* (not actually required) if you opt for the pip installation variant as described below.
+
 ### Installation options
 
-#### 1 - Clone from Github (for full 'developer' mode)
+There are 2 installation options:
 
-**1. Install the required packages**
+1. *Clone app from Github* to enable automatic update checks and app updating (this option will copy the entire git history into your target installation directory).
+2. *Install specific version with pip* - this will install just the app distro, without the git directory and developer utils found outside of the root package directory.
+
+*Option 1* is obviously more flexible, in that it will give you updating functionality right from the app. You will also be able view the entire project history, switch among branches, and much more.
+However, it requires that you have Git installed, and the initial download will be of course larger because the git directory will be downloaded too.
+
+*Option 2* is best if you don't require the inbuilt updating and plan to update manually when you choose.
+It doesn't require that you have Git or any of the extra Python packages mentioned, everything will be installed for you in one go.
+
+#### 1 - Clone from Github (enable auto updates from Github)
+
+*1. Install the required packages*
 
   I recommend (as many do) installing packages into python's virtual environment using *virtualenv* or the inbuilt *venv*:
   
@@ -61,29 +74,30 @@ You must have the following applications / packages installed in your system:
   pip install --upgrade PyQt5 numpy requests
   ```
   
-**2. Clone repo**
+*2. Clone repo*
 
   To get the latest (non-stable) version, run:
   ```bash
-  git clone https://github.com/S0mbre/crossword
+  git clone https://github.com/S0mbre/crossword.git .
   ```
   
   This will checkout to the *master* branch which tracks all recent changes, some of which may not be yet merged into a release version.
   
   To get the latest stable version, run:
   ```bash
-  git clone -b latest https://github.com/S0mbre/crossword
+  git clone https://github.com/S0mbre/crossword.git .
+  git reset --hard latest
   ```
   
   This will checkout to the branch pointed at by the *latest* tag which will always be the latest stable release.
   
-#### 2 - Install with pip (specific version)
+#### 2 - Install with pip (specific version, no auto updates from Github)
 
-**1. Create your project directory and Python virtual environment [optional]**
+*1. Create your project directory and Python virtual environment [optional]*
 
   Follow the described procedure to create your project dir and Python virtual environment (recommended but optional).
   
-**2. Install the Python wheel**
+*2. Install the Python wheel*
 
   Use *pip* to install the Python wheel (distro):
   

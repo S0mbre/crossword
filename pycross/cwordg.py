@@ -11,7 +11,7 @@ def main():
     
     try:
         # change working dir to current for correct calls to git
-        os.chdir(os.path.dirname(__file__))
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
         app = QtWidgets.QApplication(sys.argv)
         MainWindow()
         sys.exit(app.exec())
