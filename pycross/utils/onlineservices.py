@@ -2,7 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import requests
+import requests, os, uuid
 import urllib.parse
 from abc import ABC, abstractmethod
 from .globalvars import (MW_DIC_KEY, MW_DIC_HTTP, MW_WORD_URL, 
@@ -10,6 +10,7 @@ from .globalvars import (MW_DIC_KEY, MW_DIC_HTTP, MW_WORD_URL,
                         SHAREAHOLIC_KEY, SHAREAHOLIC_HTTP,
                         GOOGLE_KEY, GOOGLE_CSE, GOOGLE_HTTP, GOOGLE_LANG_LR, 
                         GOOGLE_LANG_HL, GOOGLE_COUNTRIES_CR, GOOGLE_COUNTRIES_GL)
+from .utils import MsgBox                 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -210,10 +211,432 @@ class YandexDict(OnlineDictionary):
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-class Uploader:
+class Cloudstorage:
 
-    def __init__(self):
-        pass        
+    ACCID = 352604900
+    BEARER = 'weov2heMt4VYnhi78egvYYV55qoa9S'
+    ROOTNAME = 'pycrossall'
+    ROOTID = 'Fn6Cw1UD_PxkjIc8EN8u0uJHm4FsKBp6RCIGrNq6R9KQ='
+
+    def __init__(self, settings):
+        self.settings = settings
+        self.users = []
+        self.init_settings()        
+
+    def init_settings(self):        
+        self._accid = self.settings['account'] or Cloudstorage.ACCID
+        self._baseurl = f"https://api.kloudless.com/v2/accounts/{self._accid}/storage/"
+        self._bearer = self.settings['bearer_token'] or Cloudstorage.BEARER
+        self._headers = {'Content-Type': 'application/json', 'Authorization': f"Bearer {self._bearer}"}
+        self._rootid = ''
+        rootname = self.settings['root_folder'] \
+            if (self.settings['root_folder'] and self.settings['account'] \
+                and self.settings['bearer_token']) else Cloudstorage.ROOTNAME
+        new_folder = self._create_folder(rootname)
+        if new_folder:
+            self._rootid = new_folder[1]                  
+            self.settings['root_folder'] = '' if new_folder[0] == Cloudstorage.ROOTNAME else new_folder[0]
+        else:
+            MsgBox(f"Unable to create/access folder '{rootname}'!", 
+                    title='Error', msgtype='error')    
+
+        self.find_or_create_user(self.settings['user'])
+
+    def _create_account(self):
+        """
+        Create a new client account and bind it to the Kloudless/pycross app.
+        Retrieved Account ID and Bearer Token will be written to settings.
+        TODO: Implement when default Dropbox storage is not enough.
+        """
+        return
+
+    def _get_quota(self):
+        """
+        Retrieves storage quota information.
+        """
+        req = f"{self._baseurl}quota"
+        try:
+            res = requests.get(req, headers=self._headers)
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        return res.json() if res else None
+
+    def _get_folder_objects(self, fid, recurse=False):
+        if not fid:
+            MsgBox('Empty folder ID passed to _get_folder_objects()!', title='Error', msgtype='error')
+            return None
+        req = f"{self._baseurl}folders/{urllib.parse.quote(fid)}/contents/?recursive={str(recurse).lower()}"
+        res = None
+        try:
+            res = requests.get(req, headers=self._headers)
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        return res.json() if res else None
+
+    def _generate_username(self):
+        while True:
+            usr = uuid.uuid4().hex
+            for u in self.users:
+                if u[0] == usr:
+                    break
+            else:
+                return usr
+
+    def _create_folder(self, folder_name, parent_id='root', error_on_exist=False):
+        folder_name = folder_name.lower()
+        data = {'parent_id': urllib.parse.quote(parent_id), 'name': urllib.parse.quote(folder_name)}
+        req = f"{self._baseurl}folders/?conflict_if_exists={str(error_on_exist).lower()}"
+        print(self._headers)
+        print(req)
+        res = None
+        try:
+            res = requests.post(req, headers=self._headers, data=data)
+        except requests.exceptions.RequestException as e:
+            if res.status_code == 409:
+                MsgBox(f"Folder '{folder_name}' already exists!", 
+                      title='HTTP(S) request error', msgtype='warn')
+                return None
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        if not res: return None
+        res = res.json()
+        print(res)
+        return (res['name'], res['id'])
+
+    def _update_users(self):
+        """
+        Updates the list of subfolders present in dropbox/pycrossall root folder.
+        The names of these subfolders correspond to the names of the
+        registered users.
+        """        
+        res = self._get_folder_objects(self._rootid)        
+        self.users = []
+        if not res: return
+        for obj in res['objects']:
+            if obj['type'] != 'folder': continue
+            self.users.append((obj['name'].lower(), obj['id']))
+
+    def _get_file_metadata(self, file_id):
+        """
+        Retrieves the metadata of the given file: name, path, size, date, etc.
+        """
+        req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/"
+        try:
+            res = requests.get(req, headers=self._headers)
+            if not res: return None
+            return res.json()
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        return None
+
+    def _get_folder_metadata(self, folder_id=None):
+        """
+        Retrieves the metadata of the given folder: name, path, size, date, etc.
+        If 'folder_id' is None, the current user's folder will be used.
+        """
+        if not folder_id: 
+            if not self._user:
+                MsgBox('Neither the folder ID not the user ID is valid!', title='HTTP(S) request error', msgtype='error')
+                return None
+            folder_id = self._user[1]
+        req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/"
+        try:
+            res = requests.get(req, headers=self._headers)
+            if not res: return None
+            return res.json()
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        return None
+
+    def find_or_create_user(self, username=None, error_on_exist=False):
+        """
+        Creates or finds the subfolder: dropbox/pycrossall/<username>.
+        If found and 'error_on_exist' == True, displays error and quits.
+        Otherwise, sets self._user = (user_name, user_id).
+        On any failure, self._user will be set to None.
+        If username == None (default), an automatic username is generated.
+        """
+        self._user = None       
+        self._update_users()
+        if username:
+            username = username.lower()
+            for u in self.users:
+                if u[0] == username:
+                    if error_on_exist:
+                        MsgBox(f"Username '{username}' is already occupied! Please choose another.", 
+                            title='HTTP(S) request error', msgtype='warn')                    
+                    else:
+                        self._user = u
+                    self.settings['user'] = username
+                    return
+        else:
+            username = self._generate_username()
+        new_user = self._create_folder(username, self._rootid)
+        if new_user:
+            self.users.append(new_user)
+            self._user = new_user
+            self.settings['user'] = username
+        else:
+            self.settings['user'] = ''
+
+    def find_or_create_folder(self, folder_name):
+        """
+        Finds or creates new subfolder in user's folder.
+        Returns the tuple (folder_name, folder_id) or None on failure.
+        """
+        return self._create_folder(folder_name, self._user[1], False)
+
+    def clear_folder(self, folder_id=None):
+        """
+        Clears given (sub)folder.
+        """
+        if not folder_id: 
+            if not self._user:
+                MsgBox('Neither the folder ID not the user ID is valid!', title='HTTP(S) request error', msgtype='error')
+                return None
+            folder_id = self._user[1]
+        # get folder name
+        folder_info = self._get_folder_metadata(folder_id)
+        if not folder_info: return None
+        folder_name = folder_info.get('name', None)
+        if not folder_name: return None
+        folder_parent = folder_info.get('parent', None)
+        if not folder_parent: return None
+        folder_parent = folder_parent['id']
+        # delete folder
+        if not self.delete_folder(folder_id): return None
+        # recreate folder
+        res = self._create_folder(folder_name, folder_parent, True)
+        if folder_id == self._user[1]:
+            # update user info
+            self._user = res
+            self.settings['user'] = res[0] if res else ''
+        return res
+
+    def delete_folder(self, folder_id, permanent=True, recurse=True):
+        """
+        Deletes the folder with the given ID, optionally permanently.
+        Returns True on success, False otherwise.
+        """
+        req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/?permanent={str(permanent).lower()}&recursive={str(recurse).lower()}"
+        headers = self._headers.copy()
+        headers['Content-Type'] = 'application/octet-stream'
+        try:
+            res = requests.delete(req, headers=headers)
+            return bool(res)
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return False
+        return False
+
+    def rename_folder(self, folder_id, new_name):
+        """
+        Renames the given (sub)folder to 'new_name'.
+        Returns the tuple (folder_name, folder_id) or None on failure.
+        """
+        req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/"
+        data = {'name': urllib.parse.quote(new_name)}
+        try:
+            res = requests.patch(req, headers=self._headers, data=data)
+            if not res: return None
+            res = res.json()
+            return (res['name'], res['id'])
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        return None
+        
+    def upload_file(self, filepath, folder_id=None, overwrite=False, 
+                    makelink=True, activelink=True, 
+                    directlink=True, expire=None, password=None):
+        """
+        Uploads a file into the current user's folder (optionally subfolder) and returns the link info.
+        If 'overwrite' == True, the first file with the same name will be overwritten.
+        Otherwise, the uploaded file will be automatically renamed.
+        """
+        if getattr(self, '_user', None) is None:
+            MsgBox('Current user is not defined! Please create new user first.', title='Error', msgtype='error')
+            return None
+        if not os.path.isfile(filepath):
+            MsgBox(f"File '{filepath}' is not accessable!", title='Error', msgtype='error')
+            return None
+
+        # get file size (bytes)
+        fsize = os.path.getsize(filepath)
+        
+        # upload file
+        headers = self._headers.copy()
+        headers['Content-Type'] = 'application/octet-stream'
+        headers['X-Kloudless-Metadata'] = {'name': os.path.basename(filepath), 
+            'parent_id': urllib.parse.quote(self._user[1] if not folder_id else folder_id)}
+        headers['Content-Length'] = fsize
+        req = f"{self._baseurl}files/?overwrite={str(overwrite).lower()}"
+
+        res = None
+        with open(filepath, 'rb') as f:            
+            try:
+                res = requests.post(req, headers=headers, data=f)
+            except requests.exceptions.RequestException as e:
+                MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+                return None
+
+        if not res: return None
+        res = res.json()
+        return self.create_file_link(res['id'], activelink, directlink, expire, password) \
+               if makelink else res
+
+    def delete_file(self, file_id, permanent=True):
+        """
+        Deletes the file with the given ID, optionally permanently.
+        Returns True on success, False otherwise.
+        """
+        req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/?permanent={str(permanent).lower()}"
+        headers = self._headers.copy()
+        headers['Content-Type'] = 'application/octet-stream'
+        try:
+            res = requests.delete(req, headers=headers)
+            return bool(res)
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return False
+        return False
+
+    def rename_file(self, file_id, new_name):
+        """
+        Renames the given file (in the original folder).
+        Returns the tuple (file_name, file_id) or None on failure.
+        """
+        req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/"
+        data = {'name': urllib.parse.quote(new_name)}
+        try:
+            res = requests.patch(req, headers=self._headers, data=data)
+            if not res: return None
+            res = res.json()
+            return (res['name'], res['id'])
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        return None
+
+    def download_file(self, file_id, save_folder='', overwrite=False):
+        """
+        Downloads the given file to the folder given by 'save_folder'.
+        If 'save_folder' is empty, the file is downloaded to the working dir.
+        Returns True on success / False otherwise.
+        """
+        file_info = self._get_file_metadata(file_id)
+        if not save_folder:
+            save_folder = os.getcwd()
+        filepath = os.path.join(os.path.abspath(save_folder), file_info['name'] if file_info else 'UNKNOWN_FILE')
+        if not overwrite and os.path.isfile(filepath):
+            MsgBox(f"File '{filepath}' already exists!", title='HTTP(S) request error', msgtype='warn')
+            return False
+
+        req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/contents/"
+        headers = self._headers.copy()
+        headers['Content-Type'] = file_info['mime_type'] if file_info else 'application/octet-stream'
+        try:
+            res = requests.get(req, headers=headers, allow_redirects=True)
+            if not res: return False
+            with open(filepath, 'wb') as fout:
+                fout.write(res.content)
+            return bool(res)
+        except Exception as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return False
+
+        return False
+
+    def create_file_link(self, file_id, activelink=True, directlink=True, 
+                         expire=None, password=None):
+        """
+        Creates public link to specified file (given by file ID).
+        Returns the link meta info (dict).
+        """
+        if not file_id:
+            MsgBox('Empty file ID passed to create_file_link()!', title='Error', msgtype='error')
+            return None
+
+        req = f"{self._baseurl}links/"
+        data = {'file_id': urllib.parse.quote(file_id), 'direct': directlink, 'active': activelink}
+        if not expire is None:
+            data['expiration'] = expire.isoformat()
+        if not password is None:
+            data['password'] = urllib.parse.quote(password)
+        res = None
+        try:
+            res = requests.post(req, headers=self._headers, data=data)
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        return res.json() if res else None
+
+    def get_file_link(self, link_id):
+        """
+        Retrieves file link info (given by link ID).
+        Returns the link meta info (dict).
+        """
+        if not link_id:
+            MsgBox('Empty link ID passed to get_file_link()!', title='Error', msgtype='error')
+            return None
+        req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"
+        res = None
+        try:
+            res = requests.get(req, headers=self._headers)
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        return res.json() if res else None
+
+    def update_file_link(self, link_id, activelink=None,  
+                         expire=None, password=None):
+        """
+        Updates public link to specified file (given by file ID).
+        Returns the link meta info (dict).
+        """
+        if not link_id:
+            MsgBox('Empty link ID passed to update_file_link()!', title='Error', msgtype='error')
+            return None
+
+        req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"
+        data = {}
+        if not activelink is None:
+            data['active'] = bool(activelink)
+        if not expire is None:
+            data['expiration'] = expire.isoformat()
+        if not password is None:
+            data['password'] = urllib.parse.quote(password)
+        res = None
+        try:
+            res = requests.patch(req, headers=self._headers, data=data)
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return None
+        return res.json() if res else None
+
+    def delete_file_link(self, link_id):
+        """
+        Deletes public link to specified file (given by file ID).
+        Returns True on success / False on failure.
+        """
+        if not link_id:
+            MsgBox('Empty link ID passed to delete_file_link()!', title='Error', msgtype='error')
+            return None
+
+        req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"       
+        res = None
+        try:
+            res = requests.delete(req, headers=self._headers)
+            return bool(res)
+        except requests.exceptions.RequestException as e:
+            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+            return False
+        return False
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -231,3 +654,4 @@ class Share:
               title='My new crossword', notes='See my new crossword',
               url_shortener='google', tags=''):
         pass
+

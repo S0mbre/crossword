@@ -2815,7 +2815,7 @@ class WordSuggestDialog(BasicDialog):
     def validate(self): 
         self.selected = ''
         if self.lw_words.currentItem() is None:
-            MsgBox('No word selected!', self, 'Error', QtWidgets.QMessageBox.Critical)
+            MsgBox('No word selected!', self, 'Error', 'error')
             return False
         self.selected = self.lw_words.currentItem().text()
         return True
@@ -3404,7 +3404,7 @@ class DefLookupDialog(BasicDialog):
 
     @QtCore.pyqtSlot(QtCore.QThread, str)
     def on_thread_error(self, thread, err):
-        MsgBox(f"Load failed with error:{NEWLINE}{err}", self, 'Error', QtWidgets.QMessageBox.Critical)
+        MsgBox(f"Load failed with error:{NEWLINE}{err}", self, 'Error', 'error')
 
         if thread == self.load_threads['dics']:
             thread.lock()

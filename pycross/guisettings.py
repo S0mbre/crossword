@@ -153,6 +153,10 @@ class CWSettings:
             'check_every': 1, 'auto_update': False, 
             'only_major_versions': False, 'temp_dir': '',
             'logfile': 'update.log', 'restart_on_update': True
+        },
+    'cloud':
+        {
+            'account': '', 'bearer_token': '', 'root_folder': '', 'user': ''
         }
     } # settings
          

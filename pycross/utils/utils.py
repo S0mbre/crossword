@@ -147,8 +147,16 @@ def make_font(family, size=-1, weight=-1, italic=False, font_unit='pt'):
     #print(f"make_font: font_unit={font_unit}, family={font.family()}, size(pt) = {font.pointSize()}, size(px)={font.pixelSize()}")
     return font
     
-def MsgBox(what, parent=None, title='pyCross', msgtype=QtWidgets.QMessageBox.Information, 
+def MsgBox(what, parent=None, title='pyCross', msgtype='info', 
            btn=QtWidgets.QMessageBox.Ok):
+    if msgtype == 'error':
+        msgtype = QtWidgets.QMessageBox.Critical
+    elif msgtype == 'warn':
+        msgtype = QtWidgets.QMessageBox.Warning
+    elif msgtype == 'ask':
+        msgtype = QtWidgets.QMessageBox.Question
+    else:
+        msgtype = QtWidgets.QMessageBox.Information
     QtWidgets.QMessageBox(msgtype, title, what, btn, parent).exec()
         
 def stylesheet_load(style, dequote=True, strip_sz=True, units=('pt', 'px')):

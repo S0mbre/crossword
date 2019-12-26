@@ -5,6 +5,8 @@
 import os, sys, traceback
 from gui import QtWidgets, MainWindow
 
+from utils.onlineservices import Cloudstorage
+
 ## ******************************************************************************** ##
 
 def main():
@@ -14,6 +16,12 @@ def main():
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
         app = QtWidgets.QApplication(sys.argv)
         MainWindow()
+
+        settings = {'account': '', 'bearer_token': '', 'root_folder': '', 'user': ''}  
+        cloud = Cloudstorage(settings)
+        print(f"User = {settings['user']}")
+        print(cloud._get_quota())
+
         sys.exit(app.exec())
         
     except SystemExit as err:        
@@ -30,5 +38,5 @@ def main():
     
 ## ******************************************************************************** ##
 
-if __name__ == '__main__':
+if __name__ == '__main__':  
     main() 

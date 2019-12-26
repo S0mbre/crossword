@@ -1006,20 +1006,20 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(float)
     def on_gen_timeout(self, timeout_):
-        MsgBox(f"Timeout occurred at {timeout_} seconds!", self, 'Timeout', QtWidgets.QMessageBox.Warning)
+        MsgBox(f"Timeout occurred at {timeout_} seconds!", self, 'Timeout', 'warn')
 
     @QtCore.pyqtSlot()
     def on_gen_stop(self):
-        MsgBox("Generation stopped!", self, 'Stopped', QtWidgets.QMessageBox.Warning)
+        MsgBox("Generation stopped!", self, 'Stopped', 'warn')
 
     @QtCore.pyqtSlot(QtCore.QThread, str)
     def on_gen_error(self, thread, err):
-        MsgBox(f"Generation failed with error:{NEWLINE}{err}", self, 'Error', QtWidgets.QMessageBox.Critical)
+        MsgBox(f"Generation failed with error:{NEWLINE}{err}", self, 'Error', 'error')
 
     @QtCore.pyqtSlot('PyQt_PyObject')
     def on_gen_validate(self, bad_):
         MsgBox(f"Generation finished!{NEWLINE}{'Check OK' if not bad_ else 'The following words failed validation: ' + repr(bad_)}", 
-                self, 'Generation finished', QtWidgets.QMessageBox.Information if not bad_ else QtWidgets.QMessageBox.Warning)
+                self, 'Generation finished', 'info' if not bad_ else 'warn')
 
     def generate_cw_worker(self):
         method = ''
@@ -1103,7 +1103,7 @@ class MainWindow(QtWidgets.QMainWindow):
             return True
 
         except Exception as err:
-            MsgBox(str(err), self, 'Error', QtWidgets.QMessageBox.Critical)
+            MsgBox(str(err), self, 'Error', 'error')
             return False
 
     def export_cw(self, filepath, scale=1.0):
@@ -1204,7 +1204,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     run_exe(pdf_file, True, False, shell=True)                    
 
         except Exception as err:            
-            MsgBox(str(err), self, 'Error', QtWidgets.QMessageBox.Critical)
+            MsgBox(str(err), self, 'Error', 'error')
             traceback.print_exc(limit=None) 
             return
 
@@ -1224,7 +1224,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if not printer or self.twCw.rowCount() < 1 or self.twCw.columnCount() < 1: return
         painter = QtGui.QPainter()        
         if not painter.begin(printer):
-            MsgBox('Printing error', self, 'Error', QtWidgets.QMessageBox.Critical)
+            MsgBox('Printing error', self, 'Error', 'error')
             return
 
         settings = CWSettings.settings['printing']
@@ -1400,7 +1400,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 top_offset += row_height + 50  
             
         except Exception as err:
-            MsgBox(str(err), self, 'Error', QtWidgets.QMessageBox.Critical)
+            MsgBox(str(err), self, 'Error', 'error')
             traceback.print_exc(limit=None) 
 
         finally:
@@ -1887,7 +1887,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.reformat_clues()
         else:
             MsgBox('No lookup sources are active! Please go to Settings (F11) to verify your lookup source configuration.', 
-                   self, 'No Lookup Sources', QtWidgets.QMessageBox.Warning)
+                   self, 'No Lookup Sources', 'warn')
         
     @QtCore.pyqtSlot(bool) 
     def on_act_wsrc(self, checked):
