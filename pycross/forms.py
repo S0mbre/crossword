@@ -5,7 +5,7 @@
 from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport
 from utils.utils import *
 from utils.globalvars import *
-from utils.onlineservices import MWDict, YandexDict, GoogleSearch
+from utils.onlineservices import MWDict, YandexDict, GoogleSearch, Share
 from crossword import BLANK, CWInfo
 from guisettings import CWSettings
 import os, copy, json
@@ -3767,3 +3767,80 @@ class AboutDialog(QtWidgets.QDialog):
             self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}")) 
 
         self.adjustSize()
+
+##############################################################################
+######          ShareDialog
+##############################################################################  
+        
+class ShareDialog(BasicDialog):
+    
+    def __init__(self, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
+        self.mainwindow = mainwindow
+        super().__init__(None, 'Share', 'share-1.png', 
+              parent, flags)
+        
+    def addMainLayout(self):
+        self.layout_controls = QtWidgets.QVBoxLayout()
+
+        self.gb_share = QtWidgets.QGroupBox('Sharing')
+        self.layout_gb_share = QtWidgets.QFormLayout()
+        self.combo_target = QtWidgets.QComboBox()
+        self.combo_target.setEditable(False)
+        self.combo_target.addItems(Share.SERVICES.keys())
+        self.combo_target.setCurrentIndex(0)
+        self.le_title = QtWidgets.QLineEdit()
+        self.le_title.setText('My new crossword')
+        self.le_tags = QtWidgets.QLineEdit()
+        self.le_tags.setText('pycross,crossword,python')
+        self.le_source = QtWidgets.QLineEdit()
+        self.le_source.setText('{APP_NAME} {APP_VERSION}')
+        self.te_notes = QtWidgets.QPlainTextEdit()
+        self.te_notes.setWordWrapMode(1)
+        self.btn_share_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Settings...', None)
+        self.btn_share_settings.setMaximumWidth(150)
+        self.btn_share_settings.clicked.connect(self.on_btn_share_settings)
+        self.layout_gb_share.addRow('Target', self.combo_target)
+        self.layout_gb_share.addRow('Title', self.le_title)
+        self.layout_gb_share.addRow('Tags', self.le_tags)
+        self.layout_gb_share.addRow('Source', self.le_source)
+        self.layout_gb_share.addRow('Notes', self.te_notes)
+        self.layout_gb_share.addRow('', self.btn_share_settings)
+        self.gb_share.setLayout(self.layout_gb_share)
+        self.layout_controls.addWidget(self.gb_share)
+
+        self.gb_export = QtWidgets.QGroupBox('Export')
+        self.layout_gb_export = QtWidgets.QGridLayout()
+        self.rb_pdf = QtWidgets.QRadioButton('PDF')
+        self.rb_jpg = QtWidgets.QRadioButton('JPG')
+        self.rb_png = QtWidgets.QRadioButton('PNG')
+        self.rb_svg = QtWidgets.QRadioButton('SVG')
+        self.rb_xpf = QtWidgets.QRadioButton('XPF')
+        self.rb_ipuz = QtWidgets.QRadioButton('IPUZ')
+        self.rb_pdf.setChecked(True)
+        self.btn_export_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Settings...', None)
+        self.btn_export_settings.setMaximumWidth(150)
+        self.btn_export_settings.clicked.connect(self.on_btn_export_settings)
+        self.layout_gb_export.addWidget(self.rb_pdf, 0, 0)
+        self.layout_gb_export.addWidget(self.rb_jpg, 1, 0)
+        self.layout_gb_export.addWidget(self.rb_png, 2, 0)
+        self.layout_gb_export.addWidget(self.rb_svg, 0, 1)
+        self.layout_gb_export.addWidget(self.rb_xpf, 1, 1)
+        self.layout_gb_export.addWidget(self.rb_ipuz, 2, 1)
+        self.layout_gb_export.addWidget(self.btn_export_settings, 3, 1)
+        self.gb_export.setLayout(self.layout_gb_export)
+        self.layout_controls.addWidget(self.gb_export)
+
+    @QtCore.pyqtSlot()
+    def on_btn_share_settings(self):
+        if not hasattr(self.mainwindow, 'dia_settings'):
+            self.mainwindow.dia_settings = SettingsDialog(self.mainwindow)
+        self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(9))
+        self.mainwindow.on_act_config(False)
+
+    @QtCore.pyqtSlot()
+    def on_btn_export_settings(self):
+        ind = 7 if self.rb_pdf.isChecked() else 5
+        if not hasattr(self.mainwindow, 'dia_settings'):
+            self.mainwindow.dia_settings = SettingsDialog(self.mainwindow)
+        self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(ind))
+        self.mainwindow.on_act_config(False)

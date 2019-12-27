@@ -13,7 +13,7 @@ from guisettings import CWSettings
 from dbapi import Sqlitedb
 from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu, 
                     SettingsDialog, WordSuggestDialog, PrintPreviewDialog,
-                    CwInfoDialog, DefLookupDialog, ReflectGridDialog, AboutDialog)
+                    CwInfoDialog, DefLookupDialog, ReflectGridDialog, AboutDialog, ShareDialog)
 from crossword import Word, Crossword, CWError, FILLER, FILLER2, BLANK
 from wordsrc import DBWordsource, TextWordsource, TextfileWordsource, MultiWordsource
 
@@ -43,8 +43,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cw_modified = True                # flag showing that current cw has been changed since last save
         self.current_word = None               # current word in grid
         self.last_pressed_item = None          # last pressed cell in cw grid
-        self.cloud = None                      # Cloudstorage object
+        self.sharer = None                     # Share object
         self.wordsrc = MultiWordsource()       # empty word source instance
+        self.garbage = []                      # files to delete on startup / close
         # cw generation worker thread
         self.gen_thread = GenThread(on_gen_timeout=self.on_gen_timeout, on_gen_stopped=self.on_gen_stop, 
                                     on_gen_validate=self.on_gen_validate,
@@ -414,7 +415,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def UI_create_context_menus(self):
         self.menu_crossword = CrosswordMenu(self)
 
-    def delete_temp_files(self):
+    def delete_temp_files(self, delete_update_log=True):
         """
         Clears any temps left by the app's previous launches.
         """
@@ -429,13 +430,14 @@ class MainWindow(QtWidgets.QMainWindow):
                 ts = os.path.getmtime(updatelog)
                 self.updater.update_info['last_update'] = timestamp_to_str(ts)
                 self.updater._write_update_info()
+            if delete_update_log:
+                self.garbage.append(updatelog)
         except Exception as err:
             pass
             #self._log(err)
 
         # clear all
-        temp_files = [updatelog]
-        for filepath in temp_files:
+        for filepath in self.garbage:
             try:
                 os.remove(filepath)
             except:
@@ -482,9 +484,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.update_cw(False)
         self.slider_cw_scale.setValue(CWSettings.settings['grid_style']['scale'])
 
-        # cloud storage
-        if self.cloud: 
-            self.cloud.init_settings()
+        # sharer
+        if self.sharer: 
+            self.sharer.cloud.init_settings()
         
         # save settings file
         if save_settings:
@@ -1011,7 +1013,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.update_cw_grid()
 
     def create_cloud(self):
-        self.cloud = Cloudstorage(CWSettings.settings['sharing'])
+        cloud = Cloudstorage(CWSettings.settings['sharing'])
+        self.sharer = Share(cloud, None)
 
     @QtCore.pyqtSlot(float)
     def on_gen_timeout(self, timeout_):
@@ -1065,8 +1068,8 @@ class MainWindow(QtWidgets.QMainWindow):
         except:
             pass
         return -1
-        
-    def save_cw(self, filepath=None, file_type=None):
+
+    def _save_cw(self, filepath=None, file_type=None):
         if filepath is None:
             filepath = self.cw_file
             
@@ -1078,7 +1081,7 @@ class MainWindow(QtWidgets.QMainWindow):
             elif not isinstance(file_type, int):
                 file_type = -1
 
-        if not filepath or file_type == -1: return False
+        if not filepath or file_type == -1: return None
 
         try:    
             ext = os.path.splitext(filepath)[1][1:].lower()
@@ -1102,18 +1105,23 @@ class MainWindow(QtWidgets.QMainWindow):
 
             if not os.path.isfile(filepath):
                 raise Exception(f"Error saving crossword to '{filepath}'")
-
-            if (file_type == 2 or file_type == 3) and CWSettings.settings['export']['openfile']:
-                Popen(f'cmd.exe /c "{filepath}"')    
-
-            self.cw_file = os.path.abspath(filepath)
-            self.cw_modified = False
-            self.update_actions()
-            return True
+           
+            return (filepath, file_type)
 
         except Exception as err:
             MsgBox(str(err), self, 'Error', 'error')
-            return False
+            return None
+        
+    def save_cw(self, filepath=None, file_type=None):
+        res = self._save_cw(filepath, file_type)
+        if not res: return False
+        if res[1] in (2, 3) and CWSettings.settings['export']['openfile']:
+            run_exe(filepath, True, False, shell=True)    
+
+        self.cw_file = os.path.abspath(res[0])
+        self.cw_modified = False
+        self.update_actions()
+        return True
 
     def export_cw(self, filepath, scale=1.0):
         """
@@ -1542,6 +1550,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # save settings file
         self.update_settings_before_quit()
         CWSettings.save_to_file(SETTINGS_FILE)
+        # clear temps        
+        self.delete_temp_files(False)
         # close
         event.accept()
 
@@ -1735,9 +1745,38 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_share(self, checked):
         """
         Share CW in social networks.
-        """
-        if not self.cloud:
+        """        
+        if not hasattr(self, 'dia_share'):
+            self.dia_share = ShareDialog(self, self)
+        if not self.dia_share.exec(): return
+        if not self.sharer:
             self.create_cloud()
+        # get temp dir
+        temp_dir = os.path.abspath(CWSettings.settings['common']['temp_dir'] or get_tempdir())
+        temp_file = generate_uuid()
+        ext = ''
+        if self.dia_share.rb_pdf.isChecked(): 
+            ext = '.pdf'
+        elif self.dia_share.rb_jpg.isChecked(): 
+            ext = '.jpg'
+        elif self.dia_share.rb_png.isChecked(): 
+            ext = '.png'
+        elif self.dia_share.rb_svg.isChecked(): 
+            ext = '.svg'
+        elif self.dia_share.rb_xpf.isChecked(): 
+            ext = '.xpf'
+        elif self.dia_share.rb_ipuz.isChecked(): 
+            ext = '.ipuz'
+        temp_file = os.path.join(temp_dir, temp_file + ext)
+        # export cw
+        res = self._save_cw(temp_file)
+        if not res: return
+        # share file
+        self.sharer.share(temp_file, self.dia_share.combo_target.currentText(), self.dia_share.le_title.text(),
+                            self.dia_share.te_notes.toPlainText(), 'google', self.dia_share.le_tags.text(),
+                            self.dia_share.le_source.text())
+        # add temp_file to garbage bin
+        self.garbage.append(temp_file)
         
     @QtCore.pyqtSlot(bool)
     def on_act_exit(self, checked):
@@ -1903,7 +1942,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_wsrc(self, checked):
         if not hasattr(self, 'dia_settings'):
             self.dia_settings = SettingsDialog(self)
-        self.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(1).child(0))
+        self.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(2).child(0))
         self.on_act_config(False)
     
     @QtCore.pyqtSlot(bool)        

@@ -440,8 +440,6 @@ class Cloudstorage:
             self.users.append(new_user)
             self._user = new_user
             self.settings['user'] = username
-        else:
-            self.settings['user'] = ''
 
     def _delete_user(self, username=None):
         if username and self._user and username != self._user[0]:            
@@ -675,7 +673,7 @@ class Share:
     ERRMAP = {'message': 'data', 'code': 'code'}
     SERVICES = {'twitter': 7, 'facebook': 5, 'pinterest': 309, 'linkedin': 88, 'gmail': 52,
                 'yahoomail': 54, 'aolmail': 55, 'hotmail': 53, 'myspace': 39,
-                'reddit': 40, 'skype': 989, 'tumblr': 78, 'yandex': 267}
+                'reddit': 40, 'skype': 989, 'tumblr': 78, 'yandex': 267, 'clipboard': 0}
 
     def __init__(self, cloud: Cloudstorage, settings, timeout=5000):
         self.settings = settings
@@ -693,14 +691,13 @@ class Share:
         serv = social
         just_copy_url = False
         if isinstance(serv, str):
-            if serv == '':
+            serv = Share.SERVICES.get(serv, -1)                
+            if serv == -1:
+                MsgBox(f"Cannot find social network '{serv}'!", 
+                    title='Error', msgtype='error')
+                return False
+            elif serv == 0:
                 just_copy_url = True
-            else:
-                serv = Share.SERVICES.get(serv, -1)
-                if serv == -1:
-                    MsgBox(f"Cannot find social network '{serv}'!", 
-                        title='Error', msgtype='error')
-                    return False
         if os.path.isfile(file_or_url):
             # file_or_url is a file, upload it!
             link_info = self.cloud.upload_file(file_or_url)

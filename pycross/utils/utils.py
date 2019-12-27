@@ -2,7 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import sys, os, subprocess, traceback
+import sys, os, subprocess, traceback, uuid
 import tempfile
 from datetime import datetime, time
 from .globalvars import ENCODING, FONT_WEIGHTS
@@ -18,6 +18,9 @@ def print_dbg(what, file=sys.stdout):
         
 def print_help(what, file=sys.stdout):
     print(what, file=file)
+
+def generate_uuid():
+    return uuid.uuid4().hex
 
 def walk_dir(root_path, abs_path=True, recurse=True, dir_process_function=None, 
              file_process_function=None, file_types=None):
