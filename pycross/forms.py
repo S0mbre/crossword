@@ -469,6 +469,11 @@ class WordSrcDialog(BasicDialog):
 ##############################################################################  
         
 class SettingsDialog(BasicDialog):
+
+    PAGES = ['Common', 'Generation', 'Source management', 'Search rules',
+             'Window', 'Grid', 'Clues', 'Definition lookup', 'Import & Export',
+             'Plugins', 'Printing', 'Updating', 'Sharing']
+    PARENT_PAGES = ['Sources', 'User interface']
     
     def __init__(self, mainwindow=None, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
@@ -494,6 +499,7 @@ class SettingsDialog(BasicDialog):
         self.tree.setMinimumWidth(100)
         self.tree.setMaximumWidth(500)
         
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Common']))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Generation']))
         item = QtWidgets.QTreeWidgetItem(['Sources'])
         item.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -513,6 +519,7 @@ class SettingsDialog(BasicDialog):
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Plugins']))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Printing']))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Updating']))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Sharing']))
         self.tree.itemSelectionChanged.connect(self.on_tree_select)
         
         self.central_widget = QtWidgets.QWidget()
@@ -552,6 +559,29 @@ class SettingsDialog(BasicDialog):
         """
         Adds pages to self.stacked.
         """
+        # 0. Common
+        self.page_common = QtWidgets.QWidget()
+        self.layout_common = QtWidgets.QFormLayout()
+        self.layout_common.setSpacing(10)
+
+        self.le_tempdir = QtWidgets.QLineEdit('')
+        self.le_tempdir.setToolTip('Temp directory (leave EMPTY for default)')
+        self.act_tempdir_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
+        self.act_tempdir_browse.setToolTip('Browse')
+        self.act_tempdir_browse.triggered.connect(self.on_act_tempdir_browse)
+        self.btn_tempdir_browse = QtWidgets.QToolButton()
+        self.btn_tempdir_browse.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.btn_tempdir_browse.setDefaultAction(self.act_tempdir_browse)
+        
+        self.layout_tempdir = QtWidgets.QHBoxLayout()
+        self.layout_tempdir.addWidget(self.le_tempdir)
+        self.layout_tempdir.addWidget(self.btn_tempdir_browse)
+
+        self.layout_common.addRow('Temp directory', self.layout_tempdir)
+
+        self.page_common.setLayout(self.layout_common)
+        self.stacked.addWidget(self.page_common)
+
         # 1. Generation
         self.page_generation = QtWidgets.QWidget()
         self.layout_generation = QtWidgets.QFormLayout()
@@ -1265,18 +1295,8 @@ class SettingsDialog(BasicDialog):
         self.spin_update_period.setToolTip('Set to -1 to disable update checks')
         self.chb_update_auto = QtWidgets.QCheckBox('')
         self.chb_update_major_only = QtWidgets.QCheckBox('')
-        self.chb_update_restart = QtWidgets.QCheckBox('')
-        self.le_update_tempdir = QtWidgets.QLineEdit('')
-        self.le_update_tempdir.setToolTip('Temp directory (leave empty for default)')
-        self.act_update_tempdir_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
-        self.act_update_tempdir_browse.setToolTip('Browse')
-        self.act_update_tempdir_browse.triggered.connect(self.on_act_update_tempdir_browse)
-        self.btn_update_tempdir_browse = QtWidgets.QToolButton()
-        self.btn_update_tempdir_browse.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        self.btn_update_tempdir_browse.setDefaultAction(self.act_update_tempdir_browse)
-        self.layout_update_tempdir = QtWidgets.QHBoxLayout()
-        self.layout_update_tempdir.addWidget(self.le_update_tempdir)
-        self.layout_update_tempdir.addWidget(self.btn_update_tempdir_browse)
+        self.chb_update_restart = QtWidgets.QCheckBox('')       
+        
         self.le_update_logfile = QtWidgets.QLineEdit('')
         self.le_update_logfile.setToolTip('Log file for update operations')
         self.act_update_log_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
@@ -1293,11 +1313,35 @@ class SettingsDialog(BasicDialog):
         self.layout_updating.addRow('Check / update major releases only', self.chb_update_major_only)
         self.layout_updating.addRow('Auto update', self.chb_update_auto)
         self.layout_updating.addRow('Restart on update', self.chb_update_restart)
-        self.layout_updating.addRow('Temp directory', self.layout_update_tempdir)
         self.layout_updating.addRow('Log file', self.layout_update_log)
 
         self.page_updating.setLayout(self.layout_updating)
         self.stacked.addWidget(self.page_updating)
+
+        # 12. Sharing
+        self.page_sharing = QtWidgets.QWidget()
+        self.layout_sharing = QtWidgets.QFormLayout()
+        self.layout_sharing.setSpacing(10)
+
+        self.le_sharing_account = QtWidgets.QLineEdit('')
+        self.le_sharing_account.setToolTip('Kloudless account ID (leave EMPTY for default)')
+        self.le_sharing_token = QtWidgets.QLineEdit('')
+        self.le_sharing_token.setToolTip('Kloudless Bearer Token (leave EMPTY for default)')
+        self.le_sharing_root = QtWidgets.QLineEdit('')
+        self.le_sharing_root.setToolTip('Kloudless root folder (leave EMPTY for default)')
+        self.le_sharing_user = QtWidgets.QLineEdit('')
+        self.le_sharing_user.setToolTip('Kloudless username (leave EMPTY to create new user automatically)')
+        self.chb_sharing_use_api_key = QtWidgets.QCheckBox('')
+        self.chb_sharing_use_api_key.setToolTip('Check this to use one single API key for authentication (WARNING! NOT SAFE!)')
+
+        self.layout_sharing.addRow('Kloudless account ID', self.le_sharing_account)
+        self.layout_sharing.addRow('Kloudless Bearer Token', self.le_sharing_token)
+        self.layout_sharing.addRow('Kloudless root folder', self.le_sharing_root)
+        self.layout_sharing.addRow('Kloudless username', self.le_sharing_user)
+        self.layout_sharing.addRow('Use API key', self.chb_sharing_use_api_key)
+
+        self.page_sharing.setLayout(self.layout_sharing)
+        self.stacked.addWidget(self.page_sharing)
 
     def _fill_clue_cols(self):
         self.lw_clues_cols.clear()
@@ -1315,12 +1359,12 @@ class SettingsDialog(BasicDialog):
         """
         Saves settings in CWSettings.settings format.
         It doesn't update CWSettings.settings automatically!
-        """
-        
-        settings = {'gui': {}, 'cw_settings': {}, 'grid_style': {}, 'cell_format': {}, 
-                    'wordsrc': {}, 'clues': {}, 'lookup': {}, 'printing': {}, 'export': {},
-                    'update': {}}
-        
+        """        
+        settings = {key: {} for key in CWSettings.settings}
+
+        # common
+        settings['common']['temp_dir'] = self.le_tempdir.text()
+
         # user interface
         settings['gui']['theme'] = self.combo_apptheme.currentText()
         settings['gui']['toolbar_pos'] = self.combo_toolbarpos.currentIndex()
@@ -1792,9 +1836,15 @@ class SettingsDialog(BasicDialog):
         settings['update']['check_every'] = self.spin_update_period.value()
         settings['update']['only_major_versions'] = self.chb_update_major_only.isChecked()
         settings['update']['auto_update'] = self.chb_update_auto.isChecked()
-        settings['update']['restart_on_update'] = self.chb_update_restart.isChecked()
-        settings['update']['temp_dir'] = self.le_update_tempdir.text()
+        settings['update']['restart_on_update'] = self.chb_update_restart.isChecked()        
         settings['update']['logfile'] = os.path.relpath(self.le_update_logfile.text(), os.path.dirname(__file__)) if self.le_update_logfile.text() else ''
+
+        # sharing
+        settings['sharing']['account'] = self.le_sharing_account.text()
+        settings['sharing']['bearer_token'] = self.le_sharing_token.text()
+        settings['sharing']['use_api_key'] = self.chb_sharing_use_api_key.isChecked()
+        settings['sharing']['root_folder'] = self.le_sharing_root.text()
+        settings['sharing']['user'] = self.le_sharing_user.text()
         
         return settings
 
@@ -1815,6 +1865,10 @@ class SettingsDialog(BasicDialog):
         
         if settings is None:
             settings = CWSettings.settings
+
+        # common
+        if page is None or page == 'Common':
+            self.le_tempdir.setText(settings['common']['temp_dir'])
         
         # engine
         if page is None or page == 'Generation':
@@ -2289,8 +2343,17 @@ class SettingsDialog(BasicDialog):
             self.chb_update_auto.setChecked(settings['auto_update'])
             self.chb_update_major_only.setChecked(settings['only_major_versions'])
             self.chb_update_restart.setChecked(settings['restart_on_update'])
-            self.le_update_tempdir.setText(settings['temp_dir'])
             self.le_update_logfile.setText(settings['logfile'])
+
+        # Updating
+        if page is None or page == 'Sharing':
+            
+            settings = CWSettings.settings['sharing']
+            self.le_sharing_account.setText(settings['account'])
+            self.le_sharing_token.setText(settings['bearer_token'])
+            self.le_sharing_root.setText(settings['root_folder'])
+            self.le_sharing_user.setText(settings['user'])
+            self.chb_sharing_use_api_key.setChecked(settings['use_api_key'])
     
     def addoredit_wordsrc(self, src, src_item=None):
         """
@@ -2322,31 +2385,11 @@ class SettingsDialog(BasicDialog):
         item = self.tree.currentItem()
         if not item: return
         txt = item.text(0)
-        if txt == 'Generation':
-            self.stacked.setCurrentIndex(0)
-        elif txt == 'Source management':
-            self.stacked.setCurrentIndex(1)
-        elif txt == 'Search rules':
-            self.stacked.setCurrentIndex(2)
-        elif txt == 'Window':
-            self.stacked.setCurrentIndex(3)
-        elif txt == 'Grid':
-            self.stacked.setCurrentIndex(4)
-        elif txt == 'Clues':
-            self.stacked.setCurrentIndex(5)
-        elif txt == 'Definition lookup':
-            self.stacked.setCurrentIndex(6)
-        elif txt == 'Import & Export':
-            self.stacked.setCurrentIndex(7)
-        elif txt == 'Plugins':
-            self.stacked.setCurrentIndex(8)
-        elif txt == 'Printing':
-            self.stacked.setCurrentIndex(9)
-        elif txt == 'Updating':
-            self.stacked.setCurrentIndex(10)
-        elif txt in ('Sources', 'User interface'):
+        if txt in SettingsDialog.PARENT_PAGES:
             item.setExpanded(True)
             self.tree.setCurrentItem(item.child(0))
+        else:
+            self.stacked.setCurrentIndex(SettingsDialog.PAGES.index(txt))       
             
     @QtCore.pyqtSlot(bool) 
     def on_btn_defaults(self, checked):
@@ -2629,16 +2672,16 @@ class SettingsDialog(BasicDialog):
         self.spin_export_resolution_pdf.setValue(1200)
 
     @QtCore.pyqtSlot(bool)        
-    def on_act_update_tempdir_browse(self, checked):
+    def on_act_tempdir_browse(self, checked):
         """
         Browse for temp dir.
         """
-        current_dir = self.le_update_tempdir.text()
+        current_dir = self.le_tempdir.text()
         default_dir = get_tempdir().replace('/', os.sep).lower()
         selected_path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select directory', current_dir or default_dir)
         selected_path = selected_path.replace('/', os.sep).lower()
         if selected_path:
-            self.le_file.setText(selected_path if selected_path != default_dir else '')
+            self.le_tempdir.setText(selected_path if selected_path != default_dir else '')
 
     @QtCore.pyqtSlot(bool)        
     def on_act_update_log_browse(self, checked):

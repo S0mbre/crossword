@@ -251,8 +251,17 @@
 		"check_every": 1,
 		"auto_update": false,
 		"only_major_versions": false,
-		"temp_dir": "",
 		"logfile": "update.log",
 		"restart_on_update": true
+	},
+	"sharing": {
+		"account": "",
+		"bearer_token": "",
+		"use_api_key": false,
+		"root_folder": "",
+		"user": ""
+	},
+	"common": {
+		"temp_dir": ""
 	}
 }

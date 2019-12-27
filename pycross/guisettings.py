@@ -151,12 +151,17 @@ class CWSettings:
     'update':
         {
             'check_every': 1, 'auto_update': False, 
-            'only_major_versions': False, 'temp_dir': '',
+            'only_major_versions': False, 
             'logfile': 'update.log', 'restart_on_update': True
         },
-    'cloud':
+    'sharing':
         {
-            'account': '', 'bearer_token': '', 'root_folder': '', 'user': ''
+            'account': '', 'bearer_token': '', 'use_api_key': False,
+            'root_folder': '', 'user': ''
+        },
+    'common':
+        {
+            'temp_dir': ''
         }
     } # settings
          

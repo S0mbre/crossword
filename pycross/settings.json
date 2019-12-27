@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			296,
-			176
+			489,
+			112
 		],
 		"win_size": [
-			800,
-			500
+			1349,
+			790
 		]
 	},
 	"cw_settings": {
@@ -21,12 +21,11 @@
 		"scale": 100,
 		"show": true,
 		"line": 1,
-		"header": false,
-		"cell_size": 50.0,
 		"line_color": 4288716964,
 		"line_width": 1,
 		"active_cell_color": 4294967040,
-		"char_case": "upper",
+		"header": false,
+		"cell_size": 50,
 		"numbers": {
 			"show": true,
 			"color": 4288716964,
@@ -34,7 +33,8 @@
 			"font_name": "Arial",
 			"font_weight": 50,
 			"font_italic": true
-		}
+		},
+		"char_case": "upper"
 	},
 	"cell_format": {
 		"NORMAL": {
@@ -43,8 +43,8 @@
 			"fg_color": 4278190080,
 			"fg_pattern": 1,
 			"flags": 33,
-			"font_name": "Arial",
 			"font_size": 14,
+			"font_name": "Arial",
 			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
@@ -55,8 +55,8 @@
 			"fg_color": 4278190080,
 			"fg_pattern": 1,
 			"flags": 33,
-			"font_name": "Arial",
 			"font_size": 14,
+			"font_name": "Arial",
 			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
@@ -64,11 +64,11 @@
 		"BLANK": {
 			"bg_color": 4294967295,
 			"bg_pattern": 1,
-			"fg_color": 0,
+			"fg_color": 4278190080,
 			"fg_pattern": 1,
 			"flags": 33,
-			"font_name": "Arial",
 			"font_size": 14,
+			"font_name": "Arial",
 			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
@@ -79,8 +79,8 @@
 			"fg_color": 0,
 			"fg_pattern": 1,
 			"flags": 0,
-			"font_name": "Arial",
 			"font_size": 14,
+			"font_name": "Arial",
 			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
@@ -91,8 +91,8 @@
 			"fg_color": 0,
 			"fg_pattern": 1,
 			"flags": 0,
-			"font_name": "Arial",
 			"font_size": 14,
+			"font_name": "Arial",
 			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
@@ -111,8 +111,8 @@
 			"bg_color": 4294967295,
 			"bg_pattern": 1,
 			"fg_color": 4278190080,
-			"font_name": "Arial",
 			"font_size": 9,
+			"font_name": "Arial",
 			"font_weight": 50,
 			"font_italic": false,
 			"align": 1
@@ -151,7 +151,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 100
+				"width": 234
 			}
 		]
 	},
@@ -161,23 +161,23 @@
 		"dics": {
 			"show": true,
 			"exact_match": false,
-			"bad_pos": "UNKNOWN",
 			"show_pos": true,
+			"bad_pos": "UNKNOWN",
 			"mw_apikey": "",
 			"yandex_key": ""
 		},
 		"google": {
 			"show": true,
 			"exact_match": false,
+			"safe_search": false,
 			"file_types": [],
 			"lang": [],
-			"country": [],
 			"interface_lang": [],
+			"country": [],
 			"link_site": "",
 			"related_site": "",
 			"in_site": "",
 			"nresults": -1,
-			"safe_search": false,
 			"api_key": "",
 			"api_cse": ""
 		}
@@ -197,68 +197,71 @@
 		"clear_cw": true,
 		"print_clue_letters": true,
 		"print_info": true,
+		"color_print": true,
+		"openfile": true,
 		"cw_title": "<t>",
 		"clues_title": "Clues",
 		"header_font": {
-			"font_name": "Verdana",
 			"font_size": 20,
-			"color": 4278190335,
+			"font_name": "Verdana",
 			"font_weight": 75,
-			"font_italic": false
+			"font_italic": false,
+			"color": 4278190335
 		},
 		"info_font": {
-			"font_name": "Arial",
 			"font_size": 14,
-			"color": 4278190080,
+			"font_name": "Arial",
 			"font_weight": 50,
-			"font_italic": false
+			"font_italic": false,
+			"color": 4278190080
 		},
 		"clue_number_font": {
-			"font_name": "Arial",
 			"font_size": 14,
-			"color": 4278190080,
+			"font_name": "Arial",
 			"font_weight": 75,
-			"font_italic": false
+			"font_italic": false,
+			"color": 4278190080
 		},
 		"clue_font": {
-			"font_name": "Arial",
 			"font_size": 14,
-			"color": 4278190080,
+			"font_name": "Arial",
 			"font_weight": 50,
-			"font_italic": false
+			"font_italic": false,
+			"color": 4278190080
 		},
 		"clue_letters_font": {
-			"font_name": "Arial",
 			"font_size": 14,
-			"color": 4278190080,
+			"font_name": "Arial",
 			"font_weight": 50,
-			"font_italic": true
-		},
-		"color_print": true,
-		"openfile": true
+			"font_italic": true,
+			"color": 4278190080
+		}
 	},
 	"export": {
 		"openfile": true,
+		"clear_cw": true,
 		"img_resolution": 72,
 		"pdf_resolution": 1200,
 		"mm_per_cell": 20,
 		"img_output_quality": 95,
 		"svg_title": "<t>",
-		"svg_description": "",
-		"clear_cw": true
+		"svg_description": ""
 	},
 	"update": {
 		"check_every": 1,
-		"auto_update": false,
 		"only_major_versions": false,
-		"temp_dir": "",
-		"logfile": "update.log",
-		"restart_on_update": true
+		"auto_update": false,
+		"restart_on_update": true,
+		"logfile": "update.log"
 	},
-	"cloud": {
+	"sharing": {
 		"account": "",
 		"bearer_token": "",
+		"use_api_key": true,
 		"root_folder": "",
-		"user": ""
+		"user": "rootuser"
+	},
+	"common": {
+		"temp_dir": ""
 	}
 }

@@ -158,6 +158,55 @@ def MsgBox(what, parent=None, title='pyCross', msgtype='info',
     else:
         msgtype = QtWidgets.QMessageBox.Information
     QtWidgets.QMessageBox(msgtype, title, what, btn, parent).exec()
+
+def UserInput(dialogtype='text', parent=None, title='pyCross', label='', value=None, textmode='normal',
+              valrange=None, decimals=1, step=1, comboeditable=True, comboitems=[]):
+    modes = {'normal': QtWidgets.QLineEdit.Normal, 'noecho': QtWidgets.QLineEdit.NoEcho,
+             'password': QtWidgets.QLineEdit.Password, 'passwordonedit': QtWidgets.QLineEdit.PasswordEchoOnEdit}
+    if dialogtype == 'text':
+        mode = modes[textmode]
+        return QtWidgets.QInputDialog.getText(parent, title, label,
+                echo=mode, text=str(value) if value else '')
+    elif dialogtype == 'multitext':
+        return QtWidgets.QInputDialog.getMultiLineText(parent, title, label,
+                text=str(value) if value else '')
+    elif dialogtype == 'int':
+        return QtWidgets.QInputDialog.getInt(parent, title, label,
+                value=int(value) if value else 0, min=valrange[0] if valrange else -2147483647,
+                max=valrange[1] if valrange else 2147483647, step=step)
+    elif dialogtype == 'float':
+        return QtWidgets.QInputDialog.getDouble(parent, title, label,
+                value=float(value) if value else 0, min=valrange[0] if valrange else -2147483647,
+                max=valrange[1] if valrange else 2147483647, decimals=decimals)
+    elif dialogtype == 'item':
+        return QtWidgets.QInputDialog.getMultiLineText(parent, title, label,
+                comboitems, current=value if value else 0, editable=comboeditable)
+
+def clipboard_copy(value, valtype='text'):
+    clip = QtWidgets.qApp.clipboard()
+    if valtype == 'text':
+        clip.setText(value)
+    elif valtype == 'mime':
+        clip.setMimeData(value)
+    elif valtype == 'pixmap':
+        clip.setPixmap(value)
+    elif valtype == 'image':
+        clip.setImage(value)
+
+def clipboard_get(valtype='text'):
+    clip = QtWidgets.qApp.clipboard()
+    if valtype == 'text':
+        return clip.text()
+    elif valtype == 'mime':
+        return clip.mimeData()
+    elif valtype == 'pixmap':
+        return clip.pixmap()
+    elif valtype == 'image':
+        return clip.image()
+    return None
+
+def clipboard_clear():
+    QtWidgets.qApp.clipboard().clear()
         
 def stylesheet_load(style, dequote=True, strip_sz=True, units=('pt', 'px')):
     ls_style = [s.strip() for s in style.split(';')]

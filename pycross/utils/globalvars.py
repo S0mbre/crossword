@@ -87,9 +87,6 @@ GOOGLE_CSE = '012413034625838642915:je3epsydo2r'              # Google CSE ident
 GOOGLE_HTTP = 'https://www.googleapis.com/customsearch/v1?key={}&cx={}&prettyPrint=true&q={}'
 GOOGLE_DAILY_REQ = 100                                        # daily limit, see https://developers.google.com/custom-search/v1/overview
 
-SHAREAHOLIC_KEY = 'abf1b67f10817416ba9fee9b76455bef'
-SHAREAHOLIC_HTTP = 'https://www.shareaholic.com/api/share/?v=1&apitype=1&apikey={}&service={}&title={}&link={}&shortener={}&notes={}&tags={}'
-
 GOOGLE_LANG_LR = {'lang_ar': 'Arabic', 'lang_bg': 'Bulgarian', 'lang_ca': 'Catalan', 'lang_cs': 'Czech',
     'lang_da': 'Danish', 'lang_de': 'German', 'lang_el': 'Greek', 'lang_en': 'English',
     'lang_es': 'Spanish', 'lang_et': 'Estonian', 'lang_fi': 'Finnish', 'lang_fr': 'French',

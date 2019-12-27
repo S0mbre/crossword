@@ -8,6 +8,7 @@ import os, json, re, threading, math, traceback
 from utils.utils import *
 from utils.globalvars import *
 from utils.update import Updater
+from utils.onlineservices import Cloudstorage, Share
 from guisettings import CWSettings
 from dbapi import Sqlitedb
 from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu, 
@@ -42,6 +43,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cw_modified = True                # flag showing that current cw has been changed since last save
         self.current_word = None               # current word in grid
         self.last_pressed_item = None          # last pressed cell in cw grid
+        self.cloud = None                      # Cloudstorage object
         self.wordsrc = MultiWordsource()       # empty word source instance
         # cw generation worker thread
         self.gen_thread = GenThread(on_gen_timeout=self.on_gen_timeout, on_gen_stopped=self.on_gen_stop, 
@@ -479,6 +481,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # cell_format, numbers, cell size etc...
         self.update_cw(False)
         self.slider_cw_scale.setValue(CWSettings.settings['grid_style']['scale'])
+
+        # cloud storage
+        if self.cloud: 
+            self.cloud.init_settings()
         
         # save settings file
         if save_settings:
@@ -1003,6 +1009,9 @@ class MainWindow(QtWidgets.QMainWindow):
             
     def on_generate_finish(self):
         self.update_cw_grid()
+
+    def create_cloud(self):
+        self.cloud = Cloudstorage(CWSettings.settings['sharing'])
 
     @QtCore.pyqtSlot(float)
     def on_gen_timeout(self, timeout_):
@@ -1727,8 +1736,9 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         Share CW in social networks.
         """
-        MsgBox('To be implemented in next release ))', self, title='Upload / share crossword')
-
+        if not self.cloud:
+            self.create_cloud()
+        
     @QtCore.pyqtSlot(bool)
     def on_act_exit(self, checked):
         self.close()

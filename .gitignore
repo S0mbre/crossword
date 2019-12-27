@@ -9,3 +9,4 @@ pycross/assets/*.txt
 */*.json
 */autosaved.xpf
 /*.bat
+/mynotes.txt

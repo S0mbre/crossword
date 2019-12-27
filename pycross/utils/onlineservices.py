@@ -2,15 +2,14 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import requests, os, uuid
+import requests, os, uuid, json, webbrowser
 import urllib.parse
 from abc import ABC, abstractmethod
 from .globalvars import (MW_DIC_KEY, MW_DIC_HTTP, MW_WORD_URL, 
                         YAN_DICT_KEY, YAN_DICT_HTTP,
-                        SHAREAHOLIC_KEY, SHAREAHOLIC_HTTP,
                         GOOGLE_KEY, GOOGLE_CSE, GOOGLE_HTTP, GOOGLE_LANG_LR, 
                         GOOGLE_LANG_HL, GOOGLE_COUNTRIES_CR, GOOGLE_COUNTRIES_GL)
-from .utils import MsgBox                 
+from .utils import MsgBox, UserInput, clipboard_copy                 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -213,21 +212,20 @@ class YandexDict(OnlineDictionary):
 
 class Cloudstorage:
 
-    ACCID = 352604900
-    BEARER = 'weov2heMt4VYnhi78egvYYV55qoa9S'
+    APIURL = 'https://api.kloudless.com/v2/'
+    ACCID = 352604900 # dropbox account ID (connected to the pycross app on Kloudless)
     ROOTNAME = 'pycrossall'
-    ROOTID = 'Fn6Cw1UD_PxkjIc8EN8u0uJHm4FsKBp6RCIGrNq6R9KQ='
+    #ROOTID = 'Fn6Cw1UD_PxkjIc8EN8u0uF4LYc2hdbgF8VEy6eS7eyg='
 
-    def __init__(self, settings):
+    def __init__(self, settings, timeout=5000):
         self.settings = settings
+        self.timeout = timeout
         self.users = []
         self.init_settings()        
 
     def init_settings(self):        
         self._accid = self.settings['account'] or Cloudstorage.ACCID
-        self._baseurl = f"https://api.kloudless.com/v2/accounts/{self._accid}/storage/"
-        self._bearer = self.settings['bearer_token'] or Cloudstorage.BEARER
-        self._headers = {'Content-Type': 'application/json', 'Authorization': f"Bearer {self._bearer}"}
+        self._baseurl = f"{Cloudstorage.APIURL}accounts/{self._accid}/storage/"
         self._rootid = ''
         rootname = self.settings['root_folder'] \
             if (self.settings['root_folder'] and self.settings['account'] \
@@ -240,7 +238,67 @@ class Cloudstorage:
             MsgBox(f"Unable to create/access folder '{rootname}'!", 
                     title='Error', msgtype='error')    
 
-        self.find_or_create_user(self.settings['user'])
+        self._find_or_create_user(self.settings['user'])
+
+    def _request(self, url, command='get', returntype='json',  
+                 show_errors=True, on_error=None, error_keymap={'message': 'message', 'code': 'status_code'},
+                 **kwargs):
+
+        methods = {'get': requests.get, 'post': requests.post, 'delete': requests.delete,
+                   'patch': requests.patch}  
+        res = None      
+        try:
+            kwargs['timeout'] = kwargs.get('timeout', self.timeout)
+            res = methods[command](url, **kwargs)
+            if res is None: raise Exception(f"Empty result returned by request '{url}'")
+            if not res:
+                try:
+                    err = res.json()
+                except:
+                    err = {}
+                err = {'message': str(err.get(error_keymap['message'], f"Error returned by request '{url}'")),
+                       'code': err.get(error_keymap['code'], None)}                  
+                if on_error: on_error(err)
+                if show_errors:
+                    MsgBox(err['message'], 
+                           title=f"Error{' ' + str(err['code']) if err['code'] else ''}", 
+                           msgtype='error')
+                return None if returntype != 'bool' else False
+
+        except Exception as e:
+            if show_errors: MsgBox(str(e), title='Error', msgtype='error')
+            return None if returntype != 'bool' else False
+
+        if returntype == 'bool': return True
+        if returntype == 'json': return res.json()
+        if returntype == 'text': return res.text
+        return res.content
+
+    def _get_apikey(self):
+        if not getattr(self, '_apikey', None):
+            res = UserInput(label='Enter your API key', textmode='password')
+            self._apikey = res[0] if res[1] else None
+
+    def _get_bearer(self):
+        self._bearer = self.settings.get('bearer_token', None)
+        if not self._bearer:
+            res = UserInput(label='Enter your Bearer token', textmode='password')
+            self._bearer = res[0] if res[1] else None
+            self.settings['bearer_token'] = self._bearer or ''
+
+    def _make_headers(self, content_type='application/json', force_api_key=False):
+        auth = None
+        if self.settings['use_api_key'] or force_api_key:
+            self._get_apikey()
+            if not self._apikey:
+                raise Exception('No valid API key provided!\nProvide a valid API key or change your "use_api_key" settings\nto use a different authentication method.')
+            auth = f"APIKey {self._apikey}"
+        else:
+            self._get_bearer()
+            if not self._bearer:
+                raise Exception('No valid Bearer token provided!\nProvide a valid Bearer token or change your "use_api_key" settings\nto use a different authentication method.')
+            auth = f"Bearer {self._bearer}"
+        return {'Content-Type': content_type, 'Authorization': auth}
 
     def _create_account(self):
         """
@@ -250,30 +308,60 @@ class Cloudstorage:
         """
         return
 
+    def _get_accounts(self, enabled=None, admin=None, search=None):
+        """
+        Service method: lists all accounts tied to the pycross app on Kloudless.
+        """
+        req = f"{Cloudstorage.APIURL}accounts/" 
+        if not enabled is None:
+            req += f"?enabled={str(enabled).lower()}"
+        if not admin is None:
+            req += '?' if req.endswith('/') else '&'
+            req += f"admin={str(admin).lower()}"
+        if not search is None:
+            req += '?' if req.endswith('/') else '&'
+            req += f"search={urllib.parse.quote_plus(search)}"
+
+        return self._request(req, headers=self._make_headers(force_api_key=True))
+
+    def _get_account_matadata(self, account_id, retrieve_tokens=False, retrieve_full=True):
+        """
+        Service method: gets metadata for account specified by 'account_id'.
+        """
+        req = f"{Cloudstorage.APIURL}accounts/{account_id}/?retrieve_tokens={str(retrieve_tokens).lower()}&retrieve_full={str(retrieve_full).lower()}" 
+        return self._request(req, headers=self._make_headers(force_api_key=True))
+
     def _get_quota(self):
         """
         Retrieves storage quota information.
         """
         req = f"{self._baseurl}quota"
-        try:
-            res = requests.get(req, headers=self._headers)
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        return res.json() if res else None
+        return self._request(req, headers=self._make_headers())
 
     def _get_folder_objects(self, fid, recurse=False):
         if not fid:
             MsgBox('Empty folder ID passed to _get_folder_objects()!', title='Error', msgtype='error')
             return None
         req = f"{self._baseurl}folders/{urllib.parse.quote(fid)}/contents/?recursive={str(recurse).lower()}"
-        res = None
-        try:
-            res = requests.get(req, headers=self._headers)
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        return res.json() if res else None
+        return self._request(req, headers=self._make_headers())
+
+    def _get_folder_ancestors(self, folder_id):
+        folder_info = self._get_folder_metadata(folder_id)
+        if not folder_info: return None
+        return folder_info.get('ancestors', None)
+
+    def _is_user_folder(self, folder_id):
+        """
+        Checks if given folder is inside current user's folder.
+        """
+        if not self._user: return False
+        ancestors = self._get_folder_ancestors(folder_id)
+        if not ancestors: return False
+        for anc in ancestors:
+            index = 2 if anc['id_type'] == 'path' else 1
+            if anc['id'] == self._user[index]:
+                return True
+        return False
 
     def _generate_username(self):
         while True:
@@ -286,24 +374,10 @@ class Cloudstorage:
 
     def _create_folder(self, folder_name, parent_id='root', error_on_exist=False):
         folder_name = folder_name.lower()
-        data = {'parent_id': urllib.parse.quote(parent_id), 'name': urllib.parse.quote(folder_name)}
+        data = {'parent_id': parent_id, 'name': folder_name}
         req = f"{self._baseurl}folders/?conflict_if_exists={str(error_on_exist).lower()}"
-        print(self._headers)
-        print(req)
-        res = None
-        try:
-            res = requests.post(req, headers=self._headers, data=data)
-        except requests.exceptions.RequestException as e:
-            if res.status_code == 409:
-                MsgBox(f"Folder '{folder_name}' already exists!", 
-                      title='HTTP(S) request error', msgtype='warn')
-                return None
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        if not res: return None
-        res = res.json()
-        print(res)
-        return (res['name'], res['id'])
+        res = self._request(req, 'post', headers=self._make_headers(), json=data)        
+        return (res['name'], res['id'], res['ids']['path']) if res else None
 
     def _update_users(self):
         """
@@ -316,21 +390,14 @@ class Cloudstorage:
         if not res: return
         for obj in res['objects']:
             if obj['type'] != 'folder': continue
-            self.users.append((obj['name'].lower(), obj['id']))
+            self.users.append((obj['name'].lower(), obj['id'], obj['ids']['path']))
 
     def _get_file_metadata(self, file_id):
         """
         Retrieves the metadata of the given file: name, path, size, date, etc.
         """
         req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/"
-        try:
-            res = requests.get(req, headers=self._headers)
-            if not res: return None
-            return res.json()
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        return None
+        return self._request(req, headers=self._make_headers())
 
     def _get_folder_metadata(self, folder_id=None):
         """
@@ -343,16 +410,9 @@ class Cloudstorage:
                 return None
             folder_id = self._user[1]
         req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/"
-        try:
-            res = requests.get(req, headers=self._headers)
-            if not res: return None
-            return res.json()
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        return None
+        return self._request(req, headers=self._make_headers())
 
-    def find_or_create_user(self, username=None, error_on_exist=False):
+    def _find_or_create_user(self, username=None, error_on_exist=False):
         """
         Creates or finds the subfolder: dropbox/pycrossall/<username>.
         If found and 'error_on_exist' == True, displays error and quits.
@@ -383,6 +443,20 @@ class Cloudstorage:
         else:
             self.settings['user'] = ''
 
+    def _delete_user(self, username=None):
+        if username and self._user and username != self._user[0]:            
+            self._get_apikey()
+            if not self._apikey:
+                MsgBox('You can delete other users only with a valid API key!', 
+                       title='Error', msgtype='error')
+                return False
+            user_folder = self._create_folder(username, self._rootid)   
+            return self.delete_folder(user_folder[1]) if user_folder else False
+        elif self._user:
+            return self.delete_folder(self._user[1])
+        MsgBox('No current user present!', title='Error', msgtype='error')
+        return False
+
     def find_or_create_folder(self, folder_name):
         """
         Finds or creates new subfolder in user's folder.
@@ -397,58 +471,65 @@ class Cloudstorage:
         if not folder_id: 
             if not self._user:
                 MsgBox('Neither the folder ID not the user ID is valid!', title='HTTP(S) request error', msgtype='error')
-                return None
+                return False
             folder_id = self._user[1]
-        # get folder name
-        folder_info = self._get_folder_metadata(folder_id)
-        if not folder_info: return None
-        folder_name = folder_info.get('name', None)
-        if not folder_name: return None
-        folder_parent = folder_info.get('parent', None)
-        if not folder_parent: return None
-        folder_parent = folder_parent['id']
-        # delete folder
-        if not self.delete_folder(folder_id): return None
-        # recreate folder
-        res = self._create_folder(folder_name, folder_parent, True)
-        if folder_id == self._user[1]:
-            # update user info
-            self._user = res
-            self.settings['user'] = res[0] if res else ''
-        return res
+        elif not self._is_user_folder(folder_id):
+            # check if folder is in current user's folder
+            self._get_apikey()
+            if not self._apikey:
+                MsgBox('You cannot clear folders created by other users without a valid API key!', 
+                    title='Error', msgtype='error')
+                return False
+
+        # get folder object
+        res = self._get_folder_objects(folder_id, False)
+        if not res or not res['objects']: return True
+        results = []
+        # iterate for onjects in folder
+        for obj in res['objects']:
+            req = ''
+            if obj['type'] != 'folder': 
+                req = f"{self._baseurl}folders/{urllib.parse.quote(obj['id'])}/?permanent=true&recursive=true"
+            elif obj['type'] != 'file': 
+                req = f"{self._baseurl}files/{urllib.parse.quote(obj['id'])}/?permanent=true"
+            if req:
+                try:
+                    res = requests.delete(req, headers=self._make_headers('application/octet-stream'))
+                    results.append(bool(res))
+                except Exception:
+                    results.append(False)
+
+        return all(results)
 
     def delete_folder(self, folder_id, permanent=True, recurse=True):
         """
         Deletes the folder with the given ID, optionally permanently.
         Returns True on success, False otherwise.
         """
-        req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/?permanent={str(permanent).lower()}&recursive={str(recurse).lower()}"
-        headers = self._headers.copy()
-        headers['Content-Type'] = 'application/octet-stream'
-        try:
-            res = requests.delete(req, headers=headers)
-            return bool(res)
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
+        if not folder_id:
+            MsgBox('No folder ID provided', title='Error', msgtype='error')
             return False
-        return False
 
+        # check if folder is in current user's folder
+        if not self._is_user_folder(folder_id):
+            self._get_apikey()
+            if not self._apikey:
+                MsgBox('You cannot clear folders created by other users without a valid API key!', 
+                    title='Error', msgtype='error')
+                return False
+
+        req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/?permanent={str(permanent).lower()}&recursive={str(recurse).lower()}"
+        return self._request(req, 'delete', 'bool', headers=self._make_headers('application/octet-stream'))
+        
     def rename_folder(self, folder_id, new_name):
         """
         Renames the given (sub)folder to 'new_name'.
         Returns the tuple (folder_name, folder_id) or None on failure.
         """
         req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/"
-        data = {'name': urllib.parse.quote(new_name)}
-        try:
-            res = requests.patch(req, headers=self._headers, data=data)
-            if not res: return None
-            res = res.json()
-            return (res['name'], res['id'])
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        return None
+        data = {'name': new_name}
+        res = self._request(req, 'patch', headers=self._make_headers(), json=data)
+        return (res['name'], res['id'], res['ids']['path']) if res else None
         
     def upload_file(self, filepath, folder_id=None, overwrite=False, 
                     makelink=True, activelink=True, 
@@ -469,23 +550,16 @@ class Cloudstorage:
         fsize = os.path.getsize(filepath)
         
         # upload file
-        headers = self._headers.copy()
-        headers['Content-Type'] = 'application/octet-stream'
-        headers['X-Kloudless-Metadata'] = {'name': os.path.basename(filepath), 
-            'parent_id': urllib.parse.quote(self._user[1] if not folder_id else folder_id)}
-        headers['Content-Length'] = fsize
+        headers = self._make_headers('application/octet-stream')
+        headers['X-Kloudless-Metadata'] = json.dumps({'name': os.path.basename(filepath), 
+            'parent_id': self._user[1] if not folder_id else folder_id})
+        headers['Content-Length'] = str(fsize)
         req = f"{self._baseurl}files/?overwrite={str(overwrite).lower()}"
 
         res = None
-        with open(filepath, 'rb') as f:            
-            try:
-                res = requests.post(req, headers=headers, data=f)
-            except requests.exceptions.RequestException as e:
-                MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-                return None
-
+        with open(filepath, 'rb') as f:      
+            res = self._request(req, 'post', headers=headers, data=f)     
         if not res: return None
-        res = res.json()
         return self.create_file_link(res['id'], activelink, directlink, expire, password) \
                if makelink else res
 
@@ -495,15 +569,7 @@ class Cloudstorage:
         Returns True on success, False otherwise.
         """
         req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/?permanent={str(permanent).lower()}"
-        headers = self._headers.copy()
-        headers['Content-Type'] = 'application/octet-stream'
-        try:
-            res = requests.delete(req, headers=headers)
-            return bool(res)
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return False
-        return False
+        return self._request(req, 'delete', 'bool', headers=self._make_headers('application/octet-stream'))
 
     def rename_file(self, file_id, new_name):
         """
@@ -511,16 +577,9 @@ class Cloudstorage:
         Returns the tuple (file_name, file_id) or None on failure.
         """
         req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/"
-        data = {'name': urllib.parse.quote(new_name)}
-        try:
-            res = requests.patch(req, headers=self._headers, data=data)
-            if not res: return None
-            res = res.json()
-            return (res['name'], res['id'])
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        return None
+        data = {'name': new_name}
+        res = self._request(req, 'patch', headers=self._make_headers(), json=data)
+        return (res['name'], res['id'], res['ids']['path']) if res else None
 
     def download_file(self, file_id, save_folder='', overwrite=False):
         """
@@ -537,19 +596,13 @@ class Cloudstorage:
             return False
 
         req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/contents/"
-        headers = self._headers.copy()
-        headers['Content-Type'] = file_info['mime_type'] if file_info else 'application/octet-stream'
-        try:
-            res = requests.get(req, headers=headers, allow_redirects=True)
-            if not res: return False
-            with open(filepath, 'wb') as fout:
-                fout.write(res.content)
-            return bool(res)
-        except Exception as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return False
-
-        return False
+        res = self._request(req, returntype='content', 
+                            headers=self._make_headers(file_info['mime_type'] if file_info \
+                            else 'application/octet-stream'), allow_redirects=True)
+        if not res: return False
+        with open(filepath, 'wb') as fout:
+            fout.write(res)
+        return True
 
     def create_file_link(self, file_id, activelink=True, directlink=True, 
                          expire=None, password=None):
@@ -562,18 +615,12 @@ class Cloudstorage:
             return None
 
         req = f"{self._baseurl}links/"
-        data = {'file_id': urllib.parse.quote(file_id), 'direct': directlink, 'active': activelink}
+        data = {'file_id': file_id, 'direct': directlink, 'active': activelink}
         if not expire is None:
             data['expiration'] = expire.isoformat()
         if not password is None:
-            data['password'] = urllib.parse.quote(password)
-        res = None
-        try:
-            res = requests.post(req, headers=self._headers, data=data)
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        return res.json() if res else None
+            data['password'] = password
+        return self._request(req, 'post', headers=self._make_headers(), json=data)
 
     def get_file_link(self, link_id):
         """
@@ -584,13 +631,7 @@ class Cloudstorage:
             MsgBox('Empty link ID passed to get_file_link()!', title='Error', msgtype='error')
             return None
         req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"
-        res = None
-        try:
-            res = requests.get(req, headers=self._headers)
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        return res.json() if res else None
+        return self._request(req, headers=self._make_headers())
 
     def update_file_link(self, link_id, activelink=None,  
                          expire=None, password=None):
@@ -609,14 +650,8 @@ class Cloudstorage:
         if not expire is None:
             data['expiration'] = expire.isoformat()
         if not password is None:
-            data['password'] = urllib.parse.quote(password)
-        res = None
-        try:
-            res = requests.patch(req, headers=self._headers, data=data)
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return None
-        return res.json() if res else None
+            data['password'] = password
+        return self._request(req, 'patch', headers=self._make_headers(), json=data)
 
     def delete_file_link(self, link_id):
         """
@@ -628,30 +663,77 @@ class Cloudstorage:
             return None
 
         req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"       
-        res = None
-        try:
-            res = requests.delete(req, headers=self._headers)
-            return bool(res)
-        except requests.exceptions.RequestException as e:
-            MsgBox(str(e), title='HTTP(S) request error', msgtype='error')
-            return False
-        return False
+        return self._request(req, 'delete', 'bool', headers=self._make_headers())
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 class Share:
 
-    def __init__(self, settings, url=SHAREAHOLIC_HTTP, timeout=5000):
+    APPID = 'abf1b67f10817416ba9fee9b76455bef'
+    BASEURL = 'https://www.shareaholic.com/api/share/?v=1&apitype=1'
+    ERRMAP = {'message': 'data', 'code': 'code'}
+    SERVICES = {'twitter': 7, 'facebook': 5, 'pinterest': 309, 'linkedin': 88, 'gmail': 52,
+                'yahoomail': 54, 'aolmail': 55, 'hotmail': 53, 'myspace': 39,
+                'reddit': 40, 'skype': 989, 'tumblr': 78, 'yandex': 267}
+
+    def __init__(self, cloud: Cloudstorage, settings, timeout=5000):
         self.settings = settings
-        self.url = url
         self.timeout = timeout
+        if not cloud:
+            raise Exception('Share object must be given a valid instance of Cloudstorage as the "cloud" argument!')
+        self.cloud = cloud
+        # dirty hack for convenience
+        self._request = self.cloud._request
 
-    def prepare_request_url(self, *args):
-        return self.url.format(SHAREAHOLIC_KEY, *args)
-
-    def share(self, filepath, upload_to='gdrive', social='twitter', 
+    def share(self, file_or_url, social='twitter', 
               title='My new crossword', notes='See my new crossword',
-              url_shortener='google', tags=''):
-        pass
+              url_shortener='google', tags='pycross,crossword,python',
+              source='pyCross'):
+        serv = social
+        just_copy_url = False
+        if isinstance(serv, str):
+            if serv == '':
+                just_copy_url = True
+            else:
+                serv = Share.SERVICES.get(serv, -1)
+                if serv == -1:
+                    MsgBox(f"Cannot find social network '{serv}'!", 
+                        title='Error', msgtype='error')
+                    return False
+        if os.path.isfile(file_or_url):
+            # file_or_url is a file, upload it!
+            link_info = self.cloud.upload_file(file_or_url)
+            if not link_info:
+                return False
+            file_or_url = link_info.get('url', None)
+
+        if not file_or_url:
+            MsgBox(f"Malformed URL or file path!", title='Error', msgtype='error')
+            return False
+
+        if just_copy_url:
+            # copy link to clipboard and exit
+            clipboard_copy(file_or_url)
+            MsgBox('Copied link to clipboard!')
+            return True
+
+        req = f"{Share.BASEURL}&apikey={Share.APPID}&service={serv}&link={urllib.parse.quote(file_or_url)}"
+        if title:
+            req += f"&title={urllib.parse.quote(title)}"
+        if notes:
+            req += f"&notes={urllib.parse.quote(notes)}"
+        if url_shortener:
+            req += f"&shortener={url_shortener}"
+        if tags:
+            req += f"&tags={','.join([urllib.parse.quote(t) for t in tags.split(',')])}"
+        if source:
+            req += f"&source={urllib.parse.quote(source)}"
+
+        if self._request(req, returntype='bool', headers={'Content-Type': 'application/json'}, 
+                         error_keymap=Share.ERRMAP, timeout=self.timeout):
+            webbrowser.open(req, new=2)
+            return True
+
+        return False
 
