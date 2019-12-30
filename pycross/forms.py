@@ -2,7 +2,8 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport
+from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport, 
+                    QtWebEngineWidgets, QtWebEngineCore, QtWebEngine)
 from utils.utils import *
 from utils.globalvars import *
 from utils.onlineservices import MWDict, YandexDict, GoogleSearch, Share
@@ -1333,12 +1334,15 @@ class SettingsDialog(BasicDialog):
         self.le_sharing_user.setToolTip('Kloudless username (leave EMPTY to create new user automatically)')
         self.chb_sharing_use_api_key = QtWidgets.QCheckBox('')
         self.chb_sharing_use_api_key.setToolTip('Check this to use one single API key for authentication (WARNING! NOT SAFE!)')
+        self.chb_sharing_ownbrowser = QtWidgets.QCheckBox('')
+        self.chb_sharing_ownbrowser.setToolTip('Use app inbuilt browser to open share links (otherwise, use system browser)')
 
         self.layout_sharing.addRow('Kloudless account ID', self.le_sharing_account)
         self.layout_sharing.addRow('Kloudless Bearer Token', self.le_sharing_token)
         self.layout_sharing.addRow('Kloudless root folder', self.le_sharing_root)
         self.layout_sharing.addRow('Kloudless username', self.le_sharing_user)
         self.layout_sharing.addRow('Use API key', self.chb_sharing_use_api_key)
+        self.layout_sharing.addRow('Use inbuilt browser', self.chb_sharing_ownbrowser)
 
         self.page_sharing.setLayout(self.layout_sharing)
         self.stacked.addWidget(self.page_sharing)
@@ -1845,6 +1849,7 @@ class SettingsDialog(BasicDialog):
         settings['sharing']['use_api_key'] = self.chb_sharing_use_api_key.isChecked()
         settings['sharing']['root_folder'] = self.le_sharing_root.text()
         settings['sharing']['user'] = self.le_sharing_user.text()
+        settings['sharing']['use_own_browser'] = self.chb_sharing_ownbrowser.isChecked()
         
         return settings
 
@@ -2345,7 +2350,7 @@ class SettingsDialog(BasicDialog):
             self.chb_update_restart.setChecked(settings['restart_on_update'])
             self.le_update_logfile.setText(settings['logfile'])
 
-        # Updating
+        # Sharing
         if page is None or page == 'Sharing':
             
             settings = CWSettings.settings['sharing']
@@ -2354,6 +2359,7 @@ class SettingsDialog(BasicDialog):
             self.le_sharing_root.setText(settings['root_folder'])
             self.le_sharing_user.setText(settings['user'])
             self.chb_sharing_use_api_key.setChecked(settings['use_api_key'])
+            self.chb_sharing_ownbrowser.setChecked(settings['use_own_browser'])
     
     def addoredit_wordsrc(self, src, src_item=None):
         """
@@ -3793,7 +3799,7 @@ class ShareDialog(BasicDialog):
         self.le_tags = QtWidgets.QLineEdit()
         self.le_tags.setText('pycross,crossword,python')
         self.le_source = QtWidgets.QLineEdit()
-        self.le_source.setText('{APP_NAME} {APP_VERSION}')
+        self.le_source.setText(f'{APP_NAME} {APP_VERSION}')
         self.te_notes = QtWidgets.QPlainTextEdit()
         self.te_notes.setWordWrapMode(1)
         self.btn_share_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Settings...', None)
@@ -3844,3 +3850,121 @@ class ShareDialog(BasicDialog):
             self.mainwindow.dia_settings = SettingsDialog(self.mainwindow)
         self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(ind))
         self.mainwindow.on_act_config(False)
+
+##############################################################################
+######          BasicBrowserDialog
+##############################################################################  
+        
+class BasicBrowserDialog(QtWidgets.QDialog):
+    
+    def __init__(self, data=None, datatype='url', 
+                geometry=None, title=None, icon=None, parent=None, 
+                flags=QtCore.Qt.WindowFlags()):
+        super().__init__(parent, flags)
+        self.data = data
+        self.datatype = datatype
+        self._title = 'pyCross'
+        self.initUI(geometry, title, icon)
+
+    def initUI(self, geometry=None, title=None, icon=None):              
+        
+        self.layout_main = QtWidgets.QVBoxLayout()
+
+        self.add_top_elements()
+        self.browser = QtWebEngineWidgets.QWebEngineView()
+        self.configure_browser()
+        self.layout_main.addWidget(self.browser)
+        self.pb = QtWidgets.QProgressBar()
+        self.pb.setOrientation(QtCore.Qt.Horizontal)
+        self.pb.setRange(0, 100)
+        self.pb.setTextVisible(True)
+        self.pb.setValue(0)
+        self.pb.hide()
+        self.layout_main.addWidget(self.pb)
+        self.add_bottom_elements()
+        self.sb = QtWidgets.QStatusBar()
+        self.sb.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed) 
+        self.layout_main.addWidget(self.sb)
+
+        self.browser.loadProgress.connect(self.pb.setValue)
+        self.browser.loadStarted.connect(self.pb.reset)
+        self.browser.loadStarted.connect(self.pb.show)
+        self.browser.loadStarted.connect(self.sb.clearMessage)
+        self.browser.loadFinished.connect(self.on_browser_load_finished)
+        self.browser.urlChanged.connect(self.on_browser_url_change)
+        
+        self.setLayout(self.layout_main)
+
+        if geometry:
+            self.setGeometry(*geometry) 
+        else:
+            self.adjustSize()
+
+        if title:
+            self._title = title
+            self.browser.titleChanged.emit(self.browser.title())   
+        if icon:
+            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}"))  
+
+    def add_top_elements(self):
+        pass
+
+    def add_bottom_elements(self):
+        pass   
+
+    def configure_browser(self):
+        self.browser.setMinimumSize(400, 300)
+        # enable some parameters
+        browser_settings = self.browser.settings()
+        try:
+            browser_settings.setAttribute(QtWebEngineWidgets.QWebEngineSettings.LocalContentCanAccessRemoteUrls, True)
+            browser_settings.setAttribute(QtWebEngineWidgets.QWebEngineSettings.FullScreenSupportEnabled, True)
+        except Exception as err:
+            print(str(err))
+
+    def setData(self, data=None, datatype='url'):
+        self.data = data
+        self.datatype = datatype
+        if not self.data: return
+        if self.datatype == 'url':
+            self.browser.load(QtCore.QUrl(self.data))
+        elif self.datatype == 'request':
+            req = QtWebEngineCore.QWebEngineHttpRequest()
+            req.setUrl(self.data.get('url', QtCore.QUrl()))
+            req.setMethod(1 if self.data.get('method', 'get') == 'post' else 0)
+            if 'header' in self.data:
+                for h in self.data['header']:
+                    req.setHeader(h, self.data['header'][h])
+            if 'data' in self.data:
+                req.setPostData(self.data['data'])
+            self.browser.load(req)
+        elif self.datatype == 'file':
+            with open(self.data, 'r', encoding=ENCODING) as filein:
+                html = filein.read()
+                self.browser.setHtml(html, QtCore.QUrl())
+        elif self.datatype == 'html':
+            self.browser.setHtml(self.data['html'], QtCore.QUrl(self.data['baseurl']) if 'baseurl' in self.data else QtCore.QUrl())
+        elif self.datatype == 'raw':
+            self.browser.setContent(self.data['content'], 
+                                    self.data.get('type', 'text/html;charset=UTF-8'),
+                                    QtCore.QUrl(self.data['baseurl']) if 'baseurl' in self.data else QtCore.QUrl())
+        else:
+            return
+        self.browser.show()        
+
+    def showEvent(self, event):        
+        event.accept()
+        self.setData(self.data, self.datatype)
+
+    @QtCore.pyqtSlot(bool)
+    def on_browser_load_finished(self, ok):
+        self.pb.hide()
+
+    @QtCore.pyqtSlot(str)
+    def on_browser_title_change(self, title):
+        self.setWindowTitle(f"{self._title} :: {title}" if title else self._title) 
+
+    @QtCore.pyqtSlot(QtCore.QUrl)
+    def on_browser_url_change(self, url):
+        self.sb.showMessage(url.toString()) 
+        

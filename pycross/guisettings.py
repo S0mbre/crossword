@@ -157,7 +157,7 @@ class CWSettings:
     'sharing':
         {
             'account': '', 'bearer_token': '', 'use_api_key': False,
-            'root_folder': '', 'user': ''
+            'root_folder': '', 'user': '', 'use_own_browser': True
         },
     'common':
         {

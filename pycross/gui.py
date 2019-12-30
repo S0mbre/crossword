@@ -9,11 +9,13 @@ from utils.utils import *
 from utils.globalvars import *
 from utils.update import Updater
 from utils.onlineservices import Cloudstorage, Share
+from utils.graphs import make_chart
 from guisettings import CWSettings
 from dbapi import Sqlitedb
 from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu, 
                     SettingsDialog, WordSuggestDialog, PrintPreviewDialog,
-                    CwInfoDialog, DefLookupDialog, ReflectGridDialog, AboutDialog, ShareDialog)
+                    CwInfoDialog, DefLookupDialog, ReflectGridDialog, AboutDialog, 
+                    ShareDialog, BasicBrowserDialog)
 from crossword import Word, Crossword, CWError, FILLER, FILLER2, BLANK
 from wordsrc import DBWordsource, TextWordsource, TextfileWordsource, MultiWordsource
 
@@ -30,6 +32,25 @@ class GenThread(QThreadStump):
         if on_gen_timeout: self.sig_timeout.connect(on_gen_timeout)
         if on_gen_stopped: self.sig_stopped.connect(on_gen_stopped)
         if on_gen_validate: self.sig_validate.connect(on_gen_validate)
+
+## ******************************************************************************** ##
+
+class ShareThread(QThreadStump):
+    sig_progress = QtCore.pyqtSignal(int, str)
+    sig_upload_file = QtCore.pyqtSignal(str, str)
+    sig_apikey_required = QtCore.pyqtSignal('PyQt_PyObject')
+    sig_bearer_required = QtCore.pyqtSignal('PyQt_PyObject')
+    sig_prepare_url = QtCore.pyqtSignal(str)
+
+    def __init__(self, on_progress=None, on_upload=None,
+                 on_apikey_required=None, on_bearer_required=None, on_prepare_url=None,
+                 on_start=None, on_finish=None, on_run=None, on_error=None):
+        super().__init__(on_start=on_start, on_finish=on_finish, on_run=on_run, on_error=on_error)
+        if on_progress: self.sig_progress.connect(on_progress)
+        if on_upload: self.sig_upload_file.connect(on_upload)
+        if on_apikey_required: self.sig_apikey_required.connect(on_apikey_required)
+        if on_bearer_required: self.sig_bearer_required.connect(on_bearer_required)
+        if on_prepare_url: self.sig_prepare_url.connect(on_prepare_url)
 
 ## ******************************************************************************** ##
 
@@ -51,6 +72,15 @@ class MainWindow(QtWidgets.QMainWindow):
                                     on_gen_validate=self.on_gen_validate,
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error)
+        # sharer worker thread
+        self.share_thread = ShareThread(on_progress=self.on_share_progress, on_upload=self.on_share_upload,
+            on_apikey_required=self.on_share_apikey_required, on_bearer_required=self.on_share_bearer_required,
+            on_prepare_url=self.on_share_prepare_url,
+            on_start=self.on_share_start, on_finish=self.on_share_finish, on_run=self.on_share_run,
+            on_error=self.on_share_error)
+
+        # keep track of all spawnable threads
+        self.threads = ['gen_thread', 'share_thread']
         # Updater instance (used to run app update checks and updates)
         self.updater = Updater(APP_NAME, APP_VERSION, GIT_REPO, UPDATE_FILE,
             make_abspath(CWSettings.settings['update']['logfile']),
@@ -513,30 +543,36 @@ class MainWindow(QtWidgets.QMainWindow):
         b_cw = not self.cw is None
         gen_running = self.gen_thread.isRunning() if getattr(self, 'gen_thread', None) else False
         gen_interrupted = self.gen_thread.isInterruptionRequested() if getattr(self, 'gen_thread', None) else False
-        self.act_new.setEnabled(not gen_running)
-        self.act_open.setEnabled(not gen_running)
-        self.act_save.setEnabled(b_cw and not gen_running and (self.cw_modified or not self.cw_file))
-        self.act_saveas.setEnabled(b_cw and not gen_running)
-        self.act_edit.setEnabled(b_cw and not gen_running)
-        self.act_addcol.setEnabled(b_cw and not gen_running and self.act_edit.isChecked())
-        self.act_addrow.setEnabled(b_cw and not gen_running and self.act_edit.isChecked())
-        self.act_delcol.setEnabled(b_cw and not gen_running and self.act_edit.isChecked())
-        self.act_delrow.setEnabled(b_cw and not gen_running and self.act_edit.isChecked())
-        self.act_reflect.setEnabled(b_cw and not gen_running and self.act_edit.isChecked())
-        self.act_gen.setEnabled(b_cw and not gen_running and bool(self.wordsrc))
+        share_running = self.share_thread.isRunning() if getattr(self, 'share_thread', None) else False
+        self.act_new.setEnabled(not gen_running and not share_running)
+        self.act_open.setEnabled(not gen_running and not share_running)
+        self.act_save.setEnabled(b_cw and not gen_running and not share_running and (self.cw_modified or not self.cw_file))
+        self.act_saveas.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_share.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_edit.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_addcol.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
+        self.act_addrow.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
+        self.act_delcol.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
+        self.act_delrow.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
+        self.act_reflect.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
+        self.act_gen.setEnabled(b_cw and not gen_running and not share_running and bool(self.wordsrc))
         if not gen_running: self.act_stop.setChecked(False)
         self.act_stop.setEnabled(b_cw and gen_running and not gen_interrupted)        
-        self.act_clear.setEnabled(b_cw and not gen_running)
-        self.act_suggest.setEnabled(b_cw and not gen_running and bool(self.wordsrc) and (not self.current_word is None))
-        self.act_lookup.setEnabled(b_cw and not gen_running and (not self.current_word is None) and not self.cw.words.is_word_blank(self.current_word))
-        self.act_editclue.setEnabled(b_cw and not gen_running)
-        self.act_info.setEnabled(b_cw and not gen_running)
-        self.act_print.setEnabled(b_cw and not gen_running)
-        self.act_config.setEnabled(not gen_running)
-        self.act_update.setEnabled(not gen_running and self.updater.git_installed)
-        self.act_help.setEnabled(not gen_running)
-        self.twCw.setEnabled(b_cw and not gen_running)
-        self.tvClues.setEnabled(b_cw and not gen_running)
+        self.act_clear.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_clear_wd.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_erase_wd.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_suggest.setEnabled(b_cw and not gen_running and not share_running and bool(self.wordsrc) and (not self.current_word is None))
+        self.act_lookup.setEnabled(b_cw and not gen_running and not share_running and (not self.current_word is None) and not self.cw.words.is_word_blank(self.current_word))
+        self.act_editclue.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_wsrc.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_info.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_print.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_config.setEnabled(not gen_running and not share_running)
+        self.act_update.setEnabled(not gen_running and not share_running and self.updater.git_installed)
+        #self.act_help.setEnabled(not gen_running)
+        #self.act_about.setEnabled(not gen_running)
+        self.twCw.setEnabled(b_cw and not gen_running and not share_running)
+        self.tvClues.setEnabled(b_cw and not gen_running and not share_running)
         
     def update_wordsrc(self):
         """
@@ -1006,15 +1042,203 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_filter_word(self, word: str):
         return True
 
+    @QtCore.pyqtSlot()
     def on_generate_start(self):
         self.update_actions()
-            
+
+    @QtCore.pyqtSlot() 
     def on_generate_finish(self):
         self.update_cw_grid()
 
-    def create_cloud(self):
-        cloud = Cloudstorage(CWSettings.settings['sharing'])
-        self.sharer = Share(cloud, None)
+    @QtCore.pyqtSlot()
+    def on_share_start(self):
+        #self.statusbar_pbar.reset()
+        #self.statusbar_pbar.show()
+        self.statusbar.clearMessage()
+        self.update_actions()
+
+    @QtCore.pyqtSlot(int, str)
+    def on_share_progress(self, percent, status):
+        #self.statusbar_pbar.setValue(percent)
+        #self.statusbar_pbar.show()
+        self.statusbar.showMessage(status)
+
+    @QtCore.pyqtSlot(str, str)
+    def on_share_upload(self, filepth, url):
+        self.statusbar.showMessage(f"Uploaded '{filepth}' to '{url}'")
+
+    @QtCore.pyqtSlot(QtCore.QThread, str)
+    def on_share_error(self, thread, err):
+        MsgBox(err, self, 'Error', 'error')
+
+    @QtCore.pyqtSlot()
+    def on_share_finish(self):
+        #self.statusbar_pbar.hide()
+        self.statusbar.clearMessage()
+        self.update_actions()
+    
+    @QtCore.pyqtSlot('PyQt_PyObject')
+    def on_share_apikey_required(self, res):
+        res1 = UserInput(parent=self, label='Enter your API key', textmode='password')
+        res[0] = res1[0]
+        res[1] = res1[1]
+
+    @QtCore.pyqtSlot('PyQt_PyObject')
+    def on_share_bearer_required(self, res):
+        res1 = UserInput(parent=self, label='Enter your Bearer token', textmode='password')
+        res[0] = res1[0]
+        res[1] = res1[1]
+
+    @QtCore.pyqtSlot(str)
+    def on_share_prepare_url(self, url):
+        self.share_url(url)
+
+    @QtCore.pyqtSlot()
+    def on_share_run(self):
+
+        # 1) cloud (25%) 2) export cw (25%) 3) upload (25%) 4) share (25%)
+
+        prog = 0
+
+        def on_upload_(filepath, url):
+            nonlocal prog
+            self.share_thread.sig_upload_file.emit(filepath, url)
+            prog += 25
+            self.share_thread.sig_progress.emit(prog, 'Opening share link...')
+
+        share_target = None
+        share_title = None
+        share_notes = None
+        share_tags = None
+        share_source = None
+        ext = ''
+        
+        try:
+            self.share_thread.lock()
+            share_target = self.dia_share.combo_target.currentText()
+            share_title = self.dia_share.le_title.text()
+            share_notes = self.dia_share.te_notes.toPlainText()
+            share_tags = self.dia_share.le_tags.text()
+            share_source = self.dia_share.le_source.text()
+            if self.dia_share.rb_pdf.isChecked(): 
+                ext = '.pdf'
+            elif self.dia_share.rb_jpg.isChecked(): 
+                ext = '.jpg'
+            elif self.dia_share.rb_png.isChecked(): 
+                ext = '.png'
+            elif self.dia_share.rb_svg.isChecked(): 
+                ext = '.svg'
+            elif self.dia_share.rb_xpf.isChecked(): 
+                ext = '.xpf'
+            elif self.dia_share.rb_ipuz.isChecked(): 
+                ext = '.ipuz'
+        except:
+            self.share_thread.unlock()
+            return
+        finally:
+            self.share_thread.unlock()
+
+        if not share_target: return
+        
+        if not self.sharer:
+            self.share_thread.sig_progress.emit(prog, 'Setting up cloud storage...')
+            try:
+                self.share_thread.lock()
+                self.create_cloud(self.share_thread)
+            except:
+                self.share_thread.unlock()
+                return
+            finally:
+                self.share_thread.unlock()
+            prog = 25
+
+        # get temp dir
+        self.share_thread.sig_progress.emit(prog, 'Exporting crossword...')
+
+        temp_file = ''
+        try:
+            self.share_thread.lock()
+            temp_dir = os.path.abspath(CWSettings.settings['common']['temp_dir'] or get_tempdir())
+            temp_file = os.path.join(temp_dir, generate_uuid() + ext)
+            # export cw
+            if not self._save_cw(temp_file): return
+        except:
+            self.share_thread.unlock()
+            return
+        finally:
+            self.share_thread.unlock()
+
+        prog = 50
+        self.share_thread.sig_progress.emit(prog, 'Uploading file to cloud...')
+
+        # share file
+        try:      
+            self.sharer.on_upload = on_upload_        
+            self.sharer.share(temp_file, share_target, share_title,
+                                share_notes, 'google', share_tags,
+                                share_source)
+            prog = 100
+            self.share_thread.sig_progress.emit(prog, 'Finished')
+        except:
+            return
+
+        # add temp_file to garbage bin
+        try:
+            self.share_thread.lock()
+            self.garbage.append(temp_file)
+        finally:
+            self.share_thread.unlock()
+
+    def create_cloud(self, thread):
+        settings = CWSettings.settings['sharing']
+        cloud = Cloudstorage(settings, auto_create_user=False,
+                on_user_exist=lambda username: False, on_update_users=None,
+                on_error=lambda err: thread.sig_error.emit(thread, err) if thread else None,
+                show_errors=thread is None, 
+                on_apikey_required=lambda res: thread.sig_apikey_required.emit(res) if thread else None,
+                on_bearer_required=lambda res: thread.sig_bearer_required.emit(res) if thread else None)
+        
+        username = settings['user'] or None
+        if not username:
+            reply = MsgBox(f"You don't have a registered user name for uploading and sharing files.\n"
+            f"Would you like to set a new user name yourself (YES) or let {APP_NAME} assign the name for you (NO)?",
+            self, 'Create new user', 'ask', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.Yes:
+                # ask for new user name                
+                while not username:
+                    res = UserInput(parent=self, title='Create new user', label='Enter user name:')
+                    if not res[1]: 
+                        MsgBox(f'{APP_NAME} will generate a new user name automatically', self, 'Create new user')
+                        break
+                    if cloud._user_exists(res[0]):
+                        reply2 = MsgBox(f"Username {res[0]} is already occupied!\n"
+                                        f"User another name (YES) or create name for you (NO)?",
+                                        self, 'Create new user', 'warn', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)                       
+                        if reply2 == QtWidgets.QMessageBox.Yes:
+                            continue
+                        else:
+                            break
+                    else:
+                        username = res[0]
+                        break
+        # create / find user
+        cloud.on_user_exist = lambda username: True
+        cloud._find_or_create_user(username)     
+
+        on_prepare_url = None
+        if CWSettings.settings['sharing']['use_own_browser']:
+            on_prepare_url = lambda url: thread.sig_prepare_url.emit(url) if thread else self.share_url
+        self.sharer = Share(cloud, on_prepare_url=on_prepare_url)
+
+    def share_url(self, url, headers={'Content-Type': 'application/json'}, error_keymap=Share.ERRMAP):
+        # open share link in inbuilt browser
+        if not hasattr(self, 'dia_browser'):
+            self.dia_browser = BasicBrowserDialog(icon='internet.png', parent=self)
+        try:
+            self.dia_browser.setData(url)
+            self.dia_browser.show()
+        except Exception as err:
+            traceback.print_exc(limit=None) 
 
     @QtCore.pyqtSlot(float)
     def on_gen_timeout(self, timeout_):
@@ -1524,7 +1748,17 @@ class MainWindow(QtWidgets.QMainWindow):
         if 'version' in new_version:
             self.statusbar_l2.setText(f"Update ready: v. {new_version['version']}")
         return True
-    
+
+    def stop_all_threads(self):
+        for thread in self.threads:
+            thread_ = getattr(self, thread, None)
+            if thread_ is None or not thread_.isRunning(): continue
+            thread_.quit()
+            if not thread_.wait(5000):
+                try:
+                    thread_.terminate()
+                except:
+                    pass                
         
     # ----- Overrides (events, etc) ----- #
     
@@ -1545,6 +1779,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.updater.check_update()
         
     def closeEvent(self, event):
+        # kill threads
+        self.stop_all_threads()
         # save cw
         self.autosave_cw()
         # save settings file
@@ -1745,38 +1981,16 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_share(self, checked):
         """
         Share CW in social networks.
-        """        
-        if not hasattr(self, 'dia_share'):
-            self.dia_share = ShareDialog(self, self)
+        """       
+        self.dia_share = ShareDialog(self, self)
         if not self.dia_share.exec(): return
-        if not self.sharer:
-            self.create_cloud()
-        # get temp dir
-        temp_dir = os.path.abspath(CWSettings.settings['common']['temp_dir'] or get_tempdir())
-        temp_file = generate_uuid()
-        ext = ''
-        if self.dia_share.rb_pdf.isChecked(): 
-            ext = '.pdf'
-        elif self.dia_share.rb_jpg.isChecked(): 
-            ext = '.jpg'
-        elif self.dia_share.rb_png.isChecked(): 
-            ext = '.png'
-        elif self.dia_share.rb_svg.isChecked(): 
-            ext = '.svg'
-        elif self.dia_share.rb_xpf.isChecked(): 
-            ext = '.xpf'
-        elif self.dia_share.rb_ipuz.isChecked(): 
-            ext = '.ipuz'
-        temp_file = os.path.join(temp_dir, temp_file + ext)
-        # export cw
-        res = self._save_cw(temp_file)
-        if not res: return
-        # share file
-        self.sharer.share(temp_file, self.dia_share.combo_target.currentText(), self.dia_share.le_title.text(),
-                            self.dia_share.te_notes.toPlainText(), 'google', self.dia_share.le_tags.text(),
-                            self.dia_share.le_source.text())
-        # add temp_file to garbage bin
-        self.garbage.append(temp_file)
+        if not hasattr(self, 'share_thread') or self.share_thread is None:
+            self.share_thread = ShareThread(on_progress=self.on_share_progress, on_upload=self.on_share_upload,
+            on_apikey_required=self.on_share_apikey_required, on_bearer_required=self.on_share_bearer_required,
+            on_prepare_url=self.on_share_prepare_url,
+            on_start=self.on_share_start, on_finish=self.on_share_finish, on_run=self.on_share_run,
+            on_error=self.on_share_error)
+        self.share_thread.start()
         
     @QtCore.pyqtSlot(bool)
     def on_act_exit(self, checked):
@@ -1987,6 +2201,12 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
         MsgBox('To be implemented in next release ))', self, title='Show help docs')
+        def on_chart_save(filename):
+            if not hasattr(self, 'dia_browser'):
+                self.dia_browser = BasicBrowserDialog(icon='internet.png', parent=self)
+            self.dia_browser.setData(filename, 'file')
+            self.dia_browser.show()
+        make_chart(None, on_save=on_chart_save)
     
     @QtCore.pyqtSlot(bool)        
     def on_act_about(self, checked):

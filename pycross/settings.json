@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			443,
-			278
+			453,
+			85
 		],
 		"win_size": [
-			1917,
-			1195
+			1115,
+			741
 		]
 	},
 	"cw_settings": {
@@ -131,27 +131,27 @@
 			{
 				"name": "Direction",
 				"visible": true,
-				"width": 200
+				"width": 100
 			},
 			{
 				"name": "No",
 				"visible": true,
-				"width": 200
+				"width": 100
 			},
 			{
 				"name": "Clue",
 				"visible": true,
-				"width": 200
+				"width": 100
 			},
 			{
 				"name": "Letters",
 				"visible": true,
-				"width": 200
+				"width": 100
 			},
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 200
+				"width": 146
 			}
 		]
 	},
@@ -189,7 +189,7 @@
 			12,
 			20
 		],
-		"layout": "auto",
+		"layout": "portrait",
 		"font_embed": true,
 		"antialias": true,
 		"print_cw": true,
@@ -198,7 +198,7 @@
 		"print_clue_letters": true,
 		"print_info": true,
 		"color_print": true,
-		"openfile": true,
+		"openfile": false,
 		"cw_title": "<t>",
 		"clues_title": "Clues",
 		"header_font": {
@@ -259,7 +259,8 @@
 		"bearer_token": "",
 		"use_api_key": true,
 		"root_folder": "",
-		"user": "rootuser"
+		"user": "rootuser",
+		"use_own_browser": true
 	},
 	"common": {
 		"temp_dir": ""

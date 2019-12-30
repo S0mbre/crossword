@@ -1,20 +1,10 @@
 * + [v. 0.2] configure shuffle / no shuffle of word sources
 * [v. 0.2] display generation progress in progress bar
+* [v. 0.2] editable main toolbar
 * [v. 0.2] show / output cw stats: % complete, % clues complete, complexity index, etc...
 * + [v. 0.2] publish on... (cloud + social)
-	* Dropbox API (created pyCross cloud for up to 500 users): 
-		https://www.dropbox.com/developers/documentation/http/documentation
-	* Google Drive API: 
-		https://developers.google.com/drive/api/v3/quickstart/python
-		https://developers.google.com/drive/api/v3/reference/
-		https://github.com/googleapis/google-api-python-client/blob/master/docs/README.md
 	* Kloudless API (aggregator for other clouds):
-		https://developers.kloudless.com/applications/pycross/details
 		https://developers.kloudless.com/docs/v1/core
-		https://developers.kloudless.com/docs/v1/storage
-	* Apache libcloud (aggregator for cloud services):
-		https://libcloud.apache.org/
-		https://libcloud.readthedocs.io/en/latest/storage/examples.html
 	* Shareaholic API (social sharing aggregator):
 		https://www.shareaholic.com/api/
 * [v. 0.2] cw solving mode (hide replies, check as you type)

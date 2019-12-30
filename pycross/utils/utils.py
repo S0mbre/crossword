@@ -134,7 +134,8 @@ class QThreadStump(QtCore.QThread):
         if self.on_run and not self.isInterruptionRequested(): 
             try:
                 self.on_run()
-            except Exception as err:
+            except Exception as err:                
+                traceback.print_exc(limit=None)
                 self.sig_error.emit(self, str(err))
 
 ## ------------------------------------------------------------------------ ##            
@@ -160,7 +161,7 @@ def MsgBox(what, parent=None, title='pyCross', msgtype='info',
         msgtype = QtWidgets.QMessageBox.Question
     else:
         msgtype = QtWidgets.QMessageBox.Information
-    QtWidgets.QMessageBox(msgtype, title, what, btn, parent).exec()
+    return QtWidgets.QMessageBox(msgtype, title, what, btn, parent).exec()
 
 def UserInput(dialogtype='text', parent=None, title='pyCross', label='', value=None, textmode='normal',
               valrange=None, decimals=1, step=1, comboeditable=True, comboitems=[]):

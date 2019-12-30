@@ -259,7 +259,8 @@
 		"bearer_token": "",
 		"use_api_key": false,
 		"root_folder": "",
-		"user": ""
+		"user": "",
+		"use_own_browser": true
 	},
 	"common": {
 		"temp_dir": ""
