@@ -3226,6 +3226,7 @@ class CwInfoDialog(BasicDialog):
         self.layout_controls = QtWidgets.QFormLayout()  
 
         self.le_title = QtWidgets.QLineEdit('')
+        self.le_title.setMinimumWidth(300)
         self.le_author = QtWidgets.QLineEdit('')
         self.le_editor = QtWidgets.QLineEdit('')
         self.le_publisher = QtWidgets.QLineEdit('')
@@ -3252,13 +3253,13 @@ class CwInfoDialog(BasicDialog):
         self.le_editor.setText(cw_info.editor)
         self.le_publisher.setText(cw_info.publisher)
         self.le_copyright.setText(cw_info.cpyright)
-        date_ = QtCore.QDate.fromString(cw_info.date, 'yyyy-MM-dd')
+        date_ = QtCore.QDate.fromString(datetime_to_str(cw_info.date, '%m/%d/%Y'), 'MM/dd/yyyy')
         self.de_date.setDate(date_ if date_.isValid() else QtCore.QDate.currentDate())
 
     def to_info(self):
         return CWInfo(self.le_title.text(), self.le_author.text(), self.le_editor.text(),
                       self.le_publisher.text(), self.le_copyright.text(), 
-                      self.de_date.date().toString('yyyy-MM-dd') if self.de_date.date().isValid() else '')
+                      self.de_date.dateTime().toPyDateTime() if self.de_date.date().isValid() else None)
 
 
 ##############################################################################
@@ -3713,6 +3714,44 @@ class ReflectGridDialog(BasicDialog):
         self.update_dir_icons()
 
 ##############################################################################
+######          PasswordDialog
+##############################################################################
+
+class PasswordDialog(BasicDialog):
+    
+    def __init__(self, title='Authentication', icon='locked.png',
+                 user_label='User', password_label='Password',
+                 allow_empty_user=False, allow_empty_password=False,
+                 parent=None, flags=QtCore.Qt.WindowFlags()):        
+        self.user_label = user_label
+        self.password_label = password_label
+        self.allow_empty_user = allow_empty_user
+        self.allow_empty_password = allow_empty_password
+        super().__init__(None, title, icon, parent, flags)
+        
+    def addMainLayout(self):
+        self.layout_controls = QtWidgets.QFormLayout()
+        self.le_user = QtWidgets.QLineEdit('')
+        self.le_pass = QtWidgets.QLineEdit('')
+        self.le_pass.setEchoMode(QtWidgets.QLineEdit.PasswordEchoOnEdit)
+        self.layout_controls.addRow(self.user_label, self.le_user)
+        self.layout_controls.addRow(self.password_label, self.le_pass)
+
+    def validate(self):
+        if not self.allow_empty_user and not self.le_user.text():
+            MsgBox(f"{self.user_label} field cannot be empty!")
+            return False
+        if not self.allow_empty_password and not self.le_pass.text():
+            MsgBox(f"{self.password_label} field cannot be empty!")
+            return False
+        return True
+
+    def get_auth(self):
+        if self.validate():
+            return (self.le_user.text(), self.le_pass.text())
+        return None
+
+##############################################################################
 ######          AboutDialog
 ##############################################################################
 
@@ -3871,9 +3910,11 @@ class BasicBrowserDialog(QtWidgets.QDialog):
         self.layout_main = QtWidgets.QVBoxLayout()
 
         self.add_top_elements()
+
         self.browser = QtWebEngineWidgets.QWebEngineView()
         self.configure_browser()
         self.layout_main.addWidget(self.browser)
+
         self.pb = QtWidgets.QProgressBar()
         self.pb.setOrientation(QtCore.Qt.Horizontal)
         self.pb.setRange(0, 100)
@@ -3886,6 +3927,7 @@ class BasicBrowserDialog(QtWidgets.QDialog):
         self.sb.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed) 
         self.layout_main.addWidget(self.sb)
 
+        self.pb.valueChanged.connect(self.on_pb_value_changed)
         self.browser.loadProgress.connect(self.pb.setValue)
         self.browser.loadStarted.connect(self.pb.reset)
         self.browser.loadStarted.connect(self.pb.show)
@@ -3904,7 +3946,7 @@ class BasicBrowserDialog(QtWidgets.QDialog):
             self._title = title
             self.browser.titleChanged.emit(self.browser.title())   
         if icon:
-            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}"))  
+            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}")) 
 
     def add_top_elements(self):
         pass
@@ -3919,6 +3961,8 @@ class BasicBrowserDialog(QtWidgets.QDialog):
         try:
             browser_settings.setAttribute(QtWebEngineWidgets.QWebEngineSettings.LocalContentCanAccessRemoteUrls, True)
             browser_settings.setAttribute(QtWebEngineWidgets.QWebEngineSettings.FullScreenSupportEnabled, True)
+            # this might not be safe!
+            browser_settings.setUnknownUrlSchemePolicy(QtWebEngineWidgets.QWebEngineSettings.AllowAllUnknownUrlSchemes)
         except Exception as err:
             print(str(err))
 
@@ -3956,6 +4000,11 @@ class BasicBrowserDialog(QtWidgets.QDialog):
         event.accept()
         self.setData(self.data, self.datatype)
 
+    @QtCore.pyqtSlot(int)
+    def on_pb_value_changed(self, value):
+        if value == 100:
+            self.pb.hide()
+
     @QtCore.pyqtSlot(bool)
     def on_browser_load_finished(self, ok):
         self.pb.hide()
@@ -3967,4 +4016,14 @@ class BasicBrowserDialog(QtWidgets.QDialog):
     @QtCore.pyqtSlot(QtCore.QUrl)
     def on_browser_url_change(self, url):
         self.sb.showMessage(url.toString()) 
+
+##############################################################################
+######          BrowserDialog
+##############################################################################  
         
+class BrowserDialog(BasicBrowserDialog):
+    
+    def __init__(self, data=None, datatype='url', 
+                geometry=None, title=None, icon=None, parent=None, 
+                flags=QtCore.Qt.WindowFlags()):
+        super().__init__(data, datatype, geometry, title, icon, parent, flags)        

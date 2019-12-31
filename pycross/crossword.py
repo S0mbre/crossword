@@ -2,14 +2,10 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from utils import globalvars
-import sys, os
-import numpy as np
-import timeit
+from utils import globalvars, utils
+import sys, os, json, datetime, numpy as np, timeit, xml.etree.ElementTree as ET
 from operator import itemgetter
-import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
-import json
 
 ## ******************************************************************************** ##
 
@@ -138,7 +134,7 @@ class Word(Coords):
         
 class CWInfo:
     
-    def __init__(self, title='', author='', editor='', publisher='', cpyright='', date=''):
+    def __init__(self, title='', author='', editor='', publisher='', cpyright='', date=None):
         self.title = title
         self.author = author
         self.editor = editor
@@ -396,7 +392,8 @@ class Wordgrid:
         self.info.editor = ipuz.get('editor', '')
         self.info.cpyright = ipuz.get('copyright', '')
         self.info.publisher = ipuz.get('publisher', '')
-        self.info.date = ipuz.get('date', '')
+        date_str = ipuz.get('date', '')
+        self.info.date = utils.str_to_datetime(date_str, '%m/%d/%Y') if date_str else None
         # get grid
         grid = ipuz.get('solution', None)
         if grid:            
@@ -426,7 +423,7 @@ class Wordgrid:
         if self.info.editor: ipuz['editor'] = self.info.editor
         if self.info.cpyright: ipuz['copyright'] = self.info.cpyright
         if self.info.publisher: ipuz['publisher'] = self.info.publisher
-        if self.info.date: ipuz['date'] = self.info.date
+        if self.info.date: ipuz['date'] = utils.datetime_to_str(self.info.date, '%m/%d/%Y')
         ipuz['origin'] = f"{globalvars.APP_NAME} {globalvars.APP_VERSION}"
         ipuz['dimensions'] = {'width': self.width, 'height': self.height}
         ipuz['puzzle'] = [['#' if c == FILLER else ('null' if c == FILLER2 else 0) for c in row] for row in self.grid]
@@ -458,7 +455,7 @@ class Wordgrid:
         publisher = pz.find('Publisher')
         self.info.publisher = publisher.text or '' if not publisher is None else ''
         date = pz.find('Date')
-        self.info.date = date.text or '' if not date is None else ''
+        self.info.date = utils.str_to_datetime(date.text, '%m/%d/%Y') if date.text else None
         # make grid
         gr = pz.find('Grid')
         if not gr:
@@ -487,12 +484,18 @@ class Wordgrid:
         root = ET.Element('Puzzles')
         root.set('Version', xpf_version)
         pz = ET.SubElement(root, 'Puzzle')
-        ET.SubElement(pz, 'Title').text = self.info.title if self.info.title else ''
-        ET.SubElement(pz, 'Author').text = self.info.author if self.info.author else ''
-        ET.SubElement(pz, 'Editor').text = self.info.editor if self.info.editor else ''
-        ET.SubElement(pz, 'Copyright').text = self.info.cpyright if self.info.cpyright else ''
-        ET.SubElement(pz, 'Publisher').text = self.info.publisher if self.info.publisher else ''
-        ET.SubElement(pz, 'Date').text = self.info.date if self.info.date else ''
+        if self.info.title:
+            ET.SubElement(pz, 'Title').text = self.info.title
+        if self.info.author:
+            ET.SubElement(pz, 'Author').text = self.info.author
+        if self.info.editor:
+            ET.SubElement(pz, 'Editor').text = self.info.editor
+        if self.info.cpyright:
+            ET.SubElement(pz, 'Copyright').text = self.info.cpyright
+        if self.info.publisher:
+            ET.SubElement(pz, 'Publisher').text = self.info.publisher 
+        if self.info.date:
+            ET.SubElement(pz, 'Date').text = utils.datetime_to_str(self.info.date, '%m/%d/%Y')
         sz = ET.SubElement(pz, 'Size')
         ET.SubElement(sz, 'Rows').text = str(self.height)
         ET.SubElement(sz, 'Cols').text = str(self.width)

@@ -5,7 +5,7 @@
 import requests, os, uuid, json, webbrowser, time
 import urllib.parse
 from abc import ABC, abstractmethod
-from .globalvars import (MW_DIC_KEY, MW_DIC_HTTP, MW_WORD_URL, 
+from .globalvars import (DEBUGGING, NEWLINE, MW_DIC_KEY, MW_DIC_HTTP, MW_WORD_URL, 
                         YAN_DICT_KEY, YAN_DICT_HTTP,
                         GOOGLE_KEY, GOOGLE_CSE, GOOGLE_HTTP, GOOGLE_LANG_LR, 
                         GOOGLE_LANG_HL, GOOGLE_COUNTRIES_CR, GOOGLE_COUNTRIES_GL)
@@ -71,8 +71,13 @@ class GoogleSearch:
         """
         Returns full Google search results for 'self.search_phrase'.
         """
-        res = requests.get(self.encode_search(), timeout=self.timeout)
+        req = self.encode_search()
+        if DEBUGGING:
+            print(f"GOOGLE SEARCH REQUEST = '{req}'")
+        res = requests.get(req, timeout=self.timeout)
         if res:
+            if DEBUGGING:
+                print(f"GOOGLE SEARCH RESULT = '{res.text}'")
             res = res.json() if method == 'json' else res.content
             if isinstance(res, dict) and 'error' in res:
                 raise Exception(f"Request returned error '{res.get('message', 'Invalid request')}', code = {res.get('code', 400)}")
@@ -123,8 +128,13 @@ class OnlineDictionary(ABC):
         """
         Returns full definitions for 'word' in JSON (python object) or raw text format.
         """
+        req = self.prepare_request_url(word)
+        if DEBUGGING:
+            print(f"DICTIONARY SEARCH REQUEST = '{req}'")
         res = requests.get(self.prepare_request_url(word), timeout=self.timeout)
         if res:
+            if DEBUGGING:
+                print(f"DICTIONARY SEARCH RESULT = '{res.text}'")
             return res.json() if method == 'json' else res.content
         else:
             raise Exception(f"Request returned error {res.status_code}")
@@ -270,6 +280,11 @@ class Cloudstorage:
                  error_keymap={'message': 'message', 'code': 'status_code'},
                  **kwargs):
 
+        if DEBUGGING:
+            print(f"CLOUD SENDING '{command}' REQUEST = '{url}',{NEWLINE}"
+                  f"HEADERS = {kwargs.get('headers'), None},{NEWLINE}"
+                  f"DATA = {kwargs.get('data'), None}")
+
         methods = {'get': requests.get, 'post': requests.post, 'delete': requests.delete,
                    'patch': requests.patch}  
         res = None      
@@ -277,6 +292,8 @@ class Cloudstorage:
             kwargs['timeout'] = kwargs.get('timeout', self.timeout)
             res = methods[command](url, **kwargs)
             if res is None: raise Exception(f"Empty result returned by request '{url}'")
+            if DEBUGGING:
+                print(f"CLOUD REQUEST RESULT = '{res.text}'")
             if not res:
                 try:
                     err = res.json()
@@ -718,9 +735,10 @@ class Share:
                 'yahoomail': 54, 'aolmail': 55, 'hotmail': 53, 'myspace': 39,
                 'reddit': 40, 'skype': 989, 'tumblr': 78, 'yandex': 267, 'clipboard': 0}
 
-    def __init__(self, cloud: Cloudstorage, on_upload=None, 
+    def __init__(self, cloud: Cloudstorage, on_upload=None, on_clipboard_write=None,
                  on_prepare_url=None, stop_check=None, timeout=5000):
         self.on_upload = on_upload
+        self.on_clipboard_write = on_clipboard_write
         self.on_prepare_url = on_prepare_url
         self.stop_check = stop_check
         self.timeout = timeout        
@@ -740,7 +758,7 @@ class Share:
             serv = Share.SERVICES.get(serv, -1)                
             if serv == -1:
                 self.cloud._error(f"Cannot find social network '{serv}'!")                
-                return False
+                return
             elif serv == 0:
                 just_copy_url = True
 
@@ -748,8 +766,8 @@ class Share:
             # file_or_url is a file, upload it!
             link_info = self.cloud.upload_file(file_or_url)
             if not link_info:
-                return False
-            if self.stop_check and self.stop_check(): return False
+                return
+            if self.stop_check and self.stop_check(): return
             url = link_info.get('url', None)            
             if self.on_upload:
                 self.on_upload(file_or_url, url)
@@ -757,15 +775,17 @@ class Share:
 
         if not file_or_url:
             self.cloud._error("Malformed URL or file path!")
-            return False
+            return
 
         if just_copy_url:
-            # copy link to clipboard and exit
-            clipboard_copy(file_or_url)
-            MsgBox('Copied link to clipboard!')
-            return True
+            # copy link to clipboard and exit            
+            if self.on_clipboard_write:
+                self.on_clipboard_write(file_or_url)  
+            else:
+                clipboard_copy(file_or_url)          
+            return
 
-        if self.stop_check and self.stop_check(): return False
+        if self.stop_check and self.stop_check(): return
 
         req = f"{Share.BASEURL}&apikey={Share.APPID}&service={serv}&link={urllib.parse.quote(file_or_url)}"
         if title:
@@ -780,14 +800,9 @@ class Share:
             req += f"&source={urllib.parse.quote(source)}"
 
         if self.on_prepare_url:
-            self.on_prepare_url(req)
-            return True
+            self.on_prepare_url(req)           
 
-        else:
-            if self.cloud._request(req, returntype='bool', headers={'Content-Type': 'application/json'}, 
+        elif self.cloud._request(req, returntype='bool', headers={'Content-Type': 'application/json'}, 
                                    error_keymap=Share.ERRMAP, timeout=self.timeout):
-                webbrowser.open(req, new=2)
-                return True
-
-        return False
+            webbrowser.open(req, new=2)
 

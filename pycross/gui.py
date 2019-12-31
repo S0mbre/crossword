@@ -9,7 +9,7 @@ from utils.utils import *
 from utils.globalvars import *
 from utils.update import Updater
 from utils.onlineservices import Cloudstorage, Share
-from utils.graphs import make_chart
+from utils.graphs import make_chart, data_from_dict
 from guisettings import CWSettings
 from dbapi import Sqlitedb
 from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu, 
@@ -41,13 +41,15 @@ class ShareThread(QThreadStump):
     sig_apikey_required = QtCore.pyqtSignal('PyQt_PyObject')
     sig_bearer_required = QtCore.pyqtSignal('PyQt_PyObject')
     sig_prepare_url = QtCore.pyqtSignal(str)
+    sig_clipboard_write = QtCore.pyqtSignal(str)
 
-    def __init__(self, on_progress=None, on_upload=None,
+    def __init__(self, on_progress=None, on_upload=None, on_clipboard_write=None,
                  on_apikey_required=None, on_bearer_required=None, on_prepare_url=None,
                  on_start=None, on_finish=None, on_run=None, on_error=None):
         super().__init__(on_start=on_start, on_finish=on_finish, on_run=on_run, on_error=on_error)
         if on_progress: self.sig_progress.connect(on_progress)
         if on_upload: self.sig_upload_file.connect(on_upload)
+        if on_clipboard_write: self.sig_clipboard_write.connect(on_clipboard_write)
         if on_apikey_required: self.sig_apikey_required.connect(on_apikey_required)
         if on_bearer_required: self.sig_bearer_required.connect(on_bearer_required)
         if on_prepare_url: self.sig_prepare_url.connect(on_prepare_url)
@@ -73,7 +75,8 @@ class MainWindow(QtWidgets.QMainWindow):
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error)
         # sharer worker thread
-        self.share_thread = ShareThread(on_progress=self.on_share_progress, on_upload=self.on_share_upload,
+        self.share_thread = ShareThread(on_progress=self.on_share_progress, 
+            on_upload=self.on_share_upload, on_clipboard_write=self.on_share_clipboard_write,
             on_apikey_required=self.on_share_apikey_required, on_bearer_required=self.on_share_bearer_required,
             on_prepare_url=self.on_share_prepare_url,
             on_start=self.on_share_start, on_finish=self.on_share_finish, on_run=self.on_share_run,
@@ -194,8 +197,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_gen.setShortcut(QtGui.QKeySequence('Ctrl+g'))
         self.act_gen.triggered.connect(self.on_act_gen)
         self.act_stop = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), 'Stop')
-        self.act_stop.setToolTip('Stop generation (Ctrl+Z)')
+        self.act_stop.setToolTip('Stop operation (Ctrl+Z)')
         self.act_stop.setShortcut(QtGui.QKeySequence('Ctrl+z'))
+        self.act_stop.triggered.connect(self.on_act_stop)
+        self.act_stop.changed.connect(self.on_act_stop_changed)
         self.act_stop.setCheckable(True)
         self.act_clear = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/dust.png"), 'Clear')
         self.act_clear.setToolTip('Clear all words (Ctrl+D)')
@@ -276,7 +281,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolbar_main.addSeparator()
 
         self.toolbar_main.addAction(self.act_gen)
-        self.toolbar_main.addAction(self.act_stop)
         self.toolbar_main.addAction(self.act_clear)
         self.toolbar_main.addAction(self.act_clear_wd)
         self.toolbar_main.addAction(self.act_erase_wd)
@@ -344,7 +348,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.menu_main_gen = self.menu_main.addMenu('&Generate')
         self.menu_main_gen.addAction(self.act_gen)
-        self.menu_main_gen.addAction(self.act_stop)
         self.menu_main_gen.addSeparator()
         self.menu_main_gen.addAction(self.act_wsrc)
 
@@ -430,6 +433,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusbar_pbar.setRange(0, 100)
         self.statusbar_pbar.setValue(0)
         self.statusbar_pbar.setVisible(False)
+        self.statusbar.addPermanentWidget(self.statusbar_pbar)
+        self.statusbar_btnstop = QtWidgets.QToolButton()
+        self.statusbar_btnstop.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.statusbar_btnstop.setDefaultAction(self.act_stop)
+        self.statusbar_btnstop.hide()
+        self.statusbar.addPermanentWidget(self.statusbar_btnstop)
         self.statusbar_l1 = QtWidgets.QLabel(self.statusbar)
         self.statusbar.addPermanentWidget(self.statusbar_l1)
         self.statusbar_l2 = ClickableLabel(self.statusbar)
@@ -437,8 +446,7 @@ class MainWindow(QtWidgets.QMainWindow):
         color_to_stylesheet(QtGui.QColor(QtCore.Qt.darkGreen), self.statusbar_l2.styleSheet(), 'color')
         self.statusbar_l2.setStyleSheet('color: maroon;')
         self.statusbar_l2.setToolTip('Double-click to update')
-        self.statusbar.addPermanentWidget(self.statusbar_l2)
-        self.statusbar.addWidget(self.statusbar_pbar)
+        self.statusbar.addPermanentWidget(self.statusbar_l2)        
         #self.layout_hgrid3.addWidget(self.statusbar)
         self.setStatusBar(self.statusbar)
         
@@ -544,10 +552,11 @@ class MainWindow(QtWidgets.QMainWindow):
         gen_running = self.gen_thread.isRunning() if getattr(self, 'gen_thread', None) else False
         gen_interrupted = self.gen_thread.isInterruptionRequested() if getattr(self, 'gen_thread', None) else False
         share_running = self.share_thread.isRunning() if getattr(self, 'share_thread', None) else False
+        share_interrupted = self.share_thread.isInterruptionRequested() if getattr(self, 'share_thread', None) else False
         self.act_new.setEnabled(not gen_running and not share_running)
         self.act_open.setEnabled(not gen_running and not share_running)
-        self.act_save.setEnabled(b_cw and not gen_running and not share_running and (self.cw_modified or not self.cw_file))
-        self.act_saveas.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_save.setEnabled(b_cw and not gen_running and (self.cw_modified or not self.cw_file))
+        self.act_saveas.setEnabled(b_cw and not gen_running)
         self.act_share.setEnabled(b_cw and not gen_running and not share_running)
         self.act_edit.setEnabled(b_cw and not gen_running and not share_running)
         self.act_addcol.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
@@ -556,23 +565,23 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_delrow.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
         self.act_reflect.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
         self.act_gen.setEnabled(b_cw and not gen_running and not share_running and bool(self.wordsrc))
-        if not gen_running: self.act_stop.setChecked(False)
-        self.act_stop.setEnabled(b_cw and gen_running and not gen_interrupted)        
+        if not gen_running and not share_running: self.act_stop.setChecked(False)
+        self.act_stop.setVisible(b_cw and (gen_running and not gen_interrupted) or (share_running and not share_interrupted))        
         self.act_clear.setEnabled(b_cw and not gen_running and not share_running)
         self.act_clear_wd.setEnabled(b_cw and not gen_running and not share_running)
         self.act_erase_wd.setEnabled(b_cw and not gen_running and not share_running)
-        self.act_suggest.setEnabled(b_cw and not gen_running and not share_running and bool(self.wordsrc) and (not self.current_word is None))
-        self.act_lookup.setEnabled(b_cw and not gen_running and not share_running and (not self.current_word is None) and not self.cw.words.is_word_blank(self.current_word))
-        self.act_editclue.setEnabled(b_cw and not gen_running and not share_running)
-        self.act_wsrc.setEnabled(b_cw and not gen_running and not share_running)
-        self.act_info.setEnabled(b_cw and not gen_running and not share_running)
-        self.act_print.setEnabled(b_cw and not gen_running and not share_running)
-        self.act_config.setEnabled(not gen_running and not share_running)
+        self.act_suggest.setEnabled(b_cw and not gen_running and bool(self.wordsrc) and (not self.current_word is None))
+        self.act_lookup.setEnabled(b_cw and not gen_running and (not self.current_word is None) and not self.cw.words.is_word_blank(self.current_word))
+        self.act_editclue.setEnabled(b_cw and not gen_running)
+        self.act_wsrc.setEnabled(b_cw and not gen_running)
+        self.act_info.setEnabled(b_cw and not gen_running)
+        self.act_print.setEnabled(b_cw and not gen_running)
+        self.act_config.setEnabled(not gen_running)
         self.act_update.setEnabled(not gen_running and not share_running and self.updater.git_installed)
         #self.act_help.setEnabled(not gen_running)
         #self.act_about.setEnabled(not gen_running)
-        self.twCw.setEnabled(b_cw and not gen_running and not share_running)
-        self.tvClues.setEnabled(b_cw and not gen_running and not share_running)
+        self.twCw.setEnabled(b_cw and not gen_running)
+        self.tvClues.setEnabled(b_cw and not gen_running)
         
     def update_wordsrc(self):
         """
@@ -1067,9 +1076,15 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_share_upload(self, filepth, url):
         self.statusbar.showMessage(f"Uploaded '{filepth}' to '{url}'")
 
+    @QtCore.pyqtSlot(str)
+    def on_share_clipboard_write(self, url):
+        clipboard_copy(url)
+        MsgBox(f"Copied URL '{url}' to clipboard", self, 'pyCross')
+
     @QtCore.pyqtSlot(QtCore.QThread, str)
     def on_share_error(self, thread, err):
-        MsgBox(err, self, 'Error', 'error')
+        #MsgBox(err, self, 'Error', 'error')
+        self._log(err)
 
     @QtCore.pyqtSlot()
     def on_share_finish(self):
@@ -1091,7 +1106,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(str)
     def on_share_prepare_url(self, url):
-        self.share_url(url)
+        self.share_thread.lock()
+        try:
+            self.share_url(url)
+        finally:
+            self.share_thread.unlock()
 
     @QtCore.pyqtSlot()
     def on_share_run(self):
@@ -1134,6 +1153,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 ext = '.ipuz'
         except:
             self.share_thread.unlock()
+            traceback.print_exc(limit=None)
             return
         finally:
             self.share_thread.unlock()
@@ -1147,6 +1167,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.create_cloud(self.share_thread)
             except:
                 self.share_thread.unlock()
+                traceback.print_exc(limit=None)
                 return
             finally:
                 self.share_thread.unlock()
@@ -1164,6 +1185,7 @@ class MainWindow(QtWidgets.QMainWindow):
             if not self._save_cw(temp_file): return
         except:
             self.share_thread.unlock()
+            traceback.print_exc(limit=None)
             return
         finally:
             self.share_thread.unlock()
@@ -1175,11 +1197,12 @@ class MainWindow(QtWidgets.QMainWindow):
         try:      
             self.sharer.on_upload = on_upload_        
             self.sharer.share(temp_file, share_target, share_title,
-                                share_notes, 'google', share_tags,
-                                share_source)
+                              share_notes, 'google', share_tags,
+                              share_source)
             prog = 100
             self.share_thread.sig_progress.emit(prog, 'Finished')
         except:
+            traceback.print_exc(limit=None)
             return
 
         # add temp_file to garbage bin
@@ -1228,7 +1251,10 @@ class MainWindow(QtWidgets.QMainWindow):
         on_prepare_url = None
         if CWSettings.settings['sharing']['use_own_browser']:
             on_prepare_url = lambda url: thread.sig_prepare_url.emit(url) if thread else self.share_url
-        self.sharer = Share(cloud, on_prepare_url=on_prepare_url)
+        on_clipboard_write = lambda url: thread.sig_clipboard_write.emit(url) if thread else None
+        
+        self.sharer = Share(cloud, on_clipboard_write=on_clipboard_write, 
+                            on_prepare_url=on_prepare_url, stop_check=self.act_stop.isChecked)
 
     def share_url(self, url, headers={'Content-Type': 'application/json'}, error_keymap=Share.ERRMAP):
         # open share link in inbuilt browser
@@ -1452,7 +1478,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def _apply_macros(self, txt, grid):
         txt = txt.replace('<t>', grid.info.title).replace('<a>', grid.info.author)
         txt = txt.replace('<p>', grid.info.publisher).replace('<c>', grid.info.cpyright)
-        txt = txt.replace('<d>', grid.info.date)
+        txt = txt.replace('<d>', datetime_to_str(grid.info.date, '%m/%d/%Y'))
         txt = txt.replace('<rows>', str(grid.height)).replace('<cols>', str(grid.width))
         return txt
 
@@ -1522,7 +1548,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     top_offset += text_rect.height() + 40
 
                 if self.cw.words.info.date:
-                    txt = f"{self.cw.words.info.date}"
+                    txt = datetime_to_str(self.cw.words.info.date, '%m/%d/%Y')
                     text_rect = font_metrics.boundingRect(txt)
                     painter.drawStaticText(page_rect.width() - text_rect.width(), top_offset, QtGui.QStaticText(txt))
                     top_offset += text_rect.height() + 40
@@ -1985,7 +2011,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.dia_share = ShareDialog(self, self)
         if not self.dia_share.exec(): return
         if not hasattr(self, 'share_thread') or self.share_thread is None:
-            self.share_thread = ShareThread(on_progress=self.on_share_progress, on_upload=self.on_share_upload,
+            self.share_thread = ShareThread(on_progress=self.on_share_progress, 
+            on_upload=self.on_share_upload, on_clipboard_write=self.on_share_clipboard_write,
             on_apikey_required=self.on_share_apikey_required, on_bearer_required=self.on_share_bearer_required,
             on_prepare_url=self.on_share_prepare_url,
             on_start=self.on_share_start, on_finish=self.on_share_finish, on_run=self.on_share_run,
@@ -2078,9 +2105,13 @@ class MainWindow(QtWidgets.QMainWindow):
         
     @QtCore.pyqtSlot(bool)        
     def on_act_stop(self, checked):
-        if not (checked and self.cw and self.gen_thread.isRunning() and self.gen_thread.isRunning()): return      
-        self.gen_thread.requestInterruption()
-        self.update_actions()
+        if checked:
+            self.stop_all_threads()
+
+    @QtCore.pyqtSlot() 
+    def on_act_stop_changed(self):
+        if hasattr(self, 'statusbar_btnstop'):
+            self.statusbar_btnstop.setVisible(self.act_stop.isVisible())
     
     @QtCore.pyqtSlot(bool)        
     def on_act_edit(self, checked):
@@ -2201,12 +2232,31 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
         MsgBox('To be implemented in next release ))', self, title='Show help docs')
+
         def on_chart_save(filename):
             if not hasattr(self, 'dia_browser'):
                 self.dia_browser = BasicBrowserDialog(icon='internet.png', parent=self)
             self.dia_browser.setData(filename, 'file')
             self.dia_browser.show()
-        make_chart(None, on_save=on_chart_save)
+
+        if not self.cw: return
+        self.cw.words.update_stats()
+
+        d1 = data_from_dict({'Words': self.cw.words.stats['word_count'],
+              'Complete': self.cw.words.stats['complete_word_count'],
+              'Blank': self.cw.words.stats['blank_word_count'],
+              'Across': self.cw.words.stats['across_word_count'],
+              'Down': self.cw.words.stats['down_word_count'],
+              'With clues': self.cw.words.stats['withclues_word_count']})
+        c = self.cw.words.stats['word_count']
+        d1['labels'] = [f'{d*100.0/c:.0f} %' for d in d1['y']]
+
+        make_chart(d1, 'bar', x_title='y', x_props={'type': 'quantitative', 'title': None, 'scale': (0, max(d1['y'] + 10))}, 
+                   y_title='x', y_props={'type': 'nominal', 'title': None, 'sort': list(d1['x'])}, 
+                   color={'shorthand': 'x:N', 'legend': None},
+                   text_col='labels:N', 
+                   text_props={'align': 'left', 'baseline': 'middle', 'dx': 3},
+                   interactive=False, scale_factor=10, svg=True, on_save=on_chart_save)
     
     @QtCore.pyqtSlot(bool)        
     def on_act_about(self, checked):

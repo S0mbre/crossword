@@ -138,7 +138,7 @@ class QThreadStump(QtCore.QThread):
                 traceback.print_exc(limit=None)
                 self.sig_error.emit(self, str(err))
 
-## ------------------------------------------------------------------------ ##            
+## ------------------------------------------------------------------------ ##      
         
 def make_font(family, size=-1, weight=-1, italic=False, font_unit='pt'):
     font = QtGui.QFont(family)
