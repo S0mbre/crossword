@@ -274,6 +274,7 @@ class TabWidget(QtWidgets.QTabWidget):
         tabBar.customContextMenuRequested.connect(self.on_customContextMenuRequested)
         tabBar.tabCloseRequested.connect(self.closeTab)
         tabBar.tabBarDoubleClicked.connect(QtCore.pyqtSlot(int)(lambda index: self.createTab() if index == -1 else None))
+        #self.setTabBarAutoHide(True)
         self.setDocumentMode(True)
         self.setElideMode(QtCore.Qt.ElideRight)
         self.currentChanged.connect(self.on_currentChanged)
@@ -288,6 +289,17 @@ class TabWidget(QtWidgets.QTabWidget):
 
     def webView(self, index):
         return self.widget(index)
+
+    def navigate(self, url, newtab=True, background=False):
+        if newtab:
+            webView = self.createBackgroundTab() if background else self.createTab()
+        else:
+            webView = self.webView(self.currentIndex())
+
+        if not isinstance(url, QtCore.QUrl):
+            url = QtCore.QUrl.fromUserInput(url) if not os.path.isfile(url) else QtCore.QUrl.fromLocalFile(url)
+
+        webView.setUrl(url)
 
     def setupView(self, webView):
 
@@ -379,9 +391,10 @@ class TabWidget(QtWidgets.QTabWidget):
 
     @QtCore.pyqtSlot(int)
     def closeOtherTabs(self, index):
-        for i in range(self.count()):
-            if i != index:
-                self.closeTab(i)
+        for i in range(self.count() - 1, index, -1):
+            self.closeTab(i)
+        for i in range(index - 1, -1, -1):
+            self.closeTab(i)
 
     @QtCore.pyqtSlot(int)
     def closeTab(self, index):
@@ -461,7 +474,7 @@ class TabWidget(QtWidgets.QTabWidget):
     @QtCore.pyqtSlot(QtCore.QPoint)
     def on_customContextMenuRequested(self, pos):
         menu = QtWidgets.QMenu()
-        menu.addAction('New &Tab', self, 'createTab', QtGui.QKeySequence.AddTab)
+        menu.addAction('New &Tab', self.createTab, QtGui.QKeySequence.AddTab)
         index = self.tabBar().tabAt(pos)
         if index == -1:
             menu.addSeparator()
@@ -478,7 +491,7 @@ class TabWidget(QtWidgets.QTabWidget):
             action = menu.addAction('&Reload Tab')
             action.setShortcut(QtGui.QKeySequence.Refresh)
             action.triggered.connect(QtCore.pyqtSlot()(lambda: self.reloadTab(index)))
-        menu.addAction('Reload &All Tabs', self, 'reloadAllTabs')
+        menu.addAction('Reload &All Tabs', self.reloadAllTabs)
         menu.exec(QtGui.QCursor.pos())
 
 ##############################################################################
@@ -594,7 +607,7 @@ class DownloadManagerWidget(QtWidgets.QWidget):
             return
         selected_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Save As', os.path.join(download.downloadDirectory(), download.downloadFileName()))
         if not selected_path[0]: return
-        selected_path = QtCore.QFileInfo(selected_path[0]) #.replace('/', os.sep).lower()
+        selected_path = QtCore.QFileInfo(selected_path[0])
         download.setDownloadDirectory(selected_path.path())
         download.setDownloadFileName(selected_path.fileName())
         download.accept()
@@ -687,7 +700,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
 
     def sizeHint(self):
         desktopRect = QtWidgets.QApplication.primaryScreen().geometry()
-        return desktopRect.size() * 0.7
+        return desktopRect.size() * 0.8
 
     def closeEvent(self, event):
         cnt = self.m_tabWidget.count()
@@ -699,10 +712,8 @@ class BrowserWindow(QtWidgets.QMainWindow):
         event.accept()
         self.deleteLater()
 
-    def navigate(self, url):
-        if not isinstance(url, QtCore.QUrl):
-            url = QtCore.QUrl.fromUserInput(url) if not os.path.isfile(url) else QtCore.QUrl.fromLocalFile(url)
-        self.m_tabWidget.setUrl(url)
+    def navigate(self, url, newtab=True, background=False):
+        self.m_tabWidget.navigate(url, newtab, background)
 
     def tabWidget(self):
         return self.m_tabWidget
@@ -780,6 +791,13 @@ class BrowserWindow(QtWidgets.QMainWindow):
 
         self.viewMenu.addSeparator()
 
+        self.fullscreenAction = self.viewMenu.addAction('&Fullscreen')
+        self.fullscreenAction.setShortcuts(QtGui.QKeySequence.FullScreen)
+        self.fullscreenAction.setCheckable(True)
+        self.fullscreenAction.toggled.connect(self.on_fullscreenAction)
+
+        self.viewMenu.addSeparator()
+
         self.viewToolbarAction = QtWidgets.QAction('Hide toolbar')
 
         @QtCore.pyqtSlot()
@@ -817,13 +835,11 @@ class BrowserWindow(QtWidgets.QMainWindow):
         self.windowMenu = QtWidgets.QMenu('&Window')
 
         self.nextTabAction = QtWidgets.QAction('Show next tab')
-        self.nextTabAction.setShortcuts([QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_BraceRight), QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_PageDown),
-                                         QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_BracketRight), QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_Less)])
+        self.nextTabAction.setShortcuts(QtGui.QKeySequence.NextChild)
         self.nextTabAction.triggered.connect(tabWidget.nextTab)
 
         self.previousTabAction = QtWidgets.QAction('Show previous tab')
-        self.previousTabAction.setShortcuts([QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_BraceLeft), QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_PageUp),
-                                         QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_BracketLeft), QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_Greater)])
+        self.previousTabAction.setShortcuts(QtGui.QKeySequence.PreviousChild)
         self.previousTabAction.triggered.connect(tabWidget.previousTab)
 
         @QtCore.pyqtSlot()
@@ -889,6 +905,29 @@ class BrowserWindow(QtWidgets.QMainWindow):
 
         return self.tb_main
 
+    @QtCore.pyqtSlot(bool)
+    def on_fullscreenAction(self, checked):
+        tb = self.tb_main
+        sb = self.statusBar()
+        if checked:       
+            self.viewToolbarAction.setEnabled(False)     
+            self.viewStatusbarAction.setEnabled(False)     
+            tb.close()
+            sb.close()
+            self.showFullScreen()
+        else:            
+            self.showNormal()
+            if self.viewToolbarAction.text().startswith('Hide'):
+                tb.show()
+            else:
+                tb.close()
+            if self.viewStatusbarAction.text().startswith('Hide'):
+                sb.show()
+            else:
+                sb.close()
+            self.viewToolbarAction.setEnabled(True)     
+            self.viewStatusbarAction.setEnabled(True)
+
     @QtCore.pyqtSlot(QtWebEngineWidgets.QWebEnginePage.WebAction, bool)
     def on_webActionEnabledChanged(self, action, enabled):
         if action == QtWebEngineWidgets.QWebEnginePage.Back:
@@ -919,7 +958,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
     def on_fileopen(self):
         (url, _) = QtWidgets.QFileDialog.getOpenFileUrl(self, 'Open web resource', filter='Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)')
         if not url.isEmpty(): 
-            self.navigate(url)
+            self.navigate(url, False)
 
     @QtCore.pyqtSlot()
     def on_act_find(self):
@@ -974,20 +1013,18 @@ class BrowserWindow(QtWidgets.QMainWindow):
 
 class Browser:
 
-    def __init__(self, urls=[], offTheRecord=False):
+    def __init__(self):
         self.m_otrProfile = None
         self.m_windows = []
         self.m_downloadManagerWidget = DownloadManagerWidget()
         # Quit application if the download manager window is the only remaining window
         self.m_downloadManagerWidget.setAttribute(QtCore.Qt.WA_QuitOnClose, False)
         QtWebEngineWidgets.QWebEngineProfile.defaultProfile().downloadRequested.connect(self.m_downloadManagerWidget.downloadRequested)
-        # create window and navigate to URL
-        for url in urls:
-            self.navigate(offTheRecord, url)
 
-    def navigate(self, url, offTheRecord=False):
-        window = self.createWindow(offTheRecord)
-        window.navigate(url)
+    def navigate(self, url, newtab=True, background=False, offTheRecord=False):
+        window = self.createWindow(offTheRecord) if (not self.m_windows or (offTheRecord and not self.m_windows[0].isOffTheRecord())) else self.m_windows[0]
+        window.navigate(url, newtab, background)
+        window.show()
 
     def createWindow(self, offTheRecord=False):
         if offTheRecord and not self.m_otrProfile:

@@ -9,6 +9,7 @@
 		https://developers.kloudless.com/docs/v1/core
 	* Shareaholic API (social sharing aggregator):
 		https://www.shareaholic.com/api/
+* [v. 0.3] secure Kloudless access to users through OAuth 2 authentication (rather than raw API key)
 * [v. 0.2] cw solving mode (hide replies, check as you type)
 * [v. 0.2] timed solving
 * [v. 0.2] highlight in cw:

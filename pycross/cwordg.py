@@ -13,12 +13,11 @@ def main():
     try:
         # change working dir to current for correct calls to git
         os.chdir(os.path.dirname(os.path.abspath(__file__)))    
-        # make some Qt Core App settings
+        # initialize Qt Core App settings
         QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
         # create QApplication instance
         app = QtWidgets.QApplication(sys.argv)  
-        # QtWebEngine must be initialized here (see https://doc.qt.io/qt-5/qtwebengine-overview.html)
-        #QtWebEngine.QtWebEngine.initialize()
+        # initialize core web engine settings
         QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
         QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.DnsPrefetchEnabled, True)
         QtWebEngineWidgets.QWebEngineProfile.defaultProfile().setUseForGlobalCertificateVerification()

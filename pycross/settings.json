@@ -3,8 +3,8 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			251,
-			106
+			295,
+			127
 		],
 		"win_size": [
 			1319,
@@ -14,7 +14,19 @@
 	"cw_settings": {
 		"timeout": 60.0,
 		"method": "recurse",
-		"pos": "N",
+		"pos": [
+			"N",
+			"V",
+			"ADV",
+			"ADJ",
+			"P",
+			"PRON",
+			"I",
+			"C",
+			"PREP",
+			"PROP",
+			"MISC"
+		],
 		"log": null
 	},
 	"grid_style": {
@@ -100,7 +112,30 @@
 	},
 	"wordsrc": {
 		"maxres": 500,
-		"sources": [],
+		"sources": [
+			{
+				"active": true,
+				"name": "ru",
+				"type": "db",
+				"file": "ru",
+				"dbtype": "SQLite",
+				"dblogin": "",
+				"dbpass": "",
+				"dbtables": {
+					"words": {
+						"table": "twords",
+						"fwords": "word",
+						"fpos": "idpos"
+					},
+					"pos": {
+						"table": "tpos",
+						"fid": "id",
+						"fpos": "pos"
+					}
+				},
+				"shuffle": true
+			}
+		],
 		"excluded": {
 			"words": [],
 			"regex": false
@@ -151,7 +186,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 226
+				"width": 233
 			}
 		]
 	},

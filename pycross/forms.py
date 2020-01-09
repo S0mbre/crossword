@@ -77,7 +77,7 @@ class BasicDialog(QtWidgets.QDialog):
 class LoadCwDialog(BasicDialog):
     
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__(None, 'Load crossword', 'crossword.png', 
+        super().__init__(None, 'New crossword', 'crossword.png', 
               parent, flags)
         
     def addMainLayout(self):
@@ -95,7 +95,7 @@ class LoadCwDialog(BasicDialog):
         self.rb_empty.toggled.connect(self.rb_toggled)
         
         self.gb_pattern = QtWidgets.QGroupBox('Pattern file')
-        self.le_pattern = QtWidgets.QLineEdit()
+        self.le_pattern = QtWidgets.QLineEdit()        
         self.le_pattern.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         self.act_pattern = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
         self.act_pattern.setToolTip('Browse')
@@ -147,6 +147,8 @@ class LoadCwDialog(BasicDialog):
         self.layout_controls.addWidget(self.rb_empty)
         self.layout_controls.addWidget(self.gb_manual)
         #self.layout_controls.addStretch()
+
+        self.setMinimumWidth(300)
         
     def validate(self):
         if self.rb_grid.isChecked() and not os.path.isfile(self.le_pattern.text()):
@@ -176,6 +178,7 @@ class LoadCwDialog(BasicDialog):
         self.gb_pattern.setVisible(self.rb_grid.isChecked())
         self.gb_file.setVisible(self.rb_file.isChecked())
         self.gb_manual.setVisible(self.rb_empty.isChecked())
+        self.adjustSize()
     
     @QtCore.pyqtSlot(bool)        
     def on_act_pattern(self, checked):
