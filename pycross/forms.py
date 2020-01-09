@@ -3233,6 +3233,8 @@ class CwInfoDialog(BasicDialog):
         self.le_copyright = QtWidgets.QLineEdit('')
         self.de_date = QtWidgets.QDateEdit()
         self.de_date.setCalendarPopup(True)
+        self.btn_stats = QtWidgets.QToolButton()
+        self.btn_stats.setDefaultAction(self.mainwindow.act_stats)
 
         self.layout_controls.addRow('Title:', self.le_title)
         self.layout_controls.addRow('Author:', self.le_author)
@@ -3240,6 +3242,7 @@ class CwInfoDialog(BasicDialog):
         self.layout_controls.addRow('Publisher:', self.le_publisher)
         self.layout_controls.addRow('Copyright:', self.le_copyright)
         self.layout_controls.addRow('Date:', self.de_date)
+        self.layout_controls.addRow(self.btn_stats)
 
         self.init()
 
@@ -4017,13 +4020,4 @@ class BasicBrowserDialog(QtWidgets.QDialog):
     def on_browser_url_change(self, url):
         self.sb.showMessage(url.toString()) 
 
-##############################################################################
-######          BrowserDialog
-##############################################################################  
-        
-class BrowserDialog(BasicBrowserDialog):
     
-    def __init__(self, data=None, datatype='url', 
-                geometry=None, title=None, icon=None, parent=None, 
-                flags=QtCore.Qt.WindowFlags()):
-        super().__init__(data, datatype, geometry, title, icon, parent, flags)        

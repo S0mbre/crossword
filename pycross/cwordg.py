@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 import os, sys, traceback
-from PyQt5 import QtWebEngine
+from PyQt5 import QtWebEngine, QtWebEngineWidgets, QtWebEngineCore
 from gui import QtCore, QtWidgets, MainWindow
 
 ## ******************************************************************************** ##
@@ -18,7 +18,10 @@ def main():
         # create QApplication instance
         app = QtWidgets.QApplication(sys.argv)  
         # QtWebEngine must be initialized here (see https://doc.qt.io/qt-5/qtwebengine-overview.html)
-        QtWebEngine.QtWebEngine.initialize()
+        #QtWebEngine.QtWebEngine.initialize()
+        QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
+        QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.DnsPrefetchEnabled, True)
+        QtWebEngineWidgets.QWebEngineProfile.defaultProfile().setUseForGlobalCertificateVerification()
         # create main window
         MainWindow()        
         # run app's event loop

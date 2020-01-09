@@ -18,6 +18,7 @@ from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu,
                     ShareDialog, BasicBrowserDialog)
 from crossword import Word, Crossword, CWError, FILLER, FILLER2, BLANK
 from wordsrc import DBWordsource, TextWordsource, TextfileWordsource, MultiWordsource
+from browser import Browser
 
 ## ******************************************************************************** ##
 
@@ -156,102 +157,132 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_new.setToolTip('Create new crossword (Ctrl+N)')
         self.act_new.setShortcut(QtGui.QKeySequence('Ctrl+n'))
         self.act_new.triggered.connect(self.on_act_new)
+       
         self.act_open = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-15.png"), 'Open')
         self.act_open.setToolTip('Open crossword from file (Ctrl+O)')
         self.act_open.setShortcut(QtGui.QKeySequence('Ctrl+o'))
         self.act_open.triggered.connect(self.on_act_open)
+      
         self.act_save = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), 'Save')
         self.act_save.setToolTip('Save crossword (Ctrl+S)')
         self.act_save.setShortcut(QtGui.QKeySequence('Ctrl+s'))
         self.act_save.triggered.connect(self.on_act_save)
+      
         self.act_saveas = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/saveas.png"), 'Save As...')
         self.act_saveas.setToolTip('Save crossword as new file (Ctrl+Shift+S)')
         self.act_saveas.setShortcut(QtGui.QKeySequence('Ctrl+Shift+s'))
         self.act_saveas.triggered.connect(self.on_act_saveas)
+       
         self.act_share = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/share-1.png"), 'Share...')
         self.act_share.setToolTip('Share crossword in social networks (F10)')
         self.act_share.setShortcut(QtGui.QKeySequence('F10'))
         self.act_share.triggered.connect(self.on_act_share)
+        
         self.act_edit = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), 'Edit')
         self.act_edit.setToolTip('Edit crossword (Ctrl+E)')
         self.act_edit.setCheckable(True)
         self.act_edit.setShortcut(QtGui.QKeySequence('Ctrl+e'))
         self.act_edit.toggled.connect(self.on_act_edit)   
+       
         self.act_addrow = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add_row.png"), 'Add row')
         self.act_addrow.setToolTip('Add row before selected')
         self.act_addrow.triggered.connect(self.on_act_addrow)     
+       
         self.act_delrow = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/delete_row.png"), 'Delete row')
         self.act_delrow.setToolTip('Delete row')
         self.act_delrow.triggered.connect(self.on_act_delrow)
+       
         self.act_addcol = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add_col.png"), 'Add column')
         self.act_addcol.setToolTip('Add column before selected')
         self.act_addcol.triggered.connect(self.on_act_addcol)         
+       
         self.act_delcol = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/delete_col.png"), 'Delete column')
         self.act_delcol.setToolTip('Delete column')
         self.act_delcol.triggered.connect(self.on_act_delcol)
+      
         self.act_reflect = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/windows-1.png"), 'Duplicate')
         self.act_reflect.setToolTip('Duplicate (reflect) grid cells to any direction')
         self.act_reflect.triggered.connect(self.on_act_reflect)
+      
         self.act_gen = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), 'Generate')
         self.act_gen.setToolTip('Generate (solve) crossword (Ctrl+G)')
         self.act_gen.setShortcut(QtGui.QKeySequence('Ctrl+g'))
         self.act_gen.triggered.connect(self.on_act_gen)
+      
         self.act_stop = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), 'Stop')
         self.act_stop.setToolTip('Stop operation (Ctrl+Z)')
         self.act_stop.setShortcut(QtGui.QKeySequence('Ctrl+z'))
         self.act_stop.triggered.connect(self.on_act_stop)
         self.act_stop.changed.connect(self.on_act_stop_changed)
         self.act_stop.setCheckable(True)
+       
         self.act_clear = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/dust.png"), 'Clear')
         self.act_clear.setToolTip('Clear all words (Ctrl+D)')
         self.act_clear.setShortcut(QtGui.QKeySequence('Ctrl+d'))
         self.act_clear.triggered.connect(self.on_act_clear)
+       
         self.act_clear_wd = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/minus.png"), 'Clear word')
         self.act_clear_wd.setToolTip('Clear word')
         self.act_clear_wd.triggered.connect(self.on_act_clear_wd)
+        
         self.act_erase_wd = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), 'Erase word')
         self.act_erase_wd.setToolTip('Erase word')
         self.act_erase_wd.triggered.connect(self.on_act_erase_wd)
+       
         self.act_suggest = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/magic-wand.png"), 'Suggest word')
         self.act_suggest.setToolTip('Suggest word (Ctrl+F)')
         self.act_suggest.setShortcut(QtGui.QKeySequence('Ctrl+f'))
         self.act_suggest.triggered.connect(self.on_act_suggest)
+       
         self.act_lookup = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/worldwide.png"), 'Lookup word')
         self.act_lookup.setToolTip('Lookup word definition (Ctrl+L)')
         self.act_lookup.setShortcut(QtGui.QKeySequence('Ctrl+l'))
         self.act_lookup.triggered.connect(self.on_act_lookup)
+        
         self.act_editclue = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/key.png"), 'Edit clue')
         self.act_editclue.setToolTip('Edit clue (Ctrl+K)')
         self.act_editclue.setShortcut(QtGui.QKeySequence('Ctrl+k'))
         self.act_editclue.triggered.connect(self.on_act_editclue)
+        
         self.act_wsrc = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"), 'Word sources')
         self.act_wsrc.setToolTip('Select wordsources (Ctrl+W)')
         self.act_wsrc.setShortcut(QtGui.QKeySequence('Ctrl+w'))
         self.act_wsrc.triggered.connect(self.on_act_wsrc)
+        
         self.act_info = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/info1.png"), 'Info')
         self.act_info.setToolTip('Show / edit crossword info (Ctrl+I)')
         self.act_info.setShortcut(QtGui.QKeySequence('Ctrl+i'))
         self.act_info.triggered.connect(self.on_act_info)
+        
         self.act_print = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/print.png"), 'Print')
         self.act_print.setToolTip('Print crossword and/or clues (Ctrl+P)')
         self.act_print.setShortcut(QtGui.QKeySequence('Ctrl+p'))
         self.act_print.triggered.connect(self.on_act_print)
+        
         self.act_config = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Config')
         self.act_config.setToolTip('Configure parameters (F11)')
         self.act_config.setShortcut(QtGui.QKeySequence('F11'))
         self.act_config.triggered.connect(self.on_act_config)
+        
         self.act_update = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cloud-computing.png"), 'Check update')
         self.act_update.setToolTip('Check for updates (Ctrl+U)')
         self.act_update.setShortcut(QtGui.QKeySequence('Ctrl+u'))
         self.act_update.triggered.connect(self.on_act_update)
+       
         self.act_help = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/info.png"), 'Help')
         self.act_help.setToolTip('Show help (F1)')
         self.act_help.setShortcut(QtGui.QKeySequence('F1'))
         self.act_help.triggered.connect(self.on_act_help)
+
         self.act_about = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/main.png"), 'About')
         self.act_about.setToolTip('Show about (F2)')
         self.act_about.setShortcut(QtGui.QKeySequence('F2'))
         self.act_about.triggered.connect(self.on_act_about)
+
+        self.act_stats = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/analytics.png"), 'Show stats')
+        self.act_stats.setToolTip('Show detailed crossword statistics')
+        self.act_stats.triggered.connect(self.on_act_stats)
+        
         self.act_exit = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/exit.png"), 'Exit')
         self.act_exit.setToolTip('Exit (Ctrl+q)')
         self.act_exit.setShortcut(QtGui.QKeySequence('Ctrl+q'))
@@ -263,6 +294,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         self.toolbar_main = QtWidgets.QToolBar()
         self.toolbar_main.setMovable(False)
+        self.toolbar_main.toggleViewAction().setEnabled(False)
 
         self.toolbar_main.addAction(self.act_new)
         self.toolbar_main.addAction(self.act_open)
@@ -291,6 +323,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.toolbar_main.addAction(self.act_wsrc)
         self.toolbar_main.addAction(self.act_info)
+        self.toolbar_main.addAction(self.act_stats)
         self.toolbar_main.addAction(self.act_print)       
         self.toolbar_main.addSeparator()
 
@@ -345,6 +378,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_view_showtoolbar.setChecked(True)
         self.act_view_showtoolbar.setToolTip('Show / hide toolbar')
         self.act_view_showtoolbar.toggled.connect(self.on_act_view_showtoolbar)
+        self.menu_main_view.addSeparator()
+        self.menu_main_view.addAction(self.act_info)
+        self.menu_main_view.addAction(self.act_stats)
 
         self.menu_main_gen = self.menu_main.addMenu('&Generate')
         self.menu_main_gen.addAction(self.act_gen)
@@ -2233,14 +2269,26 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_help(self, checked):
         MsgBox('To be implemented in next release ))', self, title='Show help docs')
 
-        def on_chart_save(filename):
-            if not hasattr(self, 'dia_browser'):
-                self.dia_browser = BasicBrowserDialog(icon='internet.png', parent=self)
-            self.dia_browser.setData(filename, 'file')
-            self.dia_browser.show()
+    @QtCore.pyqtSlot(bool)        
+    def on_act_about(self, checked):
+        if not hasattr(self, 'dia_about'):
+            self.dia_about = AboutDialog(self)
+        self.dia_about.exec()
 
+    @QtCore.pyqtSlot(bool)
+    def on_act_stats(self, checked):
         if not self.cw: return
         self.cw.words.update_stats()
+
+        def on_chart_save(filename):
+            if not hasattr(self, 'browser'):
+                self.browser = Browser()
+            try:
+                #self.browser.createWindow()
+                url = os.path.abspath(filename)
+                self.browser.navigate(url)
+            except:
+                traceback.print_exc(limit=None)
 
         d1 = data_from_dict({'Words': self.cw.words.stats['word_count'],
               'Complete': self.cw.words.stats['complete_word_count'],
@@ -2257,12 +2305,6 @@ class MainWindow(QtWidgets.QMainWindow):
                    text_col='labels:N', 
                    text_props={'align': 'left', 'baseline': 'middle', 'dx': 3},
                    interactive=False, scale_factor=10, svg=True, on_save=on_chart_save)
-    
-    @QtCore.pyqtSlot(bool)        
-    def on_act_about(self, checked):
-        if not hasattr(self, 'dia_about'):
-            self.dia_about = AboutDialog(self)
-        self.dia_about.exec()
 
     @QtCore.pyqtSlot(QtGui.QMouseEvent)
     def on_statusbar_l2_dblclicked(self, event):

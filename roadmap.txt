@@ -1,4 +1,6 @@
 * + [v. 0.2] configure shuffle / no shuffle of word sources
+* + [v. 0.2] inbuilt browser
+* [v. 0.2] OneAcross.com search and help (clues)
 * [v. 0.2] display generation progress in progress bar
 * [v. 0.2] editable main toolbar
 * [v. 0.2] show / output cw stats: % complete, % clues complete, complexity index, etc...

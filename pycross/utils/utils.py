@@ -80,6 +80,13 @@ def make_abspath(filename, root=''):
     if not root: root = os.path.dirname(os.path.dirname(__file__))
     return os.path.abspath(os.path.join(root, filename))
 
+def bytes_human(value, suffix='B'):
+    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+        if abs(value) < 1024.0:
+            return f"{value:3.1f}{unit}{suffix}"
+        value /= 1024.0
+    return f"{value:.1f}Yi{suffix}"
+
 ### ---------------------------- GUI ---------------------------- ###
 
 class QThreadStump(QtCore.QThread):
@@ -151,16 +158,19 @@ def make_font(family, size=-1, weight=-1, italic=False, font_unit='pt'):
     #print(f"make_font: font_unit={font_unit}, family={font.family()}, size(pt) = {font.pointSize()}, size(px)={font.pixelSize()}")
     return font
     
-def MsgBox(what, parent=None, title='pyCross', msgtype='info', 
-           btn=QtWidgets.QMessageBox.Ok):
+def MsgBox(what, parent=None, title='pyCross', msgtype='info', btn=None):
     if msgtype == 'error':
         msgtype = QtWidgets.QMessageBox.Critical
+        if btn is None: btn = QtWidgets.QMessageBox.Ok
     elif msgtype == 'warn':
         msgtype = QtWidgets.QMessageBox.Warning
+        if btn is None: btn = QtWidgets.QMessageBox.Ok
     elif msgtype == 'ask':
         msgtype = QtWidgets.QMessageBox.Question
+        if btn is None: btn = QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
     else:
         msgtype = QtWidgets.QMessageBox.Information
+        if btn is None: btn = QtWidgets.QMessageBox.Ok
     return QtWidgets.QMessageBox(msgtype, title, what, btn, parent).exec()
 
 def UserInput(dialogtype='text', parent=None, title='pyCross', label='', value=None, textmode='normal',
