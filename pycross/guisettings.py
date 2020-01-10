@@ -161,7 +161,7 @@ class CWSettings:
         },
     'common':
         {
-            'temp_dir': ''
+            'temp_dir': '', 'autosave_cw': True
         }
     } # settings
          

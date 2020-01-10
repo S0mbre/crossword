@@ -32,11 +32,11 @@ setuptools.setup(
     #package_data={'pycross': ['assets/*', 'assets/dic/*', 'assets/icons/*', 
     #                          'utils/*', '*.bat', '*.json', '*.sh', '../.gitignore'] + \
     #                          [f"../{d}" for d in get_all_files('.git')]},    
-    install_requires=['requests', 'numpy', 'PyQt5'],
+    install_requires=['requests', 'numpy', 'PyQt5', 'PyQtWebEngine', 'pandas', 'altair']
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.7',
 )

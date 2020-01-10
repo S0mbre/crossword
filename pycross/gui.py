@@ -533,7 +533,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         Applies settings found in CWSettings.settings and updates the settings file.
         """
-        # load cw
+        # autoload saved cw (see CWSettings.settings['common']['autosave_cw'])
         self.autoload_cw()
         
         # gui
@@ -708,16 +708,17 @@ class MainWindow(QtWidgets.QMainWindow):
                 pass
         else:
             self.cw.words.to_file(SAVEDCW_FILE)
+            self.cw_modified = False
         
     def autoload_cw(self):
-        if self.cw or not os.path.isfile(SAVEDCW_FILE): return
+        if self.cw or not CWSettings.settings['common']['autosave_cw'] or not os.path.isfile(SAVEDCW_FILE): return
         try:
             self.cw = Crossword(data=SAVEDCW_FILE, data_type='file',
                                     wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
                                     log=CWSettings.settings['cw_settings']['log'])
             self.cw_file = SAVEDCW_FILE
             self.update_cw()
-            #print(str(self.cw.words.info))
+            self.cw_modified = False
         except Exception as err:
             self._log(err)
             self.cw = None
@@ -1837,7 +1838,13 @@ class MainWindow(QtWidgets.QMainWindow):
                 try:
                     thread_.terminate()
                 except:
-                    pass                
+                    pass         
+
+    def check_save_required(self):
+        if self.cw and self.cw_modified:
+            reply = MsgBox('You have unsaved changes in your current crossword. Would you like to save them?', self, 'Confirm Action', 'ask')
+            if reply == QtWidgets.QMessageBox.Yes: 
+                self.on_act_save(False)       
         
     # ----- Overrides (events, etc) ----- #
     
@@ -1861,7 +1868,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # kill threads
         self.stop_all_threads()
         # save cw
-        self.autosave_cw()
+        if CWSettings.settings['common']['autosave_cw']:
+            self.autosave_cw()
+        else:
+            self.check_save_required()
         # save settings file
         self.update_settings_before_quit()
         CWSettings.save_to_file(SETTINGS_FILE)
@@ -1985,6 +1995,9 @@ class MainWindow(QtWidgets.QMainWindow):
     
     @QtCore.pyqtSlot(bool)        
     def on_act_new(self, checked):
+
+        self.check_save_required()
+
         if not hasattr(self, 'dia_load'):
             self.dia_load = LoadCwDialog(self)
         if not self.dia_load.exec(): return
@@ -2015,7 +2028,8 @@ class MainWindow(QtWidgets.QMainWindow):
                                 log=CWSettings.settings['cw_settings']['log'])            
         else:
             return
-        
+
+        #print(str(self.cw.words.info))
         self.update_cw()
         
         if self.dia_load.rb_empty.isChecked():
@@ -2023,6 +2037,9 @@ class MainWindow(QtWidgets.QMainWindow):
             
     @QtCore.pyqtSlot(bool)
     def on_act_open(self, checked):
+
+        self.check_save_required()
+
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', os.getcwd(), 'Crossword files (*.xpf *.ipuz);;All files (*.*)')
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep).lower()
@@ -2039,6 +2056,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                 log=CWSettings.settings['cw_settings']['log'])
         self.cw_file = selected_path
         self.update_cw()
+        self.cw_modified = False
     
     @QtCore.pyqtSlot(bool)
     def on_act_save(self, checked):
@@ -2080,6 +2098,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(bool)
     def on_act_close(self, checked):
+        self.check_save_required()
+
         self.cw = None
         self.cw_file = ''
         self.last_pressed_item = None
@@ -2282,7 +2302,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if not hasattr(self, 'dia_info'):
             self.dia_info = CwInfoDialog(self, self)
         else:
-            self.dia_info.init()
+            self.dia_info.init()            
         if self.dia_info.exec():
             self.cw.words.info = self.dia_info.to_info()
         

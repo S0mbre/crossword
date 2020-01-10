@@ -3,30 +3,18 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			295,
-			127
+			301,
+			90
 		],
 		"win_size": [
-			1319,
-			804
+			1281,
+			758
 		]
 	},
 	"cw_settings": {
 		"timeout": 60.0,
 		"method": "recurse",
-		"pos": [
-			"N",
-			"V",
-			"ADV",
-			"ADJ",
-			"P",
-			"PRON",
-			"I",
-			"C",
-			"PREP",
-			"PROP",
-			"MISC"
-		],
+		"pos": "N",
 		"log": null
 	},
 	"grid_style": {
@@ -112,30 +100,7 @@
 	},
 	"wordsrc": {
 		"maxres": 500,
-		"sources": [
-			{
-				"active": true,
-				"name": "ru",
-				"type": "db",
-				"file": "ru",
-				"dbtype": "SQLite",
-				"dblogin": "",
-				"dbpass": "",
-				"dbtables": {
-					"words": {
-						"table": "twords",
-						"fwords": "word",
-						"fpos": "idpos"
-					},
-					"pos": {
-						"table": "tpos",
-						"fid": "id",
-						"fpos": "pos"
-					}
-				},
-				"shuffle": true
-			}
-		],
+		"sources": [],
 		"excluded": {
 			"words": [],
 			"regex": false
@@ -186,7 +151,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 233
+				"width": 201
 			}
 		]
 	},
@@ -224,16 +189,16 @@
 			12,
 			20
 		],
-		"layout": "portrait",
+		"layout": "auto",
 		"font_embed": true,
 		"antialias": true,
 		"print_cw": true,
 		"print_clues": true,
-		"clear_cw": false,
+		"clear_cw": true,
 		"print_clue_letters": true,
 		"print_info": true,
 		"color_print": true,
-		"openfile": false,
+		"openfile": true,
 		"cw_title": "<t>",
 		"clues_title": "Clues",
 		"header_font": {
@@ -273,7 +238,7 @@
 		}
 	},
 	"export": {
-		"openfile": false,
+		"openfile": true,
 		"clear_cw": true,
 		"img_resolution": 72,
 		"pdf_resolution": 1200,
@@ -292,12 +257,13 @@
 	"sharing": {
 		"account": "",
 		"bearer_token": "",
-		"use_api_key": true,
+		"use_api_key": false,
 		"root_folder": "",
-		"user": "rootuser",
+		"user": "",
 		"use_own_browser": true
 	},
 	"common": {
-		"temp_dir": ""
+		"temp_dir": "",
+		"autosave_cw": true
 	}
 }

@@ -19,6 +19,13 @@ def print_dbg(what, file=sys.stdout):
 def print_help(what, file=sys.stdout):
     print(what, file=file)
 
+def is_iterable(obj):
+    try:
+        _ = iter(obj)
+        return True
+    except:
+        return False
+
 def generate_uuid():
     return uuid.uuid4().hex
 

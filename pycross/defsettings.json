@@ -263,6 +263,7 @@
 		"use_own_browser": true
 	},
 	"common": {
-		"temp_dir": ""
+		"temp_dir": "",
+		"autosave_cw": true
 	}
 }

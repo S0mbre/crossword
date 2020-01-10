@@ -545,7 +545,6 @@ class SettingsDialog(BasicDialog):
         self.layout_buttons.addWidget(self.btn_load)
         self.layout_buttons.addWidget(self.btn_save)
         self.layout_central.addWidget(self.stacked)
-        self.layout_central.addStretch()
         self.layout_central.addLayout(self.layout_buttons)
         self.central_widget.setLayout(self.layout_central)
         
@@ -581,7 +580,11 @@ class SettingsDialog(BasicDialog):
         self.layout_tempdir.addWidget(self.le_tempdir)
         self.layout_tempdir.addWidget(self.btn_tempdir_browse)
 
+        self.chb_autosave_cw = QtWidgets.QCheckBox('')
+        self.chb_autosave_cw.setToolTip('Save crosswords on exit and load on startup')
+
         self.layout_common.addRow('Temp directory', self.layout_tempdir)
+        self.layout_common.addRow('Auto save/load crossword', self.chb_autosave_cw)
 
         self.page_common.setLayout(self.layout_common)
         self.stacked.addWidget(self.page_common)
@@ -715,6 +718,7 @@ class SettingsDialog(BasicDialog):
         self.page_grid.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.page_grid.setWidgetResizable(True)
         self.layout_grid = QtWidgets.QFormLayout()
+        self.layout_grid.setSizeConstraint(QtWidgets.QLayout.SetMinAndMaxSize)
         
         self.spin_cwscale = QtWidgets.QSpinBox()
         self.spin_cwscale.setRange(100, 300)
@@ -873,6 +877,7 @@ class SettingsDialog(BasicDialog):
         self.page_clues.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.page_clues.setWidgetResizable(True)
         self.layout_clues = QtWidgets.QFormLayout()
+        self.layout_clues.setSizeConstraint(QtWidgets.QLayout.SetMinAndMaxSize)
 
         self.btn_clue_normal_bg_color = QtWidgets.QPushButton('')
         self.btn_clue_normal_bg_color.setStyleSheet('background-color: white;')
@@ -983,6 +988,7 @@ class SettingsDialog(BasicDialog):
         self.page_lookup.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.page_lookup.setWidgetResizable(True)
         self.layout_lookup = QtWidgets.QVBoxLayout()
+        self.layout_lookup.setSizeConstraint(QtWidgets.QLayout.SetMinAndMaxSize)
 
         # def language
         self.layout_lookup_top = QtWidgets.QFormLayout()
@@ -1166,6 +1172,7 @@ class SettingsDialog(BasicDialog):
         self.page_printing.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.page_printing.setWidgetResizable(True)
         self.layout_printing = QtWidgets.QVBoxLayout()
+        self.layout_printing.setSizeConstraint(QtWidgets.QLayout.SetMinAndMaxSize)
         self.layout_printing.setSpacing(10)
 
         self.layout_combo_print_layout = QtWidgets.QFormLayout()
@@ -1371,6 +1378,7 @@ class SettingsDialog(BasicDialog):
 
         # common
         settings['common']['temp_dir'] = self.le_tempdir.text()
+        settings['common']['autosave_cw'] = self.chb_autosave_cw.isChecked()
 
         # user interface
         settings['gui']['theme'] = self.combo_apptheme.currentText()
@@ -1877,6 +1885,7 @@ class SettingsDialog(BasicDialog):
         # common
         if page is None or page == 'Common':
             self.le_tempdir.setText(settings['common']['temp_dir'])
+            self.chb_autosave_cw.setChecked(settings['common']['autosave_cw'])
         
         # engine
         if page is None or page == 'Generation':
@@ -4023,4 +4032,122 @@ class BasicBrowserDialog(QtWidgets.QDialog):
     def on_browser_url_change(self, url):
         self.sb.showMessage(url.toString()) 
 
+##############################################################################
+######          ToolbarCustomizer
+##############################################################################  
+        
+class ToolbarCustomizer(QtWidgets.QWidget):
     
+    # todo: implement Drag And Drop from treeview to list / toolbar 
+    # see https://doc.qt.io/qt-5/qtwidgets-draganddrop-fridgemagnets-example.html
+
+    def __init__(self, action_source, toolbar, parent=None):
+        if not action_source or not toolbar:
+            raise Exception('Null action source or toolbar pointers passed to ToolbarCustomizer!')
+        self.action_source = action_source
+        self.src_toolbar = toolbar        
+        super().__init__(parent)
+        self.add_src_action(self.action_source)
+        self.update_preview()
+        
+    def addMainLayout(self):
+        self.layout_controls = QtWidgets.QHBoxLayout()    
+        self.splitter1 = QtWidgets.QSplitter()
+        self.splitter1.setChildrenCollapsible(False)
+
+        self.tw_actions = QtWidgets.QTreeWidget()
+        self.tw_actions.setColumnCount(1)
+        self.tw_actions.setHeaderHidden(True)
+        self.tw_actions.setMinimumWidth(100)
+        self.tw_actions.setMaximumWidth(500)
+        self.splitter1.addWidget(self.tw_actions)
+        
+        self.layout_right = QtWidgets.QHBoxLayout()
+        self.tb = QtWidgets.QToolBar()
+        self.tb.setOrientation(QtCore.Qt.Vertical)
+        self.act_add = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/fast-forward.png"), 'Add', self.on_act_add)
+        self.act_addsep = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/pipe.png"), 'Add separator', self.on_act_addsep)
+        self.tb.addSeparator()
+        self.act_remove = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind.png"), 'Remove', self.on_act_remove)
+        self.act_clear = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), 'Clear', self.on_act_clear)
+        self.tb.addSeparator()
+        self.act_up = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-L.png"), 'Up', self.on_act_up)
+        self.act_down = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), 'Down', self.on_act_down)
+        self.layout_right.addWidget(self.tb)
+        self.layout_preview = QtWidgets.QVBoxLayout()
+        self.l_added = QtWidgets.QLabel('Added items:')
+        self.lw_added = QtWidgets.QListWidget()
+        self.connect_lw_signals()
+        # fill lw_added with actions from src_toolbar
+        self.update_added(self.src_toolbar.actions())
+        self.l_preview = QtWidgets.QLabel('Preview:')
+        self.tb_preview = QtWidgets.QToolBar()
+        self.tb_preview.setOrientation(QtCore.Qt.Horizontal)
+        self.layout_preview.addWidget(self.l_added)
+        self.layout_preview.addWidget(self.lw_added)
+        self.layout_preview.addWidget(self.l_preview)
+        self.layout_preview.addWidget(self.tb_preview)
+        self.layout_right.addLayout(self.layout_preview)
+        self.w_layout_right = QtWidgets.QWidget()
+        self.w_layout_right.setLayout(self.layout_right)
+        self.splitter1.addWidget(self.w_layout_right)
+
+        self.layout_controls.addWidget(self.splitter1)
+
+    def connect_lw_signals(self, connect=True):
+        if connect:
+            self.lw_added.indexesMoved.connect(QtCore.pyqtSlot(list)(lambda indexes: self.update_preview()))
+            self.lw_added.itemChanged.connect(QtCore.pyqtSlot(QtWidgets.QListWidgetItem)(lambda item: self.update_preview()))
+        else:
+            try:
+                self.lw_added.indexesMoved.disconnect()
+                self.lw_added.itemChanged.disconnect()
+            except:
+                pass
+
+    def update_added(self, actions, clear=True):
+        self.connect_lw_signals(False)
+        if clear:
+            for act_ in self.lw_added.actions():
+                self.lw_added.removeAction(act_)
+        for act_ in actions:
+            self.lw_added.addAction(act_)         
+        self.update_preview()  
+        self.connect_lw_signals() 
+
+    def add_src_action(self, action, tree_item=None):
+        if is_iterable(action):
+            item = None
+            for act_ in action:
+                item = self.add_src_action(act_, tree_item)
+            return item
+        
+        if isinstance(action, QtWidgets.QActionGroup):
+            return self.add_src_action(action.actions(), tree_item)            
+
+        if isinstance(action, QtWidgets.QMenu):
+            return self.add_src_action(action.actions(), self.add_src_action(action.menuAction(), tree_item) if action.title() else tree_item)
+            
+        if not isinstance(action, QtWidgets.QAction): return None
+
+        txt = action.text()
+        item = QtWidgets.QTreeWidgetItem([txt or '<Unnamed>'])
+        item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsDragEnabled)
+        item.setData(0, QtCore.Qt.UserRole, action)
+        if action.icon():
+            item.setIcon(0, action.icon())
+        item.setToolTip(0, action.toolTip())
+        if tree_item and isinstance(tree_item, QtWidgets.QTreeWidgetItem):
+            tree_item.addChild(item)
+        else:
+            self.tw_actions.addTopLevelItem(item)
+        return item
+
+    @QtCore.pyqtSlot()
+    def update_preview(self):
+        self.tb_preview.clear()
+        for i in range(self.lw_added.count()):
+            item = self.lw_added.item(i)
+            action = item.data(0, QtCore.Qt.UserRole)
+            if not isinstance(action, QtWidgets.QAction): continue
+            self.tb_preview.addAction(action)

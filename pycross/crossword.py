@@ -1068,7 +1068,8 @@ class Crossword:
         self.closelog()
         
     def init_data(self, **kwargs):
-        self.words = Wordgrid(data=self.data, data_type=self.data_type, **kwargs)
+        self.words = Wordgrid(data=self.data, data_type=self.data_type, info=CWInfo(), **kwargs)
+        #print(f"CROSSWORD FROM {self.data_type}:{globalvars.NEWLINE}{str(self.words.info)}{globalvars.NEWLINE}{globalvars.NEWLINE}")
         self.reset_used()
         self.time_start = timeit.default_timer()
             
