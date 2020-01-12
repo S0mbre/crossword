@@ -467,6 +467,245 @@ class WordSrcDialog(BasicDialog):
             self.stacked.setCurrentIndex(1)
         elif self.rb_type_list.isChecked():
             self.stacked.setCurrentIndex(2)
+
+##############################################################################
+######          ToolbarCustomizer
+##############################################################################  
+        
+class ToolbarCustomizer(QtWidgets.QWidget):
+    
+    # todo: implement Drag And Drop from treeview to list / toolbar 
+    # see https://doc.qt.io/qt-5/qtwidgets-draganddrop-fridgemagnets-example.html
+
+    def __init__(self, action_source, toolbar, parent=None):
+        if not action_source or not toolbar:
+            raise Exception('Null action source or toolbar pointers passed to ToolbarCustomizer!')
+        self.action_source = action_source
+        self.src_toolbar = toolbar        
+        super().__init__(parent)
+        self.addMainLayout()
+        self.add_src_action(self.action_source)
+        #self.update_added(self.src_toolbar.actions(), False)
+        
+    def addMainLayout(self):
+        self.layout_controls = QtWidgets.QHBoxLayout()    
+        self.splitter1 = QtWidgets.QSplitter()
+        self.splitter1.setChildrenCollapsible(False)
+
+        self.tw_actions = QtWidgets.QTreeWidget()
+        self.tw_actions.setColumnCount(1)
+        self.tw_actions.setHeaderHidden(True)
+        self.tw_actions.setMinimumWidth(100)
+        self.tw_actions.setMaximumWidth(500)
+        self.tw_actions.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.tw_actions.itemSelectionChanged.connect(self.on_tw_actions_selected)
+        self.splitter1.addWidget(self.tw_actions)
+        
+        self.layout_right = QtWidgets.QHBoxLayout()
+        self.tb = QtWidgets.QToolBar()
+        self.tb.setOrientation(QtCore.Qt.Vertical)
+        self.act_add = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/fast-forward.png"), 'Add', self.on_act_add)
+        self.act_remove = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind.png"), 'Remove', self.on_act_remove)
+        self.act_addsep = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/pipe.png"), 'Add separator', self.on_act_addsep)
+        self.tb.addSeparator()
+        self.act_clear = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), 'Clear', self.on_act_clear)
+        self.tb.addSeparator()
+        self.act_up = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-L.png"), 'Up', self.on_act_up)
+        self.act_down = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), 'Down', self.on_act_down)
+        self.layout_right.addWidget(self.tb)
+        self.layout_preview = QtWidgets.QVBoxLayout()
+        self.l_added = QtWidgets.QLabel('Added items:')
+        self.lw_added = QtWidgets.QListWidget()
+        self.lw_added.itemSelectionChanged.connect(self.on_tw_actions_selected)
+        self.layout_preview.addWidget(self.l_added)
+        self.layout_preview.addWidget(self.lw_added)
+        self.layout_right.addLayout(self.layout_preview)
+        self.w_layout_right = QtWidgets.QWidget()
+        self.w_layout_right.setLayout(self.layout_right)
+        self.splitter1.addWidget(self.w_layout_right)
+
+        self.layout_controls.addWidget(self.splitter1)
+        self.setLayout(self.layout_controls)
+
+    def update_actions(self):
+        cur_treeitem = self.tw_actions.currentItem() 
+        cur_lwitem = self.lw_added.currentItem()
+        self.act_add.setEnabled(not cur_treeitem is None)
+        self.act_remove.setEnabled(not cur_lwitem is None)
+        self.act_clear.setEnabled(self.lw_added.count() > 0)
+        self.act_up.setEnabled((not cur_lwitem is None) and self.lw_added.currentRow() > 0)
+        self.act_down.setEnabled((not cur_lwitem is None) and self.lw_added.currentRow() < (self.lw_added.count() - 1))
+
+    def reset(self):
+        self.tw_actions.clear()
+        self.add_src_action(self.action_source)
+        self.update_added(self.src_toolbar.actions())
+
+    def _lw_add(self, lw, item, row=-1):
+        if row >= 0:
+            lw.insertItem(row, item)
+        else:
+            lw.addItem(item)
+
+    def update_added(self, actions, clear=True, insert_in_current=False):
+        row = self.lw_added.currentRow()
+        if clear:
+            self.lw_added.clear()
+        for act_ in actions:
+            if act_.isSeparator():
+                self._lw_add(self.lw_added, '———', row)
+            else:
+                item = QtWidgets.QListWidgetItem(act_.text())
+                item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsDragEnabled)
+                if act_.icon():
+                    item.setIcon(act_.icon())
+                item.setData(QtCore.Qt.UserRole, act_)
+                self._lw_add(self.lw_added, item, row)
+                #self.lw_added.addAction(act_)      
+        self.update_actions()   
+
+    def add_src_action(self, action, tree_item=None):
+        if is_iterable(action):
+            item = None
+            for act_ in action:
+                item = self.add_src_action(act_, tree_item)
+            return item
+        
+        if isinstance(action, QtWidgets.QActionGroup):
+            return self.add_src_action(action.actions(), tree_item)          
+
+        if isinstance(action, QtWidgets.QMenu):
+            return self.add_src_action(action.actions(), self.add_src_action(action.menuAction(), tree_item) if action.isSeparator() else tree_item)
+            
+        if not isinstance(action, QtWidgets.QAction): return None
+
+        txt = action.text()
+        item = QtWidgets.QTreeWidgetItem([txt or '<Unnamed>'])
+        flags = QtCore.Qt.ItemIsEnabled
+        if not action.isSeparator():
+            flags |= QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsDragEnabled
+        item.setFlags(flags)
+        item.setData(0, QtCore.Qt.UserRole, action)
+        if action.icon():
+            item.setIcon(0, action.icon())
+        item.setToolTip(0, action.toolTip())
+        if tree_item and isinstance(tree_item, QtWidgets.QTreeWidgetItem):
+            tree_item.addChild(item)
+        else:
+            self.tw_actions.addTopLevelItem(item)
+        self.tw_actions.show()
+        self.update_actions()
+        return item
+
+    def update_src_toolbar(self):
+        self.src_toolbar.clear()
+        for i in range(self.lw_added.count()):
+            item = self.lw_added.item(i)
+            if item.text() == '———':
+                self.src_toolbar.addSeparator()
+            else:
+                act_ = item.data(QtCore.Qt.UserRole)
+                if isinstance(act_, QtWidgets.QAction):
+                    self.src_toolbar.addAction(act_)
+
+    def from_list(self, act_list):
+        """
+        Initializes added actions from list of action names, as in CWSettings['gui']['toolbar_actions']
+        """
+        mainwin = self.src_toolbar.window()
+        actions = []
+        for act_ in act_list:
+            action = None
+            if act_ == 'SEP':
+                action = QtWidgets.QAction()
+                action.setSeparator(True)
+            else:
+                action = getattr(mainwin, act_, None)
+            if action: actions.append(action)
+        self.update_added(actions)
+
+    def to_list(self):
+        mainwin = self.src_toolbar.window()
+        lst = []
+        for i in range(self.lw_added.count()):
+            item = self.lw_added.item(i)
+            if item.text() == '———':
+                lst.append('SEP')
+            else:
+                act_ = item.data(QtCore.Qt.UserRole)
+                if isinstance(act_, QtWidgets.QAction):
+                    for k, v in mainwin.__dict__.items():
+                        if act_ == v:
+                            lst.append(k)
+                            break
+        return lst
+
+    @QtCore.pyqtSlot()
+    def on_act_add(self):
+        """
+        Add selected action(s) to toolbar.
+        """
+        sel_treeitems = self.tw_actions.selectedItems()
+        if len(sel_treeitems) == 0: return
+        actions = [item.data(0, QtCore.Qt.UserRole) for item in sel_treeitems]
+        self.update_added(actions, False, True)     
+
+    @QtCore.pyqtSlot()
+    def on_act_addsep(self):
+        """
+        Add separator after last action.
+        """
+        sepitem = '———'
+        self._lw_add(self.lw_added, sepitem, self.lw_added.currentRow())
+        self.update_actions()
+
+    @QtCore.pyqtSlot()
+    def on_act_remove(self):
+        """
+        Remove selected action.
+        """
+        cur = self.lw_added.currentRow()
+        if cur >= 0:
+            self.lw_added.takeItem(cur)
+        self.update_actions()
+
+    @QtCore.pyqtSlot()
+    def on_act_clear(self):
+        """
+        Clear all added actions.
+        """
+        self.lw_added.clear()
+        self.update_actions()
+
+    @QtCore.pyqtSlot()
+    def on_act_up(self):
+        """
+        Move action up.
+        """
+        item = self.lw_added.currentItem()
+        if not item: return
+        row = self.lw_added.row(item)
+        if not row: return
+        self.lw_added.insertItem(row - 1, self.lw_added.takeItem(row))
+        self.lw_added.setCurrentRow(row - 1)
+        self.update_actions()
+
+    @QtCore.pyqtSlot()
+    def on_act_down(self):
+        """
+        Move action down.
+        """
+        item = self.lw_added.currentItem()
+        if not item: return
+        row = self.lw_added.row(item)
+        if row == (self.lw_added.count() - 1): return
+        self.lw_added.insertItem(row + 1, self.lw_added.takeItem(row))
+        self.lw_added.setCurrentRow(row + 1)
+        self.update_actions()
+
+    @QtCore.pyqtSlot()
+    def on_tw_actions_selected(self):
+        self.update_actions()
             
 ##############################################################################
 ######          SettingsDialog
@@ -475,7 +714,7 @@ class WordSrcDialog(BasicDialog):
 class SettingsDialog(BasicDialog):
 
     PAGES = ['Common', 'Generation', 'Source management', 'Search rules',
-             'Window', 'Grid', 'Clues', 'Definition lookup', 'Import & Export',
+             'Window', 'Grid', 'Clues', 'Toolbar', 'Definition lookup', 'Import & Export',
              'Plugins', 'Printing', 'Updating', 'Sharing']
     PARENT_PAGES = ['Sources', 'User interface']
     
@@ -516,6 +755,7 @@ class SettingsDialog(BasicDialog):
         item.addChild(QtWidgets.QTreeWidgetItem(['Window']))
         item.addChild(QtWidgets.QTreeWidgetItem(['Grid']))
         item.addChild(QtWidgets.QTreeWidgetItem(['Clues']))
+        item.addChild(QtWidgets.QTreeWidgetItem(['Toolbar']))
         self.tree.addTopLevelItem(item)
         
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Definition lookup']))
@@ -562,7 +802,7 @@ class SettingsDialog(BasicDialog):
         """
         Adds pages to self.stacked.
         """
-        # 0. Common
+        # Common
         self.page_common = QtWidgets.QWidget()
         self.layout_common = QtWidgets.QFormLayout()
         self.layout_common.setSpacing(10)
@@ -589,7 +829,7 @@ class SettingsDialog(BasicDialog):
         self.page_common.setLayout(self.layout_common)
         self.stacked.addWidget(self.page_common)
 
-        # 1. Generation
+        # Generation
         self.page_generation = QtWidgets.QWidget()
         self.layout_generation = QtWidgets.QFormLayout()
         self.layout_generation.setSpacing(10)
@@ -614,7 +854,7 @@ class SettingsDialog(BasicDialog):
         self.page_generation.setLayout(self.layout_generation)
         self.stacked.addWidget(self.page_generation)
         
-        # 2. Sources > Source management
+        # Sources > Source management
         self.page_src_mgmt = QtWidgets.QWidget()
         self.layout_src_mgmt = QtWidgets.QVBoxLayout()
         
@@ -662,7 +902,7 @@ class SettingsDialog(BasicDialog):
         self.page_src_mgmt.setLayout(self.layout_src_mgmt)
         self.stacked.addWidget(self.page_src_mgmt)
                 
-        # 3. Sources > Search rules
+        # Sources > Search rules
         self.page_src_rules = QtWidgets.QWidget()
         self.layout_src_rules = QtWidgets.QVBoxLayout()        
         self.gb_pos = QtWidgets.QGroupBox('Parts of speech')
@@ -695,7 +935,7 @@ class SettingsDialog(BasicDialog):
         self.page_src_rules.setLayout(self.layout_src_rules)
         self.stacked.addWidget(self.page_src_rules)
         
-        # 4. UI > Window
+        # UI > Window
         self.page_window = QtWidgets.QWidget()
         self.layout_window = QtWidgets.QFormLayout()
                 
@@ -713,7 +953,7 @@ class SettingsDialog(BasicDialog):
         self.page_window.setLayout(self.layout_window)
         self.stacked.addWidget(self.page_window)
         
-        # 5. UI > Grid
+        # UI > Grid
         self.page_grid = QtWidgets.QScrollArea()
         self.page_grid.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.page_grid.setWidgetResizable(True)
@@ -872,7 +1112,7 @@ class SettingsDialog(BasicDialog):
         self.page_grid.setWidget(self.widget_layout_grid)
         self.stacked.addWidget(self.page_grid)
 
-        # 6. Clues
+        # UI > Clues
         self.page_clues = QtWidgets.QScrollArea()
         self.page_clues.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.page_clues.setWidgetResizable(True)
@@ -983,7 +1223,11 @@ class SettingsDialog(BasicDialog):
         self.page_clues.setWidget(self.widget_layout_clues)
         self.stacked.addWidget(self.page_clues)
 
-        # 7. Definition lookup
+        # UI > Toolbar
+        self.page_toolbar = ToolbarCustomizer([v for k, v in self.mainwindow.__dict__.items() if k.startswith('act_')], self.mainwindow.toolbar_main)
+        self.stacked.addWidget(self.page_toolbar)
+
+        # Definition lookup
         self.page_lookup = QtWidgets.QScrollArea()
         self.page_lookup.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.page_lookup.setWidgetResizable(True)
@@ -1112,7 +1356,7 @@ class SettingsDialog(BasicDialog):
         self.page_lookup.setWidget(self.widget_layout_lookup)
         self.stacked.addWidget(self.page_lookup)
 
-        # 8. Import & Export
+        # Import & Export
         self.page_importexport = QtWidgets.QWidget()
         self.layout_importexport = QtWidgets.QVBoxLayout()
         self.layout_importexport.setSpacing(10)
@@ -1160,14 +1404,14 @@ class SettingsDialog(BasicDialog):
         self.page_importexport.setLayout(self.layout_importexport)
         self.stacked.addWidget(self.page_importexport)
 
-        # 9. Plugins
+        # Plugins
         self.page_plugins = QtWidgets.QWidget()
         self.layout_plugins = QtWidgets.QFormLayout()
         self.layout_plugins.setSpacing(10)
         self.page_plugins.setLayout(self.layout_plugins)
         self.stacked.addWidget(self.page_plugins)
 
-        # 10. Printing
+        # Printing
         self.page_printing = QtWidgets.QScrollArea()
         self.page_printing.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.page_printing.setWidgetResizable(True)
@@ -1295,7 +1539,7 @@ class SettingsDialog(BasicDialog):
         self.page_printing.setWidget(self.widget_layout_printing)
         self.stacked.addWidget(self.page_printing)
 
-        # 11. Updating
+        # Updating
         self.page_updating = QtWidgets.QWidget()
         self.layout_updating = QtWidgets.QFormLayout()
         self.layout_updating.setSpacing(10)
@@ -1329,7 +1573,7 @@ class SettingsDialog(BasicDialog):
         self.page_updating.setLayout(self.layout_updating)
         self.stacked.addWidget(self.page_updating)
 
-        # 12. Sharing
+        # Sharing
         self.page_sharing = QtWidgets.QWidget()
         self.layout_sharing = QtWidgets.QFormLayout()
         self.layout_sharing.setSpacing(10)
@@ -1385,7 +1629,8 @@ class SettingsDialog(BasicDialog):
         settings['gui']['toolbar_pos'] = self.combo_toolbarpos.currentIndex()
         settings['gui']['win_pos'] = (self.mainwindow.pos().x(), self.mainwindow.pos().y())
         settings['gui']['win_size'] = (self.mainwindow.width(), self.mainwindow.height())
-        
+        settings['gui']['toolbar_actions'] = self.page_toolbar.to_list()
+
         # timeout
         settings['cw_settings']['timeout'] = self.spin_gen_timeout.value()
         
@@ -2221,6 +2466,10 @@ class SettingsDialog(BasicDialog):
 
             # columns
             self._fill_clue_cols()
+
+        # UI > Toolbar
+        if page is None or page == 'Toolbar':
+            self.page_toolbar.from_list(settings['gui']['toolbar_actions'])
         
         # Lookup
         if page is None or page == 'Definition lookup':
@@ -2394,7 +2643,7 @@ class SettingsDialog(BasicDialog):
             item.setCheckState(QtCore.Qt.Checked if src.get('active', False) else QtCore.Qt.Unchecked)
             self.lw_sources.insertItem(0, item)
     
-    def showEvent(self, event):
+    def showEvent(self, event):        
         # read settings
         self.from_settings()
     
@@ -4031,123 +4280,3 @@ class BasicBrowserDialog(QtWidgets.QDialog):
     @QtCore.pyqtSlot(QtCore.QUrl)
     def on_browser_url_change(self, url):
         self.sb.showMessage(url.toString()) 
-
-##############################################################################
-######          ToolbarCustomizer
-##############################################################################  
-        
-class ToolbarCustomizer(QtWidgets.QWidget):
-    
-    # todo: implement Drag And Drop from treeview to list / toolbar 
-    # see https://doc.qt.io/qt-5/qtwidgets-draganddrop-fridgemagnets-example.html
-
-    def __init__(self, action_source, toolbar, parent=None):
-        if not action_source or not toolbar:
-            raise Exception('Null action source or toolbar pointers passed to ToolbarCustomizer!')
-        self.action_source = action_source
-        self.src_toolbar = toolbar        
-        super().__init__(parent)
-        self.add_src_action(self.action_source)
-        self.update_preview()
-        
-    def addMainLayout(self):
-        self.layout_controls = QtWidgets.QHBoxLayout()    
-        self.splitter1 = QtWidgets.QSplitter()
-        self.splitter1.setChildrenCollapsible(False)
-
-        self.tw_actions = QtWidgets.QTreeWidget()
-        self.tw_actions.setColumnCount(1)
-        self.tw_actions.setHeaderHidden(True)
-        self.tw_actions.setMinimumWidth(100)
-        self.tw_actions.setMaximumWidth(500)
-        self.splitter1.addWidget(self.tw_actions)
-        
-        self.layout_right = QtWidgets.QHBoxLayout()
-        self.tb = QtWidgets.QToolBar()
-        self.tb.setOrientation(QtCore.Qt.Vertical)
-        self.act_add = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/fast-forward.png"), 'Add', self.on_act_add)
-        self.act_addsep = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/pipe.png"), 'Add separator', self.on_act_addsep)
-        self.tb.addSeparator()
-        self.act_remove = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind.png"), 'Remove', self.on_act_remove)
-        self.act_clear = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), 'Clear', self.on_act_clear)
-        self.tb.addSeparator()
-        self.act_up = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-L.png"), 'Up', self.on_act_up)
-        self.act_down = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), 'Down', self.on_act_down)
-        self.layout_right.addWidget(self.tb)
-        self.layout_preview = QtWidgets.QVBoxLayout()
-        self.l_added = QtWidgets.QLabel('Added items:')
-        self.lw_added = QtWidgets.QListWidget()
-        self.connect_lw_signals()
-        # fill lw_added with actions from src_toolbar
-        self.update_added(self.src_toolbar.actions())
-        self.l_preview = QtWidgets.QLabel('Preview:')
-        self.tb_preview = QtWidgets.QToolBar()
-        self.tb_preview.setOrientation(QtCore.Qt.Horizontal)
-        self.layout_preview.addWidget(self.l_added)
-        self.layout_preview.addWidget(self.lw_added)
-        self.layout_preview.addWidget(self.l_preview)
-        self.layout_preview.addWidget(self.tb_preview)
-        self.layout_right.addLayout(self.layout_preview)
-        self.w_layout_right = QtWidgets.QWidget()
-        self.w_layout_right.setLayout(self.layout_right)
-        self.splitter1.addWidget(self.w_layout_right)
-
-        self.layout_controls.addWidget(self.splitter1)
-
-    def connect_lw_signals(self, connect=True):
-        if connect:
-            self.lw_added.indexesMoved.connect(QtCore.pyqtSlot(list)(lambda indexes: self.update_preview()))
-            self.lw_added.itemChanged.connect(QtCore.pyqtSlot(QtWidgets.QListWidgetItem)(lambda item: self.update_preview()))
-        else:
-            try:
-                self.lw_added.indexesMoved.disconnect()
-                self.lw_added.itemChanged.disconnect()
-            except:
-                pass
-
-    def update_added(self, actions, clear=True):
-        self.connect_lw_signals(False)
-        if clear:
-            for act_ in self.lw_added.actions():
-                self.lw_added.removeAction(act_)
-        for act_ in actions:
-            self.lw_added.addAction(act_)         
-        self.update_preview()  
-        self.connect_lw_signals() 
-
-    def add_src_action(self, action, tree_item=None):
-        if is_iterable(action):
-            item = None
-            for act_ in action:
-                item = self.add_src_action(act_, tree_item)
-            return item
-        
-        if isinstance(action, QtWidgets.QActionGroup):
-            return self.add_src_action(action.actions(), tree_item)            
-
-        if isinstance(action, QtWidgets.QMenu):
-            return self.add_src_action(action.actions(), self.add_src_action(action.menuAction(), tree_item) if action.title() else tree_item)
-            
-        if not isinstance(action, QtWidgets.QAction): return None
-
-        txt = action.text()
-        item = QtWidgets.QTreeWidgetItem([txt or '<Unnamed>'])
-        item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsDragEnabled)
-        item.setData(0, QtCore.Qt.UserRole, action)
-        if action.icon():
-            item.setIcon(0, action.icon())
-        item.setToolTip(0, action.toolTip())
-        if tree_item and isinstance(tree_item, QtWidgets.QTreeWidgetItem):
-            tree_item.addChild(item)
-        else:
-            self.tw_actions.addTopLevelItem(item)
-        return item
-
-    @QtCore.pyqtSlot()
-    def update_preview(self):
-        self.tb_preview.clear()
-        for i in range(self.lw_added.count()):
-            item = self.lw_added.item(i)
-            action = item.data(0, QtCore.Qt.UserRole)
-            if not isinstance(action, QtWidgets.QAction): continue
-            self.tb_preview.addAction(action)

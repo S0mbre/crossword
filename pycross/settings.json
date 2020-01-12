@@ -3,12 +3,44 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			301,
-			90
+			169,
+			7
 		],
 		"win_size": [
-			1281,
-			758
+			1091,
+			675
+		],
+		"toolbar_actions": [
+			"act_new",
+			"act_open",
+			"act_save",
+			"act_saveas",
+			"act_share",
+			"SEP",
+			"act_edit",
+			"act_addrow",
+			"act_delrow",
+			"act_addcol",
+			"act_delcol",
+			"act_reflect",
+			"SEP",
+			"act_gen",
+			"act_clear",
+			"SEP",
+			"act_help",
+			"act_update",
+			"act_config",
+			"SEP",
+			"act_print",
+			"act_stats",
+			"act_info",
+			"act_wsrc",
+			"SEP",
+			"act_editclue",
+			"act_lookup",
+			"act_suggest",
+			"act_erase_wd",
+			"act_clear_wd"
 		]
 	},
 	"cw_settings": {
@@ -151,7 +183,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 201
+				"width": 109
 			}
 		]
 	},

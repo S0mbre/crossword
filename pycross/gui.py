@@ -304,43 +304,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolbar_main = QtWidgets.QToolBar()
         self.toolbar_main.setMovable(False)
         self.toolbar_main.toggleViewAction().setEnabled(False)
-
-        self.toolbar_main.addAction(self.act_new)
-        self.toolbar_main.addAction(self.act_open)
-        self.toolbar_main.addAction(self.act_save)
-        self.toolbar_main.addAction(self.act_saveas)
-        self.toolbar_main.addAction(self.act_share)
-        self.toolbar_main.addSeparator()
-
-        self.toolbar_main.addAction(self.act_edit)
-        self.toolbar_main.addAction(self.act_addrow)
-        self.toolbar_main.addAction(self.act_delrow)
-        self.toolbar_main.addAction(self.act_addcol)
-        self.toolbar_main.addAction(self.act_delcol)
-        self.toolbar_main.addSeparator()
-        self.toolbar_main.addAction(self.act_reflect)
-        self.toolbar_main.addSeparator()
-
-        self.toolbar_main.addAction(self.act_gen)
-        self.toolbar_main.addAction(self.act_clear)
-        self.toolbar_main.addAction(self.act_clear_wd)
-        self.toolbar_main.addAction(self.act_erase_wd)
-        self.toolbar_main.addAction(self.act_suggest)
-        self.toolbar_main.addAction(self.act_lookup)
-        self.toolbar_main.addAction(self.act_editclue)
-        self.toolbar_main.addSeparator()
-
-        self.toolbar_main.addAction(self.act_wsrc)
-        self.toolbar_main.addAction(self.act_info)
-        self.toolbar_main.addAction(self.act_stats)
-        self.toolbar_main.addAction(self.act_print)       
-        self.toolbar_main.addSeparator()
-
-        self.toolbar_main.addAction(self.act_config)
-        self.toolbar_main.addAction(self.act_update)
-        self.toolbar_main.addAction(self.act_help)
-
+        #self.toolbar_from_settings()
         self.addToolBar(self.toolbar_main)
+
+    def toolbar_from_settings(self):
+        self.toolbar_main.clear()
+        for act_ in CWSettings.settings['gui']['toolbar_actions']:
+            if act_ == 'SEP':
+                self.toolbar_main.addSeparator()
+            else:
+                self.toolbar_main.addAction(getattr(self, act_))
 
     def UI_create_menu(self):
         self.menu_main = self.menuBar()
@@ -548,6 +521,8 @@ class MainWindow(QtWidgets.QMainWindow):
         elif tb == 4:
             self.toolbar_main.hide()
             self.act_view_showtoolbar.setChecked(False)
+        # toolbar items
+        self.toolbar_from_settings()
             
         # wordsrc
         self.update_wordsrc()        

@@ -11,7 +11,14 @@ import json, os
 class CWSettings:
     
     settings = { \
-    'gui': {'theme': 'Fusion', 'toolbar_pos': 0, 'win_pos': (300, 300), 'win_size': (800, 500)}, 
+    'gui': {
+        'theme': 'Fusion', 'toolbar_pos': 0, 'win_pos': (300, 300), 'win_size': (800, 500),
+        'toolbar_actions': ['act_new', 'act_open', 'act_save', 'act_saveas', 'act_share', 'SEP', 
+                            'act_edit', 'act_addrow', 'act_delrow', 'act_addcol', 'act_delcol', 'SEP', 
+                            'act_reflect', 'SEP', 'act_gen', 'act_clear', 'act_clear_wd', 'act_erase_wd', 
+                            'act_suggest', 'act_lookup', 'act_editclue', 'SEP', 'act_wsrc', 'act_info', 
+                            'act_stats', 'act_print', 'SEP', 'act_config', 'act_update', 'act_help']
+        }, 
     'cw_settings': {'timeout': 60.0, 'method': 'recurse', 'pos': 'N', 'log': None},    
     'grid_style': {'scale': 100, 'show': True, 'line': QtCore.Qt.SolidLine, 'header': False,
                   'cell_size': 50.0, 'line_color': QtGui.QColor(QtCore.Qt.gray).rgba(),
