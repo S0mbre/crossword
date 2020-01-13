@@ -13,7 +13,7 @@ def make_abspath(filename, root=''):
 DEBUGGING = True
 
 # version
-APP_VERSION = '0.1'
+APP_VERSION = '0.2'
 
 # name
 APP_NAME = 'pyCross'
