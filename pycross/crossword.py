@@ -455,7 +455,7 @@ class Wordgrid:
         publisher = pz.find('Publisher')
         self.info.publisher = publisher.text or '' if not publisher is None else ''
         date = pz.find('Date')
-        self.info.date = utils.str_to_datetime(date.text, '%m/%d/%Y') if date.text else None
+        self.info.date = utils.str_to_datetime(date.text, '%m/%d/%Y') if date else None
         # make grid
         gr = pz.find('Grid')
         if not gr:
@@ -1229,7 +1229,7 @@ class Crossword:
         if chain_paths and rec == 0 and len(path) < (len(self.words) - len(self.used)):
             self.make_path(None, path, rec, chain_paths, word_filter)
             
-    def generate_iter(self, timeout=None, stopcheck=None):
+    def generate_iter(self, timeout=None, stopcheck=None, on_progress=None):
         """
         Generates crossword using the iterative algorithm.
         RETURNS:
@@ -1281,6 +1281,10 @@ class Crossword:
         
         # this list will contain Boolean generation results for each path (block of words)
         results = []
+
+        # report progress
+        if on_progress:
+            on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
         
         # loop for each path in paths (if CW is fully connected, there will be just one loop cycle)
         for p in paths:
@@ -1332,6 +1336,10 @@ class Crossword:
                     # (this word is unusable as it is, so we must clear it thoroughly)
                     # at the same time, discard word and its intersects from USED list
                     self.clear_word(p[i]['w'], True)
+
+                    # report progress
+                    if on_progress:
+                        on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
                     
                     # now we must look if we're already some steps forward through the path
                     # or are at the first word, to see if we must go back and use some
@@ -1373,6 +1381,10 @@ class Crossword:
                         # if no intersects are found, reset path index to one step back
                         else:
                             i -= 1
+
+                        # report progress
+                        if on_progress:
+                            on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
                       
                         # go back to [i]-th path element (word) -- 
                         # it will have been cleared by now, so we'll re-generate it and step forward as usual
@@ -1398,6 +1410,9 @@ class Crossword:
                     self.words.change_word(p[i]['w'], sug_word)
                     # increment path index to step forward to next word in path
                     i += 1
+                    # report progress
+                    if on_progress:
+                        on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
                     
             # add generation result for current path to results list
             results.append(res)
@@ -1407,7 +1422,7 @@ class Crossword:
         # return True if all paths have been generated successfully and False otherwise
         return all(results)
         
-    def generate_recurse(self, start_word=None, recurse_level=0, timeout=None, stopcheck=None):
+    def generate_recurse(self, start_word=None, recurse_level=0, timeout=None, stopcheck=None, on_progress=None):
         """
         Generates crossword using the recursice algorithm.
         ARGS:
@@ -1416,6 +1431,11 @@ class Crossword:
             * recurse_level (int): the current recursion depth (position on stack);
               this arg must be zero when starting generation; each recursive call
               will increment it and each return will decrement it
+            * timeout (float): timeout in seconds after which time the generation will be interrupted with a CWTimeoutError exception
+              None value (default) means no timeout check.
+            * stopcheck (callable): callback function that must return True to stop the generation and False to continue
+              If None is passed, no stop check is performed.
+            * on_progress (callable): callback function to monitor currrent generation progress
         RETURNS:
             True on success (all words in CW are filled) and False otherwise
         """  
@@ -1423,12 +1443,16 @@ class Crossword:
         if self.timeout_happened(timeout): raise CWTimeoutError()
         # check for stopping criteria
         if stopcheck and stopcheck(): raise CWStopCheck()
-                
+                        
         # words must be a valid non-empty container
         if getattr(self, 'words', None) is None:
             raise CWError('Words collection is not initialized!') 
                     
         rec_level = recurse_level
+
+        # report progress
+        if on_progress:
+            on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
         
         # find first incomplete word if start_word == None
         if start_word is None:
@@ -1503,12 +1527,15 @@ class Crossword:
                 # increment recurse level
                 rec_level += 1
                 # attempt to generate from current intersect
-                res = self.generate_recurse(cross, rec_level, timeout, stopcheck)
+                res = self.generate_recurse(cross, rec_level, timeout, stopcheck, on_progress)
                 # decrement recurse level
                 rec_level -= 1
                                     
                 if res: 
                     self._log(f"{LOG_INDENT * rec_level}Generated for cross '{self.words.get_word_str(cross)}'")
+                    # report progress
+                    if on_progress:
+                        on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
                     # set OK to True on success (go to next intersect)
                     ok = True
                     # return True if CW is complete
@@ -1521,6 +1548,9 @@ class Crossword:
                     self.used.discard(self.words.get_word_str(cross))
                     # restore the old word (the one before diving into recursive generation)
                     self.words.change_word(start_word, old_start_word)
+                    # report progress
+                    if on_progress:
+                        on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
                     # reset OK to False
                     ok = False
                     # break from intersects loop, go to next suggestion for start_word...
@@ -1536,17 +1566,20 @@ class Crossword:
         # if we're on zero recursion level, find next incomplete word 
         # and generate from there (solve new connected graph); otherwise, return True (step up in recursion stack)
         if ok: 
-            return True if recurse_level > 0 else self.generate_recurse(None, 0, timeout, stopcheck)
+            return True if recurse_level > 0 else self.generate_recurse(None, 0, timeout, stopcheck, on_progress)
         
         # otherwise everything is sad...
         self._log(f"{LOG_INDENT * rec_level}Unable to generate CW for word '{str(start_word)}'!")
+        # report progress
+        if on_progress:
+            on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
         return False
     
     def timeout_happened(self, timeout=None):
         return ((timeit.default_timer() - self.time_start) >= timeout) if not timeout is None else False
     
     def generate(self, method=None, timeout=60.0, stopcheck=None, 
-                 onfinish=None, ontimeout=None, onstop=None, onerror=None, onvalidate=None):
+                 onfinish=None, ontimeout=None, onstop=None, onerror=None, onvalidate=None, on_progress=None):
         """
         Core member function in Crossword: generates the CW using the given method.
         ARGS:
@@ -1570,6 +1603,7 @@ class Crossword:
             * onvalidate (callable): called on validating cw words; prototype is:
                 onvalidate(bad_words: [] or None) -> None, where
                     bad_words: list of unmatched words or None if successful
+            * on_progress (callable): callback function to monitor currrent generation progress
         RETURNS:
             True on successful generation and False on failure.
         """
@@ -1587,22 +1621,26 @@ class Crossword:
         # generate CW using the specified method and store the result
         res = False
         try:
+            # report progress
+            if on_progress:
+                on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
+
             if method == 'iter':
                 self._log("USING ITERATIVE ALGORITHM...")
-                res = self.generate_iter(timeout=timeout, stopcheck=stopcheck) 
+                res = self.generate_iter(timeout=timeout, stopcheck=stopcheck, on_progress=on_progress) 
             elif method == 'recurse':
                 self._log("USING RECURSIVE ALGORITHM...")
-                res = self.generate_recurse(timeout=timeout, stopcheck=stopcheck)
+                res = self.generate_recurse(timeout=timeout, stopcheck=stopcheck, on_progress=on_progress)
             elif not method:
                 self._log("AUTO SELECTING ALGORITHM...")
                 if self.words.count_incomplete() < len(self.words):
                     # cw has some completed words, use recursive ago
                     self._log("USING RECURSIVE ALGORITHM...")
-                    res = self.generate_recurse(timeout=timeout, stopcheck=stopcheck)
+                    res = self.generate_recurse(timeout=timeout, stopcheck=stopcheck, on_progress=on_progress)
                 else:
                     # cw is fully blank, use iterative algo
                     self._log("USING ITERATIVE ALGORITHM...")
-                    res = self.generate_iter(timeout=timeout, stopcheck=stopcheck)
+                    res = self.generate_iter(timeout=timeout, stopcheck=stopcheck, on_progress=on_progress)
             else:
                 raise CWError(f"'method' argument ({repr(method)}) is not valid! Must be one of: 'iter', 'recurse', or None / empty string.")
         
@@ -1616,6 +1654,10 @@ class Crossword:
             
         except (CWError, Exception) as err:
             if onerror: onerror(err)
+
+        # report progress
+        if on_progress:
+            on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
             
         # calculate elapsed time
         elapsed = timeit.default_timer() - self.time_start

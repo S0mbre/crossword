@@ -482,9 +482,12 @@ class ToolbarCustomizer(QtWidgets.QWidget):
             raise Exception('Null action source or toolbar pointers passed to ToolbarCustomizer!')
         self.action_source = action_source
         self.src_toolbar = toolbar        
+        self.src_actions = []
         super().__init__(parent)
         self.addMainLayout()
         self.add_src_action(self.action_source)
+        self.update_src_actions()
+        self.update_actions()
         #self.update_added(self.src_toolbar.actions(), False)
         
     def addMainLayout(self):
@@ -536,10 +539,31 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.act_up.setEnabled((not cur_lwitem is None) and self.lw_added.currentRow() > 0)
         self.act_down.setEnabled((not cur_lwitem is None) and self.lw_added.currentRow() < (self.lw_added.count() - 1))
 
+    def update_src_actions(self):
+        """
+        Disable elements in the source action treeview which are already added to the target list view.
+        """
+        for src_action in self.src_actions:
+            flags = QtCore.Qt.ItemIsEnabled
+            if not src_action[0].isSeparator():
+                flags |= QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsDragEnabled
+            src_action[1].setFlags(flags)
+            for i in range(self.lw_added.count()):
+                item = self.lw_added.item(i)
+                if item.text() == '———': continue
+                act_ = item.data(QtCore.Qt.UserRole)
+                if src_action[0] is act_:
+                    src_action[1].setFlags(QtCore.Qt.NoItemFlags)
+                    break
+        self.tw_actions.show() 
+
     def reset(self):
+        self.src_actions.clear()
         self.tw_actions.clear()
         self.add_src_action(self.action_source)
         self.update_added(self.src_toolbar.actions())
+        self.update_src_actions()
+        self.update_actions()
 
     def _lw_add(self, lw, item, row=-1):
         if row >= 0:
@@ -593,8 +617,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
             tree_item.addChild(item)
         else:
             self.tw_actions.addTopLevelItem(item)
-        self.tw_actions.show()
-        self.update_actions()
+        self.src_actions.append((action, item))        
         return item
 
     def update_src_toolbar(self):
@@ -623,6 +646,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
                 action = getattr(mainwin, act_, None)
             if action: actions.append(action)
         self.update_added(actions)
+        self.update_src_actions()
 
     def to_list(self):
         mainwin = self.src_toolbar.window()
@@ -648,7 +672,8 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         sel_treeitems = self.tw_actions.selectedItems()
         if len(sel_treeitems) == 0: return
         actions = [item.data(0, QtCore.Qt.UserRole) for item in sel_treeitems]
-        self.update_added(actions, False, True)     
+        self.update_added(actions, False, True)  
+        self.update_src_actions()   
 
     @QtCore.pyqtSlot()
     def on_act_addsep(self):
@@ -668,6 +693,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         if cur >= 0:
             self.lw_added.takeItem(cur)
         self.update_actions()
+        self.update_src_actions()
 
     @QtCore.pyqtSlot()
     def on_act_clear(self):
@@ -676,6 +702,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         """
         self.lw_added.clear()
         self.update_actions()
+        self.update_src_actions()
 
     @QtCore.pyqtSlot()
     def on_act_up(self):
@@ -3461,9 +3488,7 @@ class PrintPreviewDialog(BasicDialog):
         self.ppreview.updatePreview()
 
     @QtCore.pyqtSlot()
-    def on_btn_settings(self):
-        if not hasattr(self.mainwindow, 'dia_settings'):
-            self.mainwindow.dia_settings = SettingsDialog(self.mainwindow)
+    def on_btn_settings(self):        
         self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(6))
         if not self.mainwindow.dia_settings.exec(): return
         settings = self.mainwindow.dia_settings.to_settings()
@@ -4141,16 +4166,12 @@ class ShareDialog(BasicDialog):
 
     @QtCore.pyqtSlot()
     def on_btn_share_settings(self):
-        if not hasattr(self.mainwindow, 'dia_settings'):
-            self.mainwindow.dia_settings = SettingsDialog(self.mainwindow)
         self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(9))
         self.mainwindow.on_act_config(False)
 
     @QtCore.pyqtSlot()
     def on_btn_export_settings(self):
         ind = 7 if self.rb_pdf.isChecked() else 5
-        if not hasattr(self.mainwindow, 'dia_settings'):
-            self.mainwindow.dia_settings = SettingsDialog(self.mainwindow)
         self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(ind))
         self.mainwindow.on_act_config(False)
 

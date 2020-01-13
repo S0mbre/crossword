@@ -26,13 +26,15 @@ class GenThread(QThreadStump):
     sig_timeout = QtCore.pyqtSignal(float)
     sig_stopped = QtCore.pyqtSignal()
     sig_validate = QtCore.pyqtSignal('PyQt_PyObject')
+    sig_progress = QtCore.pyqtSignal('PyQt_PyObject', int, int)
 
-    def __init__(self, on_gen_timeout=None, on_gen_stopped=None, on_gen_validate=None,  
+    def __init__(self, on_gen_timeout=None, on_gen_stopped=None, on_gen_validate=None, on_gen_progress=None,  
                  on_start=None, on_finish=None, on_run=None, on_error=None):
         super().__init__(on_start=on_start, on_finish=on_finish, on_run=on_run, on_error=on_error)
         if on_gen_timeout: self.sig_timeout.connect(on_gen_timeout)
         if on_gen_stopped: self.sig_stopped.connect(on_gen_stopped)
         if on_gen_validate: self.sig_validate.connect(on_gen_validate)
+        if on_gen_progress: self.sig_progress.connect(on_gen_progress)
 
 ## ******************************************************************************** ##
 
@@ -72,7 +74,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.garbage = []                      # files to delete on startup / close
         # cw generation worker thread
         self.gen_thread = GenThread(on_gen_timeout=self.on_gen_timeout, on_gen_stopped=self.on_gen_stop, 
-                                    on_gen_validate=self.on_gen_validate,
+                                    on_gen_validate=self.on_gen_validate, on_gen_progress=self.on_gen_progress, 
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error)
         # sharer worker thread
@@ -94,6 +96,8 @@ class MainWindow(QtWidgets.QMainWindow):
             on_norecent=self.on_norecent)
         # create window elements
         self.initUI()
+        # settings dialog
+        self.dia_settings = SettingsDialog(self)
         
     def _log(self, what, end='\n'):
         """
@@ -174,7 +178,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_saveas.triggered.connect(self.on_act_saveas)
 
         self.act_close = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/close.png"), 'Close')
-        self.act_close.setToolTip('Save crossword as new file')
+        self.act_close.setToolTip('Close current crossword')
         self.act_close.setShortcuts(QtGui.QKeySequence.Close)
         self.act_close.triggered.connect(self.on_act_close)
 
@@ -304,6 +308,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolbar_main = QtWidgets.QToolBar()
         self.toolbar_main.setMovable(False)
         self.toolbar_main.toggleViewAction().setEnabled(False)
+        self.toolbar_main.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.toolbar_main.customContextMenuRequested.connect(self.on_toolbar_contextmenu)
         #self.toolbar_from_settings()
         self.addToolBar(self.toolbar_main)
 
@@ -1082,14 +1088,6 @@ class MainWindow(QtWidgets.QMainWindow):
         return True
 
     @QtCore.pyqtSlot()
-    def on_generate_start(self):
-        self.update_actions()
-
-    @QtCore.pyqtSlot() 
-    def on_generate_finish(self):
-        self.update_cw_grid()
-
-    @QtCore.pyqtSlot()
     def on_share_start(self):
         #self.statusbar_pbar.reset()
         #self.statusbar_pbar.show()
@@ -1295,6 +1293,19 @@ class MainWindow(QtWidgets.QMainWindow):
         except:
             traceback.print_exc(limit=None) 
 
+    @QtCore.pyqtSlot()
+    def on_generate_start(self):
+        self.statusbar_pbar.reset()
+        self.statusbar_pbar.setFormat('%p%')
+        self.statusbar_pbar.show()
+        self.update_actions()
+
+    @QtCore.pyqtSlot() 
+    def on_generate_finish(self):
+        self.statusbar_pbar.hide()
+        self.statusbar_pbar.reset()
+        self.update_cw_grid()
+
     @QtCore.pyqtSlot(float)
     def on_gen_timeout(self, timeout_):
         MsgBox(f"Timeout occurred at {timeout_} seconds!", self, 'Timeout', 'warn')
@@ -1311,6 +1322,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_gen_validate(self, bad_):
         MsgBox(f"Generation finished!{NEWLINE}{'Check OK' if not bad_ else 'The following words failed validation: ' + repr(bad_)}", 
                 self, 'Generation finished', 'info' if not bad_ else 'warn')
+
+    @QtCore.pyqtSlot('PyQt_PyObject', int, int)
+    def on_gen_progress(self, cw_, complete_, total_):
+        perc = complete_ * 100.0 / total_
+        self.statusbar_pbar.setValue(perc)
+        self.statusbar_pbar.setFormat(f"%v% - {complete_} / {total_}")
 
     def generate_cw_worker(self):
         method = ''
@@ -1330,7 +1347,8 @@ class MainWindow(QtWidgets.QMainWindow):
                          ontimeout=lambda timeout_: self.gen_thread.sig_timeout.emit(timeout_),
                          onstop=lambda: self.gen_thread.sig_stopped.emit(),
                          onerror=lambda err_: self.gen_thread.sig_error.emit(err_),
-                         onvalidate=lambda bad_: self.gen_thread.sig_validate.emit(bad_))
+                         onvalidate=lambda bad_: self.gen_thread.sig_validate.emit(bad_),
+                         on_progress=lambda cw_, complete_, total_: self.gen_thread.sig_progress.emit(cw_, complete_, total_))
 
     def _guess_filetype(self, filepath):
         if not filepath: return -1
@@ -1815,11 +1833,15 @@ class MainWindow(QtWidgets.QMainWindow):
                 except:
                     pass         
 
-    def check_save_required(self):
+    def check_save_required(self, cancellable=True):
         if self.cw and self.cw_modified:
-            reply = MsgBox('You have unsaved changes in your current crossword. Would you like to save them?', self, 'Confirm Action', 'ask')
+            btn = QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+            if cancellable: btn |= QtWidgets.QMessageBox.Cancel
+            reply = MsgBox('You have unsaved changes in your current crossword. Would you like to save them?', self, 'Confirm Action', 'ask', btn=btn)
             if reply == QtWidgets.QMessageBox.Yes: 
-                self.on_act_save(False)       
+                self.on_act_save(False)   
+            return reply
+        return None
         
     # ----- Overrides (events, etc) ----- #
     
@@ -1846,7 +1868,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if CWSettings.settings['common']['autosave_cw']:
             self.autosave_cw()
         else:
-            self.check_save_required()
+            self.check_save_required(False)
         # save settings file
         self.update_settings_before_quit()
         CWSettings.save_to_file(SETTINGS_FILE)
@@ -1971,7 +1993,8 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)        
     def on_act_new(self, checked):
 
-        self.check_save_required()
+        reply = self.check_save_required()
+        if reply == QtWidgets.QMessageBox.Cancel or reply == QtWidgets.QMessageBox.NoButton: return
 
         if not hasattr(self, 'dia_load'):
             self.dia_load = LoadCwDialog(self)
@@ -2013,7 +2036,8 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_open(self, checked):
 
-        self.check_save_required()
+        reply = self.check_save_required()
+        if reply == QtWidgets.QMessageBox.Cancel or reply == QtWidgets.QMessageBox.NoButton: return
 
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', os.getcwd(), 'Crossword files (*.xpf *.ipuz);;All files (*.*)')
         if not selected_path[0]: return
@@ -2073,7 +2097,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(bool)
     def on_act_close(self, checked):
-        self.check_save_required()
+        reply = self.check_save_required()
+        if reply == QtWidgets.QMessageBox.Cancel or reply == QtWidgets.QMessageBox.NoButton: return
 
         self.cw = None
         self.cw_file = ''
@@ -2178,7 +2203,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if not self.cw: return     
         if not hasattr(self, 'gen_thread') or self.gen_thread is None:
             self.gen_thread = GenThread(on_gen_timeout=self.on_gen_timeout, on_gen_stopped=self.on_gen_stop, 
-                                    on_gen_validate=self.on_gen_validate,
+                                    on_gen_validate=self.on_gen_validate, on_gen_progress=self.on_gen_progress,
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error) 
         self.gen_thread.start()
@@ -2266,8 +2291,6 @@ class MainWindow(QtWidgets.QMainWindow):
         
     @QtCore.pyqtSlot(bool) 
     def on_act_wsrc(self, checked):
-        if not hasattr(self, 'dia_settings'):
-            self.dia_settings = SettingsDialog(self)
         self.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(2).child(0))
         self.on_act_config(False)
     
@@ -2291,8 +2314,6 @@ class MainWindow(QtWidgets.QMainWindow):
     
     @QtCore.pyqtSlot(bool)        
     def on_act_config(self, checked):
-        if not hasattr(self, 'dia_settings'):
-            self.dia_settings = SettingsDialog(self)
         if not self.dia_settings.exec(): return
         settings = self.dia_settings.to_settings()
         # apply settings only if they are different from current
@@ -2385,6 +2406,16 @@ class MainWindow(QtWidgets.QMainWindow):
         cell_item = self.twCw.itemAt(point)
         if not cell_item: return
         self.menu_crossword.exec(self.twCw.mapToGlobal(point))
+
+    @QtCore.pyqtSlot(QtCore.QPoint)
+    def on_toolbar_contextmenu(self, point):
+        @QtCore.pyqtSlot() 
+        def on_tb_contextmenuaction():
+            self.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(3).child(3))
+            self.on_act_config(False)
+        menu = QtWidgets.QMenu(self)
+        menu.addAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Configure toolbar...', on_tb_contextmenuaction)
+        menu.exec(self.toolbar_main.mapToGlobal(point))
 
     @QtCore.pyqtSlot(QtCore.QItemSelection, QtCore.QItemSelection)
     def on_tvClues_selected(self, selected, deselected):
