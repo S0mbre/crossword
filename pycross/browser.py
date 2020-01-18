@@ -9,9 +9,10 @@
 
 from PyQt5 import (QtGui, QtCore, QtWidgets, QtNetwork, 
                     QtWebEngineWidgets, QtWebEngineCore, QtWebEngine)
-from forms import (PasswordDialog, AboutDialog)
+
+from utils.globalvars import * 
 from utils.utils import *
-from utils.globalvars import *   
+from forms import (PasswordDialog, AboutDialog)
 
 ##############################################################################
 ######          WebPage
@@ -40,10 +41,10 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
 
         def handle_error():
             if not deferredError.deferred():
-                MsgBox(deferredError.errorDescription(), mainwindow, 'Certificate Error', 'error')
+                MsgBox(deferredError.errorDescription(), mainwindow, _('Certificate Error'), 'error')
             else:
-                reply = MsgBox(f"{deferredError.errorDescription()}{NEWLINE}Press YES to ignore certificate or NO to reject certificate.", 
-                                mainwindow, 'Certificate Error', 'warn', 
+                reply = MsgBox(_("{}\nPress YES to ignore certificate or NO to reject certificate.").format(deferredError.errorDescription()), 
+                                mainwindow, _('Certificate Error'), 'warn', 
                                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
                 if reply == QtWidgets.QMessageBox.Yes:
                     deferredError.ignoreCertificateError()
@@ -66,16 +67,16 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
 
     @QtCore.pyqtSlot(QtCore.QUrl, QtWebEngineWidgets.QWebEnginePage.Feature)
     def on_featurePermissionRequested(self, securityOrigin, feature):
-        questions = {QtWebEngineWidgets.QWebEnginePage.Geolocation: 'Allow {} to access your location information?',
-                     QtWebEngineWidgets.QWebEnginePage.MediaAudioCapture: 'Allow {} to access your microphone?',
-                     QtWebEngineWidgets.QWebEnginePage.MediaVideoCapture: 'Allow {} to access your webcam?',
-                     QtWebEngineWidgets.QWebEnginePage.MediaAudioVideoCapture: 'Allow {} to access your microphone and webcam?',
-                     QtWebEngineWidgets.QWebEnginePage.MouseLock: 'Allow {} to lock your mouse cursor?',
-                     QtWebEngineWidgets.QWebEnginePage.DesktopVideoCapture: 'Allow {} to capture video of your desktop?',
-                     QtWebEngineWidgets.QWebEnginePage.DesktopAudioVideoCapture: 'Allow {} to capture audio and video of your desktop?',
-                     QtWebEngineWidgets.QWebEnginePage.Notifications: 'Allow {} to show notification on your desktop?'} 
+        questions = {QtWebEngineWidgets.QWebEnginePage.Geolocation: _('Allow {} to access your location information?'),
+                     QtWebEngineWidgets.QWebEnginePage.MediaAudioCapture: _('Allow {} to access your microphone?'),
+                     QtWebEngineWidgets.QWebEnginePage.MediaVideoCapture: _('Allow {} to access your webcam?'),
+                     QtWebEngineWidgets.QWebEnginePage.MediaAudioVideoCapture: _('Allow {} to access your microphone and webcam?'),
+                     QtWebEngineWidgets.QWebEnginePage.MouseLock: _('Allow {} to lock your mouse cursor?'),
+                     QtWebEngineWidgets.QWebEnginePage.DesktopVideoCapture: _('Allow {} to capture video of your desktop?'),
+                     QtWebEngineWidgets.QWebEnginePage.DesktopAudioVideoCapture: _('Allow {} to capture audio and video of your desktop?'),
+                     QtWebEngineWidgets.QWebEnginePage.Notifications: _('Allow {} to show notification on your desktop?')} 
         mainwindow = self.view().window()        
-        if feature in questions and MsgBox(questions[feature].format(securityOrigin.host()), mainwindow, 'Permission Request', 'ask') == QtWidgets.QMessageBox.Yes:
+        if feature in questions and MsgBox(questions[feature].format(securityOrigin.host()), mainwindow, _('Permission Request'), 'ask') == QtWidgets.QMessageBox.Yes:
             self.setFeaturePermission(securityOrigin, feature, QtWebEngineWidgets.QWebEnginePage.PermissionGrantedByUser)
         else:
             self.setFeaturePermission(securityOrigin, feature, QtWebEngineWidgets.QWebEnginePage.PermissionDeniedByUser)
@@ -83,7 +84,7 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
     @QtCore.pyqtSlot('QUrl, QAuthenticator*, QString')
     def on_proxyAuthenticationRequired(self, requestUrl, authenticator, proxyHost):
         mainwindow = self.view().window()
-        dia = PasswordDialog(user_label='Proxy user', password_label='Proxy password', parent=mainwindow)
+        dia = PasswordDialog(user_label=_('Proxy user'), password_label=_('Proxy password'), parent=mainwindow)
         if not dia.exec():
             authenticator = None
             return
@@ -94,7 +95,7 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
     @QtCore.pyqtSlot(QtWebEngineCore.QWebEngineRegisterProtocolHandlerRequest)
     def on_registerProtocolHandlerRequested(self, request):
         mainwindow = self.view().window()
-        if MsgBox(f"Allow {request.origin().host()} to open all {request.scheme()} links?", mainwindow, 'Permission Request', 'ask') == QtWidgets.QMessageBox.Yes:
+        if MsgBox(_("Allow {} to open all {} links?").format(request.origin().host(), request.scheme()), mainwindow, _('Permission Request'), 'ask') == QtWidgets.QMessageBox.Yes:
             request.accept()
         else:
             request.reject()
@@ -172,12 +173,12 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
         actions = menu.actions()
         try:
             index = actions.index(self.page().action(QtWebEngineWidgets.QWebEnginePage.InspectElement))
-            actions[index].setText('Inspect element')
+            actions[index].setText(_('Inspect element'))
         except ValueError:
             if not self.page().action(QtWebEngineWidgets.QWebEnginePage.ViewSource) in actions:
                 menu.addSeparator()
             action = QtWidgets.QAction(menu)
-            action.setText('Open inspector in new window')
+            action.setText(_('Open inspector in new window'))
             action.triggered.connect(self.on_menu_action)
             menu.addAction(action)
 
@@ -206,7 +207,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
 
     @QtCore.pyqtSlot(QtWebEngineWidgets.QWebEnginePage.RenderProcessTerminationStatus, int)
     def on_renderProcessTerminated(self, terminationStatus, exitCode):
-        if MsgBox(f"Page rendering stopped. Reload page?", self.window(), 'Rendering stopped', 'ask') == QtWidgets.QMessageBox.Yes:
+        if MsgBox(_(f"Page rendering stopped. Reload page?"), self.window(), _('Rendering stopped'), 'ask') == QtWidgets.QMessageBox.Yes:
             QtCore.QTimer.singleShot(0, self.reload)
 
 
@@ -377,7 +378,7 @@ class TabWidget(QtWidgets.QTabWidget):
         webPage = WebPage(self.m_profile, webView)
         webView.setPage(webPage)
         self.setupView(webView)
-        index = self.addTab(webView, 'Untitled')
+        index = self.addTab(webView, _('Untitled'))
         self.setTabIcon(index, webView.favIcon())
         # Workaround for QTBUG-61770
         webView.resize(self.currentWidget().size())
@@ -474,24 +475,24 @@ class TabWidget(QtWidgets.QTabWidget):
     @QtCore.pyqtSlot(QtCore.QPoint)
     def on_customContextMenuRequested(self, pos):
         menu = QtWidgets.QMenu()
-        menu.addAction('New &Tab', self.createTab, QtGui.QKeySequence.AddTab)
+        menu.addAction(_('New &Tab'), self.createTab, QtGui.QKeySequence.AddTab)
         index = self.tabBar().tabAt(pos)
         if index == -1:
             menu.addSeparator()
         else:
-            action = menu.addAction('C&lone Tab')
+            action = menu.addAction(_('C&lone Tab'))
             action.triggered.connect(QtCore.pyqtSlot()(lambda: self.cloneTab(index)))
             menu.addSeparator()
-            action = menu.addAction('&Close Tab')
+            action = menu.addAction(_('&Close Tab'))
             action.setShortcut(QtGui.QKeySequence.Close)
             action.triggered.connect(QtCore.pyqtSlot()(lambda: self.closeTab(index)))
-            action = menu.addAction('Close &Other Tabs')
+            action = menu.addAction(_('Close &Other Tabs'))
             action.triggered.connect(QtCore.pyqtSlot()(lambda: self.closeOtherTabs(index)))
             menu.addSeparator()
-            action = menu.addAction('&Reload Tab')
+            action = menu.addAction(_('&Reload Tab'))
             action.setShortcut(QtGui.QKeySequence.Refresh)
             action.triggered.connect(QtCore.pyqtSlot()(lambda: self.reloadTab(index)))
-        menu.addAction('Reload &All Tabs', self.reloadAllTabs)
+        menu.addAction(_('Reload &All Tabs'), self.reloadAllTabs)
         menu.exec(QtGui.QCursor.pos())
 
 ##############################################################################
@@ -513,7 +514,7 @@ class DownloadWidget(QtWidgets.QFrame):
         self.layout_main.setSizeConstraint(QtWidgets.QLayout.SetMinAndMaxSize)
         self.l_filename = QtWidgets.QLabel(self.m_download.downloadFileName())
         self.l_filename.setStyleSheet('font-weight: bold;')
-        self.btn_cancel = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), 'Cancel')
+        self.btn_cancel = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), _('Cancel'))
         self.btn_cancel.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         self.btn_cancel.clicked.connect(self.on_btn_cancel)
         self.l_url = QtWidgets.QLabel(self.m_download.url().toDisplayString())
@@ -540,33 +541,33 @@ class DownloadWidget(QtWidgets.QFrame):
         bytesPerSecond = receivedBytes / self.m_timeAdded.elapsed() * 1000
         state = self.m_download.state()
         self.btn_cancel.setIcon(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"))
-        self.btn_cancel.setToolTip('Remove from list')
+        self.btn_cancel.setToolTip(_('Remove from list'))
 
         if state == QtWebEngineWidgets.QWebEngineDownloadItem.DownloadInProgress:
             self.btn_cancel.setIcon(QtGui.QIcon(f"{ICONFOLDER}/error.png"))
-            self.btn_cancel.setToolTip('Stop download')
+            self.btn_cancel.setToolTip(_('Stop download'))
             self.pb.setDisabled(False)
             if totalBytes > 0:
                 self.pb.setValue(int(100 * receivedBytes / totalBytes))                
-                self.pb.setFormat(f"%p% - {receivedBytes} of {totalBytes} - {bytesPerSecond}/s")
+                self.pb.setFormat(_("%p% - {} of {} - {}/s").format(receivedBytes, totalBytes, bytesPerSecond))
             else:
                 self.pb.setValue(0)
-                self.pb.setFormat(f"{receivedBytes} downloaded - {bytesPerSecond}/s")
+                self.pb.setFormat(_("{} downloaded - {}/s").format(receivedBytes, bytesPerSecond))
 
         elif state == QtWebEngineWidgets.QWebEngineDownloadItem.DownloadCompleted:
             self.pb.setDisabled(True)
             self.pb.setValue(100)                
-            self.pb.setFormat(f"Completed - {receivedBytes} downloaded - {bytesPerSecond}/s")
+            self.pb.setFormat(_("Completed - {} downloaded - {}/s").format(receivedBytes, bytesPerSecond))
 
         elif state == QtWebEngineWidgets.QWebEngineDownloadItem.DownloadCancelled:
             self.pb.setDisabled(True)
             self.pb.setValue(0)                
-            self.pb.setFormat(f"Cancelled - {receivedBytes} downloaded - {bytesPerSecond}/s")
+            self.pb.setFormat(_("Cancelled - {} downloaded - {}/s").format(receivedBytes, bytesPerSecond))
 
         elif state == QtWebEngineWidgets.QWebEngineDownloadItem.DownloadInterrupted:
             self.pb.setDisabled(True)
             self.pb.setValue(100)                
-            self.pb.setFormat(f"Interrupted - {self.m_download.interruptReasonString()}")
+            self.pb.setFormat(_("Interrupted - {}").format(self.m_download.interruptReasonString()))
 
 
 ##############################################################################
@@ -579,7 +580,7 @@ class DownloadManagerWidget(QtWidgets.QWidget):
         super().__init__(parent)
         self.m_numDownloads = 0
         self.setBaseSize(500, 300)
-        self.setWindowTitle('Downloads')
+        self.setWindowTitle(_('Downloads'))
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/folder-15.png"))
         self.layout_main = QtWidgets.QVBoxLayout()
         self.layout_main.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
@@ -593,7 +594,7 @@ class DownloadManagerWidget(QtWidgets.QWidget):
         self.layout_items = QtWidgets.QVBoxLayout()
         self.layout_items.setSpacing(2)
         self.layout_items.setContentsMargins(3, 3, 3, 3)
-        self.l_zeroitems = QtWidgets.QLabel('No downloads')
+        self.l_zeroitems = QtWidgets.QLabel(_('No downloads'))
         self.l_zeroitems.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self.l_zeroitems.setAlignment(QtCore.Qt.AlignCenter)
         self.layout_items.addWidget(self.l_zeroitems)
@@ -605,7 +606,7 @@ class DownloadManagerWidget(QtWidgets.QWidget):
     def downloadRequested(self, download: QtWebEngineWidgets.QWebEngineDownloadItem):
         if not download or download.state() != QtWebEngineWidgets.QWebEngineDownloadItem.DownloadRequested:
             return
-        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Save As', os.path.join(download.downloadDirectory(), download.downloadFileName()))
+        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Save As'), os.path.join(download.downloadDirectory(), download.downloadFileName()))
         if not selected_path[0]: return
         selected_path = QtCore.QFileInfo(selected_path[0])
         download.setDownloadDirectory(selected_path.path())
@@ -705,7 +706,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         cnt = self.m_tabWidget.count()
         if cnt > 1:
-            reply = MsgBox(f'Are you sure you want to close the window? There are {cnt} tabs open.', self, 'Confirm quit', 'ask')
+            reply = MsgBox(_('Are you sure you want to close the window? There are {} tabs open.'), self, _('Confirm quit'), 'ask').format(cnt)
             if reply != QtWidgets.QMessageBox.Yes:
                 event.ignore()
                 return
@@ -728,42 +729,42 @@ class BrowserWindow(QtWidgets.QMainWindow):
             self.m_tabWidget.createTab()
             self.m_urlLineEdit.setFocus()
 
-        self.fileMenu = QtWidgets.QMenu('&File')
+        self.fileMenu = QtWidgets.QMenu(_('&File'))
 
-        self.fileMenu.addAction('&New window', self.on_act_new_window, QtGui.QKeySequence.New)
-        self.fileMenu.addAction('New &incognito window', self.on_act_new_incognito_window)
-        self.newTabAction = QtWidgets.QAction('New &tab')
+        self.fileMenu.addAction(_('&New window'), self.on_act_new_window, QtGui.QKeySequence.New)
+        self.fileMenu.addAction(_('New &incognito window'), self.on_act_new_incognito_window)
+        self.newTabAction = QtWidgets.QAction(_('New &tab'))
         self.newTabAction.setShortcuts(QtGui.QKeySequence.AddTab)
         self.newTabAction.triggered.connect(on_act_new_tab)
         self.fileMenu.addAction(self.newTabAction)
-        self.fileMenu.addAction('&Open file...', self.on_fileopen, QtGui.QKeySequence.Open)
+        self.fileMenu.addAction(_('&Open file...'), self.on_fileopen, QtGui.QKeySequence.Open)
         self.fileMenu.addSeparator()
 
-        self.closeTabAction = QtWidgets.QAction('&Close tab')
+        self.closeTabAction = QtWidgets.QAction(_('&Close tab'))
         self.closeTabAction.setShortcuts(QtGui.QKeySequence.Close)
         self.closeTabAction.triggered.connect(QtCore.pyqtSlot()(lambda: tabWidget.closeTab(tabWidget.currentIndex())))
         self.fileMenu.addAction(self.closeTabAction)
 
-        self.closeAction = QtWidgets.QAction('&Quit')
+        self.closeAction = QtWidgets.QAction(_('&Quit'))
         self.closeAction.setShortcut(QtGui.QKeySequence('Ctrl+q'))
         self.closeAction.triggered.connect(self.close)
         self.fileMenu.addAction(self.closeAction)
 
-        self.fileMenu.aboutToShow.connect(QtCore.pyqtSlot()(lambda: self.closeAction.setText('&Quit' if len(self.m_browser.windows()) == 1 else '&Close window')))
+        self.fileMenu.aboutToShow.connect(QtCore.pyqtSlot()(lambda: self.closeAction.setText(_('&Quit') if len(self.m_browser.windows()) == 1 else _('&Close window'))))
         return self.fileMenu
 
     def createEditMenu(self):
-        self.editMenu = QtWidgets.QMenu('&Edit')
+        self.editMenu = QtWidgets.QMenu(_('&Edit'))
 
-        self.findAction = self.editMenu.addAction('&Find')
+        self.findAction = self.editMenu.addAction(_('&Find'))
         self.findAction.setShortcuts(QtGui.QKeySequence.Find)
         self.findAction.triggered.connect(self.on_act_find)
 
-        self.findNextAction = self.editMenu.addAction('Find &next')
+        self.findNextAction = self.editMenu.addAction(_('Find &next'))
         self.findNextAction.setShortcuts(QtGui.QKeySequence.FindNext)
         self.findNextAction.triggered.connect(QtCore.pyqtSlot()(lambda: self.currentTab().findText(self.m_lastSearch) if self.currentTab() and self.m_lastSearch else None))
 
-        self.findPreviousAction = self.editMenu.addAction('Find &previous')
+        self.findPreviousAction = self.editMenu.addAction(_('Find &previous'))
         self.findPreviousAction.setShortcuts(QtGui.QKeySequence.FindPrevious)
         self.findPreviousAction.triggered.connect(QtCore.pyqtSlot()(lambda: self.currentTab().findText(self.m_lastSearch, QtWebEngineWidgets.QWebEnginePage.FindBackward) if self.currentTab() and self.m_lastSearch else None))
 
@@ -771,58 +772,58 @@ class BrowserWindow(QtWidgets.QMainWindow):
 
     def createViewMenu(self, toolbar):
 
-        self.viewMenu = QtWidgets.QMenu('&View')
+        self.viewMenu = QtWidgets.QMenu(_('&View'))
 
-        self.stopAction = self.viewMenu.addAction('&Stop')
+        self.stopAction = self.viewMenu.addAction(_('&Stop'))
         self.stopAction.setShortcuts([QtCore.Qt.Key_Escape, QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_Period)])
         self.stopAction.triggered.connect(QtCore.pyqtSlot()(lambda: self.m_tabWidget.triggerWebPageAction(QtWebEngineWidgets.QWebEnginePage.Stop)))
 
-        self.reloadAction = self.viewMenu.addAction('&Reload')
+        self.reloadAction = self.viewMenu.addAction(_('&Reload'))
         self.reloadAction.setShortcuts(QtGui.QKeySequence.Refresh)
         self.reloadAction.triggered.connect(QtCore.pyqtSlot()(lambda: self.m_tabWidget.triggerWebPageAction(QtWebEngineWidgets.QWebEnginePage.Reload)))
 
-        self.zoomInAction = self.viewMenu.addAction('Zoom &in')
+        self.zoomInAction = self.viewMenu.addAction(_('Zoom &in'))
         self.zoomInAction.setShortcuts(QtGui.QKeySequence.ZoomIn)
         self.zoomInAction.triggered.connect(QtCore.pyqtSlot()(lambda: self.currentTab().setZoomFactor(self.currentTab().zoomFactor() + 0.1) if self.currentTab() else None))
 
-        self.zoomOutAction = self.viewMenu.addAction('Zoom &out')
+        self.zoomOutAction = self.viewMenu.addAction(_('Zoom &out'))
         self.zoomOutAction.setShortcuts(QtGui.QKeySequence.ZoomOut)
         self.zoomOutAction.triggered.connect(QtCore.pyqtSlot()(lambda: self.currentTab().setZoomFactor(self.currentTab().zoomFactor() - 0.1) if self.currentTab() else None))
 
         self.viewMenu.addSeparator()
 
-        self.fullscreenAction = self.viewMenu.addAction('&Fullscreen')
+        self.fullscreenAction = self.viewMenu.addAction(_('&Fullscreen'))
         self.fullscreenAction.setShortcuts(QtGui.QKeySequence.FullScreen)
         self.fullscreenAction.setCheckable(True)
         self.fullscreenAction.toggled.connect(self.on_fullscreenAction)
 
         self.viewMenu.addSeparator()
 
-        self.viewToolbarAction = QtWidgets.QAction('Hide toolbar')
+        self.viewToolbarAction = QtWidgets.QAction(_('Hide toolbar'))
 
         @QtCore.pyqtSlot()
         def on_viewToolbarAction():
             if toolbar.isVisible():
-                self.viewToolbarAction.setText('Show toolbar')
+                self.viewToolbarAction.setText(_('Show toolbar'))
                 toolbar.close()
             else:
-                self.viewToolbarAction.setText('Hide toolbar')
+                self.viewToolbarAction.setText(_('Hide toolbar'))
                 toolbar.show()
 
         self.viewToolbarAction.setShortcut(QtGui.QKeySequence('Ctrl+|'))
         self.viewToolbarAction.triggered.connect(on_viewToolbarAction)
         self.viewMenu.addAction(self.viewToolbarAction)
 
-        self.viewStatusbarAction = QtWidgets.QAction('Hide status bar')
+        self.viewStatusbarAction = QtWidgets.QAction(_('Hide status bar'))
 
         @QtCore.pyqtSlot()
         def on_viewStatusbarAction():
             sb = self.statusBar()
             if sb.isVisible():
-                self.viewStatusbarAction.setText('Show status bar')
+                self.viewStatusbarAction.setText(_('Show status bar'))
                 sb.close()
             else:
-                self.viewStatusbarAction.setText('Hide status bar')
+                self.viewStatusbarAction.setText(_('Hide status bar'))
                 sb.show()
 
         self.viewStatusbarAction.setShortcut(QtGui.QKeySequence('Ctrl+/'))
@@ -832,13 +833,13 @@ class BrowserWindow(QtWidgets.QMainWindow):
         return self.viewMenu
 
     def createWindowMenu(self, tabWidget):
-        self.windowMenu = QtWidgets.QMenu('&Window')
+        self.windowMenu = QtWidgets.QMenu(_('&Window'))
 
-        self.nextTabAction = QtWidgets.QAction('Show next tab')
+        self.nextTabAction = QtWidgets.QAction(_('Show next tab'))
         self.nextTabAction.setShortcuts(QtGui.QKeySequence.NextChild)
         self.nextTabAction.triggered.connect(tabWidget.nextTab)
 
-        self.previousTabAction = QtWidgets.QAction('Show previous tab')
+        self.previousTabAction = QtWidgets.QAction(_('Show previous tab'))
         self.previousTabAction.setShortcuts(QtGui.QKeySequence.PreviousChild)
         self.previousTabAction.triggered.connect(tabWidget.previousTab)
 
@@ -860,12 +861,12 @@ class BrowserWindow(QtWidgets.QMainWindow):
         return self.windowMenu
 
     def createHelpMenu(self):
-        self.helpMenu = QtWidgets.QMenu('&Help')
-        self.helpMenu.addAction('&About', QtCore.pyqtSlot()(lambda: AboutDialog(self).exec()))
+        self.helpMenu = QtWidgets.QMenu(_('&Help'))
+        self.helpMenu.addAction(_('&About'), QtCore.pyqtSlot()(lambda: AboutDialog(self).exec()))
         return self.helpMenu
 
     def createToolBar(self):
-        self.tb_main = QtWidgets.QToolBar('Navigation')
+        self.tb_main = QtWidgets.QToolBar(_('Navigation'))
         self.tb_main.setMovable(False)
         self.tb_main.toggleViewAction().setEnabled(False)
 
@@ -874,7 +875,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
         self.historyBackAction.setShortcuts([k for k in standard_back if k[0] != QtCore.Qt.Key_Backspace])
         self.historyBackAction.setIconVisibleInMenu(False)
         self.historyBackAction.setIcon(QtGui.QIcon(f"{ICONFOLDER}/rewind.png"))
-        self.historyBackAction.setToolTip('Go back in history')
+        self.historyBackAction.setToolTip(_('Go back in history'))
         self.historyBackAction.triggered.connect(QtCore.pyqtSlot()(lambda: self.m_tabWidget.triggerWebPageAction(QtWebEngineWidgets.QWebEnginePage.Back)))
         self.tb_main.addAction(self.historyBackAction)
 
@@ -883,7 +884,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
         self.historyForwardAction.setShortcuts([k for k in standard_forward if (k[0] & QtCore.Qt.Key_unknown) != QtCore.Qt.Key_Backspace])
         self.historyForwardAction.setIconVisibleInMenu(False)
         self.historyForwardAction.setIcon(QtGui.QIcon(f"{ICONFOLDER}/fast-forward.png"))
-        self.historyForwardAction.setToolTip('Go forward in history')
+        self.historyForwardAction.setToolTip(_('Go forward in history'))
         self.historyForwardAction.triggered.connect(QtCore.pyqtSlot()(lambda: self.m_tabWidget.triggerWebPageAction(QtWebEngineWidgets.QWebEnginePage.Forward)))
         self.tb_main.addAction(self.historyForwardAction)
 
@@ -899,7 +900,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
 
         self.downloadsAction = QtWidgets.QAction()
         self.downloadsAction.setIcon(QtGui.QIcon(f"{ICONFOLDER}/folder-15.png"))
-        self.downloadsAction.setToolTip('Show downloads')
+        self.downloadsAction.setToolTip(_('Show downloads'))
         self.downloadsAction.triggered.connect(QtCore.pyqtSlot()(lambda: self.m_browser.downloadManagerWidget().show()))
         self.tb_main.addAction(self.downloadsAction)
 
@@ -917,11 +918,11 @@ class BrowserWindow(QtWidgets.QMainWindow):
             self.showFullScreen()
         else:            
             self.showNormal()
-            if self.viewToolbarAction.text().startswith('Hide'):
+            if self.viewToolbarAction.text().startswith(_('Hide')):
                 tb.show()
             else:
                 tb.close()
-            if self.viewStatusbarAction.text().startswith('Hide'):
+            if self.viewStatusbarAction.text().startswith(_('Hide')):
                 sb.show()
             else:
                 sb.close()
@@ -941,7 +942,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(str)
     def on_titleChanged(self, title):
-        suffix = 'pyCross Browser [incognito]' if self.m_profile.isOffTheRecord() else 'pyCross Browser'
+        suffix = _('pyCross Browser [incognito]') if self.m_profile.isOffTheRecord() else _('pyCross Browser')
         self.setWindowTitle(suffix if not title else f"{title} - {suffix}")
 
     @QtCore.pyqtSlot()
@@ -956,14 +957,14 @@ class BrowserWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot()
     def on_fileopen(self):
-        (url, _) = QtWidgets.QFileDialog.getOpenFileUrl(self, 'Open web resource', filter='Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)')
+        (url, _) = QtWidgets.QFileDialog.getOpenFileUrl(self, _('Open web resource'), filter=_('Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)'))
         if not url.isEmpty(): 
             self.navigate(url, False)
 
     @QtCore.pyqtSlot()
     def on_act_find(self):
         if not self.currentTab(): return
-        res = UserInput(parent=self, title='Find', label='Find:')
+        res = UserInput(parent=self, title=_('Find'), label=_('Find:'))
         if all(res):
             self.m_lastSearch = res[0]
             self.currentTab().findText(self.m_lastSearch)
@@ -977,12 +978,12 @@ class BrowserWindow(QtWidgets.QMainWindow):
         if progress > 0 and progress < 100:
             self.stopReloadAction.setData(QtWebEngineWidgets.QWebEnginePage.Stop)
             self.stopReloadAction.setIcon(stopIcon)
-            self.stopReloadAction.setToolTip('Stop loading page')
+            self.stopReloadAction.setToolTip(_('Stop loading page'))
             self.m_progressBar.setValue(progress)
         else:
             self.stopReloadAction.setData(QtWebEngineWidgets.QWebEnginePage.Reload)
             self.stopReloadAction.setIcon(reloadIcon)
-            self.stopReloadAction.setToolTip('Reload page')
+            self.stopReloadAction.setToolTip(_('Reload page'))
             self.m_progressBar.setValue(0)
 
     @QtCore.pyqtSlot()
@@ -1003,9 +1004,9 @@ class BrowserWindow(QtWidgets.QMainWindow):
     def on_findTextFinished(self, result):
         sb = self.statusBar()
         if not result.numberOfMatches():
-            sb.showMessage(f"'{self.m_lastSearch}' not found")
+            sb.showMessage(_("'{}' not found").format(self.m_lastSearch))
         else:
-            sb.showMessage(f"'{self.m_lastSearch}' found: {result.activeMatch()}/{result.numberOfMatches()}")
+            sb.showMessage(_("'{}' found: {}/{}").format(self.m_lastSearch, result.activeMatch(), result.numberOfMatches()))
 
 ##############################################################################
 ######          Browser

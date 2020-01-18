@@ -3,6 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 import os, sys, traceback
+from utils.globalvars import *
 from PyQt5 import QtWebEngine, QtWebEngineWidgets, QtWebEngineCore
 from gui import QtCore, QtWidgets, MainWindow
 

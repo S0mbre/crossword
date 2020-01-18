@@ -2,7 +2,9 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from utils import globalvars, utils
+from utils.globalvars import *
+from utils.utils import *
+
 import sys, os, json, datetime, numpy as np, timeit, xml.etree.ElementTree as ET
 from operator import itemgetter
 from html.parser import HTMLParser
@@ -67,21 +69,21 @@ class Coords:
         
     def validate(self):
         if not isinstance(self.start, tuple) or not isinstance(self.end, tuple):
-            raise CWError('Coords.start and Coords.end must be 2-tuples!')
+            raise CWError(_('Coords.start and Coords.end must be 2-tuples!'))
         if len(self.start) != 2 or len(self.end) != 2:
-            raise CWError('Coords.start and Coords.end must be 2-tuples!')
+            raise CWError(_('Coords.start and Coords.end must be 2-tuples!'))
         if self.start[0] == self.end[0]:
             # vertical            
             if self.end[1] <= self.start[1]:
-                raise CWError(f'End coordinate {repr(self.end)} must be greater than the start coordinate {repr(self.start)}!')
+                raise CWError(_('End coordinate {} must be greater than the start coordinate {}!').format(repr(self.end), repr(self.start)))
             self.dir = 'v'
         elif self.start[1] == self.end[1]:
             # horizontal
             if self.end[0] <= self.start[0]:
-                raise CWError(f'End coordinate {repr(self.end)} must be greater than the start coordinate {repr(self.start)}!')
+                raise CWError(_('End coordinate {} must be greater than the start coordinate {}!').format(repr(self.end), repr(self.start)))
             self.dir = 'h'
         else:
-            raise CWError('One coordinate must be equal!')
+            raise CWError(_('One coordinate must be equal!'))
             
     def coord_array(self):
         if self.dir == 'h': 
@@ -107,7 +109,7 @@ class Coords:
         return self.end[cooord_index] - self.start[cooord_index] + 1
     
     def __repr__(self):
-        return f"Coords object :: start = {repr(self.start)}, end = {repr(self.end)}, dir = '{self.dir}'"
+        return _("Coords object :: start = {}, end = {}, dir = '{}'").format(repr(self.start), repr(self.end), self.dir)
 
 ## ******************************************************************************** ##
 
@@ -121,14 +123,14 @@ class Word(Coords):
         
     def set_word(self, wd):
         if not wd is None and len(wd) != len(self):
-            raise CWError('Word length is not correct!')
+            raise CWError(_('Word length is not correct!'))
         self.word = wd
         
     def __hash__(self):
         return hash((self.start, self.dir))
                 
     def __repr__(self):
-        return f"Word object :: num = {self.num}, start = {repr(self.start)}, end = {repr(self.end)}, dir = '{self.dir}'"
+        return _("Word object :: num = {}, start = {}, end = {}, dir = '{}'").format(self.num, repr(self.start), repr(self.end), self.dir)
     
 ## ******************************************************************************** ## 
         
@@ -172,7 +174,7 @@ class Wordgrid:
         elif data_type == 'file':            
             self.from_file(data)
         else:
-            raise CWError(f"Wrong 'data_type' argument: '{data_type}'! Must be 'grid' OR 'words' OR 'file'!")
+            raise CWError(_("Wrong 'data_type' argument: '{}'! Must be 'grid' OR 'words' OR 'file'!").format(data_type))
         
     def validate(self, grid):
         """
@@ -183,15 +185,15 @@ class Wordgrid:
         if isinstance(grid, str):
             grid = grid.split('\n')
             if len(grid) < 2:
-                raise CWError('Grid appears incorrect, for in contains less than 2 rows!')
+                raise CWError(_('Grid appears incorrect, for in contains less than 2 rows!'))
                 
         if isinstance(grid, list):
             for row in grid:
                 if not all(c.isalpha() or c in (BLANK, FILLER, FILLER2) for c in row):
-                    raise CWError(f"Grid contains invalid characters! Must contain only [a-z], '{BLANK}', '{FILLER}' and {FILLER2}.")
+                    raise CWError(_("Grid contains invalid characters! Must contain only [a-z], '{}', '{}' and '{}'.").format(BLANK, FILLER, FILLER2))
             return
         
-        raise CWError('Grid must be passed either as a list of strings or a single string of rows delimited by new-line symbols!')                  
+        raise CWError(_('Grid must be passed either as a list of strings or a single string of rows delimited by new-line symbols!'))                  
         
     def reset(self, grid=None, update_internal_strings=False):
         """
@@ -204,7 +206,7 @@ class Wordgrid:
         'update_internal_strings' tells the function to update each Word object's string representation
         """
         if grid is None and not getattr(self, 'grid', None): 
-            raise CWError('Cannot call reset() on a null grid!')
+            raise CWError(_('Cannot call reset() on a null grid!'))
             
         if not grid is None: 
             self.validate(grid)        
@@ -280,7 +282,7 @@ class Wordgrid:
         the reverse of reset(), which constructs words from a given grid structure.
         """
         if not words or not hasattr(words, '__iter__') or not isinstance(words[0], Coords):
-            raise CWError(f'"words" argument must be a non-empty collection of Word / Coords objects!')
+            raise CWError(_(f'"words" argument must be a non-empty collection of Word / Coords objects!'))
             
         # calculate the grid dimensions
         width = max(words, key=lambda w: w.end[0]).end[0] + 1
@@ -318,7 +320,7 @@ class Wordgrid:
         """
         """
         cwgrid = []
-        with open(gridfile, 'r', encoding=globalvars.ENCODING, errors='replace') as file:
+        with open(gridfile, 'r', encoding=ENCODING, errors='replace') as file:
             for ln in file:
                 s = ln
                 if s.endswith('\n'): s = s[:-1]
@@ -339,7 +341,7 @@ class Wordgrid:
             
         elif file_format == 'json':
             # assume JSON has list of Word objects
-            with open(filename, 'r', encoding=globalvars.ENCODING, errors='replace') as infile:
+            with open(filename, 'r', encoding=ENCODING, errors='replace') as infile:
                 words = json.load(infile)
                 self.from_words(words)
 
@@ -358,12 +360,12 @@ class Wordgrid:
             self._save_ipuz(filename)
 
         elif file_format == 'json':
-            with open(filename, 'w', encoding=globalvars.ENCODING) as outfile:
+            with open(filename, 'w', encoding=ENCODING) as outfile:
                 json.dump(self.words, outfile, ensure_ascii=False, indent='\t')
 
         else:
             # save grid
-            with open(filename, 'w', encoding=globalvars.ENCODING) as outfile:
+            with open(filename, 'w', encoding=ENCODING) as outfile:
                 outfile.write(self.tostr())
 
     def _parse_ipuz(self, filename):
@@ -381,10 +383,10 @@ class Wordgrid:
             return default
 
         ipuz = None
-        with open(filename, 'r', encoding=globalvars.ENCODING, errors='replace') as infile:
+        with open(filename, 'r', encoding=ENCODING, errors='replace') as infile:
             ipuz = json.load(infile)
         ipuz_kind = ''.join(ipuz.get('kind', ''))
-        if not ipuz_kind: raise CWError(f"Unabe to parse '{filename}' as IPUZ file!")
+        if not ipuz_kind: raise CWError(_("Unable to parse '{}' as IPUZ file!").format(filename))
         if not 'crossword' in ipuz_kind.lower(): return
         # get info
         self.info.title = ipuz.get('title', '')
@@ -393,7 +395,7 @@ class Wordgrid:
         self.info.cpyright = ipuz.get('copyright', '')
         self.info.publisher = ipuz.get('publisher', '')
         date_str = ipuz.get('date', '')
-        self.info.date = utils.str_to_datetime(date_str, '%m/%d/%Y') if date_str else None
+        self.info.date = str_to_datetime(date_str, '%m/%d/%Y') if date_str else None
         # get grid
         grid = ipuz.get('solution', None)
         if grid:            
@@ -403,7 +405,7 @@ class Wordgrid:
             # if solutions is absent, try 'puzzle' data
             grid = ipuz.get('puzzle', None)
             # if both 'solutions' and 'puzzle' are absent, raise error
-            if not grid: raise CWError(f"Unabe to parse '{filename}' as IPUZ file!")
+            if not grid: raise CWError(_("Unable to parse '{}' as IPUZ file!").format(filename))
             grid = [''.join([_get_char(col) for col in row]) for row in grid]
         # generate words & members
         self.reset(grid)
@@ -423,8 +425,8 @@ class Wordgrid:
         if self.info.editor: ipuz['editor'] = self.info.editor
         if self.info.cpyright: ipuz['copyright'] = self.info.cpyright
         if self.info.publisher: ipuz['publisher'] = self.info.publisher
-        if self.info.date: ipuz['date'] = utils.datetime_to_str(self.info.date, '%m/%d/%Y')
-        ipuz['origin'] = f"{globalvars.APP_NAME} {globalvars.APP_VERSION}"
+        if self.info.date: ipuz['date'] = datetime_to_str(self.info.date, '%m/%d/%Y')
+        ipuz['origin'] = f"{APP_NAME} {APP_VERSION}"
         ipuz['dimensions'] = {'width': self.width, 'height': self.height}
         ipuz['puzzle'] = [['#' if c == FILLER else ('null' if c == FILLER2 else 0) for c in row] for row in self.grid]
         ipuz['solution'] = [['#' if c == FILLER else ('null' if c == FILLER2 else c.upper()) for c in row] for row in self.grid]
@@ -434,7 +436,7 @@ class Wordgrid:
             k = 'Across' if w.dir == 'h' else 'Down'
             ipuz['clues'][k].append([w.num, w.clue])
 
-        with open(filename, 'w', encoding=globalvars.ENCODING) as outfile:
+        with open(filename, 'w', encoding=ENCODING) as outfile:
             json.dump(ipuz, outfile, ensure_ascii=False, indent='\t')
     
     def _parse_xpf(self, filename):
@@ -442,7 +444,7 @@ class Wordgrid:
         root = tree.getroot()
         pz = root.find('Puzzle')
         if not pz:
-            raise CWError(f"No puzzles in '{filename}'!")
+            raise CWError(_("No puzzles in '{}'!").format(filename))
         # get meta info
         title = pz.find('Title')
         self.info.title = title.text or '' if not title is None else ''
@@ -455,11 +457,11 @@ class Wordgrid:
         publisher = pz.find('Publisher')
         self.info.publisher = publisher.text or '' if not publisher is None else ''
         date = pz.find('Date')
-        self.info.date = utils.str_to_datetime(date.text, '%m/%d/%Y') if date else None
+        self.info.date = str_to_datetime(date.text, '%m/%d/%Y') if date else None
         # make grid
         gr = pz.find('Grid')
         if not gr:
-            raise CWError(f"No grid in '{filename}'!")
+            raise CWError(_("No grid in '{}'!").format(filename))
         grid = []
         for row in gr.iter('Row'):
             grid.append(row.text.lower().replace('.', FILLER).replace('~', FILLER2).replace(' ', BLANK))
@@ -495,7 +497,7 @@ class Wordgrid:
         if self.info.publisher:
             ET.SubElement(pz, 'Publisher').text = self.info.publisher 
         if self.info.date:
-            ET.SubElement(pz, 'Date').text = utils.datetime_to_str(self.info.date, '%m/%d/%Y')
+            ET.SubElement(pz, 'Date').text = datetime_to_str(self.info.date, '%m/%d/%Y')
         sz = ET.SubElement(pz, 'Size')
         ET.SubElement(sz, 'Rows').text = str(self.height)
         ET.SubElement(sz, 'Cols').text = str(self.width)
@@ -512,7 +514,7 @@ class Wordgrid:
             clue.set('Ans', self.get_word_str(w).replace(BLANK, ' ').upper())
             clue.text = f"![CDATA[{w.clue}]]"
         tree = ET.ElementTree(root)
-        tree.write(filename, encoding=globalvars.ENCODING, xml_declaration=True)
+        tree.write(filename, encoding=ENCODING, xml_declaration=True)
             
     def _strip_html(self, text):
         if text.startswith('![CDATA[') and text.endswith(']]'):
@@ -530,7 +532,7 @@ class Wordgrid:
     
     def _validate_char(self, char):
         if not char.isalpha() and not char in (BLANK, FILLER, FILLER2):
-            raise CWError(f'Character "{char}" is invalid!')
+            raise CWError(_('Character "{}" is invalid!').format(char))
     
     def _validate_coord(self, coord):
         """
@@ -538,7 +540,7 @@ class Wordgrid:
         Raises an error if out of range.
         """
         if coord[0] < 0 or coord[0] >= self.width or coord[1] < 0 or coord[1] >= self.height:
-            raise CWError(f"Coordinate {repr(coord)} is out of the grid range (w={self.width}, h={self.height})!")
+            raise CWError(_("Coordinate {} is out of the grid range (w={}, h={})!").format(repr(coord), self.width, self.height))
     
     def is_complete(self):
         """
@@ -790,12 +792,12 @@ class Wordgrid:
     
     def get_word_str(self, w):
         if not w in self.words: 
-            raise CWError(f"Word '{str(w)}' is absent from grid!")
+            raise CWError(_("Word '{}' is absent from grid!").format(str(w)))
         return ''.join(self.grid[coord[1]][coord[0]] for coord in w.coord_array())
     
     def is_word_complete(self, w):
         if not w in self.words: 
-            raise CWError(f"Word '{str(w)}' is absent from grid!")
+            raise CWError(_("Word '{}' is absent from grid!").format(str(w)))
         for coord in w.coord_array():
             if self.grid[coord[1]][coord[0]] == BLANK:
                 return False
@@ -869,7 +871,7 @@ class Wordgrid:
         Replaces the given word (word) with another string (new_word).
         """
         if not word in self.words: 
-            raise CWError(f"Word '{str(word)}' is absent from grid!")
+            raise CWError(_("Word '{}' is absent from grid!").format(str(word)))
         if len(new_word) != len(word):
             raise CWError("Lengths of words do not match!")
         if self.on_change: w_old = self.get_word_str(word)
@@ -902,15 +904,15 @@ class Wordgrid:
     
     def print_word(self, w):
         if not w in self.words:
-            raise CWError(f"Word '{str(w)}' is absent from grid!")
+            raise CWError(_("Word '{}' is absent from grid!").format(str(w)))
         return f"{repr(w.start)} {w.dir} '{self.get_word_str(w)}'"
 
     def print_words(self):
         #self.sort()
-        s = f"Num{LOG_INDENT}Coord{LOG_INDENT * 2}Value\n-------------------------------------------\n"
-        s += 'ACROSS:\n-------------------------------------------\n'
+        s = _("Num{}Coord{}Value\n-------------------------------------------\n").format(LOG_INDENT, (LOG_INDENT * 2))
+        s += _('ACROSS:\n-------------------------------------------\n')
         s += '\n'.join(f"[{w.num}]{LOG_INDENT}{repr(w.start)}{LOG_INDENT * 2}'{self.get_word_str(w)}'" for w in self.words if w.dir == 'h')   
-        s += '\n-------------------------------------------\nDOWN:\n-------------------------------------------\n'
+        s += _('\n-------------------------------------------\nDOWN:\n-------------------------------------------\n')
         s += '\n'.join(f"[{w.num}]{LOG_INDENT}{repr(w.start)}{LOG_INDENT * 2}'{self.get_word_str(w)}'" for w in self.words if w.dir == 'v') 
         return s
            
@@ -989,7 +991,7 @@ class Wordgrid:
         if isinstance(word, str):            
             word = word.lower() 
         elif not isinstance(word, Word):
-            raise CWError('Word must be a Word object!') 
+            raise CWError(_('Word must be a Word object!')) 
         for w in self.words:
             if (isinstance(word, Word) and w == word) or (isinstance(word, str) and self.get_word_str(w) == word):
                 return True            
@@ -1069,7 +1071,7 @@ class Crossword:
         
     def init_data(self, **kwargs):
         self.words = Wordgrid(data=self.data, data_type=self.data_type, info=CWInfo(), **kwargs)
-        #print(f"CROSSWORD FROM {self.data_type}:{globalvars.NEWLINE}{str(self.words.info)}{globalvars.NEWLINE}{globalvars.NEWLINE}")
+        #print(f"CROSSWORD FROM {self.data_type}:{NEWLINE}{str(self.words.info)}{NEWLINE}{NEWLINE}")
         self.reset_used()
         self.time_start = timeit.default_timer()
             
@@ -1090,7 +1092,7 @@ class Crossword:
         elif log == '' or log is None:
             self.log = None
         else:
-            self.log = open(log, 'w', encoding=globalvars.ENCODING, buffering=-1 if self.bufferedlog else 1)        
+            self.log = open(log, 'w', encoding=ENCODING, buffering=-1 if self.bufferedlog else 1)        
             
     def _log(self, what, end='\n'):
         """
@@ -1250,10 +1252,10 @@ class Crossword:
         
         # if CW complete, return True
         if self.words: 
-            self._log(f"\n\tCompleted CW!")
+            self._log(_(f"\n\tCompleted CW!"))
             return True
         
-        self._log('Creating word paths...')
+        self._log(_('Creating word paths...'))
         
         # list to hold word paths (where each path is again a list)
         paths = []
@@ -1277,7 +1279,7 @@ class Crossword:
             
         #print('\n'.join(str(w) for w in exclude))
         
-        self._log(f"Created {len(paths)} paths")
+        self._log(_("Created {} paths").format(len(paths)))
         
         # this list will contain Boolean generation results for each path (block of words)
         results = []
@@ -1304,21 +1306,21 @@ class Crossword:
                 
                 if self.log: 
                     self._log(f"\n{str(self.words)}\n")                
-                    self._log(f"\nNext word = [{self.words.print_word(p[i]['w'])}]")
+                    self._log(_("\nNext word = [{}]").format(self.words.print_word(p[i]['w'])))
                     
                 # get string representation of next word in path
                 s_word = self.words.get_word_str(p[i]['w'])
                 
                 # skip word if it's already in USED list
                 if s_word in self.used: 
-                    self._log(f"Skipping [{s_word}] (found in USED)...")
+                    self._log(_("Skipping [{}] (found in USED)...").format(s_word))
                     i += 1
                     continue
                 
                 # get new suggestions from word source if 'sug' is None
                 if p[i]['sug'] is None:                    
                     p[i]['sug'] = self.suggest(s_word) 
-                    self._log(f"Fetched {len(p[i]['sug'])} suggestions for [{s_word}]")
+                    self._log(_("Fetched {} suggestions for [{}]").format(len(p[i]['sug']), s_word))
                     
                 # check timeout
                 if self.timeout_happened(timeout): raise CWTimeoutError()
@@ -1328,10 +1330,10 @@ class Crossword:
                 # if suggestions returned an empty list (means we can't go on with generation)
                 if len(p[i]['sug']) == 0:
                     
-                    self._log(f"No suggestions for [{s_word}]!")
+                    self._log(_("No suggestions for [{}]!").format(s_word))
                     # reset 'sug' list to None (to possibly re-generate on next step)
                     p[i]['sug'] = None
-                    self._log(f"Clearing [{s_word}]...", end='')
+                    self._log(_("Clearing [{}]...").format(s_word), end='')
                     # clear word forcibly, i.e. set ALL characters to BLANK
                     # (this word is unusable as it is, so we must clear it thoroughly)
                     # at the same time, discard word and its intersects from USED list
@@ -1369,7 +1371,7 @@ class Crossword:
                                     if j < 0: j = k
                                     # drop word (intersect) from USED
                                     self.used.discard(self.words.get_word_str(wd['w']))
-                                    self._log(f"Clearing [{self.words.print_word(wd['w'])}]...", end='')
+                                    self._log(_("Clearing [{}]...").format(self.words.print_word(wd['w'])), end='')
                                     # clear it (SOFTLY!)
                                     self.words.clear_word(wd['w'], False)  
                                     self._log(f" --> [{self.words.get_word_str(wd['w'])}]")
@@ -1393,7 +1395,7 @@ class Crossword:
                     # if we CANNOT go back (we're already or still at first word...)
                     else:
                         # set res to False, since we've failed to generate the current path
-                        self._log('Start node reached; unable to generate for path!')
+                        self._log(_('Start node reached; unable to generate for path!'))
                         res = False
                         # break from current path, go to next one (if any)
                         break
@@ -1404,7 +1406,7 @@ class Crossword:
                     # (removing is necessary to be able to step back through or break from path
                     # when all the suggestions are exhausted)
                     sug_word = self.wordsource.pop_word(p[i]['sug'])
-                    self._log(f"Trying '{sug_word}' for [{self.words.get_word_str(p[i]['w'])}]...")
+                    self._log(_("Trying '{}' for [{}]...").format(sug_word, self.words.get_word_str(p[i]['w'])))
                     # write suggestion to current word (store in word grid)
                     # add new word to USED list (to mark as 'used' and 'visited')
                     self.words.change_word(p[i]['w'], sug_word)
@@ -1416,9 +1418,9 @@ class Crossword:
                     
             # add generation result for current path to results list
             results.append(res)
-            self._log(f"\n\tCompleted path with result = {res}")
+            self._log(_("\n\tCompleted path with result = {}").format(res))
             
-        self._log(f"\n\tCompleted CW!")
+        self._log(_(f"\n\tCompleted CW!"))
         # return True if all paths have been generated successfully and False otherwise
         return all(results)
         
@@ -1446,7 +1448,7 @@ class Crossword:
                         
         # words must be a valid non-empty container
         if getattr(self, 'words', None) is None:
-            raise CWError('Words collection is not initialized!') 
+            raise CWError(_('Words collection is not initialized!')) 
                     
         rec_level = recurse_level
 
@@ -1467,16 +1469,16 @@ class Crossword:
         # return True (success of generation cycle) if start_word is found in the USED list
         if s_word in self.used: return True
                        
-        self._log(f"{LOG_INDENT * rec_level}New start word is: {self.words.print_word(start_word)}")
+        self._log(_("{}New start word is: {}").format((LOG_INDENT * rec_level), self.words.print_word(start_word)))
             
         # fetch list of suggested words for start_word
         suggested = self.suggest(s_word)
         # if nothing could be fetched return False
         if not suggested:
-            self._log(f"{LOG_INDENT * rec_level}Unable to generate CW for word '{s_word}'!")
+            self._log(_("{}Unable to generate CW for word '{}'!").format((LOG_INDENT * rec_level), s_word))
             return False
         
-        self._log(f"{LOG_INDENT * rec_level}Fetched {len(suggested)} suggestions")
+        self._log(_("{}Fetched {} suggestions").format((LOG_INDENT * rec_level), len(suggested)))
         
         # success flag
         ok = True
@@ -1492,7 +1494,7 @@ class Crossword:
             # check for stopping criteria
             if stopcheck and stopcheck(): raise CWStopCheck()
             
-            self._log(f"{LOG_INDENT * rec_level}Trying '{sugg_word}' for '{s_word}'...")
+            self._log(_("{}Trying '{}' for '{}'...").format((LOG_INDENT * rec_level), sugg_word, s_word))
             # replace start_word with next suggestion
             self.words.change_word(start_word, sugg_word)
             # add it to USED list (for next suggest() and generate() calls)
@@ -1504,10 +1506,10 @@ class Crossword:
             crosses = self.words.intersects_of(start_word, False)
             # if there are no intersects, return True (done current cycle)
             if not crosses: 
-                self._log(f"{LOG_INDENT * rec_level}No crosses for '{s_word}'")
+                self._log(_("{}No crosses for '{}'").format((LOG_INDENT * rec_level), s_word))
                 return True
             
-            self._log(f"{LOG_INDENT * rec_level}Found {len(crosses)} crosses for '{s_word}': {repr([self.words.get_word_str(el) for el in crosses])}")
+            self._log(_("{}Found {} crosses for '{}': {}").format((LOG_INDENT * rec_level), len(crosses), s_word, (repr([self.words.get_word_str(el) for el in crosses]))))
             
             # iterate over the intersecting words
             
@@ -1520,7 +1522,7 @@ class Crossword:
 
                 # skip already used words
                 if self.words.get_word_str(cross) in self.used:
-                    self._log(f"{LOG_INDENT * rec_level}Skipping cross '{self.words.get_word_str(cross)}'...")
+                    self._log(_("{}Skipping cross '{}'...").format((LOG_INDENT * rec_level), self.words.get_word_str(cross)))
                     ok = True
                     continue
                                 
@@ -1532,7 +1534,7 @@ class Crossword:
                 rec_level -= 1
                                     
                 if res: 
-                    self._log(f"{LOG_INDENT * rec_level}Generated for cross '{self.words.get_word_str(cross)}'")
+                    self._log(_("{}Generated for cross '{}'").format((LOG_INDENT * rec_level), self.words.get_word_str(cross)))
                     # report progress
                     if on_progress:
                         on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
@@ -1543,7 +1545,7 @@ class Crossword:
                     
                 else:
                     # if failed to generate, restore current word to previous (unfilled)
-                    self._log(f"{LOG_INDENT * rec_level}Failed to generate for cross '{self.words.get_word_str(cross)}', restoring grid...")
+                    self._log(_("{}Failed to generate for cross '{}', restoring grid...").format((LOG_INDENT * rec_level), self.words.get_word_str(cross)))
                     # discard the current (failed) intersect from USED
                     self.used.discard(self.words.get_word_str(cross))
                     # restore the old word (the one before diving into recursive generation)
@@ -1569,7 +1571,7 @@ class Crossword:
             return True if recurse_level > 0 else self.generate_recurse(None, 0, timeout, stopcheck, on_progress)
         
         # otherwise everything is sad...
-        self._log(f"{LOG_INDENT * rec_level}Unable to generate CW for word '{str(start_word)}'!")
+        self._log(_("{}Unable to generate CW for word '{}'!").format((LOG_INDENT * rec_level), str(start_word)))
         # report progress
         if on_progress:
             on_progress(self, self.words._word_count(self.words.is_word_complete), len(self.words.words))
@@ -1609,7 +1611,7 @@ class Crossword:
         """
         # check source
         if not self.wordsource:
-            self._log(f"No valid word source for crossword generation!")
+            self._log(_('No valid word source for crossword generation!'))
             if onfinish: onfinish(0)
             return False
         
@@ -1642,14 +1644,14 @@ class Crossword:
                     self._log("USING ITERATIVE ALGORITHM...")
                     res = self.generate_iter(timeout=timeout, stopcheck=stopcheck, on_progress=on_progress)
             else:
-                raise CWError(f"'method' argument ({repr(method)}) is not valid! Must be one of: 'iter', 'recurse', or None / empty string.")
+                raise CWError(_("'method' argument ({}) is not valid! Must be one of: 'iter', 'recurse', or None / empty string.").format(repr(method)))
         
         except CWTimeoutError:
-            self._log(f"TIMED OUT AT {timeout} SEC!")
+            self._log(_("TIMED OUT AT {} SEC!").format(timeout))
             if ontimeout: ontimeout(timeout)
             
         except CWStopCheck:
-            self._log(f"STOPPED!")
+            self._log(_(f"STOPPED!"))
             if onstop: onstop()
             
         except (CWError, Exception) as err:
@@ -1672,7 +1674,7 @@ class Crossword:
             self._log(f"\n{self.words.print_words()}")
         
         # output results
-        self._log(f"GENERATION COMPLETED IN {elapsed:.1f} SEC.")
+        self._log(_("GENERATION COMPLETED IN {:.1f} SEC.").format(elapsed))
         if onfinish: onfinish(elapsed)
         return res
     
@@ -1684,10 +1686,10 @@ class Crossword:
         lst_bad = list(filter(lambda w: not self.wordsource.check(w, self.pos, self.wordfilter), self.words.word_list()))
         # if lst_bad is not empty, it will contain words not found in the word source
         if lst_bad:
-            self._log(f"No database results for {repr(lst_bad)}!")
+            self._log(_("No database results for {}!").format(repr(lst_bad)))
             return lst_bad
         else:
-            self._log('CHECK OK')
+            self._log(_('CHECK OK'))
             return None
     
     def __str__(self):

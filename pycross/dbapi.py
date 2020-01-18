@@ -109,7 +109,7 @@ class Sqlitedb:
             #print(f'Created objects for database: {self.dbpath}')
             return True
         except Exception as err:
-            print(f'DATABASE ERROR: {str(err)}')
+            print(_('DATABASE ERROR: {}').format(str(err)))
             self.disconnect()
             return False
         except:
@@ -175,7 +175,7 @@ class Sqlitedb:
         poses = self.get_pos()
         for pos in posrules:
             if not pos in poses:
-                raise Exception(f"Part of speech '{pos}' is absent from the DB!")
+                raise Exception(_("Part of speech '{}' is absent from the DB!").format(pos))
                 
         if not self.connect(): return 0
         cur = self.conn.cursor()
@@ -231,7 +231,7 @@ class Sqlitedb:
                                         pos = 'MISC'
                                         
                         except Exception as err:
-                            print(f'DATABASE ERROR: {str(err)}')
+                            print(_('DATABASE ERROR: {}').format(str(err)))
                             break
                         
                     else:
@@ -253,7 +253,7 @@ class Sqlitedb:
                             # call on_word
                             if on_word: on_word(word, pos, cnt)
                         except Exception as err:
-                            print(f'DATABASE ERROR: {str(err)}')
+                            print(_('DATABASE ERROR: {}').format(str(err)))
                             break
                     
         finally:   

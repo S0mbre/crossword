@@ -3,8 +3,9 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from PyQt5 import QtGui, QtCore, QtWidgets
-from utils.globalvars import *
 import json, os
+
+from utils.globalvars import *
 
 ## ******************************************************************************** ##
 
@@ -201,5 +202,5 @@ class CWSettings:
     def load_from_file(filepath=SETTINGS_FILE):
         d = CWSettings.validate_file(filepath)
         if not d:
-            raise Exception(f"File '{filepath}' is unavailable or has an invalid format!")
+            raise Exception(_("File '{}' is unavailable or has an invalid format!").format(filepath))
         CWSettings.settings.update(d)

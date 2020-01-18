@@ -5,8 +5,9 @@
 from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport, QtSvg
 from subprocess import Popen
 import os, json, re, threading, math, traceback
-from utils.utils import *
+
 from utils.globalvars import *
+from utils.utils import *
 from utils.update import Updater
 from utils.onlineservices import Cloudstorage, Share
 from utils.graphs import make_chart, data_from_dict
@@ -157,147 +158,147 @@ class MainWindow(QtWidgets.QMainWindow):
         Creates the application actions (QAction instances) which are
         then added to the main toolbar, main menu and context menus.
         """
-        self.act_new = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/crossword.png"), 'New')
-        self.act_new.setToolTip('Create new crossword')
+        self.act_new = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/crossword.png"), _('New'))
+        self.act_new.setToolTip(_('Create new crossword'))
         self.act_new.setShortcuts(QtGui.QKeySequence.New)
         self.act_new.triggered.connect(self.on_act_new)
        
-        self.act_open = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-15.png"), 'Open')
-        self.act_open.setToolTip('Open crossword from file')
+        self.act_open = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-15.png"), _('Open'))
+        self.act_open.setToolTip(_('Open crossword from file'))
         self.act_open.setShortcuts(QtGui.QKeySequence.Open)
         self.act_open.triggered.connect(self.on_act_open)
       
-        self.act_save = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), 'Save')
-        self.act_save.setToolTip('Save crossword')
+        self.act_save = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), _('Save'))
+        self.act_save.setToolTip(_('Save crossword'))
         self.act_save.setShortcuts(QtGui.QKeySequence.Save)
         self.act_save.triggered.connect(self.on_act_save)
       
-        self.act_saveas = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/saveas.png"), 'Save As...')
-        self.act_saveas.setToolTip('Save crossword as new file')
+        self.act_saveas = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/saveas.png"), _('Save As...'))
+        self.act_saveas.setToolTip(_('Save crossword as new file'))
         self.act_saveas.setShortcuts(QtGui.QKeySequence.SaveAs)
         self.act_saveas.triggered.connect(self.on_act_saveas)
 
-        self.act_close = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/close.png"), 'Close')
-        self.act_close.setToolTip('Close current crossword')
+        self.act_close = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/close.png"), _('Close'))
+        self.act_close.setToolTip(_('Close current crossword'))
         self.act_close.setShortcuts(QtGui.QKeySequence.Close)
         self.act_close.triggered.connect(self.on_act_close)
 
-        self.act_reload = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), 'Reload')
-        self.act_reload.setToolTip('Reload crossword from file')
+        self.act_reload = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Reload'))
+        self.act_reload.setToolTip(_('Reload crossword from file'))
         self.act_reload.setShortcuts(QtGui.QKeySequence.Refresh)
         self.act_reload.triggered.connect(self.on_act_reload)
        
-        self.act_share = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/share-1.png"), 'Share')
-        self.act_share.setToolTip('Share crossword in social networks')
+        self.act_share = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/share-1.png"), _('Share'))
+        self.act_share.setToolTip(_('Share crossword in social networks'))
         self.act_share.setShortcut(QtGui.QKeySequence('F10'))
         self.act_share.triggered.connect(self.on_act_share)
         
-        self.act_edit = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), 'Edit')
-        self.act_edit.setToolTip('Edit crossword')
+        self.act_edit = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), _('Edit'))
+        self.act_edit.setToolTip(_('Edit crossword'))
         self.act_edit.setCheckable(True)
         self.act_edit.setShortcut(QtGui.QKeySequence('Ctrl+e'))
         self.act_edit.toggled.connect(self.on_act_edit)   
        
-        self.act_addrow = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add_row.png"), 'Add row')
-        self.act_addrow.setToolTip('Add row before selected')
+        self.act_addrow = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add_row.png"), _('Add row'))
+        self.act_addrow.setToolTip(_('Add row before selected'))
         self.act_addrow.triggered.connect(self.on_act_addrow)     
        
-        self.act_delrow = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/delete_row.png"), 'Delete row')
-        self.act_delrow.setToolTip('Delete row')
+        self.act_delrow = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/delete_row.png"), _('Delete row'))
+        self.act_delrow.setToolTip(_('Delete row'))
         self.act_delrow.triggered.connect(self.on_act_delrow)
        
-        self.act_addcol = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add_col.png"), 'Add column')
-        self.act_addcol.setToolTip('Add column before selected')
+        self.act_addcol = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add_col.png"), _('Add column'))
+        self.act_addcol.setToolTip(_('Add column before selected'))
         self.act_addcol.triggered.connect(self.on_act_addcol)         
        
-        self.act_delcol = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/delete_col.png"), 'Delete column')
-        self.act_delcol.setToolTip('Delete column')
+        self.act_delcol = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/delete_col.png"), _('Delete column'))
+        self.act_delcol.setToolTip(_('Delete column'))
         self.act_delcol.triggered.connect(self.on_act_delcol)
       
-        self.act_reflect = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/windows-1.png"), 'Duplicate')
-        self.act_reflect.setToolTip('Duplicate (reflect) grid cells to any direction')
+        self.act_reflect = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/windows-1.png"), _('Duplicate'))
+        self.act_reflect.setToolTip(_('Duplicate (reflect) grid cells to any direction'))
         self.act_reflect.triggered.connect(self.on_act_reflect)
       
-        self.act_gen = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), 'Generate')
-        self.act_gen.setToolTip('Generate (solve) crossword')
+        self.act_gen = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), _('Generate'))
+        self.act_gen.setToolTip(_('Generate (solve) crossword'))
         self.act_gen.setShortcut(QtGui.QKeySequence('Ctrl+g'))
         self.act_gen.triggered.connect(self.on_act_gen)
       
-        self.act_stop = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), 'Stop')
-        self.act_stop.setToolTip('Stop operation')
+        self.act_stop = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), _('Stop'))
+        self.act_stop.setToolTip(_('Stop operation'))
         self.act_stop.setShortcuts(QtGui.QKeySequence.Undo)
         self.act_stop.triggered.connect(self.on_act_stop)
         self.act_stop.changed.connect(self.on_act_stop_changed)
         self.act_stop.setCheckable(True)
        
-        self.act_clear = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/dust.png"), 'Clear')
-        self.act_clear.setToolTip('Clear all words')
+        self.act_clear = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/dust.png"), _('Clear'))
+        self.act_clear.setToolTip(_('Clear all words'))
         self.act_clear.setShortcut(QtGui.QKeySequence('Ctrl+d'))
         self.act_clear.triggered.connect(self.on_act_clear)
        
-        self.act_clear_wd = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/minus.png"), 'Clear word')
-        self.act_clear_wd.setToolTip('Clear word')
+        self.act_clear_wd = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/minus.png"), _('Clear word'))
+        self.act_clear_wd.setToolTip(_('Clear word'))
         self.act_clear_wd.triggered.connect(self.on_act_clear_wd)
         
-        self.act_erase_wd = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), 'Erase word')
-        self.act_erase_wd.setToolTip('Erase word')
+        self.act_erase_wd = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), _('Erase word'))
+        self.act_erase_wd.setToolTip(_('Erase word'))
         self.act_erase_wd.triggered.connect(self.on_act_erase_wd)
        
-        self.act_suggest = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/magic-wand.png"), 'Suggest word')
-        self.act_suggest.setToolTip('Suggest word')
+        self.act_suggest = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/magic-wand.png"), _('Suggest word'))
+        self.act_suggest.setToolTip(_('Suggest word'))
         self.act_suggest.setShortcuts(QtGui.QKeySequence.Find)
         self.act_suggest.triggered.connect(self.on_act_suggest)
        
-        self.act_lookup = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/worldwide.png"), 'Lookup word')
-        self.act_lookup.setToolTip('Lookup word definition')
+        self.act_lookup = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/worldwide.png"), _('Lookup word'))
+        self.act_lookup.setToolTip(_('Lookup word definition'))
         self.act_lookup.setShortcut(QtGui.QKeySequence('Ctrl+l'))
         self.act_lookup.triggered.connect(self.on_act_lookup)
         
-        self.act_editclue = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/key.png"), 'Edit clue')
-        self.act_editclue.setToolTip('Edit clue')
+        self.act_editclue = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/key.png"), _('Edit clue'))
+        self.act_editclue.setToolTip(_('Edit clue'))
         self.act_editclue.setShortcut(QtGui.QKeySequence('Ctrl+k'))
         self.act_editclue.triggered.connect(self.on_act_editclue)
         
-        self.act_wsrc = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"), 'Word sources')
-        self.act_wsrc.setToolTip('Select wordsources')
+        self.act_wsrc = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"), _('Word sources'))
+        self.act_wsrc.setToolTip(_('Select wordsources'))
         self.act_wsrc.triggered.connect(self.on_act_wsrc)
         
-        self.act_info = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/info1.png"), 'Info')
-        self.act_info.setToolTip('Show / edit crossword info (Ctrl+I)')
+        self.act_info = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/info1.png"), _('Info'))
+        self.act_info.setToolTip(_('Show / edit crossword info (Ctrl+I)'))
         self.act_info.setShortcut(QtGui.QKeySequence('Ctrl+i'))
         self.act_info.triggered.connect(self.on_act_info)
         
-        self.act_print = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/print.png"), 'Print')
-        self.act_print.setToolTip('Print crossword and/or clues (Ctrl+P)')
+        self.act_print = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/print.png"), _('Print'))
+        self.act_print.setToolTip(_('Print crossword and/or clues'))
         self.act_print.setShortcuts(QtGui.QKeySequence.Print)
         self.act_print.triggered.connect(self.on_act_print)
         
-        self.act_config = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Settings')
-        self.act_config.setToolTip('Configure settings')
+        self.act_config = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Settings'))
+        self.act_config.setToolTip(_('Configure settings'))
         self.act_config.setShortcut(QtGui.QKeySequence.Preferences)
         self.act_config.triggered.connect(self.on_act_config)
         
-        self.act_update = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cloud-computing.png"), 'Update')
-        self.act_update.setToolTip('Check for updates')
+        self.act_update = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cloud-computing.png"), _('Update'))
+        self.act_update.setToolTip(_('Check for updates'))
         self.act_update.setShortcut(QtGui.QKeySequence('Ctrl+u'))
         self.act_update.triggered.connect(self.on_act_update)
        
-        self.act_help = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/info.png"), 'Help')
-        self.act_help.setToolTip('Show help')
+        self.act_help = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/info.png"), _('Help'))
+        self.act_help.setToolTip(_('Show help'))
         self.act_help.setShortcuts(QtGui.QKeySequence.HelpContents)
         self.act_help.triggered.connect(self.on_act_help)
 
-        self.act_about = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/main.png"), 'About')
-        self.act_about.setToolTip('Show About')
+        self.act_about = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/main.png"), _('About'))
+        self.act_about.setToolTip(_('Show About'))
         self.act_about.setShortcut(QtGui.QKeySequence('F2'))
         self.act_about.triggered.connect(self.on_act_about)
 
-        self.act_stats = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/analytics.png"), 'Show stats')
-        self.act_stats.setToolTip('Show detailed crossword statistics')
+        self.act_stats = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/analytics.png"), _('Show stats'))
+        self.act_stats.setToolTip(_('Show detailed crossword statistics'))
         self.act_stats.triggered.connect(self.on_act_stats)
         
-        self.act_exit = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/exit.png"), 'Quit')
-        self.act_exit.setToolTip('Quit application')
+        self.act_exit = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/exit.png"), _('Quit'))
+        self.act_exit.setToolTip(_('Quit application'))
         self.act_exit.setShortcuts(QtGui.QKeySequence.Quit)
         self.act_exit.triggered.connect(self.on_act_exit)
     
@@ -323,7 +324,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def UI_create_menu(self):
         self.menu_main = self.menuBar()
-        self.menu_main_file = self.menu_main.addMenu('&File')
+        self.menu_main_file = self.menu_main.addMenu(_('&File'))
         self.menu_main_file.addAction(self.act_new)
         self.menu_main_file.addSeparator()
         self.menu_main_file.addAction(self.act_open)
@@ -339,7 +340,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menu_main_file.addSeparator()
         self.menu_main_file.addAction(self.act_exit)
         
-        self.menu_main_edit = self.menu_main.addMenu('&Edit')
+        self.menu_main_edit = self.menu_main.addMenu(_('&Edit'))
         self.menu_main_edit.addAction(self.act_edit)
         self.menu_main_edit.addSeparator()
         self.menu_main_edit.addAction(self.act_clear)
@@ -363,22 +364,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menu_main_edit.addSeparator()
         self.menu_main_edit.addAction(self.act_config)
 
-        self.menu_main_view = self.menu_main.addMenu('&View')
-        self.act_view_showtoolbar = self.menu_main_view.addAction('Show toolbar')
+        self.menu_main_view = self.menu_main.addMenu(_('&View'))
+        self.act_view_showtoolbar = self.menu_main_view.addAction(_('Show toolbar'))
         self.act_view_showtoolbar.setCheckable(True)
         self.act_view_showtoolbar.setChecked(True)
-        self.act_view_showtoolbar.setToolTip('Show / hide toolbar')
+        self.act_view_showtoolbar.setToolTip(_('Show / hide toolbar'))
         self.act_view_showtoolbar.toggled.connect(self.on_act_view_showtoolbar)
         self.menu_main_view.addSeparator()
         self.menu_main_view.addAction(self.act_info)
         self.menu_main_view.addAction(self.act_stats)
 
-        self.menu_main_gen = self.menu_main.addMenu('&Generate')
+        self.menu_main_gen = self.menu_main.addMenu(_('&Generate'))
         self.menu_main_gen.addAction(self.act_gen)
         self.menu_main_gen.addSeparator()
         self.menu_main_gen.addAction(self.act_wsrc)
 
-        self.menu_main_help = self.menu_main.addMenu('&Help')
+        self.menu_main_help = self.menu_main.addMenu(_('&Help'))
         self.menu_main_help.addAction(self.act_help)
         self.menu_main_help.addSeparator()
         self.menu_main_help.addAction(self.act_update)
@@ -472,7 +473,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusbar_l2.dblclicked.connect(self.on_statusbar_l2_dblclicked)
         color_to_stylesheet(QtGui.QColor(QtCore.Qt.darkGreen), self.statusbar_l2.styleSheet(), 'color')
         self.statusbar_l2.setStyleSheet('color: maroon;')
-        self.statusbar_l2.setToolTip('Double-click to update')
+        self.statusbar_l2.setToolTip(_('Double-click to update'))
         self.statusbar.addPermanentWidget(self.statusbar_l2)        
         #self.layout_hgrid3.addWidget(self.statusbar)
         self.setStatusBar(self.statusbar)
@@ -491,7 +492,7 @@ class MainWindow(QtWidgets.QMainWindow):
             s = ''
             with open(updatelog, 'r', encoding=ENCODING) as filein:
                 s = filein.read()
-            if 'UPDATE SUCCEEDED' in s:                
+            if _('UPDATE SUCCEEDED') in s:                
                 ts = os.path.getmtime(updatelog)
                 self.updater.update_info['last_update'] = timestamp_to_str(ts)
                 self.updater._write_update_info()
@@ -629,7 +630,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 if src['dbtype'].lower() == 'sqlite':
                     db = Sqlitedb()
                     if not db.setpath(src['file'], fullpath=(not src['file'].lower() in LANG), recreate=False, connect=True):
-                        self._log(f"DB path {src['file']} unavailable!")
+                        self._log(_("DB path {} unavailable!").format(src['file']))
                         continue
                     self.wordsrc.add(DBWordsource(src['dbtables'], db, shuffle=src['shuffle']))
                     
@@ -800,7 +801,7 @@ class MainWindow(QtWidgets.QMainWindow):
             col = self._logical_col_by_name('No')
             if col < 0: return None
             num = int(root_item.child(item.row(), col).text())
-            wdir = 'h' if root_item.text() == 'Across' else 'v'
+            wdir = 'h' if root_item.text() == _('Across') else 'v'
             return self.cw.words.find_by_num_dir(num, wdir)
         except Exception as err:
             self._log(err)
@@ -814,18 +815,18 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         datamodel = self.tvClues.model()
         if not datamodel or word is None: return None
-        dirs = {'h': 'Across', 'v': 'Down'}
+        dirs = {'h': _('Across'), 'v': _('Down')}
         items = datamodel.findItems(dirs[word.dir])
         if not len(items): return None
         root_item = items[0]
-        col = self._logical_col_by_name('No')
+        col = self._logical_col_by_name(_('No'))
         if col < 0: return None
         for row in range(root_item.rowCount()):
             item_num = root_item.child(row, col)
             try:
                 num = int(item_num.text())
                 if num == word.num:
-                    return {'num': item_num, 'text': root_item.child(row, self._logical_col_by_name('Reply')), 'clue': root_item.child(row, self._logical_col_by_name('Clue'))}
+                    return {'num': item_num, 'text': root_item.child(row, self._logical_col_by_name(_('Reply'))), 'clue': root_item.child(row, self._logical_col_by_name(_('Clue')))}
             except:
                 continue
         return None
@@ -853,11 +854,11 @@ class MainWindow(QtWidgets.QMainWindow):
         sel_model.clear()
         try:
             if not self.current_word:
-                raise Exception('No current word')
+                raise Exception(_('No current word'))
             datamodel = self.tvClues.model()
             root_item = datamodel.item(0 if self.current_word.dir == 'h' else 1)
             if not root_item:
-                raise Exception('No root item')
+                raise Exception(_('No root item'))
             cnt = datamodel.rowCount(root_item.index())
             for row in range(cnt):
                 item_num = root_item.child(row, 1)
@@ -997,7 +998,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.tvClues.setModel(self.cluesmodel)
             self.tvClues.show()
             return
-        root_items = {'Across': 'h', 'Down': 'v'}
+        root_items = {_('Across'): 'h', _('Down'): 'v'}
         for k in sorted(root_items):
             root_item = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/crossword.png"), k)
             root_item.setData(k, sort_role)
@@ -1022,7 +1023,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 item_reply = QtGui.QStandardItem(val)
                 item_reply.setData(val, sort_role)
                 item_reply.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
-                items = {'Direction': item_dir, 'No': item_num, 'Clue': item_clue, 'Letters': item_letters, 'Reply': item_reply}
+                items = {_('Direction'): item_dir, _('No'): item_num, _('Clue'): item_clue, _('Letters'): item_letters, _('Reply'): item_reply}
                 root_item.appendRow([items[k] for k in col_labels])
             self.cluesmodel.appendRow(root_item)
             #for i in range(len(col_labels)):
@@ -1067,9 +1068,9 @@ class MainWindow(QtWidgets.QMainWindow):
                     if not colitem: continue
                     col_name = colitem.text()
                     item = root_item.child(row_clue, model_index)
-                    if col_name == 'Clue':
+                    if col_name == _('Clue'):
                         fstyle = 'COMPLETE' if item.text() else 'INCOMPLETE'
-                    elif col_name == 'Reply':
+                    elif col_name == _('Reply'):
                         fstyle = 'COMPLETE' if not BLANK in item.text() else 'INCOMPLETE'
                     else:
                         fstyle = 'NORMAL'
@@ -1102,12 +1103,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(str, str)
     def on_share_upload(self, filepth, url):
-        self.statusbar.showMessage(f"Uploaded '{filepth}' to '{url}'")
+        self.statusbar.showMessage(_("Uploaded '{}' to '{}'").format(filepth, url))
 
     @QtCore.pyqtSlot(str)
     def on_share_clipboard_write(self, url):
         clipboard_copy(url)
-        MsgBox(f"Copied URL '{url}' to clipboard", self, 'pyCross')
+        MsgBox(_("Copied URL '{}' to clipboard").format(url), self, 'pyCross')
 
     @QtCore.pyqtSlot(QtCore.QThread, str)
     def on_share_error(self, thread, err):
@@ -1122,13 +1123,13 @@ class MainWindow(QtWidgets.QMainWindow):
     
     @QtCore.pyqtSlot('PyQt_PyObject')
     def on_share_apikey_required(self, res):
-        res1 = UserInput(parent=self, label='Enter your API key', textmode='password')
+        res1 = UserInput(parent=self, label=_('Enter your API key'), textmode='password')
         res[0] = res1[0]
         res[1] = res1[1]
 
     @QtCore.pyqtSlot('PyQt_PyObject')
     def on_share_bearer_required(self, res):
-        res1 = UserInput(parent=self, label='Enter your Bearer token', textmode='password')
+        res1 = UserInput(parent=self, label=_('Enter your Bearer token'), textmode='password')
         res[0] = res1[0]
         res[1] = res1[1]
 
@@ -1151,7 +1152,7 @@ class MainWindow(QtWidgets.QMainWindow):
             nonlocal prog
             self.share_thread.sig_upload_file.emit(filepath, url)
             prog += 25
-            self.share_thread.sig_progress.emit(prog, 'Opening share link...')
+            self.share_thread.sig_progress.emit(prog, _('Opening share link...'))
 
         share_target = None
         share_title = None
@@ -1189,7 +1190,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if not share_target: return
         
         if not self.sharer:
-            self.share_thread.sig_progress.emit(prog, 'Setting up cloud storage...')
+            self.share_thread.sig_progress.emit(prog, _('Setting up cloud storage...'))
             try:
                 self.share_thread.lock()
                 self.create_cloud(self.share_thread)
@@ -1202,7 +1203,7 @@ class MainWindow(QtWidgets.QMainWindow):
             prog = 25
 
         # get temp dir
-        self.share_thread.sig_progress.emit(prog, 'Exporting crossword...')
+        self.share_thread.sig_progress.emit(prog, _('Exporting crossword...'))
 
         temp_file = ''
         try:
@@ -1219,7 +1220,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.share_thread.unlock()
 
         prog = 50
-        self.share_thread.sig_progress.emit(prog, 'Uploading file to cloud...')
+        self.share_thread.sig_progress.emit(prog, _('Uploading file to cloud...'))
 
         # share file
         try:      
@@ -1228,7 +1229,7 @@ class MainWindow(QtWidgets.QMainWindow):
                               share_notes, 'google', share_tags,
                               share_source)
             prog = 100
-            self.share_thread.sig_progress.emit(prog, 'Finished')
+            self.share_thread.sig_progress.emit(prog, _('Finished'))
         except:
             traceback.print_exc(limit=None)
             return
@@ -1251,20 +1252,19 @@ class MainWindow(QtWidgets.QMainWindow):
         
         username = settings['user'] or None
         if not username:
-            reply = MsgBox(f"You don't have a registered user name for uploading and sharing files.\n"
-            f"Would you like to set a new user name yourself (YES) or let {APP_NAME} assign the name for you (NO)?",
-            self, 'Create new user', 'ask', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            reply = MsgBox(_("You don't have a registered user name for uploading and sharing files.\n"
+            "Would you like to set a new user name yourself (YES) or let {} assign the name for you (NO)?").format(APP_NAME),
+            self, _('Create new user'), 'ask', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
                 # ask for new user name                
                 while not username:
-                    res = UserInput(parent=self, title='Create new user', label='Enter user name:')
+                    res = UserInput(parent=self, title=_('Create new user'), label=_('Enter user name:'))
                     if not res[1]: 
-                        MsgBox(f'{APP_NAME} will generate a new user name automatically', self, 'Create new user')
+                        MsgBox(_("{} will generate a new user name automatically").format(APP_NAME), self, _('Create new user'))
                         break
                     if cloud._user_exists(res[0]):
-                        reply2 = MsgBox(f"Username {res[0]} is already occupied!\n"
-                                        f"User another name (YES) or create name for you (NO)?",
-                                        self, 'Create new user', 'warn', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)                       
+                        reply2 = MsgBox(_("Username {} is already occupied!\nUser another name (YES) or create name for you (NO)?").format(res[0]),
+                                        self, _('Create new user'), 'warn', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)                       
                         if reply2 == QtWidgets.QMessageBox.Yes:
                             continue
                         else:
@@ -1308,20 +1308,20 @@ class MainWindow(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(float)
     def on_gen_timeout(self, timeout_):
-        MsgBox(f"Timeout occurred at {timeout_} seconds!", self, 'Timeout', 'warn')
+        MsgBox(_("Timeout occurred at {} seconds!").format(timeout_), self, _('Timeout'), 'warn')
 
     @QtCore.pyqtSlot()
     def on_gen_stop(self):
-        MsgBox("Generation stopped!", self, 'Stopped', 'warn')
+        MsgBox("Generation stopped!", self, _('Stopped'), 'warn')
 
     @QtCore.pyqtSlot(QtCore.QThread, str)
     def on_gen_error(self, thread, err):
-        MsgBox(f"Generation failed with error:{NEWLINE}{err}", self, 'Error', 'error')
+        MsgBox(_("Generation failed with error:{}{}").format(NEWLINE, err), self, _('Error'), 'error')
 
     @QtCore.pyqtSlot('PyQt_PyObject')
     def on_gen_validate(self, bad_):
-        MsgBox(f"Generation finished!{NEWLINE}{'Check OK' if not bad_ else 'The following words failed validation: ' + repr(bad_)}", 
-                self, 'Generation finished', 'info' if not bad_ else 'warn')
+        MsgBox(_("Generation finished!{}{}").format(NEWLINE, (_('Check OK') if not bad_ else _('The following words failed validation: ') + repr(bad_))), 
+                self, _('Generation finished'), 'info' if not bad_ else 'warn')
 
     @QtCore.pyqtSlot('PyQt_PyObject', int, int)
     def on_gen_progress(self, cw_, complete_, total_):
@@ -1401,12 +1401,12 @@ class MainWindow(QtWidgets.QMainWindow):
                     fout.write(self.cw.words.tostr())
 
             if not os.path.isfile(filepath):
-                raise Exception(f"Error saving crossword to '{filepath}'")
+                raise Exception(_("Error saving crossword to '{}'").format(filepath))
            
             return (filepath, file_type)
 
         except Exception as err:
-            MsgBox(str(err), self, 'Error', 'error')
+            MsgBox(str(err), self, _('Error'), 'error')
             return None
         
     def save_cw(self, filepath=None, file_type=None):
@@ -1518,7 +1518,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     run_exe(pdf_file, True, False, shell=True)                    
 
         except Exception as err:            
-            MsgBox(str(err), self, 'Error', 'error')
+            MsgBox(str(err), self, _('Error'), 'error')
             traceback.print_exc(limit=None) 
             return
 
@@ -1538,7 +1538,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if not printer or self.twCw.rowCount() < 1 or self.twCw.columnCount() < 1: return
         painter = QtGui.QPainter()        
         if not painter.begin(printer):
-            MsgBox('Printing error', self, 'Error', 'error')
+            MsgBox(_('Printing error'), self, _('Error'), 'error')
             return
 
         settings = CWSettings.settings['printing']
@@ -1577,19 +1577,19 @@ class MainWindow(QtWidgets.QMainWindow):
                 font_metrics = QtGui.QFontMetrics(painter.font())
 
                 if self.cw.words.info.author:
-                    txt = f"by {self.cw.words.info.author}"                
+                    txt = _("by {}").format(self.cw.words.info.author)                
                     text_rect = font_metrics.boundingRect(txt)
                     painter.drawStaticText(page_rect.width() - text_rect.width(), top_offset, QtGui.QStaticText(txt))
                     top_offset += text_rect.height() + 40
 
                 if self.cw.words.info.publisher:
-                    txt = f"Published by {self.cw.words.info.publisher}"
+                    txt = _("Published by {}").format(self.cw.words.info.publisher)
                     text_rect = font_metrics.boundingRect(txt)
                     painter.drawStaticText(page_rect.width() - text_rect.width(), top_offset, QtGui.QStaticText(txt))
                     top_offset += text_rect.height() + 40
 
                 if self.cw.words.info.cpyright:
-                    txt = f"© {self.cw.words.info.cpyright}"
+                    txt = _("© {}").format(self.cw.words.info.cpyright)
                     text_rect = font_metrics.boundingRect(txt)
                     painter.drawStaticText(page_rect.width() - text_rect.width(), top_offset, QtGui.QStaticText(txt))
                     top_offset += text_rect.height() + 40
@@ -1623,7 +1623,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 return
 
             if settings['print_cw'] and not printer.newPage():
-                raise Exception('Cannot make new page!')
+                raise Exception(_('Cannot make new page!'))
                 
             painter.restore()
             top_offset = 0
@@ -1647,7 +1647,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 if (top_offset + row_height) > (page_rect.height() - margins.bottom()):
                     if not printer.newPage():
-                        raise Exception('Cannot make new page!')                    
+                        raise Exception(_('Cannot make new page!'))                    
                     painter.translate(paper_rect.topLeft())
                     top_offset = 0
 
@@ -1658,12 +1658,12 @@ class MainWindow(QtWidgets.QMainWindow):
                 font_metrics = QtGui.QFontMetrics(painter.font())
 
                 if wdir != word.dir:
-                    txt = 'Across:' if word.dir == 'h' else 'Down:'   
+                    txt = _('Across:') if word.dir == 'h' else _('Down:')   
                     row_height = font_metrics.boundingRect(txt).height()
                     top_offset += 200
                     if (top_offset + row_height) > (page_rect.height() - margins.bottom()):
                         if not printer.newPage():
-                            raise Exception('Cannot make new page!')                    
+                            raise Exception(_('Cannot make new page!'))                    
                         painter.translate(paper_rect.topLeft())
                         top_offset = 0
                     text_rect = painter.drawText(left_offset, top_offset, 
@@ -1675,7 +1675,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 if (top_offset + row_height) > (page_rect.height() - margins.bottom()):
                     if not printer.newPage():
-                        raise Exception('Cannot make new page!')                    
+                        raise Exception(_('Cannot make new page!'))                    
                     painter.translate(paper_rect.topLeft())
                     top_offset = 0
                 
@@ -1704,7 +1704,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     painter.setFont(make_font(settings['clue_letters_font']['font_name'], 
                         settings['clue_letters_font']['font_size'], settings['clue_letters_font']['font_weight'], 
                         settings['clue_letters_font']['font_italic']))
-                    txt = f"[{len(word)} letters]"                    
+                    txt = _("[{} letters]").format(len(word))                    
                     text_rect3 = painter.drawText(left_offset, top_offset, 
                         page_rect.width() - left_offset, 
                         page_rect.height() - top_offset - margins.bottom(), 
@@ -1714,7 +1714,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 top_offset += row_height + 50  
             
         except Exception as err:
-            MsgBox(str(err), self, 'Error', 'error')
+            MsgBox(str(err), self, _('Error'), 'error')
             traceback.print_exc(limit=None) 
 
         finally:
@@ -1819,7 +1819,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def on_get_recent(self, new_version):
         if 'version' in new_version:
-            self.statusbar_l2.setText(f"Update ready: v. {new_version['version']}")
+            self.statusbar_l2.setText(_("Update ready: v. {}").format(new_version['version']))
         return True
 
     def stop_all_threads(self):
@@ -1837,7 +1837,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.cw and self.cw_modified:
             btn = QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
             if cancellable: btn |= QtWidgets.QMessageBox.Cancel
-            reply = MsgBox('You have unsaved changes in your current crossword. Would you like to save them?', self, 'Confirm Action', 'ask', btn=btn)
+            reply = MsgBox(_('You have unsaved changes in your current crossword. Would you like to save them?'), self, _('Confirm Action'), 'ask', btn=btn)
             if reply == QtWidgets.QMessageBox.Yes: 
                 self.on_act_save(False)   
             return reply
@@ -1853,7 +1853,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.delete_temp_files()
 
         # update status bar
-        self.statusbar_l1.setText(f"v. {APP_VERSION}")
+        self.statusbar_l1.setText(_("v. {}").format(APP_VERSION))
         if self.updater.git_installed:
             if CWSettings.settings['update']['auto_update']:
                 self.updater.on_norecent = None
@@ -1979,14 +1979,14 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.reformat_cells()
 
     def on_before_update(self, old_version, new_version):
-        option = QtWidgets.QMessageBox.question(self, 'Application update',
-                f"Do you wish to update your current version {old_version} "
-                f"to version {new_version['version']}{NEWLINE}"
-                f"(release date: {new_version['date']})?")
+        option = QtWidgets.QMessageBox.question(self, _('Application update'),
+                _("Do you wish to update your current version {} "
+                "to version {}\n"
+                "(release date: {})?").format(old_version, new_version['version'], new_version['date']))
         return option == QtWidgets.QMessageBox.Yes
 
     def on_norecent(self):
-        MsgBox('No updates are available', self)
+        MsgBox(_('No updates are available'), self)
                         
     # ----- Slots ----- #
     
@@ -2039,7 +2039,7 @@ class MainWindow(QtWidgets.QMainWindow):
         reply = self.check_save_required()
         if reply == QtWidgets.QMessageBox.Cancel or reply == QtWidgets.QMessageBox.NoButton: return
 
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', os.getcwd(), 'Crossword files (*.xpf *.ipuz);;All files (*.*)')
+        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', os.getcwd(), _('Crossword files (*.xpf *.ipuz);;All files (*.*)'))
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep).lower()
         ext = os.path.splitext(selected_path)[1][1:]
@@ -2070,7 +2070,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if not self.cw: return
         
         fname = 'crossword.xpf'
-        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Select file', os.path.join(os.getcwd(), fname), 
+        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), fname), 
             ';;'.join(CWSAVE_FILTERS), CWSAVE_FILTERS[0])
         if not selected_path[0]: return
         self.save_cw(selected_path[0].replace('/', os.sep).lower(), selected_path[1])
@@ -2079,7 +2079,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_reload(self, checked):
         if not self.cw_file: return
         if self.cw and self.cw_modified:
-            reply = MsgBox('You have unsaved changes in your current crossword. Are you sure to reload it from the file (all changes will be lost)?', self, 'Confirm Action', 'ask')
+            reply = MsgBox(_('You have unsaved changes in your current crossword. Are you sure to reload it from the file (all changes will be lost)?'), self, _('Confirm Action'), 'ask')
             if reply != QtWidgets.QMessageBox.Yes: return
         old_cw = self.cw
         try:
@@ -2286,8 +2286,8 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.current_word.clue = txt
                     self.reformat_clues()
         else:
-            MsgBox('No lookup sources are active! Please go to Settings (F11) to verify your lookup source configuration.', 
-                   self, 'No Lookup Sources', 'warn')
+            MsgBox(_('No lookup sources are active! Please go to Settings (F11) to verify your lookup source configuration.'), 
+                   self, _('No Lookup Sources'), 'warn')
         
     @QtCore.pyqtSlot(bool) 
     def on_act_wsrc(self, checked):
@@ -2333,7 +2333,7 @@ class MainWindow(QtWidgets.QMainWindow):
    
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
-        MsgBox('To be implemented in next release ))', self, title='Show help docs')
+        MsgBox(_('To be implemented in next release ))'), self, title=_('Show help docs'))
 
     @QtCore.pyqtSlot(bool)        
     def on_act_about(self, checked):
@@ -2414,7 +2414,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(3).child(3))
             self.on_act_config(False)
         menu = QtWidgets.QMenu(self)
-        menu.addAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Configure toolbar...', on_tb_contextmenuaction)
+        menu.addAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Configure toolbar...'), on_tb_contextmenuaction)
         menu.exec(self.toolbar_main.mapToGlobal(point))
 
     @QtCore.pyqtSlot(QtCore.QItemSelection, QtCore.QItemSelection)

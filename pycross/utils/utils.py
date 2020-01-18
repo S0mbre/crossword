@@ -2,10 +2,10 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import sys, os, subprocess, traceback, uuid
-import tempfile
+import sys, os, subprocess, traceback, uuid, tempfile
 from datetime import datetime, time
-from .globalvars import ENCODING, FONT_WEIGHTS
+
+from .globalvars import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 
 ### ---------------------------- COMMON ---------------------------- ###

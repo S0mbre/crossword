@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			249,
-			56
+			94,
+			11
 		],
 		"win_size": [
-			1614,
-			899
+			1215,
+			794
 		],
 		"toolbar_actions": [
 			"act_new",
