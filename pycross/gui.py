@@ -15,7 +15,7 @@ from dbapi import Sqlitedb
 from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu, 
                     SettingsDialog, WordSuggestDialog, PrintPreviewDialog,
                     CwInfoDialog, DefLookupDialog, ReflectGridDialog, AboutDialog, 
-                    ShareDialog, BasicBrowserDialog)
+                    ShareDialog)
 from crossword import Word, Crossword, CWError, FILLER, FILLER2, BLANK
 from wordsrc import DBWordsource, TextWordsource, TextfileWordsource, MultiWordsource
 from browser import Browser
@@ -1083,6 +1083,8 @@ class MainWindow(QtWidgets.QMainWindow):
                                     CWSettings.settings['clues']['NORMAL']['font_weight'], 
                                     CWSettings.settings['clues']['NORMAL']['font_italic'])
                     item.setFont(font)
+        style = color_to_stylesheet(QtGui.QColor.fromRgba(CWSettings.settings['clues']['SURROUNDING']['bg_color']), self.tvClues.styleSheet())
+        self.tvClues.setStyleSheet(style)
                 
     def on_filter_word(self, word: str):
         return True

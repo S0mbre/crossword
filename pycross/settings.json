@@ -3,29 +3,37 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			249,
-			56
+			301,
+			96
 		],
 		"win_size": [
-			1614,
-			899
+			1532,
+			810
 		],
 		"toolbar_actions": [
 			"act_new",
 			"act_open",
 			"act_save",
 			"act_saveas",
-			"act_reload",
-			"act_close",
 			"act_share",
 			"SEP",
 			"act_edit",
+			"act_addrow",
+			"act_delrow",
+			"act_addcol",
+			"act_delcol",
+			"SEP",
+			"act_reflect",
 			"SEP",
 			"act_gen",
 			"act_clear",
+			"act_clear_wd",
+			"act_erase_wd",
 			"act_suggest",
 			"act_lookup",
+			"act_editclue",
 			"SEP",
+			"act_wsrc",
 			"act_info",
 			"act_stats",
 			"act_print",
@@ -37,13 +45,8 @@
 	},
 	"cw_settings": {
 		"timeout": 60.0,
-		"method": "iter",
-		"pos": [
-			"N",
-			"V",
-			"ADV",
-			"ADJ"
-		],
+		"method": "recurse",
+		"pos": "N",
 		"log": null
 	},
 	"grid_style": {
@@ -129,52 +132,7 @@
 	},
 	"wordsrc": {
 		"maxres": 500,
-		"sources": [
-			{
-				"active": false,
-				"name": "rusql",
-				"type": "db",
-				"file": "ru",
-				"dbtype": "SQLite",
-				"dblogin": "",
-				"dbpass": "",
-				"dbtables": {
-					"words": {
-						"table": "twords",
-						"fwords": "word",
-						"fpos": "idpos"
-					},
-					"pos": {
-						"table": "tpos",
-						"fid": "id",
-						"fpos": "pos"
-					}
-				},
-				"shuffle": true
-			},
-			{
-				"active": true,
-				"name": "ensql",
-				"type": "db",
-				"file": "en",
-				"dbtype": "SQLite",
-				"dblogin": "",
-				"dbpass": "",
-				"dbtables": {
-					"words": {
-						"table": "twords",
-						"fwords": "word",
-						"fpos": "idpos"
-					},
-					"pos": {
-						"table": "tpos",
-						"fid": "id",
-						"fpos": "pos"
-					}
-				},
-				"shuffle": false
-			}
-		],
+		"sources": [],
 		"excluded": {
 			"words": [],
 			"regex": false
@@ -182,7 +140,7 @@
 	},
 	"clues": {
 		"NORMAL": {
-			"bg_color": 4294967295,
+			"bg_color": 4288716964,
 			"bg_pattern": 1,
 			"fg_color": 4278190080,
 			"font_size": 9,
@@ -201,6 +159,9 @@
 			"bg_pattern": 1,
 			"fg_color": 4278190080
 		},
+		"SURROUNDING": {
+			"bg_color": 4288716964
+		},
 		"columns": [
 			{
 				"name": "Direction",
@@ -210,22 +171,22 @@
 			{
 				"name": "No",
 				"visible": true,
-				"width": 100
+				"width": 66
 			},
 			{
 				"name": "Clue",
 				"visible": true,
-				"width": 100
+				"width": 382
 			},
 			{
 				"name": "Letters",
 				"visible": true,
-				"width": 100
+				"width": 65
 			},
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 376
+				"width": 109
 			}
 		]
 	},
@@ -263,7 +224,7 @@
 			12,
 			20
 		],
-		"layout": "auto",
+		"layout": "portrait",
 		"font_embed": true,
 		"antialias": true,
 		"print_cw": true,

@@ -159,6 +159,9 @@
 			"bg_pattern": 1,
 			"fg_color": 4278190080
 		},
+		"SURROUNDING": {
+			"bg_color": 4294967295
+		},
 		"columns": [
 			{
 				"name": "Direction",

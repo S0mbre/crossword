@@ -30,85 +30,48 @@ class CWSettings:
                               'font_weight': QtGui.QFont.Normal, 'font_italic': True}},    
     'cell_format': \
         {'NORMAL': # normal cells
-            {'bg_color': QtGui.QColor(QtCore.Qt.white).rgba(),
-             'bg_pattern': QtCore.Qt.SolidPattern,
-             'fg_color': QtGui.QColor(QtCore.Qt.black).rgba(),
-             'fg_pattern': QtCore.Qt.SolidPattern,
+            {'bg_color': QtGui.QColor(QtCore.Qt.white).rgba(), 'bg_pattern': QtCore.Qt.SolidPattern,
+             'fg_color': QtGui.QColor(QtCore.Qt.black).rgba(), 'fg_pattern': QtCore.Qt.SolidPattern,
              'flags': int(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled),
-             'font_name': 'Arial', 
-             'font_size': 14, 
-             'font_weight': QtGui.QFont.DemiBold,
-             'font_italic': False,
-             'align': QtCore.Qt.AlignCenter},
+             'font_name': 'Arial', 'font_size': 14, 'font_weight': QtGui.QFont.DemiBold, 'font_italic': False, 'align': QtCore.Qt.AlignCenter},
          'HILITE': # highlighted cells
-            {'bg_color': 4294966721,
-             'bg_pattern': QtCore.Qt.SolidPattern,
-             'fg_color': QtGui.QColor(QtCore.Qt.black).rgba(),
-             'fg_pattern': QtCore.Qt.SolidPattern,
-             'flags': int(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled),
-             'font_name': 'Arial', 
-             'font_size': 14, 
-             'font_weight': QtGui.QFont.DemiBold,
-             'font_italic': False,
-             'align': QtCore.Qt.AlignCenter},
+            {'bg_color': 4294966721, 'bg_pattern': QtCore.Qt.SolidPattern, 'fg_color': QtGui.QColor(QtCore.Qt.black).rgba(), 
+             'fg_pattern': QtCore.Qt.SolidPattern, 'flags': int(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled),
+             'font_name': 'Arial', 'font_size': 14, 'font_weight': QtGui.QFont.DemiBold, 'font_italic': False, 'align': QtCore.Qt.AlignCenter},
          'BLANK': # blank
-            {'bg_color': QtGui.QColor(QtCore.Qt.white).rgba(),
-             'bg_pattern': QtCore.Qt.SolidPattern,
-             'fg_color': QtGui.QColor(QtCore.Qt.transparent).rgba(),
-             'fg_pattern': QtCore.Qt.SolidPattern,
+            {'bg_color': QtGui.QColor(QtCore.Qt.white).rgba(), 'bg_pattern': QtCore.Qt.SolidPattern,
+             'fg_color': QtGui.QColor(QtCore.Qt.transparent).rgba(), 'fg_pattern': QtCore.Qt.SolidPattern,
              'flags': int(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled),
-             'font_name': 'Arial', 
-             'font_size': 14, 
-             'font_weight': QtGui.QFont.DemiBold,
-             'font_italic': False,
-             'align': QtCore.Qt.AlignCenter},
+             'font_name': 'Arial', 'font_size': 14, 'font_weight': QtGui.QFont.DemiBold, 'font_italic': False, 'align': QtCore.Qt.AlignCenter},
          'FILLER': # filler
-             {'bg_color': QtGui.QColor(QtCore.Qt.black).rgba(),
-              'bg_pattern': QtCore.Qt.SolidPattern,
-              'fg_color': QtGui.QColor(QtCore.Qt.transparent).rgba(),
-              'fg_pattern': QtCore.Qt.SolidPattern,
-              'flags': int(QtCore.Qt.NoItemFlags),
-              'font_name': 'Arial', 
-              'font_size': 14, 
-              'font_weight': QtGui.QFont.DemiBold,
-              'font_italic': False,
-              'align': QtCore.Qt.AlignCenter},
+             {'bg_color': QtGui.QColor(QtCore.Qt.black).rgba(), 'bg_pattern': QtCore.Qt.SolidPattern,
+              'fg_color': QtGui.QColor(QtCore.Qt.transparent).rgba(), 'fg_pattern': QtCore.Qt.SolidPattern,
+              'flags': int(QtCore.Qt.NoItemFlags), 'font_name': 'Arial', 'font_size': 14, 
+              'font_weight': QtGui.QFont.DemiBold, 'font_italic': False, 'align': QtCore.Qt.AlignCenter},
          'FILLER2': # filler2
-             {'bg_color': QtGui.QColor(QtCore.Qt.gray).rgba(),
-              'bg_pattern': QtCore.Qt.SolidPattern,
-              'fg_color': QtGui.QColor(QtCore.Qt.transparent).rgba(),
-              'fg_pattern': QtCore.Qt.SolidPattern,
-              'flags': int(QtCore.Qt.NoItemFlags),
-              'font_name': 'Arial', 
-              'font_size': 14, 
-              'font_weight': QtGui.QFont.DemiBold,
-              'font_italic': False,
-              'align': QtCore.Qt.AlignCenter}             
+             {'bg_color': QtGui.QColor(QtCore.Qt.gray).rgba(), 'bg_pattern': QtCore.Qt.SolidPattern,
+              'fg_color': QtGui.QColor(QtCore.Qt.transparent).rgba(), 'fg_pattern': QtCore.Qt.SolidPattern,
+              'flags': int(QtCore.Qt.NoItemFlags), 'font_name': 'Arial', 'font_size': 14, 
+              'font_weight': QtGui.QFont.DemiBold, 'font_italic': False, 'align': QtCore.Qt.AlignCenter}             
          },             
     'wordsrc': {'maxres': MAX_RESULTS, 'sources': [], 'excluded': {'words': [], 'regex': False}},
     'clues': 
         {'NORMAL': 
             {
-                'bg_color': 4294967295,
-                'bg_pattern': QtCore.Qt.SolidPattern,
-                'fg_color': QtGui.QColor(QtCore.Qt.black).rgba(),
-                'font_name': 'Arial', 
-                'font_size': 9, 
-                'font_weight': QtGui.QFont.Normal,
-                'font_italic': False,
-                'align': QtCore.Qt.AlignLeft
+                'bg_color': 4294967295, 'bg_pattern': QtCore.Qt.SolidPattern, 'fg_color': QtGui.QColor(QtCore.Qt.black).rgba(),
+                'font_name': 'Arial', 'font_size': 9, 'font_weight': QtGui.QFont.Normal, 'font_italic': False, 'align': QtCore.Qt.AlignLeft
             },
          'INCOMPLETE':
             {
-                'bg_color': 4294957016,
-                'bg_pattern': QtCore.Qt.SolidPattern,
-                'fg_color': QtGui.QColor(QtCore.Qt.black).rgba(),
+                'bg_color': 4294957016, 'bg_pattern': QtCore.Qt.SolidPattern, 'fg_color': QtGui.QColor(QtCore.Qt.black).rgba()
             },
          'COMPLETE':
             {
-                'bg_color': 4292870103,
-                'bg_pattern': QtCore.Qt.SolidPattern,
-                'fg_color': QtGui.QColor(QtCore.Qt.black).rgba(),
+                'bg_color': 4292870103, 'bg_pattern': QtCore.Qt.SolidPattern, 'fg_color': QtGui.QColor(QtCore.Qt.black).rgba()
+            },
+         'SURROUNDING':
+            {
+                'bg_color': 4294967295
             },
          'columns': [{'name': 'Direction', 'visible': True, 'width': -1}, 
                      {'name': 'No', 'visible': True, 'width': -1}, 

@@ -1193,6 +1193,11 @@ class SettingsDialog(BasicDialog):
         self.btn_clue_complete_fg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_clue_complete_fg_color.clicked.connect(self.on_color_btn_clicked)
 
+        self.btn_clue_surrounding_color = QtWidgets.QPushButton('')
+        self.btn_clue_surrounding_color.setStyleSheet('background-color: white;')
+        self.btn_clue_surrounding_color.setCursor(QtCore.Qt.PointingHandCursor)
+        self.btn_clue_surrounding_color.clicked.connect(self.on_color_btn_clicked)
+
         self.layout_clues.addRow('Font', self.btn_clue_normal_font)
         self.layout_clues.addRow('Text alignment', self.combo_clue_normal_alignment)
         self.layout_clues_wspacer1 = QtWidgets.QVBoxLayout()
@@ -1213,7 +1218,11 @@ class SettingsDialog(BasicDialog):
         self.layout_clues.addRow(self.layout_clues_wspacer3)
         self.layout_clues.addRow('Complete color', self.btn_clue_complete_bg_color)
         self.layout_clues.addRow('Complete style', self.combo_clue_complete_style)
-        self.layout_clues.addRow('Complete font color', self.btn_clue_complete_fg_color)    
+        self.layout_clues.addRow('Complete font color', self.btn_clue_complete_fg_color) 
+        self.layout_clues_wspacer31 = QtWidgets.QVBoxLayout()
+        self.layout_clues_wspacer31.addSpacing(20)
+        self.layout_clues.addRow(self.layout_clues_wspacer31)   
+        self.layout_clues.addRow('Surrounding color', self.btn_clue_surrounding_color)    
         self.layout_clues_wspacer4 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer4.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer4)
@@ -1999,6 +2008,10 @@ class SettingsDialog(BasicDialog):
             settings['clues']['COMPLETE']['bg_pattern'] = QtCore.Qt.RadialGradientPattern
         color = color_from_stylesheet(self.btn_clue_complete_fg_color.styleSheet(), 'background-color', 'black')
         settings['clues']['COMPLETE']['fg_color'] = color.rgba()
+
+        settings['clues']['SURROUNDING'] = {}
+        color = color_from_stylesheet(self.btn_clue_surrounding_color.styleSheet(), 'background-color', 'white')
+        settings['clues']['SURROUNDING']['bg_color'] = color.rgba()
         # columns
         settings['clues']['columns'] = []
         for i in range(self.lw_clues_cols.count()):
@@ -2490,6 +2503,8 @@ class SettingsDialog(BasicDialog):
                 self.combo_clue_complete_style.setCurrentIndex(9)
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clues']['COMPLETE']['fg_color']), self.btn_clue_complete_fg_color.styleSheet(), 'background-color')
             self.btn_clue_complete_fg_color.setStyleSheet(style)
+            style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clues']['SURROUNDING']['bg_color']), self.btn_clue_surrounding_color.styleSheet(), 'background-color')
+            self.btn_clue_surrounding_color.setStyleSheet(style)
 
             # columns
             self._fill_clue_cols()
@@ -4174,130 +4189,3 @@ class ShareDialog(BasicDialog):
         ind = 7 if self.rb_pdf.isChecked() else 5
         self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(ind))
         self.mainwindow.on_act_config(False)
-
-##############################################################################
-######          BasicBrowserDialog
-##############################################################################  
-        
-class BasicBrowserDialog(QtWidgets.QDialog):
-    
-    def __init__(self, data=None, datatype='url', 
-                geometry=None, title=None, icon=None, parent=None, 
-                flags=QtCore.Qt.WindowFlags()):
-        super().__init__(parent, flags)
-        self.data = data
-        self.datatype = datatype
-        self._title = 'pyCross'
-        self.initUI(geometry, title, icon)
-
-    def initUI(self, geometry=None, title=None, icon=None):              
-        
-        self.layout_main = QtWidgets.QVBoxLayout()
-
-        self.add_top_elements()
-
-        self.browser = QtWebEngineWidgets.QWebEngineView()
-        self.configure_browser()
-        self.layout_main.addWidget(self.browser)
-
-        self.pb = QtWidgets.QProgressBar()
-        self.pb.setOrientation(QtCore.Qt.Horizontal)
-        self.pb.setRange(0, 100)
-        self.pb.setTextVisible(True)
-        self.pb.setValue(0)
-        self.pb.hide()
-        self.layout_main.addWidget(self.pb)
-        self.add_bottom_elements()
-        self.sb = QtWidgets.QStatusBar()
-        self.sb.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed) 
-        self.layout_main.addWidget(self.sb)
-
-        self.pb.valueChanged.connect(self.on_pb_value_changed)
-        self.browser.loadProgress.connect(self.pb.setValue)
-        self.browser.loadStarted.connect(self.pb.reset)
-        self.browser.loadStarted.connect(self.pb.show)
-        self.browser.loadStarted.connect(self.sb.clearMessage)
-        self.browser.loadFinished.connect(self.on_browser_load_finished)
-        self.browser.urlChanged.connect(self.on_browser_url_change)
-        
-        self.setLayout(self.layout_main)
-
-        if geometry:
-            self.setGeometry(*geometry) 
-        else:
-            self.adjustSize()
-
-        if title:
-            self._title = title
-            self.browser.titleChanged.emit(self.browser.title())   
-        if icon:
-            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}")) 
-
-    def add_top_elements(self):
-        pass
-
-    def add_bottom_elements(self):
-        pass   
-
-    def configure_browser(self):
-        self.browser.setMinimumSize(400, 300)
-        # enable some parameters
-        browser_settings = self.browser.settings()
-        try:
-            browser_settings.setAttribute(QtWebEngineWidgets.QWebEngineSettings.LocalContentCanAccessRemoteUrls, True)
-            browser_settings.setAttribute(QtWebEngineWidgets.QWebEngineSettings.FullScreenSupportEnabled, True)
-            # this might not be safe!
-            browser_settings.setUnknownUrlSchemePolicy(QtWebEngineWidgets.QWebEngineSettings.AllowAllUnknownUrlSchemes)
-        except Exception as err:
-            print(str(err))
-
-    def setData(self, data=None, datatype='url'):
-        self.data = data
-        self.datatype = datatype
-        if not self.data: return
-        if self.datatype == 'url':
-            self.browser.load(QtCore.QUrl(self.data))
-        elif self.datatype == 'request':
-            req = QtWebEngineCore.QWebEngineHttpRequest()
-            req.setUrl(self.data.get('url', QtCore.QUrl()))
-            req.setMethod(1 if self.data.get('method', 'get') == 'post' else 0)
-            if 'header' in self.data:
-                for h in self.data['header']:
-                    req.setHeader(h, self.data['header'][h])
-            if 'data' in self.data:
-                req.setPostData(self.data['data'])
-            self.browser.load(req)
-        elif self.datatype == 'file':
-            with open(self.data, 'r', encoding=ENCODING) as filein:
-                html = filein.read()
-                self.browser.setHtml(html, QtCore.QUrl())
-        elif self.datatype == 'html':
-            self.browser.setHtml(self.data['html'], QtCore.QUrl(self.data['baseurl']) if 'baseurl' in self.data else QtCore.QUrl())
-        elif self.datatype == 'raw':
-            self.browser.setContent(self.data['content'], 
-                                    self.data.get('type', 'text/html;charset=UTF-8'),
-                                    QtCore.QUrl(self.data['baseurl']) if 'baseurl' in self.data else QtCore.QUrl())
-        else:
-            return
-        self.browser.show()        
-
-    def showEvent(self, event):        
-        event.accept()
-        self.setData(self.data, self.datatype)
-
-    @QtCore.pyqtSlot(int)
-    def on_pb_value_changed(self, value):
-        if value == 100:
-            self.pb.hide()
-
-    @QtCore.pyqtSlot(bool)
-    def on_browser_load_finished(self, ok):
-        self.pb.hide()
-
-    @QtCore.pyqtSlot(str)
-    def on_browser_title_change(self, title):
-        self.setWindowTitle(f"{self._title} :: {title}" if title else self._title) 
-
-    @QtCore.pyqtSlot(QtCore.QUrl)
-    def on_browser_url_change(self, url):
-        self.sb.showMessage(url.toString()) 
