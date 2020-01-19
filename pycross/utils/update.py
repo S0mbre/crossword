@@ -6,8 +6,10 @@ from datetime import datetime
 from pathlib import Path, PurePath
 import os, sys, subprocess, json, traceback
 
+from .globalvars import *
+
 ENCODING = 'utf-8'
-GIT_ERROR = 'You do not appear to have a valid version of git installed!\nPlease install git from https://git-scm.com/'
+GIT_ERROR = _('You do not appear to have a valid version of git installed!\nPlease install git from https://git-scm.com/')
 
 class Updater:
 
@@ -101,7 +103,7 @@ class Updater:
 
     def _run_git(self, *args, **kwargs):
         gitargs = ['git'] + list(args)
-        print(f"Running {' '.join(gitargs)}...", file=self.print_to)
+        print(_("Running {}...").format((' '.join(gitargs))), file=self.print_to)
         return self._run_exe(gitargs, **kwargs)
 
     def _get_remote_branches(self, exclude_starting_with=('master',), include_starting_with=('release',)):
@@ -135,7 +137,7 @@ class Updater:
         if not self.git_installed: return {'error': GIT_ERROR}
         branches = self._get_remote_branches()
         if not branches:
-            return {'error': 'No release branches in repository!'}
+            return {'error': _('No release branches in repository!')}
 
         # make sorted list, where latest version will be at top
         branches = sorted(branches.items(), key=lambda t: t[0], reverse=True)        

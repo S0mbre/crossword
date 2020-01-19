@@ -5,10 +5,8 @@
 import requests, os, uuid, json, webbrowser, time
 import urllib.parse
 from abc import ABC, abstractmethod
-from .globalvars import (DEBUGGING, NEWLINE, MW_DIC_KEY, MW_DIC_HTTP, MW_WORD_URL, 
-                        YAN_DICT_KEY, YAN_DICT_HTTP,
-                        GOOGLE_KEY, GOOGLE_CSE, GOOGLE_HTTP, GOOGLE_LANG_LR, 
-                        GOOGLE_LANG_HL, GOOGLE_COUNTRIES_CR, GOOGLE_COUNTRIES_GL)
+
+from .globalvars import *
 from .utils import MsgBox, UserInput, clipboard_copy                 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -73,17 +71,17 @@ class GoogleSearch:
         """
         req = self.encode_search()
         if DEBUGGING:
-            print(f"GOOGLE SEARCH REQUEST = '{req}'")
+            print(_("GOOGLE SEARCH REQUEST = '{}'").format(req))
         res = requests.get(req, timeout=self.timeout)
         if res:
             if DEBUGGING:
-                print(f"GOOGLE SEARCH RESULT = '{res.text}'")
+                print(_("GOOGLE SEARCH RESULT = '{}'").format(res.text))
             res = res.json() if method == 'json' else res.content
             if isinstance(res, dict) and 'error' in res:
-                raise Exception(f"Request returned error '{res.get('message', 'Invalid request')}', code = {res.get('code', 400)}")
+                raise Exception(_("Request returned error '{}', code = {}").format((res.get('message', 'Invalid request')), (res.get('code', 400))))
             return res
         else:
-            raise Exception(f"Request returned error {res.status_code}")
+            raise Exception(_("Request returned error {}").format(res.status_code))
 
     def search_lite(self):
         """
@@ -130,14 +128,14 @@ class OnlineDictionary(ABC):
         """
         req = self.prepare_request_url(word)
         if DEBUGGING:
-            print(f"DICTIONARY SEARCH REQUEST = '{req}'")
+            print(_("DICTIONARY SEARCH REQUEST = '{}'").format(req))
         res = requests.get(self.prepare_request_url(word), timeout=self.timeout)
         if res:
             if DEBUGGING:
-                print(f"DICTIONARY SEARCH RESULT = '{res.text}'")
+                print(_("DICTIONARY SEARCH RESULT = '{}'").format(res.text))
             return res.json() if method == 'json' else res.content
         else:
-            raise Exception(f"Request returned error {res.status_code}")
+            raise Exception(_("Request returned error {}").format(res.status_code))
 
     @abstractmethod
     def get_short_defs(self, word, exact_match=True, partsofspeech=None, bad_pos='UNKNOWN'):
@@ -254,14 +252,14 @@ class Cloudstorage:
             self._rootid = new_folder[1]                  
             self.settings['root_folder'] = '' if new_folder[0] == Cloudstorage.ROOTNAME else new_folder[0]
         else:
-            self._error(f"Unable to create/access folder '{rootname}'!")    
+            self._error(_("Unable to create/access folder '{}'!").format(rootname))    
 
         if auto_create_user:
             self._find_or_create_user(self.settings['user'], True)
         else:
             self._update_users()
 
-    def _error(self, message, code=None, title='Error', msgtype='error', raise_error=False):
+    def _error(self, message, code=None, title=_('Error'), msgtype='error', raise_error=False):
         if self.show_errors:
             MsgBox(message, title=title, msgtype=msgtype)
         if self.on_error:
@@ -281,9 +279,9 @@ class Cloudstorage:
                  **kwargs):
 
         if DEBUGGING:
-            print(f"CLOUD SENDING '{command}' REQUEST = '{url}',{NEWLINE}"
-                  f"HEADERS = {kwargs.get('headers'), None},{NEWLINE}"
-                  f"DATA = {kwargs.get('data'), None}")
+            print(_("CLOUD SENDING '{}' REQUEST = '{}',\n"
+                  "HEADERS = {},\n"
+                  "DATA = {}").format(command, url, kwargs.get('headers', None), kwargs.get('data', None)))
 
         methods = {'get': requests.get, 'post': requests.post, 'delete': requests.delete,
                    'patch': requests.patch}  
@@ -291,15 +289,15 @@ class Cloudstorage:
         try:
             kwargs['timeout'] = kwargs.get('timeout', self.timeout)
             res = methods[command](url, **kwargs)
-            if res is None: raise Exception(f"Empty result returned by request '{url}'")
+            if res is None: raise Exception(_("Empty result returned by request '{}'").format(url))
             if DEBUGGING:
-                print(f"CLOUD REQUEST RESULT = '{res.text}'")
+                print(_("CLOUD REQUEST RESULT = '{}'").format(res.text))
             if not res:
                 try:
                     err = res.json()
                 except:
                     err = {}
-                self._error(str(err.get(error_keymap['message'], f"Error returned by request '{url}'")), 
+                self._error(str(err.get(error_keymap['message'], _("Error returned by request '{}'").format(url))), 
                             err.get(error_keymap['code'], None))
                 return None if returntype != 'bool' else False
 
@@ -319,7 +317,7 @@ class Cloudstorage:
                 self.on_apikey_required(res)
                 while res[0] is None: time.sleep(100)
             else:
-                res = UserInput(label='Enter your API key', textmode='password')
+                res = UserInput(label=_('Enter your API key'), textmode='password')
             self._apikey = res[0] if res[1] else None
 
     def _get_bearer(self):
@@ -330,7 +328,7 @@ class Cloudstorage:
                 self.on_bearer_required(res)
                 while res[0] is None: time.sleep(100)
             else:
-                res = UserInput(label='Enter your Bearer token', textmode='password')            
+                res = UserInput(label=_('Enter your Bearer token'), textmode='password')            
             self._bearer = res[0] if res[1] else None
             self.settings['bearer_token'] = self._bearer or ''
 
@@ -339,12 +337,12 @@ class Cloudstorage:
         if self.settings['use_api_key'] or force_api_key:
             self._get_apikey()
             if not self._apikey:
-                self._error('No valid API key provided!\nProvide a valid API key or change your "use_api_key" settings\nto use a different authentication method.', raise_error=True)
+                self._error(_('No valid API key provided!\nProvide a valid API key or change your "use_api_key" settings\nto use a different authentication method.'), raise_error=True)
             auth = f"APIKey {self._apikey}"
         else:
             self._get_bearer()
             if not self._bearer:
-                self._error('No valid Bearer token provided!\nProvide a valid Bearer token or change your "use_api_key" settings\nto use a different authentication method.', raise_error=True)
+                self._error(_('No valid Bearer token provided!\nProvide a valid Bearer token or change your "use_api_key" settings\nto use a different authentication method.'), raise_error=True)
             auth = f"Bearer {self._bearer}"
         return {'Content-Type': content_type, 'Authorization': auth}
 
@@ -388,7 +386,7 @@ class Cloudstorage:
 
     def _get_folder_objects(self, fid, recurse=False):
         if not fid:
-            self._error('Empty folder ID passed to _get_folder_objects()!')
+            self._error(_('Empty folder ID passed to _get_folder_objects()!'))
             return None
         req = f"{self._baseurl}folders/{urllib.parse.quote(fid)}/contents/?recursive={str(recurse).lower()}"
         return self._request(req, headers=self._make_headers())
@@ -456,7 +454,7 @@ class Cloudstorage:
         """
         if not folder_id: 
             if not self._user:
-                self._error('Neither the folder ID not the user ID is valid!')
+                self._error(_('Neither the folder ID not the user ID is valid!'))
                 return None
             folder_id = self._user[1]
         req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/"
@@ -508,13 +506,13 @@ class Cloudstorage:
         if username and self._user and username != self._user[0]:            
             self._get_apikey()
             if not self._apikey:
-                self._error('You can delete other users only with a valid API key!')
+                self._error(_('You can delete other users only with a valid API key!'))
                 return False
             user_folder = self._create_folder(username, self._rootid)   
             return self.delete_folder(user_folder[1]) if user_folder else False
         elif self._user:
             return self.delete_folder(self._user[1])
-        MsgBox('No current user present!', title='Error', msgtype='error')
+        MsgBox(_('No current user present!'), title=_('Error'), msgtype='error')
         return False
 
     def find_or_create_folder(self, folder_name):
@@ -530,14 +528,14 @@ class Cloudstorage:
         """
         if not folder_id: 
             if not self._user:
-                self._error('Neither the folder ID not the user ID is valid!')
+                self._error(_('Neither the folder ID not the user ID is valid!'))
                 return False
             folder_id = self._user[1]
         elif not self._is_user_folder(folder_id):
             # check if folder is in current user's folder
             self._get_apikey()
             if not self._apikey:
-                self._error('You cannot clear folders created by other users without a valid API key!')
+                self._error(_('You cannot clear folders created by other users without a valid API key!'))
                 return False
 
         # get folder object
@@ -566,14 +564,14 @@ class Cloudstorage:
         Returns True on success, False otherwise.
         """
         if not folder_id:
-            self._error('No folder ID provided')
+            self._error(_('No folder ID provided'))
             return False
 
         # check if folder is in current user's folder
         if not self._is_user_folder(folder_id):
             self._get_apikey()
             if not self._apikey:
-                self._error('You cannot clear folders created by other users without a valid API key!')
+                self._error(_('You cannot clear folders created by other users without a valid API key!'))
                 return False
 
         req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/?permanent={str(permanent).lower()}&recursive={str(recurse).lower()}"
@@ -598,10 +596,10 @@ class Cloudstorage:
         Otherwise, the uploaded file will be automatically renamed.
         """
         if getattr(self, '_user', None) is None:
-            self._error('Current user is not defined! Please create new user first.')
+            self._error(_('Current user is not defined! Please create new user first.'))
             return None
         if not os.path.isfile(filepath):
-            self._error(f"File '{filepath}' is not accessable!")
+            self._error(_("File '{}' is not accessable!").format(filepath))
             return None
 
         # get file size (bytes)
@@ -650,7 +648,7 @@ class Cloudstorage:
             save_folder = os.getcwd()
         filepath = os.path.join(os.path.abspath(save_folder), file_info['name'] if file_info else 'UNKNOWN_FILE')
         if not overwrite and os.path.isfile(filepath):
-            self._error(f"File '{filepath}' already exists!", msgtype='warn')
+            self._error(_("File '{}' already exists!").format(filepath), msgtype='warn')
             return False
 
         req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/contents/"
@@ -669,7 +667,7 @@ class Cloudstorage:
         Returns the link meta info (dict).
         """
         if not file_id:
-            self._error('Empty file ID passed to create_file_link()!')
+            self._error(_('Empty file ID passed to create_file_link()!'))
             return None
 
         req = f"{self._baseurl}links/"
@@ -686,7 +684,7 @@ class Cloudstorage:
         Returns the link meta info (dict).
         """
         if not link_id:
-            self._error('Empty link ID passed to get_file_link()!')
+            self._error(_('Empty link ID passed to get_file_link()!'))
             return None
         req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"
         return self._request(req, headers=self._make_headers())
@@ -698,7 +696,7 @@ class Cloudstorage:
         Returns the link meta info (dict).
         """
         if not link_id:
-            self._error('Empty link ID passed to update_file_link()!')
+            self._error(_('Empty link ID passed to update_file_link()!'))
             return None
 
         req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"
@@ -717,7 +715,7 @@ class Cloudstorage:
         Returns True on success / False on failure.
         """
         if not link_id:
-            self._error('Empty link ID passed to delete_file_link()!')
+            self._error(_('Empty link ID passed to delete_file_link()!'))
             return None
 
         req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"       
@@ -743,11 +741,11 @@ class Share:
         self.stop_check = stop_check
         self.timeout = timeout        
         if not cloud:
-            raise Exception('Share object must be given a valid instance of Cloudstorage as the "cloud" argument!')
+            raise Exception(_('Share object must be given a valid instance of Cloudstorage as the "cloud" argument!'))
         self.cloud = cloud
 
     def share(self, file_or_url, social='twitter', 
-              title='My new crossword', notes='See my new crossword',
+              title='My new crossword', notes=_('See my new crossword'),
               url_shortener='google', tags='pycross,crossword,python',
               source='pyCross'):
 
@@ -757,7 +755,7 @@ class Share:
         if isinstance(serv, str):
             serv = Share.SERVICES.get(serv, -1)                
             if serv == -1:
-                self.cloud._error(f"Cannot find social network '{serv}'!")                
+                self.cloud._error(_("Cannot find social network '{}'!").format(serv))                
                 return
             elif serv == 0:
                 just_copy_url = True
@@ -774,7 +772,7 @@ class Share:
             file_or_url = url
 
         if not file_or_url:
-            self.cloud._error("Malformed URL or file path!")
+            self.cloud._error(_('Malformed URL or file path!'))
             return
 
         if just_copy_url:

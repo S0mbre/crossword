@@ -2,10 +2,9 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import re
-import csv
-import numpy as np
-import itertools
+from utils.globalvars import *
+
+import re, csv, numpy as np, itertools
 ## ******************************************************************************** ##
 
 class Wordsource:
@@ -58,7 +57,7 @@ class DBWordsource(Wordsource):
     def __init__(self, tables, db, diconnect_on_destroy=True, max_fetch=None, shuffle=True):
         self.db = db
         if not self.db.connect():
-            raise Exception('Cannot connect to db!')
+            raise Exception(_('Cannot connect to db!'))
         self.conn = self.db.conn or None
         self.tables = tables
         self.diconnect_on_destroy = diconnect_on_destroy
@@ -79,7 +78,7 @@ class DBWordsource(Wordsource):
         if self.cur: self.cur.close()   
         if not self.conn:
             if not self.db.connect():
-                raise Exception('Cannot connect to db!')
+                raise Exception(_('Cannot connect to db!'))
             self.conn = self.db.conn or None
         self.cur = self.conn.cursor()
         self.cur.execute(sql)

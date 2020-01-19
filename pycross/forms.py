@@ -4,13 +4,14 @@
 
 from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport, 
                     QtWebEngineWidgets, QtWebEngineCore, QtWebEngine)
-from utils.utils import *
+import os, copy, json
+import numpy as np
+
 from utils.globalvars import *
+from utils.utils import *
 from utils.onlineservices import MWDict, YandexDict, GoogleSearch, Share
 from crossword import BLANK, CWInfo
 from guisettings import CWSettings
-import os, copy, json
-import numpy as np
 
 ##############################################################################
 ######          BasicDialog
@@ -32,11 +33,11 @@ class BasicDialog(QtWidgets.QDialog):
         
         self.addMainLayout()
         
-        self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), 'OK', None)
+        self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('OK'), None)
         self.btn_OK.setMaximumWidth(150)
         self.btn_OK.setDefault(True)
         self.btn_OK.clicked.connect(self.on_btn_OK_clicked)
-        self.btn_cancel = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/multiply-1.png"), 'Cancel', None)
+        self.btn_cancel = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/multiply-1.png"), _('Cancel'), None)
         self.btn_cancel.setMaximumWidth(150)
         self.btn_cancel.clicked.connect(self.on_btn_cancel_clicked)
         
@@ -77,28 +78,28 @@ class BasicDialog(QtWidgets.QDialog):
 class LoadCwDialog(BasicDialog):
     
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__(None, 'New crossword', 'crossword.png', 
+        super().__init__(None, _('New crossword'), 'crossword.png', 
               parent, flags)
         
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()
         
-        self.rb_grid = QtWidgets.QRadioButton('Pattern')
-        self.rb_grid.setToolTip('Load pattern preset')
+        self.rb_grid = QtWidgets.QRadioButton(_('Pattern'))
+        self.rb_grid.setToolTip(_('Load pattern preset'))
         self.rb_grid.toggle()
         self.rb_grid.toggled.connect(self.rb_toggled)
-        self.rb_file = QtWidgets.QRadioButton('File')
-        self.rb_file.setToolTip('Import crossword from file')
+        self.rb_file = QtWidgets.QRadioButton(_('File'))
+        self.rb_file.setToolTip(_('Import crossword from file'))
         self.rb_file.toggled.connect(self.rb_toggled)
-        self.rb_empty = QtWidgets.QRadioButton('Empty grid')
-        self.rb_empty.setToolTip('Set grid dimensions and edit manually')
+        self.rb_empty = QtWidgets.QRadioButton(_('Empty grid'))
+        self.rb_empty.setToolTip(_('Set grid dimensions and edit manually'))
         self.rb_empty.toggled.connect(self.rb_toggled)
         
-        self.gb_pattern = QtWidgets.QGroupBox('Pattern file')
+        self.gb_pattern = QtWidgets.QGroupBox(_('Pattern file'))
         self.le_pattern = QtWidgets.QLineEdit()        
         self.le_pattern.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-        self.act_pattern = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
-        self.act_pattern.setToolTip('Browse')
+        self.act_pattern = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), _('Browse'), None)
+        self.act_pattern.setToolTip(_('Browse'))
         self.act_pattern.triggered.connect(self.on_act_pattern)
         self.b_pattern = QtWidgets.QToolButton()
         self.b_pattern.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -110,11 +111,11 @@ class LoadCwDialog(BasicDialog):
         self.gb_pattern.setLayout(self.layout_pattern)
         #self.gb_pattern.setVisible(True)
         
-        self.gb_file = QtWidgets.QGroupBox('Crossword file')
+        self.gb_file = QtWidgets.QGroupBox(_('Crossword file'))
         self.le_file = QtWidgets.QLineEdit()
         self.le_file.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-        self.act_file = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
-        self.act_file.setToolTip('Browse')
+        self.act_file = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), _('Browse'), None)
+        self.act_file.setToolTip(_('Browse'))
         self.act_file.triggered.connect(self.on_act_file)
         self.b_file = QtWidgets.QToolButton()
         self.b_file.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -126,17 +127,17 @@ class LoadCwDialog(BasicDialog):
         self.gb_file.setLayout(self.layout_file)
         self.gb_file.setVisible(False)
         
-        self.gb_manual = QtWidgets.QGroupBox('Grid dimensions')
+        self.gb_manual = QtWidgets.QGroupBox(_('Grid dimensions'))
         self.le_rows = QtWidgets.QLineEdit('15')
         self.le_cols = QtWidgets.QLineEdit('15')
         self.combo_pattern = QtWidgets.QComboBox()
         for i in range(1, 5):
             icon = QtGui.QIcon(f"{ICONFOLDER}/grid{i}.png")
-            self.combo_pattern.addItem(icon, f"Pattern {i}")
+            self.combo_pattern.addItem(icon, _("Pattern {}").format(i))
         self.layout_manual = QtWidgets.QFormLayout()
-        self.layout_manual.addRow('Rows:', self.le_rows)
-        self.layout_manual.addRow('Columns:', self.le_cols)
-        self.layout_manual.addRow('Pattern:', self.combo_pattern)
+        self.layout_manual.addRow(_('Rows:'), self.le_rows)
+        self.layout_manual.addRow(_('Columns:'), self.le_cols)
+        self.layout_manual.addRow(_('Pattern:'), self.combo_pattern)
         self.gb_manual.setLayout(self.layout_manual)
         self.gb_manual.setVisible(False)
         
@@ -152,19 +153,19 @@ class LoadCwDialog(BasicDialog):
         
     def validate(self):
         if self.rb_grid.isChecked() and not os.path.isfile(self.le_pattern.text()):
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-            'Pattern file is unavailable, please check!', QtWidgets.QMessageBox.Ok, self).exec()
+            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+            _('Pattern file is unavailable, please check!'), QtWidgets.QMessageBox.Ok, self).exec()
             return False
         if self.rb_file.isChecked() and not os.path.isfile(self.le_file.text()):
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-            'Crossword file is unavailable, please check!', QtWidgets.QMessageBox.Ok, self).exec()
+            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+            _('Crossword file is unavailable, please check!'), QtWidgets.QMessageBox.Ok, self).exec()
             return False 
         try:
             int(self.le_rows.text())
             int(self.le_cols.text())
         except ValueError:
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-            'Rows and columns must be valid numbers (e.g. 10)!', QtWidgets.QMessageBox.Ok, self).exec()
+            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+            _('Rows and columns must be valid numbers (e.g. 10)!'), QtWidgets.QMessageBox.Ok, self).exec()
             return False
         return True
         
@@ -186,7 +187,7 @@ class LoadCwDialog(BasicDialog):
         Browse for pattern file.
         """
         current_dir = self.le_pattern.text()
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', current_dir or os.getcwd(), 'All files (*.*)')
+        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), current_dir or os.getcwd(), _('All files (*.*)'))
         if selected_path[0]:
             self.le_pattern.setText(selected_path[0].replace('/', os.sep))
     
@@ -196,7 +197,7 @@ class LoadCwDialog(BasicDialog):
         Browse for cw file.
         """
         current_dir = self.le_file.text()
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', current_dir or os.getcwd(), 'Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)')
+        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), current_dir or os.getcwd(), _('Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)'))
         if selected_path[0]:
             self.le_file.setText(selected_path[0].replace('/', os.sep))
     
@@ -216,14 +217,14 @@ class WordSrcDialog(BasicDialog):
     
     def __init__(self, src=None, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.src = src
-        super().__init__(None, 'Word Source', 'database-3.png', 
+        super().__init__(None, _('Word Source'), 'database-3.png', 
               parent, flags)
         if self.src: self.from_src(self.src)
                 
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()     
         
-        self.gb_name = QtWidgets.QGroupBox('Name')
+        self.gb_name = QtWidgets.QGroupBox(_('Name'))
         self.gb_name.setFlat(True)
         self.layout_gb_name = QtWidgets.QVBoxLayout() 
         self.le_name = QtWidgets.QLineEdit('')
@@ -231,13 +232,13 @@ class WordSrcDialog(BasicDialog):
         self.layout_gb_name.addWidget(self.le_name)
         self.gb_name.setLayout(self.layout_gb_name)
         
-        self.gb_type = QtWidgets.QGroupBox('Source type') 
+        self.gb_type = QtWidgets.QGroupBox(_('Source type')) 
         self.layout_gb_type = QtWidgets.QHBoxLayout() 
-        self.rb_type_db = QtWidgets.QRadioButton('Database')
+        self.rb_type_db = QtWidgets.QRadioButton(_('Database'))
         self.rb_type_db.toggled.connect(self.rb_toggled)
-        self.rb_type_file = QtWidgets.QRadioButton('File')
+        self.rb_type_file = QtWidgets.QRadioButton(_('File'))
         self.rb_type_file.toggled.connect(self.rb_toggled)
-        self.rb_type_list = QtWidgets.QRadioButton('Simple list')
+        self.rb_type_list = QtWidgets.QRadioButton(_('Simple list'))
         self.rb_type_list.toggled.connect(self.rb_toggled)
         self.layout_gb_type.addWidget(self.rb_type_db)
         self.layout_gb_type.addWidget(self.rb_type_file)
@@ -267,12 +268,12 @@ class WordSrcDialog(BasicDialog):
         self.le_dbpass = QtWidgets.QLineEdit('')
         self.le_dbtables = QtWidgets.QLineEdit(json.dumps(SQL_TABLES))
         self.chb_db_shuffle = QtWidgets.QCheckBox()
-        self.layout_db.addRow('Path', self.le_dbfile)
-        self.layout_db.addRow('Type', self.combo_dbtype)
-        self.layout_db.addRow('User', self.le_dbuser)
-        self.layout_db.addRow('Password', self.le_dbpass)
-        self.layout_db.addRow('Tables', self.le_dbtables)
-        self.layout_db.addRow('Shuffle', self.chb_db_shuffle)
+        self.layout_db.addRow(_('Path'), self.le_dbfile)
+        self.layout_db.addRow(_('Type'), self.combo_dbtype)
+        self.layout_db.addRow(_('User'), self.le_dbuser)
+        self.layout_db.addRow(_('Password'), self.le_dbpass)
+        self.layout_db.addRow(_('Tables'), self.le_dbtables)
+        self.layout_db.addRow(_('Shuffle'), self.chb_db_shuffle)
         self.page_db.setLayout(self.layout_db)
         self.stacked.addWidget(self.page_db)
         
@@ -285,14 +286,14 @@ class WordSrcDialog(BasicDialog):
         self.combo_fileenc.setEditable(False)
         self.combo_fileenc.setCurrentText('utf_8')
         self.combo_file_delim = QtWidgets.QComboBox()
-        self.combo_file_delim.addItems(['SPACE', 'TAB', ';', ',', ':'])
+        self.combo_file_delim.addItems([_('SPACE'), _('TAB'), ';', ',', ':'])
         self.combo_file_delim.setEditable(True)
         self.combo_file_delim.setCurrentIndex(0)
         self.chb_file_shuffle = QtWidgets.QCheckBox()
-        self.layout_file.addRow('Path', self.le_txtfile)
-        self.layout_file.addRow('Encoding', self.combo_fileenc)
-        self.layout_file.addRow('Delimiter', self.combo_file_delim)
-        self.layout_file.addRow('Shuffle', self.chb_file_shuffle)
+        self.layout_file.addRow(_('Path'), self.le_txtfile)
+        self.layout_file.addRow(_('Encoding'), self.combo_fileenc)
+        self.layout_file.addRow(_('Delimiter'), self.combo_file_delim)
+        self.layout_file.addRow(_('Shuffle'), self.chb_file_shuffle)
         self.page_file.setLayout(self.layout_file)
         self.stacked.addWidget(self.page_file)
         
@@ -300,7 +301,7 @@ class WordSrcDialog(BasicDialog):
         self.page_list = QtWidgets.QWidget()
         self.layout_list = QtWidgets.QFormLayout()
         self.combo_list_delim = QtWidgets.QComboBox()
-        self.combo_list_delim.addItems(['SPACE', 'TAB', ';', ',', ':'])
+        self.combo_list_delim.addItems([_('SPACE'), _('TAB'), ';', ',', ':'])
         self.combo_list_delim.setEditable(True)
         self.combo_list_delim.setCurrentIndex(0)
         self.chb_haspos = QtWidgets.QCheckBox()
@@ -310,10 +311,10 @@ class WordSrcDialog(BasicDialog):
         self.te_wlist.setAcceptRichText(False)
         self.te_wlist.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
         self.chb_list_shuffle = QtWidgets.QCheckBox()
-        self.layout_list.addRow('Delimiter', self.combo_list_delim)
-        self.layout_list.addRow('Has parts of speech', self.chb_haspos)
-        self.layout_list.addRow('Words', self.te_wlist)
-        self.layout_list.addRow('Shuffle', self.chb_list_shuffle)
+        self.layout_list.addRow(_('Delimiter'), self.combo_list_delim)
+        self.layout_list.addRow(_('Has parts of speech'), self.chb_haspos)
+        self.layout_list.addRow(_('Words'), self.te_wlist)
+        self.layout_list.addRow(_('Shuffle'), self.chb_list_shuffle)
         self.page_list.setLayout(self.layout_list)
         self.stacked.addWidget(self.page_list)
                 
@@ -337,9 +338,9 @@ class WordSrcDialog(BasicDialog):
             self.combo_fileenc.setCurrentText(self.src['encoding'])
             delim = self.src['delim']
             if delim == ' ':
-                delim = 'SPACE'
+                delim = _('SPACE')
             elif delim == '\t':
-                delim = 'TAB'
+                delim = _('TAB')
             else:
                 delim = delim[0]
             self.combo_file_delim.setCurrentText(delim)
@@ -349,9 +350,9 @@ class WordSrcDialog(BasicDialog):
             self.rb_type_list.setChecked(True)
             delim = self.src['delim']
             if delim == ' ':
-                delim = 'SPACE'
+                delim = _('SPACE')
             elif delim == '\t':
-                delim = 'TAB'
+                delim = _('TAB')
             else:
                 delim = delim[0]
             self.combo_list_delim.setCurrentText(delim)
@@ -380,9 +381,9 @@ class WordSrcDialog(BasicDialog):
             self.src['file'] = self.le_txtfile.text()
             self.src['encoding'] = self.combo_fileenc.currentText()
             delim = self.combo_file_delim.currentText()
-            if delim == 'SPACE':
+            if delim == _('SPACE'):
                 delim = ' '
-            elif delim == 'TAB':
+            elif delim == _('TAB'):
                 delim = '\t'
             else:
                 delim = delim[0]
@@ -392,9 +393,9 @@ class WordSrcDialog(BasicDialog):
         else:
             self.src['type'] = 'list'
             delim = self.combo_list_delim.currentText()
-            if delim == 'SPACE':
+            if delim == _('SPACE'):
                 delim = ' '
-            elif delim == 'TAB':
+            elif delim == _('TAB'):
                 delim = '\t'
             else:
                 delim = delim[0]
@@ -405,55 +406,55 @@ class WordSrcDialog(BasicDialog):
     
     def validate(self):
         if not self.le_name.text().strip():
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-            'Source must have a non-empty name!', QtWidgets.QMessageBox.Ok, self).exec()
+            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+            _('Source must have a non-empty name!'), QtWidgets.QMessageBox.Ok, self).exec()
             return False
         if self.rb_type_db.isChecked():
             if not self.le_dbfile.text() or not self.le_dbfile.text() in LANG:
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-                'DB file path must be valid!', QtWidgets.QMessageBox.Ok, self).exec()
+                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+                _('DB file path must be valid!'), QtWidgets.QMessageBox.Ok, self).exec()
                 return False
             try:
                 d = json.loads(self.le_dbtables.text())
                 if not isinstance(d, dict): raise Exception()
             except:
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-                'DB tables field has incorrect value!', QtWidgets.QMessageBox.Ok, self).exec()
+                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+                _('DB tables field has incorrect value!'), QtWidgets.QMessageBox.Ok, self).exec()
                 return False
             
         elif self.rb_type_file.isChecked():
             if not self.le_txtfile.text():
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-                'Text file path must be valid!', QtWidgets.QMessageBox.Ok, self).exec()
+                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+                _('Text file path must be valid!'), QtWidgets.QMessageBox.Ok, self).exec()
                 return False
             if not self.combo_fileenc.currentText():
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-                'Text file encoding must not be empty!', QtWidgets.QMessageBox.Ok, self).exec()
+                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+                _('Text file encoding must not be empty!'), QtWidgets.QMessageBox.Ok, self).exec()
                 return False
             delim = self.combo_file_delim.currentText()
             if not delim:
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-                'Text file delimiter must not be empty!', QtWidgets.QMessageBox.Ok, self).exec()
+                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+                _('Text file delimiter must not be empty!'), QtWidgets.QMessageBox.Ok, self).exec()
                 return False
-            if not delim in ('SPACE', 'TAB') and len(delim) > 1:
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-                'Text file delimiter must be either "SPACE" or "TAB" or a single character!', QtWidgets.QMessageBox.Ok, self).exec()
+            if not delim in (_('SPACE'), _('TAB')) and len(delim) > 1:
+                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+                _('Text file delimiter must be either "SPACE" or "TAB" or a single character!'), QtWidgets.QMessageBox.Ok, self).exec()
                 return False
             
         elif self.rb_type_list.isChecked():
             if self.chb_haspos.isChecked():
                 delim = self.combo_list_delim.currentText()
                 if not delim:
-                    QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-                    'Word list delimiter must not be empty if is has parts of speech!', QtWidgets.QMessageBox.Ok, self).exec()
+                    QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+                    _('Word list delimiter must not be empty if is has parts of speech!'), QtWidgets.QMessageBox.Ok, self).exec()
                     return False
-                if not delim in ('SPACE', 'TAB') and len(delim) > 1:
-                    QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-                    'Word list delimiter must be either "SPACE" or "TAB" or a single character!', QtWidgets.QMessageBox.Ok, self).exec()
+                if not delim in (_('SPACE'), _('TAB')) and len(delim) > 1:
+                    QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+                    _('Word list delimiter must be either "SPACE" or "TAB" or a single character!'), QtWidgets.QMessageBox.Ok, self).exec()
                     return False
             if not self.te_wlist.toPlainText().strip():
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-                'Word list is empty or invalid!', QtWidgets.QMessageBox.Ok, self).exec()
+                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+                _('Word list is empty or invalid!'), QtWidgets.QMessageBox.Ok, self).exec()
                 return False
             
         self.to_src()
@@ -479,7 +480,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
 
     def __init__(self, action_source, toolbar, parent=None):
         if not action_source or not toolbar:
-            raise Exception('Null action source or toolbar pointers passed to ToolbarCustomizer!')
+            raise Exception(_('Null action source or toolbar pointers passed to ToolbarCustomizer!'))
         self.action_source = action_source
         self.src_toolbar = toolbar        
         self.src_actions = []
@@ -507,17 +508,17 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.layout_right = QtWidgets.QHBoxLayout()
         self.tb = QtWidgets.QToolBar()
         self.tb.setOrientation(QtCore.Qt.Vertical)
-        self.act_add = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/fast-forward.png"), 'Add', self.on_act_add)
-        self.act_remove = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind.png"), 'Remove', self.on_act_remove)
-        self.act_addsep = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/pipe.png"), 'Add separator', self.on_act_addsep)
+        self.act_add = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/fast-forward.png"), _('Add'), self.on_act_add)
+        self.act_remove = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind.png"), _('Remove'), self.on_act_remove)
+        self.act_addsep = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/pipe.png"), _('Add separator'), self.on_act_addsep)
         self.tb.addSeparator()
-        self.act_clear = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), 'Clear', self.on_act_clear)
+        self.act_clear = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), _('Clear'), self.on_act_clear)
         self.tb.addSeparator()
-        self.act_up = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-L.png"), 'Up', self.on_act_up)
-        self.act_down = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), 'Down', self.on_act_down)
+        self.act_up = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-L.png"), _('Up'), self.on_act_up)
+        self.act_down = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), _('Down'), self.on_act_down)
         self.layout_right.addWidget(self.tb)
         self.layout_preview = QtWidgets.QVBoxLayout()
-        self.l_added = QtWidgets.QLabel('Added items:')
+        self.l_added = QtWidgets.QLabel(_('Added items:'))
         self.lw_added = QtWidgets.QListWidget()
         self.lw_added.itemSelectionChanged.connect(self.on_tw_actions_selected)
         self.layout_preview.addWidget(self.l_added)
@@ -604,7 +605,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         if not isinstance(action, QtWidgets.QAction): return None
 
         txt = action.text()
-        item = QtWidgets.QTreeWidgetItem([txt or '<Unnamed>'])
+        item = QtWidgets.QTreeWidgetItem([txt or _('<Unnamed>')])
         flags = QtCore.Qt.ItemIsEnabled
         if not action.isSeparator():
             flags |= QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsDragEnabled
@@ -740,15 +741,15 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         
 class SettingsDialog(BasicDialog):
 
-    PAGES = ['Common', 'Generation', 'Source management', 'Search rules',
-             'Window', 'Grid', 'Clues', 'Toolbar', 'Definition lookup', 'Import & Export',
-             'Plugins', 'Printing', 'Updating', 'Sharing']
-    PARENT_PAGES = ['Sources', 'User interface']
+    PAGES = [_('Common'), _('Generation'), _('Source management'), _('Search rules'),
+             _('Window'), _('Grid'), _('Clues'), _('Toolbar'), _('Definition lookup'), _('Import & Export'),
+             _('Plugins'), _('Printing'), _('Updating'), _('Sharing')]
+    PARENT_PAGES = [_('Sources'), _('User interface')]
     
     def __init__(self, mainwindow=None, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
         self.default_settings = self.load_default_settings()
-        super().__init__(None, 'Settings', 'settings-5.png', 
+        super().__init__(None, _('Settings'), 'settings-5.png', 
               parent, flags)
         
     def load_default_settings(self):
@@ -769,42 +770,42 @@ class SettingsDialog(BasicDialog):
         self.tree.setMinimumWidth(100)
         self.tree.setMaximumWidth(500)
         
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Common']))
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Generation']))
-        item = QtWidgets.QTreeWidgetItem(['Sources'])
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Common')]))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Generation')]))
+        item = QtWidgets.QTreeWidgetItem([_('Sources')])
         item.setFlags(QtCore.Qt.ItemIsEnabled)
-        item.addChild(QtWidgets.QTreeWidgetItem(['Source management']))
-        item.addChild(QtWidgets.QTreeWidgetItem(['Search rules']))
+        item.addChild(QtWidgets.QTreeWidgetItem([_('Source management')]))
+        item.addChild(QtWidgets.QTreeWidgetItem([_('Search rules')]))
         self.tree.addTopLevelItem(item)
         
-        item = QtWidgets.QTreeWidgetItem(['User interface'])
+        item = QtWidgets.QTreeWidgetItem([_('User interface')])
         item.setFlags(QtCore.Qt.ItemIsEnabled)
-        item.addChild(QtWidgets.QTreeWidgetItem(['Window']))
-        item.addChild(QtWidgets.QTreeWidgetItem(['Grid']))
-        item.addChild(QtWidgets.QTreeWidgetItem(['Clues']))
-        item.addChild(QtWidgets.QTreeWidgetItem(['Toolbar']))
+        item.addChild(QtWidgets.QTreeWidgetItem([_('Window')]))
+        item.addChild(QtWidgets.QTreeWidgetItem([_('Grid')]))
+        item.addChild(QtWidgets.QTreeWidgetItem([_('Clues')]))
+        item.addChild(QtWidgets.QTreeWidgetItem([_('Toolbar')]))
         self.tree.addTopLevelItem(item)
         
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Definition lookup']))
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Import & Export']))
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Plugins']))
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Printing']))
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Updating']))
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem(['Sharing']))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Definition lookup')]))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Import & Export')]))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Plugins')]))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Printing')]))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Updating')]))
+        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Sharing')]))
         self.tree.itemSelectionChanged.connect(self.on_tree_select)
         
         self.central_widget = QtWidgets.QWidget()
         self.layout_central = QtWidgets.QVBoxLayout()
         self.stacked = QtWidgets.QStackedWidget() 
         self.add_pages()
-        self.btn_defaults = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/cloud-computing.png"), 'Restore defaults')
-        self.btn_defaults.setToolTip('Restore default settings for selected page')
+        self.btn_defaults = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/cloud-computing.png"), _('Restore defaults'))
+        self.btn_defaults.setToolTip(_('Restore default settings for selected page'))
         self.btn_defaults.clicked.connect(self.on_btn_defaults)
-        self.btn_load = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/folder-15.png"), 'Load Settings')
-        self.btn_load.setToolTip('Load settings from file')
+        self.btn_load = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/folder-15.png"), _('Load Settings'))
+        self.btn_load.setToolTip(_('Load settings from file'))
         self.btn_load.clicked.connect(self.on_btn_load)
-        self.btn_save = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/save.png"), 'Save Settings')
-        self.btn_save.setToolTip('Save settings to file')
+        self.btn_save = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/save.png"), _('Save Settings'))
+        self.btn_save.setToolTip(_('Save settings to file'))
         self.btn_save.clicked.connect(self.on_btn_save)
         self.layout_buttons = QtWidgets.QHBoxLayout()
         self.layout_buttons.setSpacing(20)
@@ -835,9 +836,9 @@ class SettingsDialog(BasicDialog):
         self.layout_common.setSpacing(10)
 
         self.le_tempdir = QtWidgets.QLineEdit('')
-        self.le_tempdir.setToolTip('Temp directory (leave EMPTY for default)')
-        self.act_tempdir_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
-        self.act_tempdir_browse.setToolTip('Browse')
+        self.le_tempdir.setToolTip(_('Temp directory (leave EMPTY for default)'))
+        self.act_tempdir_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), _('Browse'), None)
+        self.act_tempdir_browse.setToolTip(_('Browse'))
         self.act_tempdir_browse.triggered.connect(self.on_act_tempdir_browse)
         self.btn_tempdir_browse = QtWidgets.QToolButton()
         self.btn_tempdir_browse.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -848,10 +849,10 @@ class SettingsDialog(BasicDialog):
         self.layout_tempdir.addWidget(self.btn_tempdir_browse)
 
         self.chb_autosave_cw = QtWidgets.QCheckBox('')
-        self.chb_autosave_cw.setToolTip('Save crosswords on exit and load on startup')
+        self.chb_autosave_cw.setToolTip(_('Save crosswords on exit and load on startup'))
 
-        self.layout_common.addRow('Temp directory', self.layout_tempdir)
-        self.layout_common.addRow('Auto save/load crossword', self.chb_autosave_cw)
+        self.layout_common.addRow(_('Temp directory'), self.layout_tempdir)
+        self.layout_common.addRow(_('Auto save/load crossword'), self.chb_autosave_cw)
 
         self.page_common.setLayout(self.layout_common)
         self.stacked.addWidget(self.page_common)
@@ -861,22 +862,22 @@ class SettingsDialog(BasicDialog):
         self.layout_generation = QtWidgets.QFormLayout()
         self.layout_generation.setSpacing(10)
         self.combo_gen_method = QtWidgets.QComboBox()
-        self.combo_gen_method.addItems(['Guess', 'Iterative', 'Recursive'])
+        self.combo_gen_method.addItems([_('Guess'), _('Iterative'), _('Recursive')])
         self.combo_gen_method.setEditable(False)
         self.combo_gen_method.setCurrentIndex(0)
         self.spin_gen_timeout = QtWidgets.QDoubleSpinBox()
         self.spin_gen_timeout.setRange(0.0, 10000.0)
         self.spin_gen_timeout.setValue(60.0)
-        self.spin_gen_timeout.setSuffix(' sec.')
+        self.spin_gen_timeout.setSuffix(_(' sec.'))
         self.combo_log = QtWidgets.QComboBox()
-        self.combo_log.addItems(['No log', 'Console', 'File...'])
+        self.combo_log.addItems([_('No log'), _('Console'), _('File...')])
         self.combo_log.setEditable(True)
         self.combo_log.setCurrentIndex(0)
         self.combo_log.activated.connect(self.on_combo_log)
                 
-        self.layout_generation.addRow('Method', self.combo_gen_method)
-        self.layout_generation.addRow('Timeout', self.spin_gen_timeout)
-        self.layout_generation.addRow('Log', self.combo_log)
+        self.layout_generation.addRow(_('Method'), self.combo_gen_method)
+        self.layout_generation.addRow(_('Timeout'), self.spin_gen_timeout)
+        self.layout_generation.addRow(_('Log'), self.combo_log)
         
         self.page_generation.setLayout(self.layout_generation)
         self.stacked.addWidget(self.page_generation)
@@ -885,10 +886,10 @@ class SettingsDialog(BasicDialog):
         self.page_src_mgmt = QtWidgets.QWidget()
         self.layout_src_mgmt = QtWidgets.QVBoxLayout()
         
-        self.gb_src = QtWidgets.QGroupBox('Manage sources')        
+        self.gb_src = QtWidgets.QGroupBox(_('Manage sources'))        
         self.layout_gb_src = QtWidgets.QHBoxLayout()
         self.lw_sources = QtWidgets.QListWidget()
-        self.lw_sources.setToolTip('Higher sources in this list take higher precedence (use UP and DOWN buttons to move items)')
+        self.lw_sources.setToolTip(_('Higher sources in this list take higher precedence (use UP and DOWN buttons to move items)'))
         #self.lw_sources.addItems([str(i) for i in range(10)])
         self.lw_sources.itemSelectionChanged.connect(self.on_lw_sources_select)
         self.lw_sources.itemDoubleClicked.connect(self.on_lw_sources_dblclick)
@@ -896,25 +897,25 @@ class SettingsDialog(BasicDialog):
         
         self.tb_src_mgmt = QtWidgets.QToolBar()
         self.tb_src_mgmt.setOrientation(QtCore.Qt.Vertical)
-        self.act_src_up = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), 'Up')
+        self.act_src_up = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
         self.act_src_up.triggered.connect(self.on_act_src_up)
-        self.act_src_down = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), 'Down')
+        self.act_src_down = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), _('Down'))
         self.act_src_down.triggered.connect(self.on_act_src_down)        
         self.tb_src_mgmt.addSeparator()
-        self.act_src_add = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/plus.png"), 'Add')
+        self.act_src_add = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/plus.png"), _('Add'))
         self.act_src_add.triggered.connect(self.on_act_src_add)
-        self.act_src_remove = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/minus.png"), 'Remove')
+        self.act_src_remove = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/minus.png"), _('Remove'))
         self.act_src_remove.triggered.connect(self.on_act_src_remove)
-        self.act_src_edit = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), 'Edit')
+        self.act_src_edit = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), _('Edit'))
         self.act_src_edit.triggered.connect(self.on_act_src_edit)
-        self.act_src_clear = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), 'Clear')
+        self.act_src_clear = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), _('Clear'))
         self.act_src_clear.triggered.connect(self.on_act_src_clear)
         self.layout_gb_src.addWidget(self.tb_src_mgmt)
         self.gb_src.setLayout(self.layout_gb_src)
         
-        self.gb_src_settings = QtWidgets.QGroupBox('Settings')
+        self.gb_src_settings = QtWidgets.QGroupBox(_('Settings'))
         self.layout_src_settings = QtWidgets.QGridLayout()
-        self.chb_maxfetch = QtWidgets.QCheckBox('Constrain max results:')
+        self.chb_maxfetch = QtWidgets.QCheckBox(_('Constrain max results:'))
         self.chb_maxfetch.setChecked(True)
         self.spin_maxfetch = QtWidgets.QSpinBox()
         self.spin_maxfetch.setRange(0, 1e6)
@@ -932,10 +933,10 @@ class SettingsDialog(BasicDialog):
         # Sources > Search rules
         self.page_src_rules = QtWidgets.QWidget()
         self.layout_src_rules = QtWidgets.QVBoxLayout()        
-        self.gb_pos = QtWidgets.QGroupBox('Parts of speech')
+        self.gb_pos = QtWidgets.QGroupBox(_('Parts of speech'))
         self.layout_gb_pos = QtWidgets.QVBoxLayout()
         self.lw_pos = QtWidgets.QListWidget()
-        self.lw_pos.setToolTip('Check / uncheck items to include in search (valid only for sources with POS data)')
+        self.lw_pos.setToolTip(_('Check / uncheck items to include in search (valid only for sources with POS data)'))
         for p in POS[:-1]:
             lwitem = QtWidgets.QListWidgetItem(p[1])
             lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
@@ -946,14 +947,14 @@ class SettingsDialog(BasicDialog):
         self.gb_pos.setLayout(self.layout_gb_pos)
         self.layout_src_rules.addWidget(self.gb_pos)
         
-        self.gb_excluded = QtWidgets.QGroupBox('Excluded words')
+        self.gb_excluded = QtWidgets.QGroupBox(_('Excluded words'))
         self.layout_gb_excluded = QtWidgets.QVBoxLayout()
         self.te_excluded = QtWidgets.QTextEdit('')
         self.te_excluded.setStyleSheet('font: 14pt "Courier";color: maroon')
         self.te_excluded.setAcceptRichText(False)
         self.te_excluded.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
         self.layout_gb_excluded.addWidget(self.te_excluded)
-        self.chb_excl_regex = QtWidgets.QCheckBox('Use regular expressions')
+        self.chb_excl_regex = QtWidgets.QCheckBox(_('Use regular expressions'))
         self.chb_excl_regex.setChecked(False)
         self.layout_gb_excluded.addWidget(self.chb_excl_regex)
         self.gb_excluded.setLayout(self.layout_gb_excluded)
@@ -971,12 +972,12 @@ class SettingsDialog(BasicDialog):
         self.combo_apptheme.setEditable(False)
         self.combo_apptheme.setCurrentText(QtWidgets.QApplication.instance().style().objectName())
         self.combo_toolbarpos = QtWidgets.QComboBox()
-        self.combo_toolbarpos.addItems(['Top', 'Bottom', 'Left', 'Right', 'Hidden'])
+        self.combo_toolbarpos.addItems([_('Top'), _('Bottom'), _('Left'), _('Right'), _('Hidden')])
         self.combo_toolbarpos.setEditable(False)
         self.combo_toolbarpos.setCurrentIndex(0)
         
-        self.layout_window.addRow('Theme', self.combo_apptheme)
-        self.layout_window.addRow('Toolbar position', self.combo_toolbarpos)
+        self.layout_window.addRow(_('Theme'), self.combo_apptheme)
+        self.layout_window.addRow(_('Toolbar position'), self.combo_toolbarpos)
         self.page_window.setLayout(self.layout_window)
         self.stacked.addWidget(self.page_window)
         
@@ -995,7 +996,7 @@ class SettingsDialog(BasicDialog):
         self.chb_showcoords = QtWidgets.QCheckBox('')
         self.chb_showcoords.setChecked(False)
         self.combo_gridlinestyle = QtWidgets.QComboBox()
-        self.combo_gridlinestyle.addItems(['Solid', 'Dash', 'Dot', 'Dash-dot'])
+        self.combo_gridlinestyle.addItems([_('Solid'), _('Dash'), _('Dot'), _('Dash-dot')])
         self.combo_gridlinestyle.setEditable(False)
         self.combo_gridlinestyle.setCurrentIndex(0)
         self.spin_gridlinesz = QtWidgets.QSpinBox()
@@ -1018,12 +1019,12 @@ class SettingsDialog(BasicDialog):
         self.btn_numberscolor.setStyleSheet('background-color: gray;')
         self.btn_numberscolor.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_numberscolor.clicked.connect(self.on_color_btn_clicked)
-        self.btn_numbersfont = QtWidgets.QPushButton('Font...')
+        self.btn_numbersfont = QtWidgets.QPushButton(_('Font...'))
         self.btn_numbersfont.setStyleSheet('font-family: "Arial"; font-size: 8pt; font-weight: bold;')
         self.btn_numbersfont.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_numbersfont.clicked.connect(self.on_font_btn_clicked)
         self.combo_charcase = QtWidgets.QComboBox()
-        self.combo_charcase.addItems(['UPPERCASE', 'lowercase'])
+        self.combo_charcase.addItems([_('UPPERCASE'), _('lowercase')])
         self.combo_charcase.setEditable(False)
         self.combo_charcase.setCurrentIndex(1)
         
@@ -1033,14 +1034,14 @@ class SettingsDialog(BasicDialog):
         self.btn_cell_normal_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_normal_bg_color.clicked.connect(self.on_color_btn_clicked)
         self.combo_cell_normal_style = QtWidgets.QComboBox()
-        self.combo_cell_normal_style.addItems(['Solid', 'Dense', 'Striped', 'Lines', 'Checkered', 'Diag1', 'Diag2', 'Diag cross', 'Gradient linear', 'Gradient radial'])
+        self.combo_cell_normal_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_cell_normal_style.setEditable(False)
         self.combo_cell_normal_style.setCurrentIndex(0)
         self.btn_cell_normal_fg_color = QtWidgets.QPushButton('')
         self.btn_cell_normal_fg_color.setStyleSheet('background-color: black;')
         self.btn_cell_normal_fg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_normal_fg_color.clicked.connect(self.on_color_btn_clicked)
-        self.btn_cell_normal_font = QtWidgets.QPushButton('Font...')
+        self.btn_cell_normal_font = QtWidgets.QPushButton(_('Font...'))
         self.btn_cell_normal_font.setStyleSheet('font-family: "Arial"; font-size: 18pt; font-weight: bold;')
         self.btn_cell_normal_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_normal_font.clicked.connect(self.on_font_btn_clicked)
@@ -1050,14 +1051,14 @@ class SettingsDialog(BasicDialog):
         self.btn_cell_hilite_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_hilite_bg_color.clicked.connect(self.on_color_btn_clicked)
         self.combo_cell_hilite_style = QtWidgets.QComboBox()
-        self.combo_cell_hilite_style.addItems(['Solid', 'Dense', 'Striped', 'Lines', 'Checkered', 'Diag1', 'Diag2', 'Diag cross', 'Gradient linear', 'Gradient radial'])
+        self.combo_cell_hilite_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_cell_hilite_style.setEditable(False)
         self.combo_cell_hilite_style.setCurrentIndex(0)
         self.btn_cell_hilite_fg_color = QtWidgets.QPushButton('')
         self.btn_cell_hilite_fg_color.setStyleSheet('background-color: black;')
         self.btn_cell_hilite_fg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_hilite_fg_color.clicked.connect(self.on_color_btn_clicked)
-        self.btn_cell_hilite_font = QtWidgets.QPushButton('Font...')
+        self.btn_cell_hilite_font = QtWidgets.QPushButton(_('Font...'))
         self.btn_cell_hilite_font.setStyleSheet('font-family: "Arial"; font-size: 18pt; font-weight: bold;')
         self.btn_cell_hilite_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_hilite_font.clicked.connect(self.on_font_btn_clicked)
@@ -1067,7 +1068,7 @@ class SettingsDialog(BasicDialog):
         self.btn_cell_blank_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_blank_bg_color.clicked.connect(self.on_color_btn_clicked)
         self.combo_cell_blank_style = QtWidgets.QComboBox()
-        self.combo_cell_blank_style.addItems(['Solid', 'Dense', 'Striped', 'Lines', 'Checkered', 'Diag1', 'Diag2', 'Diag cross', 'Gradient linear', 'Gradient radial'])
+        self.combo_cell_blank_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_cell_blank_style.setEditable(False)
         self.combo_cell_blank_style.setCurrentIndex(0)
         
@@ -1076,7 +1077,7 @@ class SettingsDialog(BasicDialog):
         self.btn_cell_filler_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_filler_bg_color.clicked.connect(self.on_color_btn_clicked)
         self.combo_cell_filler_style = QtWidgets.QComboBox()
-        self.combo_cell_filler_style.addItems(['Solid', 'Dense', 'Striped', 'Lines', 'Checkered', 'Diag1', 'Diag2', 'Diag cross', 'Gradient linear', 'Gradient radial'])
+        self.combo_cell_filler_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_cell_filler_style.setEditable(False)
         self.combo_cell_filler_style.setCurrentIndex(0)
         
@@ -1085,54 +1086,54 @@ class SettingsDialog(BasicDialog):
         self.btn_cell_filler2_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_filler2_bg_color.clicked.connect(self.on_color_btn_clicked)
         self.combo_cell_filler2_style = QtWidgets.QComboBox()
-        self.combo_cell_filler2_style.addItems(['Solid', 'Dense', 'Striped', 'Lines', 'Checkered', 'Diag1', 'Diag2', 'Diag cross', 'Gradient linear', 'Gradient radial'])
+        self.combo_cell_filler2_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_cell_filler2_style.setEditable(False)
         self.combo_cell_filler2_style.setCurrentIndex(0)        
         
-        self.layout_grid.addRow('Grid scale', self.spin_cwscale)
-        self.layout_grid.addRow('Show grid borders', self.chb_showgrid)
-        self.layout_grid.addRow('Show grid coords', self.chb_showcoords)
-        self.layout_grid.addRow('Grid border style', self.combo_gridlinestyle)
-        self.layout_grid.addRow('Grid border width', self.spin_gridlinesz)
-        self.layout_grid.addRow('Grid border color', self.btn_gridlinecolor)
-        self.layout_grid.addRow('Active cell color', self.btn_activecellcolor)
-        self.layout_grid.addRow('Grid cell size', self.spin_cellsz)
-        self.layout_grid.addRow('Character case', self.combo_charcase)
+        self.layout_grid.addRow(_('Grid scale'), self.spin_cwscale)
+        self.layout_grid.addRow(_('Show grid borders'), self.chb_showgrid)
+        self.layout_grid.addRow(_('Show grid coords'), self.chb_showcoords)
+        self.layout_grid.addRow(_('Grid border style'), self.combo_gridlinestyle)
+        self.layout_grid.addRow(_('Grid border width'), self.spin_gridlinesz)
+        self.layout_grid.addRow(_('Grid border color'), self.btn_gridlinecolor)
+        self.layout_grid.addRow(_('Active cell color'), self.btn_activecellcolor)
+        self.layout_grid.addRow(_('Grid cell size'), self.spin_cellsz)
+        self.layout_grid.addRow(_('Character case'), self.combo_charcase)
         self.layout_wspacer1 = QtWidgets.QVBoxLayout()
         self.layout_wspacer1.addSpacing(20)        
         self.layout_grid.addRow(self.layout_wspacer1)
-        self.layout_grid.addRow('Show word numbers', self.chb_shownumbers)
-        self.layout_grid.addRow('Word number color', self.btn_numberscolor)
-        self.layout_grid.addRow('Word number font', self.btn_numbersfont)
+        self.layout_grid.addRow(_('Show word numbers'), self.chb_shownumbers)
+        self.layout_grid.addRow(_('Word number color'), self.btn_numberscolor)
+        self.layout_grid.addRow(_('Word number font'), self.btn_numbersfont)
         self.layout_wspacer2 = QtWidgets.QVBoxLayout()
         self.layout_wspacer2.addSpacing(20)
         self.layout_grid.addRow(self.layout_wspacer2)
-        self.layout_grid.addRow('Normal cell color', self.btn_cell_normal_bg_color)
-        self.layout_grid.addRow('Normal cell style', self.combo_cell_normal_style)
-        self.layout_grid.addRow('Normal cell font color', self.btn_cell_normal_fg_color)
-        self.layout_grid.addRow('Normal cell font', self.btn_cell_normal_font)
+        self.layout_grid.addRow(_('Normal cell color'), self.btn_cell_normal_bg_color)
+        self.layout_grid.addRow(_('Normal cell style'), self.combo_cell_normal_style)
+        self.layout_grid.addRow(_('Normal cell font color'), self.btn_cell_normal_fg_color)
+        self.layout_grid.addRow(_('Normal cell font'), self.btn_cell_normal_font)
         self.layout_wspacer3 = QtWidgets.QVBoxLayout()
         self.layout_wspacer3.addSpacing(20)
         self.layout_grid.addRow(self.layout_wspacer3)
-        self.layout_grid.addRow('Hilite cell color', self.btn_cell_hilite_bg_color)
-        self.layout_grid.addRow('Hilite cell style', self.combo_cell_hilite_style)
-        self.layout_grid.addRow('Hilite cell font color', self.btn_cell_hilite_fg_color)
-        self.layout_grid.addRow('Hilite cell font', self.btn_cell_hilite_font)
+        self.layout_grid.addRow(_('Hilite cell color'), self.btn_cell_hilite_bg_color)
+        self.layout_grid.addRow(_('Hilite cell style'), self.combo_cell_hilite_style)
+        self.layout_grid.addRow(_('Hilite cell font color'), self.btn_cell_hilite_fg_color)
+        self.layout_grid.addRow(_('Hilite cell font'), self.btn_cell_hilite_font)
         self.layout_wspacer4 = QtWidgets.QVBoxLayout()
         self.layout_wspacer4.addSpacing(20)
         self.layout_grid.addRow(self.layout_wspacer4)
-        self.layout_grid.addRow('Blank cell color', self.btn_cell_blank_bg_color)
-        self.layout_grid.addRow('Blank cell style', self.combo_cell_blank_style)
+        self.layout_grid.addRow(_('Blank cell color'), self.btn_cell_blank_bg_color)
+        self.layout_grid.addRow(_('Blank cell style'), self.combo_cell_blank_style)
         self.layout_wspacer5 = QtWidgets.QVBoxLayout()
         self.layout_wspacer5.addSpacing(20)
         self.layout_grid.addRow(self.layout_wspacer5)
-        self.layout_grid.addRow('Filler cell color', self.btn_cell_filler_bg_color)
-        self.layout_grid.addRow('Filler cell style', self.combo_cell_filler_style)
+        self.layout_grid.addRow(_('Filler cell color'), self.btn_cell_filler_bg_color)
+        self.layout_grid.addRow(_('Filler cell style'), self.combo_cell_filler_style)
         self.layout_wspacer6 = QtWidgets.QVBoxLayout()
         self.layout_wspacer6.addSpacing(20)
         self.layout_grid.addRow(self.layout_wspacer6)
-        self.layout_grid.addRow('Surrounding color', self.btn_cell_filler2_bg_color)
-        self.layout_grid.addRow('Surrounding style', self.combo_cell_filler2_style)  
+        self.layout_grid.addRow(_('Surrounding color'), self.btn_cell_filler2_bg_color)
+        self.layout_grid.addRow(_('Surrounding style'), self.combo_cell_filler2_style)  
         
         self.widget_layout_grid = QtWidgets.QWidget()
         self.widget_layout_grid.setLayout(self.layout_grid)
@@ -1151,19 +1152,19 @@ class SettingsDialog(BasicDialog):
         self.btn_clue_normal_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_clue_normal_bg_color.clicked.connect(self.on_color_btn_clicked)
         self.combo_clue_normal_style = QtWidgets.QComboBox()
-        self.combo_clue_normal_style.addItems(['Solid', 'Dense', 'Striped', 'Lines', 'Checkered', 'Diag1', 'Diag2', 'Diag cross', 'Gradient linear', 'Gradient radial'])
+        self.combo_clue_normal_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_clue_normal_style.setEditable(False)
         self.combo_clue_normal_style.setCurrentIndex(0)
         self.btn_clue_normal_fg_color = QtWidgets.QPushButton('')
         self.btn_clue_normal_fg_color.setStyleSheet('background-color: black;')
         self.btn_clue_normal_fg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_clue_normal_fg_color.clicked.connect(self.on_color_btn_clicked)
-        self.btn_clue_normal_font = QtWidgets.QPushButton('Font...')
+        self.btn_clue_normal_font = QtWidgets.QPushButton(_('Font...'))
         self.btn_clue_normal_font.setStyleSheet('font-family: "Arial"; font-size: 12pt; font-weight: bold')
         self.btn_clue_normal_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_clue_normal_font.clicked.connect(self.on_font_btn_clicked)
         self.combo_clue_normal_alignment = QtWidgets.QComboBox()
-        self.combo_clue_normal_alignment.addItems(['Left', 'Center', 'Right'])
+        self.combo_clue_normal_alignment.addItems([_('Left'), _('Center'), _('Right')])
         self.combo_clue_normal_alignment.setEditable(False)
         self.combo_clue_normal_alignment.setCurrentIndex(0)
 
@@ -1172,7 +1173,7 @@ class SettingsDialog(BasicDialog):
         self.btn_clue_incomplete_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_clue_incomplete_bg_color.clicked.connect(self.on_color_btn_clicked)
         self.combo_clue_incomplete_style = QtWidgets.QComboBox()
-        self.combo_clue_incomplete_style.addItems(['Solid', 'Dense', 'Striped', 'Lines', 'Checkered', 'Diag1', 'Diag2', 'Diag cross', 'Gradient linear', 'Gradient radial'])
+        self.combo_clue_incomplete_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_clue_incomplete_style.setEditable(False)
         self.combo_clue_incomplete_style.setCurrentIndex(0)
         self.btn_clue_incomplete_fg_color = QtWidgets.QPushButton('')
@@ -1185,7 +1186,7 @@ class SettingsDialog(BasicDialog):
         self.btn_clue_complete_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_clue_complete_bg_color.clicked.connect(self.on_color_btn_clicked)
         self.combo_clue_complete_style = QtWidgets.QComboBox()
-        self.combo_clue_complete_style.addItems(['Solid', 'Dense', 'Striped', 'Lines', 'Checkered', 'Diag1', 'Diag2', 'Diag cross', 'Gradient linear', 'Gradient radial'])
+        self.combo_clue_complete_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_clue_complete_style.setEditable(False)
         self.combo_clue_complete_style.setCurrentIndex(0)
         self.btn_clue_complete_fg_color = QtWidgets.QPushButton('')
@@ -1200,19 +1201,20 @@ class SettingsDialog(BasicDialog):
 
         self.layout_clues.addRow('Font', self.btn_clue_normal_font)
         self.layout_clues.addRow('Text alignment', self.combo_clue_normal_alignment)
+
         self.layout_clues_wspacer1 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer1.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer1)
 
-        self.layout_clues.addRow('Normal color', self.btn_clue_normal_bg_color)
-        self.layout_clues.addRow('Normal style', self.combo_clue_normal_style)
-        self.layout_clues.addRow('Normal font color', self.btn_clue_normal_fg_color)        
+        self.layout_clues.addRow(_('Normal color'), self.btn_clue_normal_bg_color)
+        self.layout_clues.addRow(_('Normal style'), self.combo_clue_normal_style)
+        self.layout_clues.addRow(_('Normal font color'), self.btn_clue_normal_fg_color)        
         self.layout_clues_wspacer2 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer2.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer2)
-        self.layout_clues.addRow('Incomplete color', self.btn_clue_incomplete_bg_color)
-        self.layout_clues.addRow('Incomplete style', self.combo_clue_incomplete_style)
-        self.layout_clues.addRow('Incomplete font color', self.btn_clue_incomplete_fg_color)        
+        self.layout_clues.addRow(_('Incomplete color'), self.btn_clue_incomplete_bg_color)
+        self.layout_clues.addRow(_('Incomplete style'), self.combo_clue_incomplete_style)
+        self.layout_clues.addRow(_('Incomplete font color'), self.btn_clue_incomplete_fg_color)        
         self.layout_clues_wspacer3 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer3.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer3)
@@ -1223,6 +1225,7 @@ class SettingsDialog(BasicDialog):
         self.layout_clues_wspacer31.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer31)   
         self.layout_clues.addRow('Surrounding color', self.btn_clue_surrounding_color)    
+
         self.layout_clues_wspacer4 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer4.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer4)
@@ -1230,10 +1233,10 @@ class SettingsDialog(BasicDialog):
         self.layout_clues_all = QtWidgets.QVBoxLayout()
         self.layout_clues_all.addLayout(self.layout_clues)
 
-        self.gb_clues_cols = QtWidgets.QGroupBox('Columns')
+        self.gb_clues_cols = QtWidgets.QGroupBox(_('Columns'))
         self.layout_gb_clues_cols = QtWidgets.QHBoxLayout()
         self.lw_clues_cols = QtWidgets.QListWidget()
-        self.lw_clues_cols.setToolTip('Check / uncheck items to show or hide columns, drag to reorder')
+        self.lw_clues_cols.setToolTip(_('Check / uncheck items to show or hide columns, drag to reorder'))
         self.lw_clues_cols.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         #self.lw_clues_cols.setDragEnabled(True)
         #self.lw_clues_cols.setAcceptDrops(True)
@@ -1245,9 +1248,9 @@ class SettingsDialog(BasicDialog):
 
         self.tb_clues_cols = QtWidgets.QToolBar()
         self.tb_clues_cols.setOrientation(QtCore.Qt.Vertical)
-        self.act_cluecol_up = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), 'Up')
+        self.act_cluecol_up = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
         self.act_cluecol_up.triggered.connect(self.on_act_cluecol_up)
-        self.act_cluecol_down = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), 'Down')
+        self.act_cluecol_down = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), _('Down'))
         self.act_cluecol_down.triggered.connect(self.on_act_cluecol_down)
         self.layout_gb_clues_cols.addWidget(self.tb_clues_cols)
 
@@ -1281,44 +1284,44 @@ class SettingsDialog(BasicDialog):
         self.spin_lookup_timeout = QtWidgets.QSpinBox()
         self.spin_lookup_timeout.setRange(0, 60)
         self.spin_lookup_timeout.setValue(5)
-        self.layout_lookup_top.addRow('Default language:', self.combo_lookup_deflang)
-        self.layout_lookup_top.addRow('Request timeout (sec):', self.spin_lookup_timeout)
+        self.layout_lookup_top.addRow(_('Default language:'), self.combo_lookup_deflang)
+        self.layout_lookup_top.addRow(_('Request timeout (sec):'), self.spin_lookup_timeout)
         self.layout_lookup.addLayout(self.layout_lookup_top)
 
         # dictionaries
-        self.gb_dics = QtWidgets.QGroupBox('Dictionaries')
+        self.gb_dics = QtWidgets.QGroupBox(_('Dictionaries'))
         self.layout_gb_dics = QtWidgets.QFormLayout()
         self.chb_dics_show = QtWidgets.QCheckBox('')
         self.chb_dics_exact = QtWidgets.QCheckBox('')
         self.chb_dics_showpos = QtWidgets.QCheckBox('')
-        self.le_dics_badpos = QtWidgets.QLineEdit('UNKNOWN')
+        self.le_dics_badpos = QtWidgets.QLineEdit(_('UNKNOWN'))
         self.le_dics_apikey_mw = QtWidgets.QLineEdit('')
-        self.le_dics_apikey_mw.setToolTip('Merriam-Webster Dictionary API key (empty string to use default)')
+        self.le_dics_apikey_mw.setToolTip(_('Merriam-Webster Dictionary API key (empty string to use default)'))
         self.le_dics_apikey_yandex = QtWidgets.QLineEdit('')
-        self.le_dics_apikey_yandex.setToolTip('Yandex Dictionary API key (empty string to use default)')
-        self.layout_gb_dics.addRow('Show:', self.chb_dics_show)
-        self.layout_gb_dics.addRow('Exact word match:', self.chb_dics_exact)
-        self.layout_gb_dics.addRow('Show parts of speech:', self.chb_dics_showpos)
-        self.layout_gb_dics.addRow('Unknown parts of speech:', self.le_dics_badpos)
-        self.layout_gb_dics.addRow('Merriam-Webster Dictionary API key:', self.le_dics_apikey_mw)
-        self.layout_gb_dics.addRow('Yandex Dictionary API key:', self.le_dics_apikey_yandex)
+        self.le_dics_apikey_yandex.setToolTip(_('Yandex Dictionary API key (empty string to use default)'))
+        self.layout_gb_dics.addRow(_('Show:'), self.chb_dics_show)
+        self.layout_gb_dics.addRow(_('Exact word match:'), self.chb_dics_exact)
+        self.layout_gb_dics.addRow(_('Show parts of speech:'), self.chb_dics_showpos)
+        self.layout_gb_dics.addRow(_('Unknown parts of speech:'), self.le_dics_badpos)
+        self.layout_gb_dics.addRow(_('Merriam-Webster Dictionary API key:'), self.le_dics_apikey_mw)
+        self.layout_gb_dics.addRow(_('Yandex Dictionary API key:'), self.le_dics_apikey_yandex)
         self.gb_dics.setLayout(self.layout_gb_dics)
         self.layout_lookup.addWidget(self.gb_dics)
 
         # google
-        self.gb_google = QtWidgets.QGroupBox('Google Search')
+        self.gb_google = QtWidgets.QGroupBox(_('Google Search'))
         self.layout_gb_google = QtWidgets.QFormLayout()
         self.chb_google_show = QtWidgets.QCheckBox('')
         self.chb_google_exact = QtWidgets.QCheckBox('')
         self.chb_google_safe = QtWidgets.QCheckBox('')
         self.le_google_filetypes = QtWidgets.QLineEdit('')
-        self.le_google_filetypes.setToolTip('Add file types delimited by SPACE, e.g. "txt doc pdf"')
-        self.chb_google_lang_all = QtWidgets.QCheckBox('ALL')
+        self.le_google_filetypes.setToolTip(_('Add file types delimited by SPACE, e.g. "txt doc pdf"'))
+        self.chb_google_lang_all = QtWidgets.QCheckBox(_('ALL'))
         self.chb_google_lang_all.setTristate(True)
         self.chb_google_lang_all.setCheckState(QtCore.Qt.Unchecked)
         self.chb_google_lang_all.stateChanged.connect(self.on_chb_google_lang_all) #
         self.lw_google_lang = QtWidgets.QListWidget()
-        self.lw_google_lang.setToolTip('Search documents restricted only to checked languages')
+        self.lw_google_lang.setToolTip(_('Search documents restricted only to checked languages'))
         d = GoogleSearch.get_document_languages()
         for l in d:
             lwitem = QtWidgets.QListWidgetItem(d[l])
@@ -1327,12 +1330,12 @@ class SettingsDialog(BasicDialog):
             lwitem.setCheckState(QtCore.Qt.Unchecked)
             self.lw_google_lang.addItem(lwitem)
         self.lw_google_lang.itemChanged.connect(self.on_lw_google_lang_changed) #
-        self.chb_google_interface_lang_all = QtWidgets.QCheckBox('ALL')
+        self.chb_google_interface_lang_all = QtWidgets.QCheckBox(_('ALL'))
         self.chb_google_interface_lang_all.setTristate(True)
         self.chb_google_interface_lang_all.setCheckState(QtCore.Qt.Unchecked)
         self.chb_google_interface_lang_all.stateChanged.connect(self.on_chb_google_interface_lang_all) #
         self.lw_google_interface_lang = QtWidgets.QListWidget()
-        self.lw_google_interface_lang.setToolTip('Search using only checked interface languages')
+        self.lw_google_interface_lang.setToolTip(_('Search using only checked interface languages'))
         d = GoogleSearch.get_interface_languages()
         for l in d:
             lwitem = QtWidgets.QListWidgetItem(d[l])
@@ -1341,12 +1344,12 @@ class SettingsDialog(BasicDialog):
             lwitem.setCheckState(QtCore.Qt.Unchecked)
             self.lw_google_interface_lang.addItem(lwitem)
         self.lw_google_interface_lang.itemChanged.connect(self.on_lw_google_interface_lang_changed) #
-        self.chb_google_geo_all = QtWidgets.QCheckBox('ALL')
+        self.chb_google_geo_all = QtWidgets.QCheckBox(_('ALL'))
         self.chb_google_geo_all.setTristate(True)
         self.chb_google_geo_all.setCheckState(QtCore.Qt.Unchecked)
         self.chb_google_geo_all.stateChanged.connect(self.on_chb_google_geo_all) #
         self.lw_google_geo = QtWidgets.QListWidget()
-        self.lw_google_geo.setToolTip('Search in checked locations only')
+        self.lw_google_geo.setToolTip(_('Search in checked locations only'))
         d = GoogleSearch.get_user_countries()
         for l in d:
             lwitem = QtWidgets.QListWidgetItem(d[l])
@@ -1359,30 +1362,30 @@ class SettingsDialog(BasicDialog):
         self.le_google_relatedsite = QtWidgets.QLineEdit('')
         self.le_google_insite = QtWidgets.QLineEdit('')
         self.spin_google_nresults = QtWidgets.QSpinBox()
-        self.spin_google_nresults.setToolTip('Limit returned results for page (-1 = no limit)')
+        self.spin_google_nresults.setToolTip(_('Limit returned results for page (-1 = no limit)'))
         self.spin_google_nresults.setRange(-1, 10)
         self.spin_google_nresults.setValue(-1)
         self.le_google_apikey = QtWidgets.QLineEdit('')
-        self.le_google_apikey.setToolTip('Google Custom Search API key (empty string to use default)')
+        self.le_google_apikey.setToolTip(_('Google Custom Search API key (empty string to use default)'))
         self.le_google_cseid = QtWidgets.QLineEdit('')
-        self.le_google_cseid.setToolTip('Google Custom Search CSE ID (empty string to use default)')
+        self.le_google_cseid.setToolTip(_('Google Custom Search CSE ID (empty string to use default)'))
 
-        self.layout_gb_google.addRow('Show:', self.chb_google_show)
-        self.layout_gb_google.addRow('Exact phrase:', self.chb_google_exact)
-        self.layout_gb_google.addRow('File types:', self.le_google_filetypes)
+        self.layout_gb_google.addRow(_('Show:'), self.chb_google_show)
+        self.layout_gb_google.addRow(_('Exact phrase:'), self.chb_google_exact)
+        self.layout_gb_google.addRow(_('File types:'), self.le_google_filetypes)
         self.layout_gb_google.addRow('', self.chb_google_lang_all)
-        self.layout_gb_google.addRow('Document languages:', self.lw_google_lang)
+        self.layout_gb_google.addRow(_('Document languages:'), self.lw_google_lang)
         self.layout_gb_google.addRow('', self.chb_google_interface_lang_all)
-        self.layout_gb_google.addRow('Interface languages:', self.lw_google_interface_lang)
+        self.layout_gb_google.addRow(_('Interface languages:'), self.lw_google_interface_lang)
         self.layout_gb_google.addRow('', self.chb_google_geo_all)
-        self.layout_gb_google.addRow('Locations:', self.lw_google_geo)
-        self.layout_gb_google.addRow('Link site:', self.le_google_linksite)
-        self.layout_gb_google.addRow('Related (parent) site:', self.le_google_relatedsite)
-        self.layout_gb_google.addRow('Search in site:', self.le_google_insite)
-        self.layout_gb_google.addRow('Results per page:', self.spin_google_nresults)
-        self.layout_gb_google.addRow('Safe filter:', self.chb_google_safe)
-        self.layout_gb_google.addRow('Google Custom Search API key:', self.le_google_apikey)
-        self.layout_gb_google.addRow('Google Custom Search CSE ID:', self.le_google_cseid)
+        self.layout_gb_google.addRow(_('Locations:'), self.lw_google_geo)
+        self.layout_gb_google.addRow(_('Link site:'), self.le_google_linksite)
+        self.layout_gb_google.addRow(_('Related (parent) site:'), self.le_google_relatedsite)
+        self.layout_gb_google.addRow(_('Search in site:'), self.le_google_insite)
+        self.layout_gb_google.addRow(_('Results per page:'), self.spin_google_nresults)
+        self.layout_gb_google.addRow(_('Safe filter:'), self.chb_google_safe)
+        self.layout_gb_google.addRow(_('Google Custom Search API key:'), self.le_google_apikey)
+        self.layout_gb_google.addRow(_('Google Custom Search CSE ID:'), self.le_google_cseid)
 
         self.gb_google.setLayout(self.layout_gb_google)
         self.layout_lookup.addWidget(self.gb_google)
@@ -1397,26 +1400,26 @@ class SettingsDialog(BasicDialog):
         self.layout_importexport = QtWidgets.QVBoxLayout()
         self.layout_importexport.setSpacing(10)
 
-        self.gb_export = QtWidgets.QGroupBox('Export')
+        self.gb_export = QtWidgets.QGroupBox(_('Export'))
         self.layout_gb_export = QtWidgets.QFormLayout()
         self.chb_export_openfile = QtWidgets.QCheckBox('')
         self.chb_export_clearcw = QtWidgets.QCheckBox('')
         self.spin_export_resolution_img = QtWidgets.QSpinBox()
         self.spin_export_resolution_img.setRange(0, 2400)
-        self.spin_export_resolution_img.setSuffix(' dpi')
+        self.spin_export_resolution_img.setSuffix(_(' dpi'))
         self.spin_export_resolution_pdf = QtWidgets.QSpinBox()
         self.spin_export_resolution_pdf.setRange(0, 2400)
-        self.spin_export_resolution_pdf.setSuffix(' dpi')
+        self.spin_export_resolution_pdf.setSuffix(_(' dpi'))
         self.spin_export_cellsize = QtWidgets.QSpinBox()
         self.spin_export_cellsize.setRange(2, 100)
-        self.spin_export_cellsize.setSuffix(' mm')
+        self.spin_export_cellsize.setSuffix(_(' mm'))
         self.spin_export_quality = QtWidgets.QSpinBox()
         self.spin_export_quality.setRange(-1, 100)
         self.spin_export_quality.setSuffix(' %')
-        self.spin_export_quality.setToolTip('Quality in percent (set to -1 for auto quality)')
-        self.btn_export_auto_resolution_img = QtWidgets.QPushButton('Auto')
+        self.spin_export_quality.setToolTip(_('Quality in percent (set to -1 for auto quality)'))
+        self.btn_export_auto_resolution_img = QtWidgets.QPushButton(_('Auto'))
         self.btn_export_auto_resolution_img.clicked.connect(self.on_btn_export_auto_resolution_img)
-        self.btn_export_auto_resolution_pdf = QtWidgets.QPushButton('Auto')
+        self.btn_export_auto_resolution_pdf = QtWidgets.QPushButton(_('Auto'))
         self.btn_export_auto_resolution_pdf.clicked.connect(self.on_btn_export_auto_resolution_pdf)
         self.layout_export_resolution_img = QtWidgets.QHBoxLayout()
         self.layout_export_resolution_img.addWidget(self.spin_export_resolution_img)
@@ -1426,14 +1429,14 @@ class SettingsDialog(BasicDialog):
         self.layout_export_resolution_pdf.addWidget(self.btn_export_auto_resolution_pdf)
         self.le_svg_title = QtWidgets.QLineEdit()
         self.le_svg_description = QtWidgets.QLineEdit()
-        self.layout_gb_export.addRow('Image resolution', self.layout_export_resolution_img)
-        self.layout_gb_export.addRow('PDF resolution', self.layout_export_resolution_pdf)
-        self.layout_gb_export.addRow('Image quality', self.spin_export_quality)
-        self.layout_gb_export.addRow('Output grid cell size', self.spin_export_cellsize)
-        self.layout_gb_export.addRow('SVG image title', self.le_svg_title)
-        self.layout_gb_export.addRow('SVG image description', self.le_svg_description)
-        self.layout_gb_export.addRow('Clear crossword before export', self.chb_export_clearcw)
-        self.layout_gb_export.addRow('Open exported file', self.chb_export_openfile)
+        self.layout_gb_export.addRow(_('Image resolution'), self.layout_export_resolution_img)
+        self.layout_gb_export.addRow(_('PDF resolution'), self.layout_export_resolution_pdf)
+        self.layout_gb_export.addRow(_('Image quality'), self.spin_export_quality)
+        self.layout_gb_export.addRow(_('Output grid cell size'), self.spin_export_cellsize)
+        self.layout_gb_export.addRow(_('SVG image title'), self.le_svg_title)
+        self.layout_gb_export.addRow(_('SVG image description'), self.le_svg_description)
+        self.layout_gb_export.addRow(_('Clear crossword before export'), self.chb_export_clearcw)
+        self.layout_gb_export.addRow(_('Open exported file'), self.chb_export_openfile)
         self.gb_export.setLayout(self.layout_gb_export)
         self.layout_importexport.addWidget(self.gb_export)
 
@@ -1457,54 +1460,54 @@ class SettingsDialog(BasicDialog):
 
         self.layout_combo_print_layout = QtWidgets.QFormLayout()
         self.combo_print_layout = QtWidgets.QComboBox()
-        self.combo_print_layout.addItems(['Auto', 'Portrait', 'Landscape'])
+        self.combo_print_layout.addItems([_('Auto'), _('Portrait'), _('Landscape')])
         self.combo_print_layout.setEditable(False)
         self.le_print_title = QtWidgets.QLineEdit('<title>')
-        self.le_print_clues_title = QtWidgets.QLineEdit('Clues')
+        self.le_print_clues_title = QtWidgets.QLineEdit(_('Clues'))
 
-        self.layout_combo_print_layout.addRow('Page layout', self.combo_print_layout)
-        self.layout_combo_print_layout.addRow('Crossword title', self.le_print_title)
-        self.layout_combo_print_layout.addRow('Clues title (header)', self.le_print_clues_title)
+        self.layout_combo_print_layout.addRow(_('Page layout'), self.combo_print_layout)
+        self.layout_combo_print_layout.addRow(_('Crossword title'), self.le_print_title)
+        self.layout_combo_print_layout.addRow(_('Clues title (header)'), self.le_print_clues_title)
 
-        self.gb_print_margins = QtWidgets.QGroupBox('Margins')
+        self.gb_print_margins = QtWidgets.QGroupBox(_('Margins'))
         self.layout_gb_print_margins = QtWidgets.QFormLayout()
         self.spin_margin_left = QtWidgets.QSpinBox()
         self.spin_margin_left.setRange(0, 50)
-        self.spin_margin_left.setSuffix(' mm')
+        self.spin_margin_left.setSuffix(_(' mm'))
         self.spin_margin_right = QtWidgets.QSpinBox()
         self.spin_margin_right.setRange(0, 50)
-        self.spin_margin_right.setSuffix(' mm')
+        self.spin_margin_right.setSuffix(_(' mm'))
         self.spin_margin_top = QtWidgets.QSpinBox()
         self.spin_margin_top.setRange(0, 100)
-        self.spin_margin_top.setSuffix(' mm')
+        self.spin_margin_top.setSuffix(_(' mm'))
         self.spin_margin_bottom = QtWidgets.QSpinBox()
         self.spin_margin_bottom.setRange(0, 100)
-        self.spin_margin_bottom.setSuffix(' mm')
-        self.layout_gb_print_margins.addRow('Left', self.spin_margin_left)
-        self.layout_gb_print_margins.addRow('Right', self.spin_margin_right)
-        self.layout_gb_print_margins.addRow('Top', self.spin_margin_top)
-        self.layout_gb_print_margins.addRow('Bottom', self.spin_margin_bottom)
+        self.spin_margin_bottom.setSuffix(_(' mm'))
+        self.layout_gb_print_margins.addRow(_('Left'), self.spin_margin_left)
+        self.layout_gb_print_margins.addRow(_('Right'), self.spin_margin_right)
+        self.layout_gb_print_margins.addRow(_('Top'), self.spin_margin_top)
+        self.layout_gb_print_margins.addRow(_('Bottom'), self.spin_margin_bottom)
         self.gb_print_margins.setLayout(self.layout_gb_print_margins)
-        self.chb_print_font_embed = QtWidgets.QCheckBox('Embed fonts')
-        self.chb_print_antialias = QtWidgets.QCheckBox('Antialiasing')
-        self.chb_print_print_cw = QtWidgets.QCheckBox('Print crossword grid')
-        self.chb_print_print_clues = QtWidgets.QCheckBox('Print clues')
-        self.chb_print_clear_cw = QtWidgets.QCheckBox('Empty grid')
+        self.chb_print_font_embed = QtWidgets.QCheckBox(_('Embed fonts'))
+        self.chb_print_antialias = QtWidgets.QCheckBox(_('Antialiasing'))
+        self.chb_print_print_cw = QtWidgets.QCheckBox(_('Print crossword grid'))
+        self.chb_print_print_clues = QtWidgets.QCheckBox(_('Print clues'))
+        self.chb_print_clear_cw = QtWidgets.QCheckBox(_('Empty grid'))
         self.chb_print_print_cw.toggled.connect(self.chb_print_clear_cw.setEnabled)
-        self.chb_print_print_clue_letters = QtWidgets.QCheckBox('Include word size hint')
+        self.chb_print_print_clue_letters = QtWidgets.QCheckBox(_('Include word size hint'))
         self.chb_print_print_clues.toggled.connect(self.chb_print_print_clue_letters.setEnabled)
-        self.chb_print_print_info = QtWidgets.QCheckBox('Print crossword information')
-        self.chb_print_color_print = QtWidgets.QCheckBox('Colored output')        
-        self.chb_print_openfile = QtWidgets.QCheckBox('Open file (PDF) on print complete')        
+        self.chb_print_print_info = QtWidgets.QCheckBox(_('Print crossword information'))
+        self.chb_print_color_print = QtWidgets.QCheckBox(_('Colored output'))        
+        self.chb_print_openfile = QtWidgets.QCheckBox(_('Open file (PDF) on print complete'))        
 
-        self.gb_print_fonts = QtWidgets.QGroupBox('Fonts')
+        self.gb_print_fonts = QtWidgets.QGroupBox(_('Fonts'))
         self.layout_gb_print_fonts = QtWidgets.QFormLayout()
 
         self.btn_print_header_color = QtWidgets.QPushButton('')
         self.btn_print_header_color.setStyleSheet('background-color: blue;')
         self.btn_print_header_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_header_color.clicked.connect(self.on_color_btn_clicked)
-        self.btn_print_header_font = QtWidgets.QPushButton('Font...')
+        self.btn_print_header_font = QtWidgets.QPushButton(_('Font...'))
         self.btn_print_header_font.setStyleSheet('font-family: "Verdana"; font-size: 20pt; font-weight: bold;')
         self.btn_print_header_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_header_font.clicked.connect(self.on_font_btn_clicked)
@@ -1513,7 +1516,7 @@ class SettingsDialog(BasicDialog):
         self.btn_print_info_color.setStyleSheet('background-color: blue;')
         self.btn_print_info_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_info_color.clicked.connect(self.on_color_btn_clicked)
-        self.btn_print_info_font = QtWidgets.QPushButton('Font...')
+        self.btn_print_info_font = QtWidgets.QPushButton(_('Font...'))
         self.btn_print_info_font.setStyleSheet('font-family: "Verdana"; font-size: 20pt; font-weight: bold;')
         self.btn_print_info_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_info_font.clicked.connect(self.on_font_btn_clicked)
@@ -1522,7 +1525,7 @@ class SettingsDialog(BasicDialog):
         self.btn_print_clue_number_color.setStyleSheet('background-color: blue;')
         self.btn_print_clue_number_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_clue_number_color.clicked.connect(self.on_color_btn_clicked)
-        self.btn_print_clue_number_font = QtWidgets.QPushButton('Font...')
+        self.btn_print_clue_number_font = QtWidgets.QPushButton(_('Font...'))
         self.btn_print_clue_number_font.setStyleSheet('font-family: "Verdana"; font-size: 20pt; font-weight: bold;')
         self.btn_print_clue_number_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_clue_number_font.clicked.connect(self.on_font_btn_clicked)
@@ -1531,7 +1534,7 @@ class SettingsDialog(BasicDialog):
         self.btn_print_clue_text_color.setStyleSheet('background-color: blue;')
         self.btn_print_clue_text_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_clue_text_color.clicked.connect(self.on_color_btn_clicked)
-        self.btn_print_clue_text_font = QtWidgets.QPushButton('Font...')
+        self.btn_print_clue_text_font = QtWidgets.QPushButton(_('Font...'))
         self.btn_print_clue_text_font.setStyleSheet('font-family: "Verdana"; font-size: 20pt; font-weight: bold;')
         self.btn_print_clue_text_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_clue_text_font.clicked.connect(self.on_font_btn_clicked)
@@ -1540,21 +1543,21 @@ class SettingsDialog(BasicDialog):
         self.btn_print_clue_sizehint_color.setStyleSheet('background-color: blue;')
         self.btn_print_clue_sizehint_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_clue_sizehint_color.clicked.connect(self.on_color_btn_clicked)
-        self.btn_print_clue_sizehint_font = QtWidgets.QPushButton('Font...')
+        self.btn_print_clue_sizehint_font = QtWidgets.QPushButton(_('Font...'))
         self.btn_print_clue_sizehint_font.setStyleSheet('font-family: "Verdana"; font-size: 20pt; font-weight: bold;')
         self.btn_print_clue_sizehint_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_print_clue_sizehint_font.clicked.connect(self.on_font_btn_clicked)
 
-        self.layout_gb_print_fonts.addRow('Title color', self.btn_print_header_color)
-        self.layout_gb_print_fonts.addRow('Title font', self.btn_print_header_font)
-        self.layout_gb_print_fonts.addRow('Info color', self.btn_print_info_color)
-        self.layout_gb_print_fonts.addRow('Info font', self.btn_print_info_font)
-        self.layout_gb_print_fonts.addRow('Clues color', self.btn_print_clue_text_color)
-        self.layout_gb_print_fonts.addRow('Clues font', self.btn_print_clue_text_font)
-        self.layout_gb_print_fonts.addRow('Word number color', self.btn_print_clue_number_color)
-        self.layout_gb_print_fonts.addRow('Word number font', self.btn_print_clue_number_font)
-        self.layout_gb_print_fonts.addRow('Word size hint color', self.btn_print_clue_sizehint_color)
-        self.layout_gb_print_fonts.addRow('Word size hint font', self.btn_print_clue_sizehint_font)
+        self.layout_gb_print_fonts.addRow(_('Title color'), self.btn_print_header_color)
+        self.layout_gb_print_fonts.addRow(_('Title font'), self.btn_print_header_font)
+        self.layout_gb_print_fonts.addRow(_('Info color'), self.btn_print_info_color)
+        self.layout_gb_print_fonts.addRow(_('Info font'), self.btn_print_info_font)
+        self.layout_gb_print_fonts.addRow(_('Clues color'), self.btn_print_clue_text_color)
+        self.layout_gb_print_fonts.addRow(_('Clues font'), self.btn_print_clue_text_font)
+        self.layout_gb_print_fonts.addRow(_('Word number color'), self.btn_print_clue_number_color)
+        self.layout_gb_print_fonts.addRow(_('Word number font'), self.btn_print_clue_number_font)
+        self.layout_gb_print_fonts.addRow(_('Word size hint color'), self.btn_print_clue_sizehint_color)
+        self.layout_gb_print_fonts.addRow(_('Word size hint font'), self.btn_print_clue_sizehint_font)
         self.gb_print_fonts.setLayout(self.layout_gb_print_fonts)
 
         self.layout_printing.addLayout(self.layout_combo_print_layout)
@@ -1582,16 +1585,16 @@ class SettingsDialog(BasicDialog):
 
         self.spin_update_period = QtWidgets.QSpinBox()
         self.spin_update_period.setRange(-1, 365)
-        self.spin_update_period.setSuffix(' days')
-        self.spin_update_period.setToolTip('Set to -1 to disable update checks')
+        self.spin_update_period.setSuffix(_(' days'))
+        self.spin_update_period.setToolTip(_('Set to -1 to disable update checks'))
         self.chb_update_auto = QtWidgets.QCheckBox('')
         self.chb_update_major_only = QtWidgets.QCheckBox('')
         self.chb_update_restart = QtWidgets.QCheckBox('')       
         
         self.le_update_logfile = QtWidgets.QLineEdit('')
-        self.le_update_logfile.setToolTip('Log file for update operations')
-        self.act_update_log_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), 'Browse', None)
-        self.act_update_log_browse.setToolTip('Browse')
+        self.le_update_logfile.setToolTip(_('Log file for update operations'))
+        self.act_update_log_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), _('Browse'), None)
+        self.act_update_log_browse.setToolTip(_('Browse'))
         self.act_update_log_browse.triggered.connect(self.on_act_update_log_browse)
         self.btn_update_log_browse = QtWidgets.QToolButton()
         self.btn_update_log_browse.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -1600,11 +1603,11 @@ class SettingsDialog(BasicDialog):
         self.layout_update_log.addWidget(self.le_update_logfile)
         self.layout_update_log.addWidget(self.btn_update_log_browse)
 
-        self.layout_updating.addRow('Check for updates every', self.spin_update_period)
-        self.layout_updating.addRow('Check / update major releases only', self.chb_update_major_only)
-        self.layout_updating.addRow('Auto update', self.chb_update_auto)
-        self.layout_updating.addRow('Restart on update', self.chb_update_restart)
-        self.layout_updating.addRow('Log file', self.layout_update_log)
+        self.layout_updating.addRow(_('Check for updates every'), self.spin_update_period)
+        self.layout_updating.addRow(_('Check / update major releases only'), self.chb_update_major_only)
+        self.layout_updating.addRow(_('Auto update'), self.chb_update_auto)
+        self.layout_updating.addRow(_('Restart on update'), self.chb_update_restart)
+        self.layout_updating.addRow(_('Log file'), self.layout_update_log)
 
         self.page_updating.setLayout(self.layout_updating)
         self.stacked.addWidget(self.page_updating)
@@ -1615,24 +1618,24 @@ class SettingsDialog(BasicDialog):
         self.layout_sharing.setSpacing(10)
 
         self.le_sharing_account = QtWidgets.QLineEdit('')
-        self.le_sharing_account.setToolTip('Kloudless account ID (leave EMPTY for default)')
+        self.le_sharing_account.setToolTip(_('Kloudless account ID (leave EMPTY for default)'))
         self.le_sharing_token = QtWidgets.QLineEdit('')
-        self.le_sharing_token.setToolTip('Kloudless Bearer Token (leave EMPTY for default)')
+        self.le_sharing_token.setToolTip(_('Kloudless Bearer Token (leave EMPTY for default)'))
         self.le_sharing_root = QtWidgets.QLineEdit('')
-        self.le_sharing_root.setToolTip('Kloudless root folder (leave EMPTY for default)')
+        self.le_sharing_root.setToolTip(_('Kloudless root folder (leave EMPTY for default)'))
         self.le_sharing_user = QtWidgets.QLineEdit('')
-        self.le_sharing_user.setToolTip('Kloudless username (leave EMPTY to create new user automatically)')
+        self.le_sharing_user.setToolTip(_('Kloudless username (leave EMPTY to create new user automatically)'))
         self.chb_sharing_use_api_key = QtWidgets.QCheckBox('')
-        self.chb_sharing_use_api_key.setToolTip('Check this to use one single API key for authentication (WARNING! NOT SAFE!)')
+        self.chb_sharing_use_api_key.setToolTip(_('Check this to use one single API key for authentication (WARNING! NOT SAFE!)'))
         self.chb_sharing_ownbrowser = QtWidgets.QCheckBox('')
-        self.chb_sharing_ownbrowser.setToolTip('Use app inbuilt browser to open share links (otherwise, use system browser)')
+        self.chb_sharing_ownbrowser.setToolTip(_('Use app inbuilt browser to open share links (otherwise, use system browser)'))
 
-        self.layout_sharing.addRow('Kloudless account ID', self.le_sharing_account)
-        self.layout_sharing.addRow('Kloudless Bearer Token', self.le_sharing_token)
-        self.layout_sharing.addRow('Kloudless root folder', self.le_sharing_root)
-        self.layout_sharing.addRow('Kloudless username', self.le_sharing_user)
-        self.layout_sharing.addRow('Use API key', self.chb_sharing_use_api_key)
-        self.layout_sharing.addRow('Use inbuilt browser', self.chb_sharing_ownbrowser)
+        self.layout_sharing.addRow(_('Kloudless account ID'), self.le_sharing_account)
+        self.layout_sharing.addRow(_('Kloudless Bearer Token'), self.le_sharing_token)
+        self.layout_sharing.addRow(_('Kloudless root folder'), self.le_sharing_root)
+        self.layout_sharing.addRow(_('Kloudless username'), self.le_sharing_user)
+        self.layout_sharing.addRow(_('Use API key'), self.chb_sharing_use_api_key)
+        self.layout_sharing.addRow(_('Use inbuilt browser'), self.chb_sharing_ownbrowser)
 
         self.page_sharing.setLayout(self.layout_sharing)
         self.stacked.addWidget(self.page_sharing)
@@ -1641,7 +1644,7 @@ class SettingsDialog(BasicDialog):
         self.lw_clues_cols.clear()
         for col in CWSettings.settings['clues']['columns']:
             lwitem = QtWidgets.QListWidgetItem(col['name'])
-            if col['name'] == 'Direction':
+            if col['name'] == _('Direction'):
                 lwitem.setFlags(QtCore.Qt.NoItemFlags)
                 lwitem.setForeground(QtGui.QBrush(QtGui.QColor(QtCore.Qt.red), QtCore.Qt.SolidPattern))
             else:
@@ -1693,9 +1696,9 @@ class SettingsDialog(BasicDialog):
         
         # log
         log = self.combo_log.currentText()
-        if log == 'No log':
+        if log == _('No log'):
             settings['cw_settings']['log'] = None
-        elif log == 'Console':
+        elif log == _('Console'):
             settings['cw_settings']['log'] = 'stdout'
         else:
             settings['cw_settings']['log'] = log
@@ -1708,7 +1711,7 @@ class SettingsDialog(BasicDialog):
             src = json.loads(item.data(QtCore.Qt.UserRole))
             src['active'] = (item.checkState() == QtCore.Qt.Checked)
             if not src or not isinstance(src, dict):
-                print('No user data in src!')
+                print(_('No user data in src!'))
                 continue
             settings['wordsrc']['sources'].append(src)
             
@@ -2168,12 +2171,12 @@ class SettingsDialog(BasicDialog):
             settings = CWSettings.settings
 
         # common
-        if page is None or page == 'Common':
+        if page is None or page == _('Common'):
             self.le_tempdir.setText(settings['common']['temp_dir'])
             self.chb_autosave_cw.setChecked(settings['common']['autosave_cw'])
         
         # engine
-        if page is None or page == 'Generation':
+        if page is None or page == _('Generation'):
             # timeout
             self._set_spin_value_safe(self.spin_gen_timeout, settings['cw_settings']['timeout'])
             # method
@@ -2194,7 +2197,7 @@ class SettingsDialog(BasicDialog):
                 self.combo_log.setCurrentText(log)
         
         # Sources > Source management
-        if page is None or page == 'Source management':
+        if page is None or page == _('Source management'):
             # maxres
             val = settings['wordsrc']['maxres']
             if val is None:
@@ -2208,7 +2211,7 @@ class SettingsDialog(BasicDialog):
                 self.addoredit_wordsrc(src)
         
         # Sources > Search rules
-        if page is None or page == 'Search rules':
+        if page is None or page == _('Search rules'):
             # pos
             pos = settings['cw_settings']['pos']
             if isinstance(pos, str) and ',' in pos:
@@ -2226,7 +2229,7 @@ class SettingsDialog(BasicDialog):
             self.chb_excl_regex.setChecked(settings['wordsrc']['excluded']['regex'])
         
         # UI > Window
-        if page is None or page == 'Window':
+        if page is None or page == _('Window'):
             index = self.combo_apptheme.findText(settings['gui']['theme'])
             if index >= 0:
                 self.combo_apptheme.setCurrentIndex(index)
@@ -2235,7 +2238,7 @@ class SettingsDialog(BasicDialog):
                 self.combo_toolbarpos.setCurrentIndex(index)
         
         # UI > grid
-        if page is None or page == 'Grid':
+        if page is None or page == _('Grid'):
             # scale
             self._set_spin_value_safe(self.spin_cwscale, settings['grid_style']['scale'])
             # show grid
@@ -2410,7 +2413,7 @@ class SettingsDialog(BasicDialog):
                 self.combo_cell_filler2_style.setCurrentIndex(9)
         
         # UI > clues
-        if page is None or page == 'Clues':
+        if page is None or page == _('Clues'):
             # normal
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clues']['NORMAL']['bg_color']), self.btn_clue_normal_bg_color.styleSheet(), 'background-color')
             self.btn_clue_normal_bg_color.setStyleSheet(style)
@@ -2510,11 +2513,11 @@ class SettingsDialog(BasicDialog):
             self._fill_clue_cols()
 
         # UI > Toolbar
-        if page is None or page == 'Toolbar':
+        if page is None or page == _('Toolbar'):
             self.page_toolbar.from_list(settings['gui']['toolbar_actions'])
         
         # Lookup
-        if page is None or page == 'Definition lookup':
+        if page is None or page == _('Definition lookup'):
             self.combo_lookup_deflang.setCurrentText(LANG[settings['lookup']['default_lang']])
             self._set_spin_value_safe(self.spin_lookup_timeout, settings['lookup']['timeout'])
 
@@ -2558,7 +2561,7 @@ class SettingsDialog(BasicDialog):
             self.le_google_cseid.setText(settings['lookup']['google']['api_cse'] if settings['lookup']['google']['api_cse'] != GOOGLE_CSE else '')
 
         # Import & Expo
-        if page is None or page == 'Import & Export':
+        if page is None or page == _('Import & Export'):
 
             settings = CWSettings.settings['export']
 
@@ -2572,11 +2575,11 @@ class SettingsDialog(BasicDialog):
             self.le_svg_description.setText(settings['svg_description'])
         
         # Plugins
-        if page is None or page == 'Plugins':
+        if page is None or page == _('Plugins'):
             pass
         
         # Printing
-        if page is None or page == 'Printing':
+        if page is None or page == _('Printing'):
 
             settings = CWSettings.settings['printing']
 
@@ -2644,7 +2647,7 @@ class SettingsDialog(BasicDialog):
             self.btn_print_clue_sizehint_font.setStyleSheet(style)
 
         # Updating
-        if page is None or page == 'Updating':
+        if page is None or page == _('Updating'):
             
             settings = CWSettings.settings['update']
             self._set_spin_value_safe(self.spin_update_period, settings['check_every'])
@@ -2705,8 +2708,8 @@ class SettingsDialog(BasicDialog):
         """
         Restore default settings for current page or for all pages.
         """
-        btn = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, 'Restore defaults', 
-            'Press YES to restore defaults only for current page and YES TO ALL to restore all default settings', 
+        btn = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, _('Restore defaults'), 
+            _('Press YES to restore defaults only for current page and YES TO ALL to restore all default settings'), 
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.YesToAll | QtWidgets.QMessageBox.Cancel, self).exec()
         if btn != QtWidgets.QMessageBox.Cancel:
             self.from_settings(self.default_settings, self.tree.currentItem().text(0) if btn == QtWidgets.QMessageBox.Yes else None)
@@ -2716,17 +2719,17 @@ class SettingsDialog(BasicDialog):
         """
         Loads settings from file for current page or for all pages.
         """
-        btn = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, 'Load defaults', 
-            'Press YES to load settings only for current page and YES TO ALL to load all settings', 
+        btn = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, _('Load defaults'), 
+            _('Press YES to load settings only for current page and YES TO ALL to load all settings'), 
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.YesToAll | QtWidgets.QMessageBox.Cancel, self).exec()
         if btn == QtWidgets.QMessageBox.Cancel: return
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', os.getcwd(), 'Settings files (*.json)')
+        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Settings files (*.json)'))
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep).lower()
         settings = CWSettings.validate_file(selected_path)
         if not settings: 
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, 'Error', 
-            f"File '{selected_path}' has a wrong format or incomplete settings!", QtWidgets.QMessageBox.Ok, self).exec()
+            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
+            _("File '{}' has a wrong format or incomplete settings!").format(selected_path), QtWidgets.QMessageBox.Ok, self).exec()
             return
         self.from_settings(settings, self.tree.currentItem().text(0) if btn == QtWidgets.QMessageBox.Yes else None)
 
@@ -2735,7 +2738,7 @@ class SettingsDialog(BasicDialog):
         """
         Saves current settings to file.
         """
-        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Select file', os.path.join(os.getcwd(), 'settings.json'), 'Settings files (*.json)')
+        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), 'settings.json'), _('Settings files (*.json)'))
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep).lower()
         CWSettings.save_to_file(selected_path)
@@ -2746,7 +2749,7 @@ class SettingsDialog(BasicDialog):
         When a log combo item is selected.
         """
         if index == 2:
-            selected_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Select file', os.getcwd(), 'All files (*.*)')
+            selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.getcwd(), _('All files (*.*)'))
             if selected_path[0]:
                 self.combo_log.setCurrentText(selected_path[0].replace('/', os.sep))
             
@@ -2801,7 +2804,7 @@ class SettingsDialog(BasicDialog):
         try:
             src = json.loads(item.data(QtCore.Qt.UserRole))
             if not src or not isinstance(src, dict):
-                print('No user data in src!')
+                print(_('No user data in src!'))
                 return
             b_active = src['active']
             dia_src = WordSrcDialog(src)
@@ -2881,7 +2884,7 @@ class SettingsDialog(BasicDialog):
         #print(f"BTN '{btn.objectName()}': {style}")
         font = font_from_stylesheet(style)        
         # show font dialog
-        new_font = QtWidgets.QFontDialog.getFont(font, self, 'Choose font')
+        new_font = QtWidgets.QFontDialog.getFont(font, self, _('Choose font'))
         if new_font[1]:
             btn.setStyleSheet(font_to_stylesheet(new_font[0], style))
 
@@ -2987,7 +2990,7 @@ class SettingsDialog(BasicDialog):
         """
         current_dir = self.le_tempdir.text()
         default_dir = get_tempdir().replace('/', os.sep).lower()
-        selected_path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select directory', current_dir or default_dir)
+        selected_path = QtWidgets.QFileDialog.getExistingDirectory(self, _('Select directory'), current_dir or default_dir)
         selected_path = selected_path.replace('/', os.sep).lower()
         if selected_path:
             self.le_tempdir.setText(selected_path if selected_path != default_dir else '')
@@ -2999,7 +3002,7 @@ class SettingsDialog(BasicDialog):
         """
         current_file = make_abspath(self.le_update_logfile.text())
         default_file = os.path.join(os.getcwd(), 'update.log')
-        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Select file', current_file or default_file, 'All files (*.*)')
+        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), current_file or default_file, _('All files (*.*)'))
         if not selected_path[0]: return
         selected_path =  os.path.relpath(selected_path[0], os.path.dirname(__file__)).replace('/', os.sep)
         self.le_update_logfile.setText(selected_path)
@@ -3104,16 +3107,16 @@ class WordSuggestDialog(BasicDialog):
         self.getresults = getresults 
         self.results = []
         self.selected = ''
-        super().__init__(None, 'Word Lookup', 'magic-wand.png', 
+        super().__init__(None, _('Word Lookup'), 'magic-wand.png', 
               parent, flags)
 
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()
 
         self.layout_top = QtWidgets.QHBoxLayout()
-        self.l_word = QtWidgets.QLabel('Suggestions for:')
+        self.l_word = QtWidgets.QLabel(_('Suggestions for:'))
         self.le_word = QtWidgets.QLineEdit('')
-        self.le_word.setToolTip(f"Use '{BLANK}' as blank symbol")
+        self.le_word.setToolTip(_("Use '{}' as blank symbol").format(BLANK))
         self.le_word.textEdited.connect(self.on_word_edited)
         self.layout_top.addWidget(self.l_word)
         self.layout_top.addWidget(self.le_word)
@@ -3123,19 +3126,19 @@ class WordSuggestDialog(BasicDialog):
         self.lw_words.itemDoubleClicked.connect(self.on_word_dblclick)
         self.tb_actions = QtWidgets.QToolBar()
         self.tb_actions.setOrientation(QtCore.Qt.Vertical)
-        self.act_refresh = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), 'Refresh')
+        self.act_refresh = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Refresh'))
         self.act_refresh.triggered.connect(self.on_act_refresh)
-        self.act_sort = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/sort.png"), 'Sort')
+        self.act_sort = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/sort.png"), _('Sort'))
         self.act_sort.triggered.connect(self.on_act_sort)
-        self.act_shuffle = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/shuffle.png"), 'Shuffle')
+        self.act_shuffle = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/shuffle.png"), _('Shuffle'))
         self.act_shuffle.triggered.connect(self.on_act_shuffle)
-        self.act_source_config = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"), 'Sources...')
+        self.act_source_config = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"), _('Sources...'))
         self.act_source_config.triggered.connect(self.on_act_source_config)
         self.layout_center.addWidget(self.lw_words)
         self.layout_center.addWidget(self.tb_actions)
         self.l_count = QtWidgets.QLabel('')
-        self.ch_truncate = QtWidgets.QCheckBox('Truncate')
-        self.ch_truncate.setToolTip('Uncheck to retrieve all results with no truncation')
+        self.ch_truncate = QtWidgets.QCheckBox(_('Truncate'))
+        self.ch_truncate.setToolTip(_('Uncheck to retrieve all results with no truncation'))
         self.ch_truncate.setChecked(True)
         self.ch_truncate.toggled.connect(self.on_ch_truncate)
         self.layout_lower = QtWidgets.QHBoxLayout()
@@ -3167,7 +3170,7 @@ class WordSuggestDialog(BasicDialog):
     def validate(self): 
         self.selected = ''
         if self.lw_words.currentItem() is None:
-            MsgBox('No word selected!', self, 'Error', 'error')
+            MsgBox(_('No word selected!'), self, _('Error'), 'error')
             return False
         self.selected = self.lw_words.currentItem().text()
         return True
@@ -3181,7 +3184,7 @@ class WordSuggestDialog(BasicDialog):
                 cnt = len(self.results)
                 self.lw_words.addItems(self.results)
                 self.sort_words()
-        self.l_count.setText(f"{cnt} result{'s' if cnt and cnt > 1 else ''}")
+        self.l_count.setText(_("{} result{}").format(cnt, ('s' if cnt and cnt > 1 else '')))
         self.update_actions()
 
     def update_actions(self):
@@ -3246,12 +3249,12 @@ class PrintPreviewDialog(BasicDialog):
     
     def __init__(self, printer, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
         if not printer.isValid():
-            raise Exception('No valid printer!')
+            raise Exception(_('No valid printer!'))
         if getattr(mainwindow, 'cw', None) is None:
-            raise Exception('Crossword not available!')
+            raise Exception(_('Crossword not available!'))
         self.printer = printer
         self.mainwindow = mainwindow
-        super().__init__(None, f"Printing to: {self.printer.printerName()}", 'binoculars.png', 
+        super().__init__(None, _("Printing to: {}").format(self.printer.printerName()), 'binoculars.png', 
               parent, flags)
 
     def showEvent(self, event):      
@@ -3288,72 +3291,72 @@ class PrintPreviewDialog(BasicDialog):
         self.combo_page_size.setEditable(False)
         self.combo_page_size.setCurrentIndex(0)
         self.combo_page_size.activated.connect(self.on_combo_page_size)
-        self.layout_pagesize = self._make_labelled_widgets('pagesize', 'Page Size', [self.combo_page_size])
+        self.layout_pagesize = self._make_labelled_widgets('pagesize', _('Page Size'), [self.combo_page_size])
         self.layout_tb_main.addLayout(self.layout_pagesize)
 
         self.combo_view = QtWidgets.QComboBox()
-        self.combo_view.addItems(['Single', 'Two', 'All'])
+        self.combo_view.addItems([_('Single'), _('Two'), _('All')])
         self.combo_view.setEditable(False)
         self.combo_view.setCurrentIndex(0)
         self.combo_view.activated.connect(self.on_combo_view)
-        self.layout_view = self._make_labelled_widgets('view', 'View', [self.combo_view])
+        self.layout_view = self._make_labelled_widgets('view', _('View'), [self.combo_view])
         self.layout_tb_main.addLayout(self.layout_view)
 
         self.combo_layout = QtWidgets.QComboBox()
-        self.combo_layout.addItems(['Auto', 'Portrait', 'Landscape'])
+        self.combo_layout.addItems([_('Auto'), _('Portrait'), _('Landscape')])
         self.combo_layout.setEditable(False)
         self.combo_layout.setCurrentIndex(0)
         self.combo_layout.activated.connect(self.on_combo_layout)
-        self.layout_layout = self._make_labelled_widgets('layout', 'Layout', [self.combo_layout])
+        self.layout_layout = self._make_labelled_widgets('layout', _('Layout'), [self.combo_layout])
         self.layout_tb_main.addLayout(self.layout_layout)
 
-        self.btn_fit_width = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/width.png"), 'Zoom to width', None)
-        self.btn_fit_width.setToolTip('Zoom to window width')
+        self.btn_fit_width = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/width.png"), _('Zoom to width'), None)
+        self.btn_fit_width.setToolTip(_('Zoom to window width'))
         self.btn_fit_width.clicked.connect(self.on_btn_fit_width)
-        self.btn_fit_all = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/fitsize.png"), 'Fit in window', None)
-        self.btn_fit_all.setToolTip('Zoom to window size')
+        self.btn_fit_all = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/fitsize.png"), _('Fit in window'), None)
+        self.btn_fit_all.setToolTip(_('Zoom to window size'))
         self.btn_fit_all.clicked.connect(self.on_btn_fit_all)
         self.slider_zoom = QtWidgets.QSlider()
         self.slider_zoom.setOrientation(QtCore.Qt.Horizontal)
         self.slider_zoom.setRange(10, 500)
         self.slider_zoom.setSingleStep(1)
         self.slider_zoom.setPageStep(10)
-        self.slider_zoom.setToolTip('Zoom %')
+        self.slider_zoom.setToolTip(_('Zoom %'))
         self.slider_zoom.valueChanged.connect(self.on_zoom_changed)
-        self.layout_fit = self._make_labelled_widgets('fit', 'Fit & Zoom', [self.btn_fit_width, self.btn_fit_all, self.slider_zoom])
+        self.layout_fit = self._make_labelled_widgets('fit', _('Fit & Zoom'), [self.btn_fit_width, self.btn_fit_all, self.slider_zoom])
         self.layout_tb_main.addLayout(self.layout_fit)
 
         self.combo_color = QtWidgets.QComboBox()
-        self.combo_color.addItems(['Greyscale', 'Color'])
+        self.combo_color.addItems([_('Greyscale'), _('Color')])
         self.combo_color.setEditable(False)
         self.combo_color.setCurrentIndex(1)
         self.combo_color.activated.connect(self.on_combo_color)
-        self.layout_color = self._make_labelled_widgets('color', 'Color Print', [self.combo_color])
+        self.layout_color = self._make_labelled_widgets('color', _('Color Print'), [self.combo_color])
         self.layout_tb_main.addLayout(self.layout_color)
 
         self.le_margin_l = QtWidgets.QLineEdit('0')
         self.le_margin_l.setMaximumWidth(20)
-        self.le_margin_l.setToolTip('Left, mm')
+        self.le_margin_l.setToolTip(_('Left, mm'))
         self.le_margin_l.textChanged.connect(self.on_margins_changed)
         self.le_margin_r = QtWidgets.QLineEdit('0')
         self.le_margin_r.setMaximumWidth(20)
-        self.le_margin_r.setToolTip('Right, mm')
+        self.le_margin_r.setToolTip(_('Right, mm'))
         self.le_margin_r.textChanged.connect(self.on_margins_changed)
         self.le_margin_t = QtWidgets.QLineEdit('0')
         self.le_margin_t.setMaximumWidth(20)
-        self.le_margin_t.setToolTip('Top, mm')
+        self.le_margin_t.setToolTip(_('Top, mm'))
         self.le_margin_t.textChanged.connect(self.on_margins_changed)
         self.le_margin_b = QtWidgets.QLineEdit('0')
         self.le_margin_b.setMaximumWidth(20)
-        self.le_margin_b.setToolTip('Bottom, mm')
+        self.le_margin_b.setToolTip(_('Bottom, mm'))
         self.le_margin_b.textChanged.connect(self.on_margins_changed)
-        self.layout_margins = self._make_labelled_widgets('margins', 'Margins', [self.le_margin_l, self.le_margin_r, self.le_margin_t, self.le_margin_b])
+        self.layout_margins = self._make_labelled_widgets('margins', _('Margins'), [self.le_margin_l, self.le_margin_r, self.le_margin_t, self.le_margin_b])
         self.layout_tb_main.addLayout(self.layout_margins)
 
         self.layout_tb_main.addSpacing(20) 
 
-        self.btn_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Settings', None)
-        self.btn_settings.setToolTip('Configure additional printing settings')
+        self.btn_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Settings'), None)
+        self.btn_settings.setToolTip(_('Configure additional printing settings'))
         self.btn_settings.clicked.connect(self.on_btn_settings)
         self.layout_tb_main.addWidget(self.btn_settings)
 
@@ -3520,7 +3523,7 @@ class CwInfoDialog(BasicDialog):
     
     def __init__(self, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
-        super().__init__(None, 'Crossword Info', 'info1.png', 
+        super().__init__(None, _('Crossword Info'), 'info1.png', 
               parent, flags)
                 
     def addMainLayout(self):
@@ -3537,12 +3540,12 @@ class CwInfoDialog(BasicDialog):
         self.btn_stats = QtWidgets.QToolButton()
         self.btn_stats.setDefaultAction(self.mainwindow.act_stats)
 
-        self.layout_controls.addRow('Title:', self.le_title)
-        self.layout_controls.addRow('Author:', self.le_author)
-        self.layout_controls.addRow('Editor:', self.le_editor)
-        self.layout_controls.addRow('Publisher:', self.le_publisher)
-        self.layout_controls.addRow('Copyright:', self.le_copyright)
-        self.layout_controls.addRow('Date:', self.de_date)
+        self.layout_controls.addRow(_('Title:'), self.le_title)
+        self.layout_controls.addRow(_('Author:'), self.le_author)
+        self.layout_controls.addRow(_('Editor:'), self.le_editor)
+        self.layout_controls.addRow(_('Publisher:'), self.le_publisher)
+        self.layout_controls.addRow(_('Copyright:'), self.le_copyright)
+        self.layout_controls.addRow(_('Date:'), self.de_date)
         self.layout_controls.addRow(self.btn_stats)
 
         self.init()
@@ -3591,7 +3594,7 @@ class DefLookupDialog(BasicDialog):
         self.google_engine = None
         self.setlang(lang)
 
-        super().__init__(None, 'Word Lookup', 'worldwide.png', 
+        super().__init__(None, _('Word Lookup'), 'worldwide.png', 
               parent, flags)
         
         self.load_threads = {'dics': QThreadStump(on_start=self.on_dics_load_start, on_finish=self.on_dics_load_finish, on_run=self.on_dics_load_run, on_error=self.on_thread_error),
@@ -3621,7 +3624,7 @@ class DefLookupDialog(BasicDialog):
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout() 
 
-        self.gb_word = QtWidgets.QGroupBox('Lookup word')
+        self.gb_word = QtWidgets.QGroupBox(_('Lookup word'))
         self.layout_gb_word = QtWidgets.QHBoxLayout()   
         self.le_word = QtWidgets.QLineEdit('') 
         self.le_word.textChanged.connect(self.on_le_word_changed)
@@ -3634,12 +3637,12 @@ class DefLookupDialog(BasicDialog):
         self.gb_word.setLayout(self.layout_gb_word)
         self.layout_controls.addWidget(self.gb_word)
 
-        self.gb_sources = QtWidgets.QGroupBox('Lookup in')
+        self.gb_sources = QtWidgets.QGroupBox(_('Lookup in'))
         self.layout_gb_sources = QtWidgets.QHBoxLayout()
-        self.rb_dict = QtWidgets.QRadioButton('Dictionary')
+        self.rb_dict = QtWidgets.QRadioButton(_('Dictionary'))
         self.rb_dict.setChecked(True)
         self.rb_dict.toggled.connect(self.rb_source_toggled)
-        self.rb_google = QtWidgets.QRadioButton('Google')
+        self.rb_google = QtWidgets.QRadioButton(_('Google'))
         self.rb_google.toggled.connect(self.rb_source_toggled)
         self.layout_gb_sources.addWidget(self.rb_dict)
         self.layout_gb_sources.addWidget(self.rb_google)
@@ -3662,7 +3665,7 @@ class DefLookupDialog(BasicDialog):
         # languages combo
         index = self.combo_lang.findText(self.lang)
         if index < 0:
-            raise Exception(f"Language '{self.lang}' not available!")
+            raise Exception(_("Language '{}' not available!").format(self.lang))
         try:
             self.combo_lang.activated.disconnect()
         except:
@@ -3717,14 +3720,14 @@ class DefLookupDialog(BasicDialog):
         self.combo_dict_homs.setEditable(False)
         self.combo_dict_homs.currentIndexChanged.connect(self.on_combo_dict_homs)
         self.layout_dict_top = QtWidgets.QFormLayout()
-        self.layout_dict_top.addRow('Choose entry / meaning:', self.combo_dict_homs)
+        self.layout_dict_top.addRow(_('Choose entry / meaning:'), self.combo_dict_homs)
         self.layout_dict.addLayout(self.layout_dict_top)    
         self.te_dict_defs = QtWidgets.QPlainTextEdit('')
         self.te_dict_defs.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: normal; background-color: white; color: black')
         self.te_dict_defs.setReadOnly(True)
         self.te_dict_defs.setLineWrapMode(QtWidgets.QPlainTextEdit.WidgetWidth)
         self.layout_dict.addWidget(self.te_dict_defs)  
-        self.l_link_dict = QtWidgets.QLabel('Link')
+        self.l_link_dict = QtWidgets.QLabel(_('Link'))
         self.l_link_dict.setTextFormat(QtCore.Qt.RichText)
         self.l_link_dict.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
         self.l_link_dict.setOpenExternalLinks(True)
@@ -3740,14 +3743,14 @@ class DefLookupDialog(BasicDialog):
         self.combo_google.setEditable(False)
         self.combo_google.currentIndexChanged.connect(self.on_combo_google)
         self.layout_google_top = QtWidgets.QFormLayout()
-        self.layout_google_top.addRow('Choose link page:', self.combo_google)
+        self.layout_google_top.addRow(_('Choose link page:'), self.combo_google)
         self.layout_google.addLayout(self.layout_google_top)    
         self.te_google_res = QtWidgets.QPlainTextEdit('')
         self.te_google_res.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: normal; background-color: white; color: black')
         self.te_google_res.setReadOnly(True)
         self.te_google_res.setLineWrapMode(QtWidgets.QPlainTextEdit.WidgetWidth)
         self.layout_google.addWidget(self.te_google_res)
-        self.l_link_google = QtWidgets.QLabel('Link')
+        self.l_link_google = QtWidgets.QLabel(_('Link'))
         self.l_link_google.setTextFormat(QtCore.Qt.RichText)
         self.l_link_google.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
         self.l_link_google.setOpenExternalLinks(True)
@@ -3758,7 +3761,7 @@ class DefLookupDialog(BasicDialog):
 
     @QtCore.pyqtSlot(QtCore.QThread, str)
     def on_thread_error(self, thread, err):
-        MsgBox(f"Load failed with error:{NEWLINE}{err}", self, 'Error', 'error')
+        MsgBox(_("Load failed with error:\n{}").format(err), self, _('Error'), 'error')
 
         if thread == self.load_threads['dics']:
             thread.lock()
@@ -3775,7 +3778,7 @@ class DefLookupDialog(BasicDialog):
         self.word_def = None
         self.page_dict.setEnabled(False)
         self.l_link_dict.setEnabled(False)
-        self.l_link_dict.setText('Link')
+        self.l_link_dict.setText(_('Link'))
         self.update_dict_engine()
         try:
             self.combo_dict_homs.currentIndexChanged.disconnect()
@@ -3783,7 +3786,7 @@ class DefLookupDialog(BasicDialog):
             pass
         self.combo_dict_homs.clear()
         self.te_dict_defs.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: bold; background-color: #ffd6e2; color: black')
-        self.te_dict_defs.setPlainText('UPDATING ...')     
+        self.te_dict_defs.setPlainText(_('UPDATING ...'))     
         
     def on_dics_load_run(self):    
         thread = self.load_threads['dics']
@@ -3819,7 +3822,7 @@ class DefLookupDialog(BasicDialog):
         self.google_res = None
         self.page_google.setEnabled(False)
         self.l_link_google.setEnabled(False)
-        self.l_link_google.setText('Link')
+        self.l_link_google.setText(_('Link'))
         self.update_google_engine()
         try:
             self.combo_google.currentIndexChanged.disconnect()
@@ -3827,7 +3830,7 @@ class DefLookupDialog(BasicDialog):
             pass
         self.combo_google.clear()
         self.te_google_res.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: bold; background-color: #ffd6e2; color: black')
-        self.te_google_res.setPlainText('UPDATING ...') 
+        self.te_google_res.setPlainText(_('UPDATING ...')) 
 
     def on_google_load_run(self):     
         data = self.google_engine.search_lite()
@@ -3903,7 +3906,7 @@ class DefLookupDialog(BasicDialog):
             self.l_link_dict.setToolTip(self.word_def[index][3])
             self.l_link_dict.setEnabled(True)
         else:
-            self.l_link_dict.setText('Link')
+            self.l_link_dict.setText(_('Link'))
             self.l_link_dict.setToolTip('')
             self.l_link_dict.setEnabled(False)
         self.te_dict_defs.setPlainText('\n'.join(self.word_def[index][2]))
@@ -3917,7 +3920,7 @@ class DefLookupDialog(BasicDialog):
             self.l_link_google.setToolTip(url)
             self.l_link_google.setEnabled(True)
         else:
-            self.l_link_google.setText('Link')
+            self.l_link_google.setText(_('Link'))
             self.l_link_google.setToolTip('')
             self.l_link_google.setEnabled(False)
         self.te_google_res.setPlainText(self.google_res[index]['summary'])
@@ -3929,23 +3932,23 @@ class DefLookupDialog(BasicDialog):
 class ReflectGridDialog(BasicDialog):
     
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__(None, 'Duplicate Grid', 'windows-1.png', 
+        super().__init__(None, _('Duplicate Grid'), 'windows-1.png', 
               parent, flags)
         
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()
 
         self.ag_dir = QtWidgets.QActionGroup(self)
-        self.act_down = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), 'Down')
+        self.act_down = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), _('Down'))
         self.act_down.setCheckable(True)        
         self.act_down.toggled.connect(self.on_actdir)
-        self.act_up = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), 'Up')
+        self.act_up = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
         self.act_up.setCheckable(True)
         self.act_up.toggled.connect(self.on_actdir)
-        self.act_right = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/fast-forward-1.png"), 'Right')
+        self.act_right = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/fast-forward-1.png"), _('Right'))
         self.act_right.setCheckable(True)
         self.act_right.toggled.connect(self.on_actdir)
-        self.act_left = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-1.png"), 'Left')
+        self.act_left = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-1.png"), _('Left'))
         self.act_left.setCheckable(True)
         self.act_left.toggled.connect(self.on_actdir)
         self.tb_dir = QtWidgets.QToolBar()
@@ -3954,19 +3957,19 @@ class ReflectGridDialog(BasicDialog):
         self.tb_dir.addAction(self.act_up)
         self.tb_dir.addAction(self.act_right)
         self.tb_dir.addAction(self.act_left)
-        self.l_top = QtWidgets.QLabel('Duplication direction:')
+        self.l_top = QtWidgets.QLabel(_('Duplication direction:'))
 
         self.ag_border = QtWidgets.QActionGroup(self)
-        self.act_b0 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), 'No border')
+        self.act_b0 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), _('No border'))
         self.act_b0.setCheckable(True)
         self.act_b0.setChecked(True)
-        self.act_b1 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/grid5.png"), 'Empty')
+        self.act_b1 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/grid5.png"), _('Empty'))
         self.act_b1.setCheckable(True)
-        self.act_b2 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/grid6.png"), 'Filled-Empty')
+        self.act_b2 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/grid6.png"), _('Filled-Empty'))
         self.act_b2.setCheckable(True)
-        self.act_b3 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/grid7.png"), 'Empty-Filled')
+        self.act_b3 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/grid7.png"), _('Empty-Filled'))
         self.act_b3.setCheckable(True)
-        self.act_b4 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/grid9.png"), 'Filled')
+        self.act_b4 = self.ag_border.addAction(QtGui.QIcon(f"{ICONFOLDER}/grid9.png"), _('Filled'))
         self.act_b4.setCheckable(True)
         self.tb_border = QtWidgets.QToolBar()
         self.tb_border.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
@@ -3975,15 +3978,15 @@ class ReflectGridDialog(BasicDialog):
         self.tb_border.addAction(self.act_b2)
         self.tb_border.addAction(self.act_b3)
         self.tb_border.addAction(self.act_b4)
-        self.l_border = QtWidgets.QLabel('Border style:')
+        self.l_border = QtWidgets.QLabel(_('Border style:'))
 
-        self.gb_options = QtWidgets.QGroupBox('Duplicate options')
+        self.gb_options = QtWidgets.QGroupBox(_('Duplicate options'))
         self.layout_gb_options = QtWidgets.QVBoxLayout()
-        self.chb_mirror = QtWidgets.QCheckBox('Mirror')
-        self.chb_mirror.setToolTip('Mirror duplicate grids along duplication axis')
+        self.chb_mirror = QtWidgets.QCheckBox(_('Mirror'))
+        self.chb_mirror.setToolTip(_('Mirror duplicate grids along duplication axis'))
         self.chb_mirror.setChecked(True)
-        self.chb_reverse = QtWidgets.QCheckBox('Reverse')
-        self.chb_reverse.setToolTip('Reverse the sequence of duplicate grids')
+        self.chb_reverse = QtWidgets.QCheckBox(_('Reverse'))
+        self.chb_reverse.setToolTip(_('Reverse the sequence of duplicate grids'))
         self.chb_reverse.setChecked(True)
         self.layout_gb_options.addWidget(self.chb_mirror)
         self.layout_gb_options.addWidget(self.chb_reverse)
@@ -4023,8 +4026,8 @@ class ReflectGridDialog(BasicDialog):
 
 class PasswordDialog(BasicDialog):
     
-    def __init__(self, title='Authentication', icon='locked.png',
-                 user_label='User', password_label='Password',
+    def __init__(self, title=_('Authentication'), icon='locked.png',
+                 user_label=_('User'), password_label=_('Password'),
                  allow_empty_user=False, allow_empty_password=False,
                  parent=None, flags=QtCore.Qt.WindowFlags()):        
         self.user_label = user_label
@@ -4043,10 +4046,10 @@ class PasswordDialog(BasicDialog):
 
     def validate(self):
         if not self.allow_empty_user and not self.le_user.text():
-            MsgBox(f"{self.user_label} field cannot be empty!")
+            MsgBox(_("{} field cannot be empty!").format(self.user_label))
             return False
         if not self.allow_empty_password and not self.le_pass.text():
-            MsgBox(f"{self.password_label} field cannot be empty!")
+            MsgBox(_("{} field cannot be empty!").format(self.password_label))
             return False
         return True
 
@@ -4063,7 +4066,7 @@ class AboutDialog(QtWidgets.QDialog):
     
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(parent, flags)
-        self.initUI(None, 'About', 'main.png')
+        self.initUI(None, _('About'), 'main.png')
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
         
     def addMainLayout(self):
@@ -4076,27 +4079,27 @@ class AboutDialog(QtWidgets.QDialog):
         self.l_author = QtWidgets.QLabel(APP_AUTHOR)
         self.l_author.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse | QtCore.Qt.TextSelectableByKeyboard)
         self.l_email = QtWidgets.QLabel(f'<a href="mailto:{APP_EMAIL}">{APP_EMAIL}</a>')
-        self.l_email.setToolTip(f"Send mail to {APP_EMAIL}")
+        self.l_email.setToolTip(_("Send mail to {}").format(APP_EMAIL))
         self.l_email.setTextFormat(QtCore.Qt.RichText)
         self.l_email.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
         self.l_email.setOpenExternalLinks(True)
         self.l_github = QtWidgets.QLabel(f'<a href="{GIT_REPO}">{GIT_REPO}</a>')
-        self.l_github.setToolTip(f"Visit {GIT_REPO}")
+        self.l_github.setToolTip(_("Visit {}").format(GIT_REPO))
         self.l_github.setTextFormat(QtCore.Qt.RichText)
         self.l_github.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
         self.l_github.setOpenExternalLinks(True)
 
-        self.layout_controls.addRow('App name:', self.l_appname)
-        self.layout_controls.addRow('Version:', self.l_appversion)
-        self.layout_controls.addRow('Author:', self.l_author)
-        self.layout_controls.addRow('Email:', self.l_email)
-        self.layout_controls.addRow('Website:', self.l_github)
+        self.layout_controls.addRow(_('App name:'), self.l_appname)
+        self.layout_controls.addRow(_('Version:'), self.l_appversion)
+        self.layout_controls.addRow(_('Author:'), self.l_author)
+        self.layout_controls.addRow(_('Email:'), self.l_email)
+        self.layout_controls.addRow(_('Website:'), self.l_github)
         
     def initUI(self, geometry=None, title=None, icon=None):
         
         self.addMainLayout()
         
-        self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), 'OK', None)
+        self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('OK'), None)
         self.btn_OK.setMaximumWidth(150)
         self.btn_OK.setDefault(True)
         self.btn_OK.clicked.connect(self.accept)
@@ -4125,39 +4128,39 @@ class ShareDialog(BasicDialog):
     
     def __init__(self, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
-        super().__init__(None, 'Share', 'share-1.png', 
+        super().__init__(None, _('Share'), 'share-1.png', 
               parent, flags)
         
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()
 
-        self.gb_share = QtWidgets.QGroupBox('Sharing')
+        self.gb_share = QtWidgets.QGroupBox(_('Sharing'))
         self.layout_gb_share = QtWidgets.QFormLayout()
         self.combo_target = QtWidgets.QComboBox()
         self.combo_target.setEditable(False)
         self.combo_target.addItems(Share.SERVICES.keys())
         self.combo_target.setCurrentIndex(0)
         self.le_title = QtWidgets.QLineEdit()
-        self.le_title.setText('My new crossword')
+        self.le_title.setText(_('My new crossword'))
         self.le_tags = QtWidgets.QLineEdit()
-        self.le_tags.setText('pycross,crossword,python')
+        self.le_tags.setText(_('pycross,crossword,python'))
         self.le_source = QtWidgets.QLineEdit()
-        self.le_source.setText(f'{APP_NAME} {APP_VERSION}')
+        self.le_source.setText(f"{APP_NAME} {APP_VERSION}")
         self.te_notes = QtWidgets.QPlainTextEdit()
         self.te_notes.setWordWrapMode(1)
-        self.btn_share_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Settings...', None)
+        self.btn_share_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Settings...'), None)
         self.btn_share_settings.setMaximumWidth(150)
         self.btn_share_settings.clicked.connect(self.on_btn_share_settings)
-        self.layout_gb_share.addRow('Target', self.combo_target)
-        self.layout_gb_share.addRow('Title', self.le_title)
-        self.layout_gb_share.addRow('Tags', self.le_tags)
-        self.layout_gb_share.addRow('Source', self.le_source)
-        self.layout_gb_share.addRow('Notes', self.te_notes)
+        self.layout_gb_share.addRow(_('Target'), self.combo_target)
+        self.layout_gb_share.addRow(_('Title'), self.le_title)
+        self.layout_gb_share.addRow(_('Tags'), self.le_tags)
+        self.layout_gb_share.addRow(_('Source'), self.le_source)
+        self.layout_gb_share.addRow(_('Notes'), self.te_notes)
         self.layout_gb_share.addRow('', self.btn_share_settings)
         self.gb_share.setLayout(self.layout_gb_share)
         self.layout_controls.addWidget(self.gb_share)
 
-        self.gb_export = QtWidgets.QGroupBox('Export')
+        self.gb_export = QtWidgets.QGroupBox(_('Export'))
         self.layout_gb_export = QtWidgets.QGridLayout()
         self.rb_pdf = QtWidgets.QRadioButton('PDF')
         self.rb_jpg = QtWidgets.QRadioButton('JPG')
@@ -4166,7 +4169,7 @@ class ShareDialog(BasicDialog):
         self.rb_xpf = QtWidgets.QRadioButton('XPF')
         self.rb_ipuz = QtWidgets.QRadioButton('IPUZ')
         self.rb_pdf.setChecked(True)
-        self.btn_export_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), 'Settings...', None)
+        self.btn_export_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Settings...'), None)
         self.btn_export_settings.setMaximumWidth(150)
         self.btn_export_settings.clicked.connect(self.on_btn_export_settings)
         self.layout_gb_export.addWidget(self.rb_pdf, 0, 0)

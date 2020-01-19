@@ -1,0 +1,2579 @@
+# Russian (Russia) translations for PROJECT.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-01-18 23:45+1100\n"
+"PO-Revision-Date: 2020-01-19 22:58+1100\n"
+"Language-Team: ru_RU <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+"X-Generator: Poedit 2.2.4\n"
+"Last-Translator: \n"
+"Language: ru_RU\n"
+
+#: browser.py:44 browser.py:47
+msgid "Certificate Error"
+msgstr "Ошибка сертификата"
+
+#: browser.py:46
+msgid ""
+"{}\n"
+"Press YES to ignore certificate or NO to reject certificate."
+msgstr ""
+"{}\n"
+"Нажмите ДА, чтобы игнорировать предупреждение, или НЕТ, чтобы отклонить "
+"сертификат."
+
+#: browser.py:70
+msgid "Allow {} to access your location information?"
+msgstr "Предоставить {} доступ к данным о Вашем местоположении?"
+
+#: browser.py:71
+msgid "Allow {} to access your microphone?"
+msgstr "Предоставить {} доступ к микрофону?"
+
+#: browser.py:72
+msgid "Allow {} to access your webcam?"
+msgstr "Предоставить {} доступ к вебкамере?"
+
+#: browser.py:73
+msgid "Allow {} to access your microphone and webcam?"
+msgstr "Предоставить {} доступ к микрофону и вебкамере?"
+
+#: browser.py:74
+msgid "Allow {} to lock your mouse cursor?"
+msgstr "Разрешить {} блокировать мышь?"
+
+#: browser.py:75
+msgid "Allow {} to capture video of your desktop?"
+msgstr "Разрешить {} производить видеозахват Вашего экрана?"
+
+#: browser.py:76
+msgid "Allow {} to capture audio and video of your desktop?"
+msgstr "Разрешить {} производить аудио- и видеозахват экрана?"
+
+#: browser.py:77
+msgid "Allow {} to show notification on your desktop?"
+msgstr "Разрешить {} выводить уведомления на рабочем столе?"
+
+#: browser.py:79 browser.py:98
+msgid "Permission Request"
+msgstr "Запрос разрешения"
+
+#: browser.py:87
+msgid "Proxy user"
+msgstr "Имя пользователя"
+
+#: browser.py:87
+msgid "Proxy password"
+msgstr "Пароль"
+
+#: browser.py:98
+#, fuzzy
+msgid "Allow {} to open all {} links?"
+msgstr "Разрешить {} открывать все ссылки {}?"
+
+#: browser.py:176
+msgid "Inspect element"
+msgstr "Исследовать элемент"
+
+#: browser.py:181
+msgid "Open inspector in new window"
+msgstr "Открыть инспектор в новом окне"
+
+#: browser.py:210
+msgid "Page rendering stopped. Reload page?"
+msgstr "Загрузка остановлена. Обновить страницу?"
+
+#: browser.py:210
+msgid "Rendering stopped"
+msgstr "Загрузка остановлена"
+
+#: browser.py:381
+msgid "Untitled"
+msgstr "Без названия"
+
+#: browser.py:478
+msgid "New &Tab"
+msgstr "&Новая вкладка"
+
+#: browser.py:483
+msgid "C&lone Tab"
+msgstr "&Клонировать вкладку"
+
+#: browser.py:486
+msgid "&Close Tab"
+msgstr "&Закрыть вкладку"
+
+#: browser.py:489
+msgid "Close &Other Tabs"
+msgstr "Закрыть &другие вкладки"
+
+#: browser.py:492
+msgid "&Reload Tab"
+msgstr "&Обновить вкладку"
+
+#: browser.py:495
+msgid "Reload &All Tabs"
+msgstr "Обновить &все вкладки"
+
+#: browser.py:517 forms.py:40
+msgid "Cancel"
+msgstr "Отмена"
+
+#: browser.py:544
+msgid "Remove from list"
+msgstr "Удалить из списка"
+
+#: browser.py:548
+msgid "Stop download"
+msgstr "Остановить загрузку"
+
+#: browser.py:552
+msgid "%p% - {} of {} - {}/s"
+msgstr "%p% - {} из {} - {}/с"
+
+#: browser.py:555
+msgid "{} downloaded - {}/s"
+msgstr "{} загружено - {}/с"
+
+#: browser.py:560
+msgid "Completed - {} downloaded - {}/s"
+msgstr "Завершено - {} загружено - {}/с"
+
+#: browser.py:565
+msgid "Cancelled - {} downloaded - {}/s"
+msgstr "Отмена - {} загружено - {}/с"
+
+#: browser.py:570
+msgid "Interrupted - {}"
+msgstr "Прервано - {}"
+
+#: browser.py:583
+msgid "Downloads"
+msgstr "Загрузки"
+
+#: browser.py:597
+msgid "No downloads"
+msgstr "Нет загрузок"
+
+#: browser.py:609
+msgid "Save As"
+msgstr "Сохранить как"
+
+#: browser.py:709
+msgid "Are you sure you want to close the window? There are {} tabs open."
+msgstr "Закрыть окно браузера? Открыто {} активных вкладок."
+
+#: browser.py:709
+msgid "Confirm quit"
+msgstr "Подтверждение выхода"
+
+#: browser.py:732 gui.py:327
+msgid "&File"
+msgstr "&Файл"
+
+#: browser.py:734
+msgid "&New window"
+msgstr "&Новое окно"
+
+#: browser.py:735
+msgid "New &incognito window"
+msgstr "Новое окно &инкогнито"
+
+#: browser.py:736
+msgid "New &tab"
+msgstr "Новая &вкладка"
+
+#: browser.py:740
+msgid "&Open file..."
+msgstr "&Открыть файл..."
+
+#: browser.py:743
+msgid "&Close tab"
+msgstr "&Закрыть вкладку"
+
+#: browser.py:748 browser.py:753
+msgid "&Quit"
+msgstr "Вы&ход"
+
+#: browser.py:753
+msgid "&Close window"
+msgstr "З&акрыть окно"
+
+#: browser.py:757 gui.py:343
+msgid "&Edit"
+msgstr "&Правка"
+
+#: browser.py:759
+msgid "&Find"
+msgstr "&Найти"
+
+#: browser.py:763
+msgid "Find &next"
+msgstr "Найти &следующее"
+
+#: browser.py:767
+msgid "Find &previous"
+msgstr "Найти п&редыдущее"
+
+#: browser.py:775 gui.py:367
+msgid "&View"
+msgstr "&Вид"
+
+#: browser.py:777
+msgid "&Stop"
+msgstr "О&становить"
+
+#: browser.py:781
+msgid "&Reload"
+msgstr "О&бновить"
+
+#: browser.py:785
+msgid "Zoom &in"
+msgstr "Пр&иблизить"
+
+#: browser.py:789
+msgid "Zoom &out"
+msgstr "О&тдалить"
+
+#: browser.py:795
+msgid "&Fullscreen"
+msgstr "Полно&экранный режим"
+
+#: browser.py:802 browser.py:810
+msgid "Hide toolbar"
+msgstr "Скрыть панель инструментов"
+
+#: browser.py:807 gui.py:368
+msgid "Show toolbar"
+msgstr "Показать панель инструментов"
+
+#: browser.py:817 browser.py:826
+msgid "Hide status bar"
+msgstr "Скрыть статус-бар"
+
+#: browser.py:823
+msgid "Show status bar"
+msgstr "Показать статус-бар"
+
+#: browser.py:836
+msgid "&Window"
+msgstr "О&кно"
+
+#: browser.py:838
+msgid "Show next tab"
+msgstr "Следующая вкладка"
+
+#: browser.py:842
+msgid "Show previous tab"
+msgstr "Предыдущая вкладка"
+
+#: browser.py:864 gui.py:382
+msgid "&Help"
+msgstr "По&мощь"
+
+#: browser.py:865
+msgid "&About"
+msgstr "О про&грамме"
+
+#: browser.py:869
+msgid "Navigation"
+msgstr "Панель навигации"
+
+#: browser.py:878
+msgid "Go back in history"
+msgstr "Назад"
+
+#: browser.py:887
+msgid "Go forward in history"
+msgstr "Вперед"
+
+#: browser.py:903
+msgid "Show downloads"
+msgstr "Открыть загрузки"
+
+#: browser.py:921 browser.py:925
+msgid "Hide"
+msgstr "Скрыть"
+
+#: browser.py:945
+msgid "pyCross Browser [incognito]"
+msgstr "Браузер pyCross [ИНКОГНИТО]"
+
+#: browser.py:945
+msgid "pyCross Browser"
+msgstr "Браузер pyCross"
+
+#: browser.py:960
+msgid "Open web resource"
+msgstr "Открыть веб-ресурс"
+
+#: browser.py:960
+msgid "Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)"
+msgstr "Веб-файлы (*.html *.htm *.svg *.png *.gif *.svgz);;Все файлы (*.*)"
+
+#: browser.py:967
+msgid "Find"
+msgstr "Поиск"
+
+#: browser.py:967
+msgid "Find:"
+msgstr "Найти:"
+
+#: browser.py:981
+msgid "Stop loading page"
+msgstr "Прервать загрузку страницы"
+
+#: browser.py:986
+msgid "Reload page"
+msgstr "Обновить страницу"
+
+#: browser.py:1007
+msgid "'{}' not found"
+msgstr "'{}' не найдено"
+
+#: browser.py:1009
+msgid "'{}' found: {}/{}"
+msgstr "'{}' найдено: {}/{}"
+
+#: crossword.py:72 crossword.py:74
+msgid "Coords.start and Coords.end must be 2-tuples!"
+msgstr "Coords.start и Coords.end должны быть 2-элементными кортежами!"
+
+#: crossword.py:78 crossword.py:83
+msgid "End coordinate {} must be greater than the start coordinate {}!"
+msgstr "Конечная координата {} должна быть больше начальной {}!"
+
+#: crossword.py:86
+msgid "One coordinate must be equal!"
+msgstr "По крайней мере одна координата должна совпадать!"
+
+#: crossword.py:112
+msgid "Coords object :: start = {}, end = {}, dir = '{}'"
+msgstr "Объект Coords :: начало = {}, конец = {}, ориентация = '{}'"
+
+#: crossword.py:126
+msgid "Word length is not correct!"
+msgstr "Длина слова некорректна!"
+
+#: crossword.py:133
+msgid "Word object :: num = {}, start = {}, end = {}, dir = '{}'"
+msgstr "Объект Word :: № = {}, начало = {}, конец = {}, ориентация = '{}'"
+
+#: crossword.py:177
+msgid "Wrong 'data_type' argument: '{}'! Must be 'grid' OR 'words' OR 'file'!"
+msgstr ""
+
+#: crossword.py:188
+msgid "Grid appears incorrect, for in contains less than 2 rows!"
+msgstr ""
+
+#: crossword.py:193
+msgid ""
+"Grid contains invalid characters! Must contain only [a-z], '{}', '{}' and "
+"'{}'."
+msgstr ""
+
+#: crossword.py:196
+msgid ""
+"Grid must be passed either as a list of strings or a single string of rows "
+"delimited by new-line symbols!"
+msgstr ""
+
+#: crossword.py:209
+msgid "Cannot call reset() on a null grid!"
+msgstr ""
+
+#: crossword.py:285
+msgid ""
+"\"words\" argument must be a non-empty collection of Word / Coords objects!"
+msgstr ""
+
+#: crossword.py:389 crossword.py:408
+msgid "Unable to parse '{}' as IPUZ file!"
+msgstr ""
+
+#: crossword.py:447
+msgid "No puzzles in '{}'!"
+msgstr ""
+
+#: crossword.py:464
+msgid "No grid in '{}'!"
+msgstr ""
+
+#: crossword.py:535
+msgid "Character \"{}\" is invalid!"
+msgstr ""
+
+#: crossword.py:543
+msgid "Coordinate {} is out of the grid range (w={}, h={})!"
+msgstr ""
+
+#: crossword.py:795 crossword.py:800 crossword.py:874 crossword.py:907
+msgid "Word '{}' is absent from grid!"
+msgstr ""
+
+#: crossword.py:912
+msgid ""
+"Num{}Coord{}Value\n"
+"-------------------------------------------\n"
+msgstr ""
+
+#: crossword.py:913
+msgid ""
+"ACROSS:\n"
+"-------------------------------------------\n"
+msgstr ""
+
+#: crossword.py:915
+msgid ""
+"\n"
+"-------------------------------------------\n"
+"DOWN:\n"
+"-------------------------------------------\n"
+msgstr ""
+
+#: crossword.py:994
+msgid "Word must be a Word object!"
+msgstr ""
+
+#: crossword.py:1255 crossword.py:1423
+msgid ""
+"\n"
+"\tCompleted CW!"
+msgstr ""
+
+#: crossword.py:1258
+msgid "Creating word paths..."
+msgstr ""
+
+#: crossword.py:1282
+msgid "Created {} paths"
+msgstr ""
+
+#: crossword.py:1309
+msgid ""
+"\n"
+"Next word = [{}]"
+msgstr ""
+
+#: crossword.py:1316
+msgid "Skipping [{}] (found in USED)..."
+msgstr ""
+
+#: crossword.py:1323
+msgid "Fetched {} suggestions for [{}]"
+msgstr ""
+
+#: crossword.py:1333
+msgid "No suggestions for [{}]!"
+msgstr ""
+
+#: crossword.py:1336 crossword.py:1374
+msgid "Clearing [{}]..."
+msgstr ""
+
+#: crossword.py:1398
+msgid "Start node reached; unable to generate for path!"
+msgstr ""
+
+#: crossword.py:1409
+msgid "Trying '{}' for [{}]..."
+msgstr ""
+
+#: crossword.py:1421
+msgid ""
+"\n"
+"\tCompleted path with result = {}"
+msgstr ""
+
+#: crossword.py:1451
+msgid "Words collection is not initialized!"
+msgstr ""
+
+#: crossword.py:1472
+msgid "{}New start word is: {}"
+msgstr ""
+
+#: crossword.py:1478 crossword.py:1574
+msgid "{}Unable to generate CW for word '{}'!"
+msgstr ""
+
+#: crossword.py:1481
+msgid "{}Fetched {} suggestions"
+msgstr ""
+
+#: crossword.py:1497
+msgid "{}Trying '{}' for '{}'..."
+msgstr ""
+
+#: crossword.py:1509
+msgid "{}No crosses for '{}'"
+msgstr ""
+
+#: crossword.py:1512
+msgid "{}Found {} crosses for '{}': {}"
+msgstr ""
+
+#: crossword.py:1525
+msgid "{}Skipping cross '{}'..."
+msgstr ""
+
+#: crossword.py:1537
+msgid "{}Generated for cross '{}'"
+msgstr ""
+
+#: crossword.py:1548
+msgid "{}Failed to generate for cross '{}', restoring grid..."
+msgstr ""
+
+#: crossword.py:1614
+msgid "No valid word source for crossword generation!"
+msgstr ""
+
+#: crossword.py:1647
+msgid ""
+"'method' argument ({}) is not valid! Must be one of: 'iter', 'recurse', or "
+"None / empty string."
+msgstr ""
+
+#: crossword.py:1650
+msgid "TIMED OUT AT {} SEC!"
+msgstr ""
+
+#: crossword.py:1654
+msgid "STOPPED!"
+msgstr ""
+
+#: crossword.py:1677
+msgid "GENERATION COMPLETED IN {:.1f} SEC."
+msgstr ""
+
+#: crossword.py:1689
+msgid "No database results for {}!"
+msgstr ""
+
+#: crossword.py:1692
+msgid "CHECK OK"
+msgstr ""
+
+#: dbapi.py:112 dbapi.py:234 dbapi.py:256
+msgid "DATABASE ERROR: {}"
+msgstr ""
+
+#: dbapi.py:178
+msgid "Part of speech '{}' is absent from the DB!"
+msgstr ""
+
+#: forms.py:36 forms.py:4085
+msgid "OK"
+msgstr ""
+
+#: forms.py:81
+msgid "New crossword"
+msgstr ""
+
+#: forms.py:87
+msgid "Pattern"
+msgstr ""
+
+#: forms.py:88
+msgid "Load pattern preset"
+msgstr ""
+
+#: forms.py:91 forms.py:239
+msgid "File"
+msgstr ""
+
+#: forms.py:92
+msgid "Import crossword from file"
+msgstr ""
+
+#: forms.py:94 forms.py:1484
+msgid "Empty grid"
+msgstr ""
+
+#: forms.py:95
+msgid "Set grid dimensions and edit manually"
+msgstr ""
+
+#: forms.py:98
+msgid "Pattern file"
+msgstr ""
+
+#: forms.py:101 forms.py:102 forms.py:117 forms.py:118 forms.py:840
+#: forms.py:841 forms.py:1585 forms.py:1586
+msgid "Browse"
+msgstr ""
+
+#: forms.py:114
+msgid "Crossword file"
+msgstr ""
+
+#: forms.py:130
+msgid "Grid dimensions"
+msgstr ""
+
+#: forms.py:136
+msgid "Pattern {}"
+msgstr ""
+
+#: forms.py:138
+msgid "Rows:"
+msgstr ""
+
+#: forms.py:139
+msgid "Columns:"
+msgstr ""
+
+#: forms.py:140
+msgid "Pattern:"
+msgstr ""
+
+#: forms.py:156 forms.py:160 forms.py:167 forms.py:409 forms.py:414
+#: forms.py:421 forms.py:427 forms.py:431 forms.py:436 forms.py:440
+#: forms.py:448 forms.py:452 forms.py:456 forms.py:2714 forms.py:3156
+#: forms.py:3747 gui.py:1319 gui.py:1409 gui.py:1521 gui.py:1541 gui.py:1717
+#: utils/onlineservices.py:262 utils/onlineservices.py:515
+msgid "Error"
+msgstr ""
+
+#: forms.py:157
+msgid "Pattern file is unavailable, please check!"
+msgstr ""
+
+#: forms.py:161
+msgid "Crossword file is unavailable, please check!"
+msgstr ""
+
+#: forms.py:168
+msgid "Rows and columns must be valid numbers (e.g. 10)!"
+msgstr ""
+
+#: forms.py:190 forms.py:200 forms.py:2709 forms.py:2724 forms.py:2735
+#: forms.py:2988 gui.py:2073
+msgid "Select file"
+msgstr ""
+
+#: forms.py:190 forms.py:2735 forms.py:2988
+msgid "All files (*.*)"
+msgstr ""
+
+#: forms.py:200
+msgid "Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)"
+msgstr ""
+
+#: forms.py:220
+msgid "Word Source"
+msgstr ""
+
+#: forms.py:227
+msgid "Name"
+msgstr ""
+
+#: forms.py:235
+msgid "Source type"
+msgstr ""
+
+#: forms.py:237
+msgid "Database"
+msgstr ""
+
+#: forms.py:241
+msgid "Simple list"
+msgstr ""
+
+#: forms.py:271 forms.py:293
+msgid "Path"
+msgstr ""
+
+#: forms.py:272
+msgid "Type"
+msgstr ""
+
+#: forms.py:273 forms.py:4013
+msgid "User"
+msgstr ""
+
+#: forms.py:274 forms.py:4013
+msgid "Password"
+msgstr ""
+
+#: forms.py:275
+msgid "Tables"
+msgstr ""
+
+#: forms.py:276 forms.py:296 forms.py:317 forms.py:3116
+msgid "Shuffle"
+msgstr ""
+
+#: forms.py:289 forms.py:304 forms.py:341 forms.py:353 forms.py:384
+#: forms.py:396 forms.py:439 forms.py:451
+msgid "SPACE"
+msgstr ""
+
+#: forms.py:289 forms.py:304 forms.py:343 forms.py:355 forms.py:386
+#: forms.py:398 forms.py:439 forms.py:451
+msgid "TAB"
+msgstr ""
+
+#: forms.py:294
+msgid "Encoding"
+msgstr ""
+
+#: forms.py:295 forms.py:314
+msgid "Delimiter"
+msgstr ""
+
+#: forms.py:315
+msgid "Has parts of speech"
+msgstr ""
+
+#: forms.py:316
+msgid "Words"
+msgstr ""
+
+#: forms.py:410
+msgid "Source must have a non-empty name!"
+msgstr ""
+
+#: forms.py:415
+msgid "DB file path must be valid!"
+msgstr ""
+
+#: forms.py:422
+msgid "DB tables field has incorrect value!"
+msgstr ""
+
+#: forms.py:428
+msgid "Text file path must be valid!"
+msgstr ""
+
+#: forms.py:432
+msgid "Text file encoding must not be empty!"
+msgstr ""
+
+#: forms.py:437
+msgid "Text file delimiter must not be empty!"
+msgstr ""
+
+#: forms.py:441
+msgid ""
+"Text file delimiter must be either \"SPACE\" or \"TAB\" or a single "
+"character!"
+msgstr ""
+
+#: forms.py:449
+msgid "Word list delimiter must not be empty if is has parts of speech!"
+msgstr ""
+
+#: forms.py:453
+msgid ""
+"Word list delimiter must be either \"SPACE\" or \"TAB\" or a single "
+"character!"
+msgstr ""
+
+#: forms.py:457
+msgid "Word list is empty or invalid!"
+msgstr ""
+
+#: forms.py:483
+msgid "Null action source or toolbar pointers passed to ToolbarCustomizer!"
+msgstr ""
+
+#: forms.py:511 forms.py:905
+msgid "Add"
+msgstr ""
+
+#: forms.py:512 forms.py:907
+msgid "Remove"
+msgstr ""
+
+#: forms.py:513
+msgid "Add separator"
+msgstr ""
+
+#: forms.py:515 forms.py:911 gui.py:234
+msgid "Clear"
+msgstr ""
+
+#: forms.py:517 forms.py:900 forms.py:1240 forms.py:3928
+msgid "Up"
+msgstr ""
+
+#: forms.py:518 forms.py:902 forms.py:1242 forms.py:3925 gui.py:818 gui.py:1001
+msgid "Down"
+msgstr ""
+
+#: forms.py:521
+msgid "Added items:"
+msgstr ""
+
+#: forms.py:608
+msgid "<Unnamed>"
+msgstr ""
+
+#: forms.py:744 forms.py:773 forms.py:2159
+msgid "Common"
+msgstr ""
+
+#: forms.py:744 forms.py:774 forms.py:2164
+msgid "Generation"
+msgstr ""
+
+#: forms.py:744 forms.py:777 forms.py:2185
+msgid "Source management"
+msgstr ""
+
+#: forms.py:744 forms.py:778 forms.py:2199
+msgid "Search rules"
+msgstr ""
+
+#: forms.py:745 forms.py:783 forms.py:2217
+msgid "Window"
+msgstr ""
+
+#: forms.py:745 forms.py:784 forms.py:2226
+msgid "Grid"
+msgstr ""
+
+#: forms.py:745 forms.py:785 forms.py:1455 forms.py:2401
+msgid "Clues"
+msgstr ""
+
+#: forms.py:745 forms.py:786 forms.py:2499
+msgid "Toolbar"
+msgstr ""
+
+#: forms.py:745 forms.py:789 forms.py:2503
+msgid "Definition lookup"
+msgstr ""
+
+#: forms.py:745 forms.py:790 forms.py:2547
+msgid "Import & Export"
+msgstr ""
+
+#: forms.py:746 forms.py:791 forms.py:2561
+msgid "Plugins"
+msgstr ""
+
+#: forms.py:746 forms.py:792 forms.py:2565
+msgid "Printing"
+msgstr ""
+
+#: forms.py:746 forms.py:793 forms.py:2633
+msgid "Updating"
+msgstr ""
+
+#: forms.py:746 forms.py:794 forms.py:4120
+msgid "Sharing"
+msgstr ""
+
+#: forms.py:747 forms.py:775
+msgid "Sources"
+msgstr ""
+
+#: forms.py:747 forms.py:781
+msgid "User interface"
+msgstr ""
+
+#: forms.py:752 forms.py:916 forms.py:3341 gui.py:276
+msgid "Settings"
+msgstr ""
+
+#: forms.py:801 forms.py:2694
+msgid "Restore defaults"
+msgstr ""
+
+#: forms.py:802
+msgid "Restore default settings for selected page"
+msgstr ""
+
+#: forms.py:804
+msgid "Load Settings"
+msgstr ""
+
+#: forms.py:805
+msgid "Load settings from file"
+msgstr ""
+
+#: forms.py:807
+msgid "Save Settings"
+msgstr ""
+
+#: forms.py:808
+msgid "Save settings to file"
+msgstr ""
+
+#: forms.py:839
+msgid "Temp directory (leave EMPTY for default)"
+msgstr ""
+
+#: forms.py:852
+msgid "Save crosswords on exit and load on startup"
+msgstr ""
+
+#: forms.py:854
+msgid "Temp directory"
+msgstr ""
+
+#: forms.py:855
+msgid "Auto save/load crossword"
+msgstr ""
+
+#: forms.py:865
+msgid "Guess"
+msgstr ""
+
+#: forms.py:865
+msgid "Iterative"
+msgstr ""
+
+#: forms.py:865
+msgid "Recursive"
+msgstr ""
+
+#: forms.py:871
+msgid " sec."
+msgstr ""
+
+#: forms.py:873 forms.py:1688
+msgid "No log"
+msgstr ""
+
+#: forms.py:873 forms.py:1690
+msgid "Console"
+msgstr ""
+
+#: forms.py:873
+msgid "File..."
+msgstr ""
+
+#: forms.py:878
+msgid "Method"
+msgstr ""
+
+#: forms.py:879 gui.py:1311
+msgid "Timeout"
+msgstr ""
+
+#: forms.py:880
+msgid "Log"
+msgstr ""
+
+#: forms.py:889
+msgid "Manage sources"
+msgstr ""
+
+#: forms.py:892
+msgid ""
+"Higher sources in this list take higher precedence (use UP and DOWN buttons "
+"to move items)"
+msgstr ""
+
+#: forms.py:909 gui.py:196
+msgid "Edit"
+msgstr ""
+
+#: forms.py:918
+msgid "Constrain max results:"
+msgstr ""
+
+#: forms.py:936
+msgid "Parts of speech"
+msgstr ""
+
+#: forms.py:939
+msgid ""
+"Check / uncheck items to include in search (valid only for sources with POS "
+"data)"
+msgstr ""
+
+#: forms.py:950
+msgid "Excluded words"
+msgstr ""
+
+#: forms.py:957
+msgid "Use regular expressions"
+msgstr ""
+
+#: forms.py:975 forms.py:1477
+msgid "Top"
+msgstr ""
+
+#: forms.py:975 forms.py:1478
+msgid "Bottom"
+msgstr ""
+
+#: forms.py:975 forms.py:1167 forms.py:1475 forms.py:3934
+msgid "Left"
+msgstr ""
+
+#: forms.py:975 forms.py:1167 forms.py:1476 forms.py:3931
+msgid "Right"
+msgstr ""
+
+#: forms.py:975
+msgid "Hidden"
+msgstr ""
+
+#: forms.py:979
+msgid "Theme"
+msgstr ""
+
+#: forms.py:980
+msgid "Toolbar position"
+msgstr ""
+
+#: forms.py:999 forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080
+#: forms.py:1089 forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Solid"
+msgstr ""
+
+#: forms.py:999
+msgid "Dash"
+msgstr ""
+
+#: forms.py:999
+msgid "Dot"
+msgstr ""
+
+#: forms.py:999
+msgid "Dash-dot"
+msgstr ""
+
+#: forms.py:1022 forms.py:1044 forms.py:1061 forms.py:1162 forms.py:1499
+#: forms.py:1508 forms.py:1517 forms.py:1526 forms.py:1535
+msgid "Font..."
+msgstr ""
+
+#: forms.py:1027
+msgid "UPPERCASE"
+msgstr ""
+
+#: forms.py:1027
+msgid "lowercase"
+msgstr ""
+
+#: forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080 forms.py:1089
+#: forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Dense"
+msgstr ""
+
+#: forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080 forms.py:1089
+#: forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Striped"
+msgstr ""
+
+#: forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080 forms.py:1089
+#: forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Lines"
+msgstr ""
+
+#: forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080 forms.py:1089
+#: forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Checkered"
+msgstr ""
+
+#: forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080 forms.py:1089
+#: forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Diag1"
+msgstr ""
+
+#: forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080 forms.py:1089
+#: forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Diag2"
+msgstr ""
+
+#: forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080 forms.py:1089
+#: forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Diag cross"
+msgstr ""
+
+#: forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080 forms.py:1089
+#: forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Gradient linear"
+msgstr ""
+
+#: forms.py:1037 forms.py:1054 forms.py:1071 forms.py:1080 forms.py:1089
+#: forms.py:1155 forms.py:1176 forms.py:1189
+msgid "Gradient radial"
+msgstr ""
+
+#: forms.py:1093
+msgid "Grid scale"
+msgstr ""
+
+#: forms.py:1094
+msgid "Show grid borders"
+msgstr ""
+
+#: forms.py:1095
+msgid "Show grid coords"
+msgstr ""
+
+#: forms.py:1096
+msgid "Grid border style"
+msgstr ""
+
+#: forms.py:1097
+msgid "Grid border width"
+msgstr ""
+
+#: forms.py:1098
+msgid "Grid border color"
+msgstr ""
+
+#: forms.py:1099
+msgid "Active cell color"
+msgstr ""
+
+#: forms.py:1100
+msgid "Grid cell size"
+msgstr ""
+
+#: forms.py:1101
+msgid "Character case"
+msgstr ""
+
+#: forms.py:1105
+msgid "Show word numbers"
+msgstr ""
+
+#: forms.py:1106 forms.py:1546
+msgid "Word number color"
+msgstr ""
+
+#: forms.py:1107 forms.py:1547
+msgid "Word number font"
+msgstr ""
+
+#: forms.py:1111
+msgid "Normal cell color"
+msgstr ""
+
+#: forms.py:1112
+msgid "Normal cell style"
+msgstr ""
+
+#: forms.py:1113
+msgid "Normal cell font color"
+msgstr ""
+
+#: forms.py:1114
+msgid "Normal cell font"
+msgstr ""
+
+#: forms.py:1118
+msgid "Hilite cell color"
+msgstr ""
+
+#: forms.py:1119
+msgid "Hilite cell style"
+msgstr ""
+
+#: forms.py:1120
+msgid "Hilite cell font color"
+msgstr ""
+
+#: forms.py:1121
+msgid "Hilite cell font"
+msgstr ""
+
+#: forms.py:1125
+msgid "Blank cell color"
+msgstr ""
+
+#: forms.py:1126
+msgid "Blank cell style"
+msgstr ""
+
+#: forms.py:1130
+msgid "Filler cell color"
+msgstr ""
+
+#: forms.py:1131
+msgid "Filler cell style"
+msgstr ""
+
+#: forms.py:1135
+msgid "Surrounding color"
+msgstr ""
+
+#: forms.py:1136
+msgid "Surrounding style"
+msgstr ""
+
+#: forms.py:1167
+msgid "Center"
+msgstr ""
+
+#: forms.py:1197
+msgid "Font"
+msgstr ""
+
+#: forms.py:1198
+msgid "Text alignment"
+msgstr ""
+
+#: forms.py:1203
+msgid "Normal color"
+msgstr ""
+
+#: forms.py:1204
+msgid "Normal style"
+msgstr ""
+
+#: forms.py:1205
+msgid "Normal font color"
+msgstr ""
+
+#: forms.py:1209
+msgid "Incomplete color"
+msgstr ""
+
+#: forms.py:1210
+msgid "Incomplete style"
+msgstr ""
+
+#: forms.py:1211
+msgid "Incomplete font color"
+msgstr ""
+
+#: forms.py:1215
+msgid "Complete color"
+msgstr ""
+
+#: forms.py:1216
+msgid "Complete style"
+msgstr ""
+
+#: forms.py:1217
+msgid "Complete font color"
+msgstr ""
+
+#: forms.py:1225
+msgid "Columns"
+msgstr ""
+
+#: forms.py:1228
+msgid "Check / uncheck items to show or hide columns, drag to reorder"
+msgstr ""
+
+#: forms.py:1276
+msgid "Default language:"
+msgstr ""
+
+#: forms.py:1277
+msgid "Request timeout (sec):"
+msgstr ""
+
+#: forms.py:1281
+msgid "Dictionaries"
+msgstr ""
+
+#: forms.py:1286
+msgid "UNKNOWN"
+msgstr ""
+
+#: forms.py:1288
+msgid "Merriam-Webster Dictionary API key (empty string to use default)"
+msgstr ""
+
+#: forms.py:1290
+msgid "Yandex Dictionary API key (empty string to use default)"
+msgstr ""
+
+#: forms.py:1291 forms.py:1362
+msgid "Show:"
+msgstr ""
+
+#: forms.py:1292
+msgid "Exact word match:"
+msgstr ""
+
+#: forms.py:1293
+msgid "Show parts of speech:"
+msgstr ""
+
+#: forms.py:1294
+msgid "Unknown parts of speech:"
+msgstr ""
+
+#: forms.py:1295
+msgid "Merriam-Webster Dictionary API key:"
+msgstr ""
+
+#: forms.py:1296
+msgid "Yandex Dictionary API key:"
+msgstr ""
+
+#: forms.py:1301
+msgid "Google Search"
+msgstr ""
+
+#: forms.py:1307
+msgid "Add file types delimited by SPACE, e.g. \"txt doc pdf\""
+msgstr ""
+
+#: forms.py:1308 forms.py:1322 forms.py:1336
+msgid "ALL"
+msgstr ""
+
+#: forms.py:1313
+msgid "Search documents restricted only to checked languages"
+msgstr ""
+
+#: forms.py:1327
+msgid "Search using only checked interface languages"
+msgstr ""
+
+#: forms.py:1341
+msgid "Search in checked locations only"
+msgstr ""
+
+#: forms.py:1354
+msgid "Limit returned results for page (-1 = no limit)"
+msgstr ""
+
+#: forms.py:1358
+msgid "Google Custom Search API key (empty string to use default)"
+msgstr ""
+
+#: forms.py:1360
+msgid "Google Custom Search CSE ID (empty string to use default)"
+msgstr ""
+
+#: forms.py:1363
+msgid "Exact phrase:"
+msgstr ""
+
+#: forms.py:1364
+msgid "File types:"
+msgstr ""
+
+#: forms.py:1366
+msgid "Document languages:"
+msgstr ""
+
+#: forms.py:1368
+msgid "Interface languages:"
+msgstr ""
+
+#: forms.py:1370
+msgid "Locations:"
+msgstr ""
+
+#: forms.py:1371
+msgid "Link site:"
+msgstr ""
+
+#: forms.py:1372
+msgid "Related (parent) site:"
+msgstr ""
+
+#: forms.py:1373
+msgid "Search in site:"
+msgstr ""
+
+#: forms.py:1374
+msgid "Results per page:"
+msgstr ""
+
+#: forms.py:1375
+msgid "Safe filter:"
+msgstr ""
+
+#: forms.py:1376
+msgid "Google Custom Search API key:"
+msgstr ""
+
+#: forms.py:1377
+msgid "Google Custom Search CSE ID:"
+msgstr ""
+
+#: forms.py:1392 forms.py:4146
+msgid "Export"
+msgstr ""
+
+#: forms.py:1398 forms.py:1401
+msgid " dpi"
+msgstr ""
+
+#: forms.py:1404 forms.py:1465 forms.py:1468 forms.py:1471 forms.py:1474
+msgid " mm"
+msgstr ""
+
+#: forms.py:1408
+msgid "Quality in percent (set to -1 for auto quality)"
+msgstr ""
+
+#: forms.py:1409 forms.py:1411 forms.py:1452 forms.py:3289
+msgid "Auto"
+msgstr ""
+
+#: forms.py:1421
+msgid "Image resolution"
+msgstr ""
+
+#: forms.py:1422
+msgid "PDF resolution"
+msgstr ""
+
+#: forms.py:1423
+msgid "Image quality"
+msgstr ""
+
+#: forms.py:1424
+msgid "Output grid cell size"
+msgstr ""
+
+#: forms.py:1425
+msgid "SVG image title"
+msgstr ""
+
+#: forms.py:1426
+msgid "SVG image description"
+msgstr ""
+
+#: forms.py:1427
+msgid "Clear crossword before export"
+msgstr ""
+
+#: forms.py:1428
+msgid "Open exported file"
+msgstr ""
+
+#: forms.py:1452 forms.py:3289
+msgid "Portrait"
+msgstr ""
+
+#: forms.py:1452 forms.py:3289
+msgid "Landscape"
+msgstr ""
+
+#: forms.py:1457
+msgid "Page layout"
+msgstr ""
+
+#: forms.py:1458
+msgid "Crossword title"
+msgstr ""
+
+#: forms.py:1459
+msgid "Clues title (header)"
+msgstr ""
+
+#: forms.py:1461 forms.py:3336
+msgid "Margins"
+msgstr ""
+
+#: forms.py:1480
+msgid "Embed fonts"
+msgstr ""
+
+#: forms.py:1481
+msgid "Antialiasing"
+msgstr ""
+
+#: forms.py:1482
+msgid "Print crossword grid"
+msgstr ""
+
+#: forms.py:1483
+msgid "Print clues"
+msgstr ""
+
+#: forms.py:1486
+msgid "Include word size hint"
+msgstr ""
+
+#: forms.py:1488
+msgid "Print crossword information"
+msgstr ""
+
+#: forms.py:1489
+msgid "Colored output"
+msgstr ""
+
+#: forms.py:1490
+msgid "Open file (PDF) on print complete"
+msgstr ""
+
+#: forms.py:1492
+msgid "Fonts"
+msgstr ""
+
+#: forms.py:1540
+msgid "Title color"
+msgstr ""
+
+#: forms.py:1541
+msgid "Title font"
+msgstr ""
+
+#: forms.py:1542
+msgid "Info color"
+msgstr ""
+
+#: forms.py:1543
+msgid "Info font"
+msgstr ""
+
+#: forms.py:1544
+msgid "Clues color"
+msgstr ""
+
+#: forms.py:1545
+msgid "Clues font"
+msgstr ""
+
+#: forms.py:1548
+msgid "Word size hint color"
+msgstr ""
+
+#: forms.py:1549
+msgid "Word size hint font"
+msgstr ""
+
+#: forms.py:1577
+msgid " days"
+msgstr ""
+
+#: forms.py:1578
+msgid "Set to -1 to disable update checks"
+msgstr ""
+
+#: forms.py:1584
+msgid "Log file for update operations"
+msgstr ""
+
+#: forms.py:1595
+msgid "Check for updates every"
+msgstr ""
+
+#: forms.py:1596
+msgid "Check / update major releases only"
+msgstr ""
+
+#: forms.py:1597
+msgid "Auto update"
+msgstr ""
+
+#: forms.py:1598
+msgid "Restart on update"
+msgstr ""
+
+#: forms.py:1599
+msgid "Log file"
+msgstr ""
+
+#: forms.py:1610
+msgid "Kloudless account ID (leave EMPTY for default)"
+msgstr ""
+
+#: forms.py:1612
+msgid "Kloudless Bearer Token (leave EMPTY for default)"
+msgstr ""
+
+#: forms.py:1614
+msgid "Kloudless root folder (leave EMPTY for default)"
+msgstr ""
+
+#: forms.py:1616
+msgid "Kloudless username (leave EMPTY to create new user automatically)"
+msgstr ""
+
+#: forms.py:1618
+msgid ""
+"Check this to use one single API key for authentication (WARNING! NOT SAFE!)"
+msgstr ""
+
+#: forms.py:1620
+msgid ""
+"Use app inbuilt browser to open share links (otherwise, use system browser)"
+msgstr ""
+
+#: forms.py:1622
+msgid "Kloudless account ID"
+msgstr ""
+
+#: forms.py:1623
+msgid "Kloudless Bearer Token"
+msgstr ""
+
+#: forms.py:1624
+msgid "Kloudless root folder"
+msgstr ""
+
+#: forms.py:1625
+msgid "Kloudless username"
+msgstr ""
+
+#: forms.py:1626
+msgid "Use API key"
+msgstr ""
+
+#: forms.py:1627
+msgid "Use inbuilt browser"
+msgstr ""
+
+#: forms.py:1636 gui.py:1026
+msgid "Direction"
+msgstr ""
+
+#: forms.py:1703 forms.py:2790
+msgid "No user data in src!"
+msgstr ""
+
+#: forms.py:2695
+msgid ""
+"Press YES to restore defaults only for current page and YES TO ALL to "
+"restore all default settings"
+msgstr ""
+
+#: forms.py:2705
+msgid "Load defaults"
+msgstr ""
+
+#: forms.py:2706
+msgid ""
+"Press YES to load settings only for current page and YES TO ALL to load all "
+"settings"
+msgstr ""
+
+#: forms.py:2709 forms.py:2724
+msgid "Settings files (*.json)"
+msgstr ""
+
+#: forms.py:2715
+msgid "File '{}' has a wrong format or incomplete settings!"
+msgstr ""
+
+#: forms.py:2870
+msgid "Choose font"
+msgstr ""
+
+#: forms.py:2976
+msgid "Select directory"
+msgstr ""
+
+#: forms.py:3093 forms.py:3580
+msgid "Word Lookup"
+msgstr ""
+
+#: forms.py:3100
+msgid "Suggestions for:"
+msgstr ""
+
+#: forms.py:3102
+msgid "Use '{}' as blank symbol"
+msgstr ""
+
+#: forms.py:3112
+msgid "Refresh"
+msgstr ""
+
+#: forms.py:3114
+msgid "Sort"
+msgstr ""
+
+#: forms.py:3118
+msgid "Sources..."
+msgstr ""
+
+#: forms.py:3123
+msgid "Truncate"
+msgstr ""
+
+#: forms.py:3124
+msgid "Uncheck to retrieve all results with no truncation"
+msgstr ""
+
+#: forms.py:3156
+msgid "No word selected!"
+msgstr ""
+
+#: forms.py:3170
+msgid "{} result{}"
+msgstr ""
+
+#: forms.py:3235
+msgid "No valid printer!"
+msgstr ""
+
+#: forms.py:3237
+msgid "Crossword not available!"
+msgstr ""
+
+#: forms.py:3240
+msgid "Printing to: {}"
+msgstr ""
+
+#: forms.py:3277
+msgid "Page Size"
+msgstr ""
+
+#: forms.py:3281
+msgid "Single"
+msgstr ""
+
+#: forms.py:3281
+msgid "Two"
+msgstr ""
+
+#: forms.py:3281
+msgid "All"
+msgstr ""
+
+#: forms.py:3285
+msgid "View"
+msgstr ""
+
+#: forms.py:3293
+msgid "Layout"
+msgstr ""
+
+#: forms.py:3296
+msgid "Zoom to width"
+msgstr ""
+
+#: forms.py:3297
+msgid "Zoom to window width"
+msgstr ""
+
+#: forms.py:3299
+msgid "Fit in window"
+msgstr ""
+
+#: forms.py:3300
+msgid "Zoom to window size"
+msgstr ""
+
+#: forms.py:3307
+msgid "Zoom %"
+msgstr ""
+
+#: forms.py:3309
+msgid "Fit & Zoom"
+msgstr ""
+
+#: forms.py:3313
+msgid "Greyscale"
+msgstr ""
+
+#: forms.py:3313
+msgid "Color"
+msgstr ""
+
+#: forms.py:3317
+msgid "Color Print"
+msgstr ""
+
+#: forms.py:3322
+msgid "Left, mm"
+msgstr ""
+
+#: forms.py:3326
+msgid "Right, mm"
+msgstr ""
+
+#: forms.py:3330
+msgid "Top, mm"
+msgstr ""
+
+#: forms.py:3334
+msgid "Bottom, mm"
+msgstr ""
+
+#: forms.py:3342
+msgid "Configure additional printing settings"
+msgstr ""
+
+#: forms.py:3509
+msgid "Crossword Info"
+msgstr ""
+
+#: forms.py:3526
+msgid "Title:"
+msgstr ""
+
+#: forms.py:3527 forms.py:4077
+msgid "Author:"
+msgstr ""
+
+#: forms.py:3528
+msgid "Editor:"
+msgstr ""
+
+#: forms.py:3529
+msgid "Publisher:"
+msgstr ""
+
+#: forms.py:3530
+msgid "Copyright:"
+msgstr ""
+
+#: forms.py:3531
+msgid "Date:"
+msgstr ""
+
+#: forms.py:3610 gui.py:252
+msgid "Lookup word"
+msgstr ""
+
+#: forms.py:3623
+msgid "Lookup in"
+msgstr ""
+
+#: forms.py:3625
+msgid "Dictionary"
+msgstr ""
+
+#: forms.py:3628
+msgid "Google"
+msgstr ""
+
+#: forms.py:3651
+msgid "Language '{}' not available!"
+msgstr ""
+
+#: forms.py:3706
+msgid "Choose entry / meaning:"
+msgstr ""
+
+#: forms.py:3713 forms.py:3736 forms.py:3764 forms.py:3808 forms.py:3892
+#: forms.py:3906
+msgid "Link"
+msgstr ""
+
+#: forms.py:3729
+msgid "Choose link page:"
+msgstr ""
+
+#: forms.py:3747
+msgid ""
+"Load failed with error:\n"
+"{}"
+msgstr ""
+
+#: forms.py:3772 forms.py:3816
+msgid "UPDATING ..."
+msgstr ""
+
+#: forms.py:3918
+msgid "Duplicate Grid"
+msgstr ""
+
+#: forms.py:3943
+msgid "Duplication direction:"
+msgstr ""
+
+#: forms.py:3946
+msgid "No border"
+msgstr ""
+
+#: forms.py:3949
+msgid "Empty"
+msgstr ""
+
+#: forms.py:3951
+msgid "Filled-Empty"
+msgstr ""
+
+#: forms.py:3953
+msgid "Empty-Filled"
+msgstr ""
+
+#: forms.py:3955
+msgid "Filled"
+msgstr ""
+
+#: forms.py:3964
+msgid "Border style:"
+msgstr ""
+
+#: forms.py:3966
+msgid "Duplicate options"
+msgstr ""
+
+#: forms.py:3968
+msgid "Mirror"
+msgstr ""
+
+#: forms.py:3969
+msgid "Mirror duplicate grids along duplication axis"
+msgstr ""
+
+#: forms.py:3971
+msgid "Reverse"
+msgstr ""
+
+#: forms.py:3972
+msgid "Reverse the sequence of duplicate grids"
+msgstr ""
+
+#: forms.py:4012
+msgid "Authentication"
+msgstr ""
+
+#: forms.py:4032 forms.py:4035
+msgid "{} field cannot be empty!"
+msgstr ""
+
+#: forms.py:4052 gui.py:291
+msgid "About"
+msgstr ""
+
+#: forms.py:4065
+msgid "Send mail to {}"
+msgstr ""
+
+#: forms.py:4070
+msgid "Visit {}"
+msgstr ""
+
+#: forms.py:4075
+msgid "App name:"
+msgstr ""
+
+#: forms.py:4076
+msgid "Version:"
+msgstr ""
+
+#: forms.py:4078
+msgid "Email:"
+msgstr ""
+
+#: forms.py:4079
+msgid "Website:"
+msgstr ""
+
+#: forms.py:4114 gui.py:191
+msgid "Share"
+msgstr ""
+
+#: forms.py:4127
+msgid "My new crossword"
+msgstr ""
+
+#: forms.py:4129
+msgid "pycross,crossword,python"
+msgstr ""
+
+#: forms.py:4134 forms.py:4155
+msgid "Settings..."
+msgstr ""
+
+#: forms.py:4137
+msgid "Target"
+msgstr ""
+
+#: forms.py:4138
+msgid "Title"
+msgstr ""
+
+#: forms.py:4139
+msgid "Tags"
+msgstr ""
+
+#: forms.py:4140
+msgid "Source"
+msgstr ""
+
+#: forms.py:4141
+msgid "Notes"
+msgstr ""
+
+#: gui.py:161
+msgid "New"
+msgstr ""
+
+#: gui.py:162
+msgid "Create new crossword"
+msgstr ""
+
+#: gui.py:166
+msgid "Open"
+msgstr ""
+
+#: gui.py:167
+msgid "Open crossword from file"
+msgstr ""
+
+#: gui.py:171
+msgid "Save"
+msgstr ""
+
+#: gui.py:172
+msgid "Save crossword"
+msgstr ""
+
+#: gui.py:176
+msgid "Save As..."
+msgstr ""
+
+#: gui.py:177
+msgid "Save crossword as new file"
+msgstr ""
+
+#: gui.py:181
+msgid "Close"
+msgstr ""
+
+#: gui.py:182
+msgid "Close current crossword"
+msgstr ""
+
+#: gui.py:186
+msgid "Reload"
+msgstr ""
+
+#: gui.py:187
+msgid "Reload crossword from file"
+msgstr ""
+
+#: gui.py:192
+msgid "Share crossword in social networks"
+msgstr ""
+
+#: gui.py:197
+msgid "Edit crossword"
+msgstr ""
+
+#: gui.py:202
+msgid "Add row"
+msgstr ""
+
+#: gui.py:203
+msgid "Add row before selected"
+msgstr ""
+
+#: gui.py:206 gui.py:207
+msgid "Delete row"
+msgstr ""
+
+#: gui.py:210
+msgid "Add column"
+msgstr ""
+
+#: gui.py:211
+msgid "Add column before selected"
+msgstr ""
+
+#: gui.py:214 gui.py:215
+msgid "Delete column"
+msgstr ""
+
+#: gui.py:218
+msgid "Duplicate"
+msgstr ""
+
+#: gui.py:219
+msgid "Duplicate (reflect) grid cells to any direction"
+msgstr ""
+
+#: gui.py:222
+msgid "Generate"
+msgstr ""
+
+#: gui.py:223
+msgid "Generate (solve) crossword"
+msgstr ""
+
+#: gui.py:227
+msgid "Stop"
+msgstr ""
+
+#: gui.py:228
+msgid "Stop operation"
+msgstr ""
+
+#: gui.py:235
+msgid "Clear all words"
+msgstr ""
+
+#: gui.py:239 gui.py:240
+msgid "Clear word"
+msgstr ""
+
+#: gui.py:243 gui.py:244
+msgid "Erase word"
+msgstr ""
+
+#: gui.py:247 gui.py:248
+msgid "Suggest word"
+msgstr ""
+
+#: gui.py:253
+msgid "Lookup word definition"
+msgstr ""
+
+#: gui.py:257 gui.py:258
+msgid "Edit clue"
+msgstr ""
+
+#: gui.py:262
+msgid "Word sources"
+msgstr ""
+
+#: gui.py:263
+msgid "Select wordsources"
+msgstr ""
+
+#: gui.py:266
+msgid "Info"
+msgstr ""
+
+#: gui.py:267
+msgid "Show / edit crossword info (Ctrl+I)"
+msgstr ""
+
+#: gui.py:271
+msgid "Print"
+msgstr ""
+
+#: gui.py:272
+msgid "Print crossword and/or clues"
+msgstr ""
+
+#: gui.py:277
+msgid "Configure settings"
+msgstr ""
+
+#: gui.py:281
+msgid "Update"
+msgstr ""
+
+#: gui.py:282
+msgid "Check for updates"
+msgstr ""
+
+#: gui.py:286
+msgid "Help"
+msgstr ""
+
+#: gui.py:287
+msgid "Show help"
+msgstr ""
+
+#: gui.py:292
+msgid "Show About"
+msgstr ""
+
+#: gui.py:296
+msgid "Show stats"
+msgstr ""
+
+#: gui.py:297
+msgid "Show detailed crossword statistics"
+msgstr ""
+
+#: gui.py:300
+msgid "Quit"
+msgstr ""
+
+#: gui.py:301
+msgid "Quit application"
+msgstr ""
+
+#: gui.py:371
+msgid "Show / hide toolbar"
+msgstr ""
+
+#: gui.py:377
+msgid "&Generate"
+msgstr ""
+
+#: gui.py:476
+msgid "Double-click to update"
+msgstr ""
+
+#: gui.py:495
+msgid "UPDATE SUCCEEDED"
+msgstr ""
+
+#: gui.py:633
+msgid "DB path {} unavailable!"
+msgstr ""
+
+#: gui.py:804 gui.py:818 gui.py:1001
+msgid "Across"
+msgstr ""
+
+#: gui.py:822 gui.py:1026
+msgid "No"
+msgstr ""
+
+#: gui.py:829 gui.py:1026 gui.py:1073
+msgid "Reply"
+msgstr ""
+
+#: gui.py:829 gui.py:1026 gui.py:1071
+msgid "Clue"
+msgstr ""
+
+#: gui.py:857
+msgid "No current word"
+msgstr ""
+
+#: gui.py:861
+msgid "No root item"
+msgstr ""
+
+#: gui.py:1026
+msgid "Letters"
+msgstr ""
+
+#: gui.py:1106
+msgid "Uploaded '{}' to '{}'"
+msgstr ""
+
+#: gui.py:1111
+msgid "Copied URL '{}' to clipboard"
+msgstr ""
+
+#: gui.py:1126 utils/onlineservices.py:320
+msgid "Enter your API key"
+msgstr ""
+
+#: gui.py:1132 utils/onlineservices.py:331
+msgid "Enter your Bearer token"
+msgstr ""
+
+#: gui.py:1155
+msgid "Opening share link..."
+msgstr ""
+
+#: gui.py:1193
+msgid "Setting up cloud storage..."
+msgstr ""
+
+#: gui.py:1206
+msgid "Exporting crossword..."
+msgstr ""
+
+#: gui.py:1223
+msgid "Uploading file to cloud..."
+msgstr ""
+
+#: gui.py:1232
+msgid "Finished"
+msgstr ""
+
+#: gui.py:1255
+msgid ""
+"You don't have a registered user name for uploading and sharing files.\n"
+"Would you like to set a new user name yourself (YES) or let {} assign the "
+"name for you (NO)?"
+msgstr ""
+
+#: gui.py:1257 gui.py:1261 gui.py:1263 gui.py:1267
+msgid "Create new user"
+msgstr ""
+
+#: gui.py:1261
+msgid "Enter user name:"
+msgstr ""
+
+#: gui.py:1263
+msgid "{} will generate a new user name automatically"
+msgstr ""
+
+#: gui.py:1266
+msgid ""
+"Username {} is already occupied!\n"
+"User another name (YES) or create name for you (NO)?"
+msgstr ""
+
+#: gui.py:1311
+msgid "Timeout occurred at {} seconds!"
+msgstr ""
+
+#: gui.py:1315
+msgid "Stopped"
+msgstr ""
+
+#: gui.py:1319
+msgid "Generation failed with error:{}{}"
+msgstr ""
+
+#: gui.py:1323
+msgid "Generation finished!{}{}"
+msgstr ""
+
+#: gui.py:1323
+msgid "Check OK"
+msgstr ""
+
+#: gui.py:1323
+msgid "The following words failed validation: "
+msgstr ""
+
+#: gui.py:1324
+msgid "Generation finished"
+msgstr ""
+
+#: gui.py:1404
+msgid "Error saving crossword to '{}'"
+msgstr ""
+
+#: gui.py:1541
+msgid "Printing error"
+msgstr ""
+
+#: gui.py:1580
+msgid "by {}"
+msgstr ""
+
+#: gui.py:1586
+msgid "Published by {}"
+msgstr ""
+
+#: gui.py:1592
+msgid "© {}"
+msgstr ""
+
+#: gui.py:1626 gui.py:1650 gui.py:1666 gui.py:1678
+msgid "Cannot make new page!"
+msgstr ""
+
+#: gui.py:1661
+msgid "Across:"
+msgstr ""
+
+#: gui.py:1661
+msgid "Down:"
+msgstr ""
+
+#: gui.py:1707
+msgid "[{} letters]"
+msgstr ""
+
+#: gui.py:1822
+msgid "Update ready: v. {}"
+msgstr ""
+
+#: gui.py:1840
+msgid ""
+"You have unsaved changes in your current crossword. Would you like to save "
+"them?"
+msgstr ""
+
+#: gui.py:1840 gui.py:2082
+msgid "Confirm Action"
+msgstr ""
+
+#: gui.py:1856
+msgid "v. {}"
+msgstr ""
+
+#: gui.py:1982
+msgid "Application update"
+msgstr ""
+
+#: gui.py:1983
+msgid ""
+"Do you wish to update your current version {} to version {}\n"
+"(release date: {})?"
+msgstr ""
+
+#: gui.py:1989
+msgid "No updates are available"
+msgstr ""
+
+#: gui.py:2042
+msgid "Crossword files (*.xpf *.ipuz);;All files (*.*)"
+msgstr ""
+
+#: gui.py:2082
+msgid ""
+"You have unsaved changes in your current crossword. Are you sure to reload "
+"it from the file (all changes will be lost)?"
+msgstr ""
+
+#: gui.py:2289
+msgid ""
+"No lookup sources are active! Please go to Settings (F11) to verify your "
+"lookup source configuration."
+msgstr ""
+
+#: gui.py:2290
+msgid "No Lookup Sources"
+msgstr ""
+
+#: gui.py:2336
+msgid "To be implemented in next release ))"
+msgstr ""
+
+#: gui.py:2336
+msgid "Show help docs"
+msgstr ""
+
+#: gui.py:2417
+msgid "Configure toolbar..."
+msgstr ""
+
+#: guisettings.py:205
+msgid "File '{}' is unavailable or has an invalid format!"
+msgstr ""
+
+#: wordsrc.py:60 wordsrc.py:81
+msgid "Cannot connect to db!"
+msgstr ""
+
+#: utils/onlineservices.py:74
+msgid "GOOGLE SEARCH REQUEST = '{}'"
+msgstr ""
+
+#: utils/onlineservices.py:78
+msgid "GOOGLE SEARCH RESULT = '{}'"
+msgstr ""
+
+#: utils/onlineservices.py:81
+msgid "Request returned error '{}', code = {}"
+msgstr ""
+
+#: utils/onlineservices.py:84 utils/onlineservices.py:138
+msgid "Request returned error {}"
+msgstr ""
+
+#: utils/onlineservices.py:131
+msgid "DICTIONARY SEARCH REQUEST = '{}'"
+msgstr ""
+
+#: utils/onlineservices.py:135
+msgid "DICTIONARY SEARCH RESULT = '{}'"
+msgstr ""
+
+#: utils/onlineservices.py:255
+msgid "Unable to create/access folder '{}'!"
+msgstr ""
+
+#: utils/onlineservices.py:282
+msgid ""
+"CLOUD SENDING '{}' REQUEST = '{}',\n"
+"HEADERS = {},\n"
+"DATA = {}"
+msgstr ""
+
+#: utils/onlineservices.py:292
+msgid "Empty result returned by request '{}'"
+msgstr ""
+
+#: utils/onlineservices.py:294
+msgid "CLOUD REQUEST RESULT = '{}'"
+msgstr ""
+
+#: utils/onlineservices.py:300
+msgid "Error returned by request '{}'"
+msgstr ""
+
+#: utils/onlineservices.py:340
+msgid ""
+"No valid API key provided!\n"
+"Provide a valid API key or change your \"use_api_key\" settings\n"
+"to use a different authentication method."
+msgstr ""
+
+#: utils/onlineservices.py:345
+msgid ""
+"No valid Bearer token provided!\n"
+"Provide a valid Bearer token or change your \"use_api_key\" settings\n"
+"to use a different authentication method."
+msgstr ""
+
+#: utils/onlineservices.py:389
+msgid "Empty folder ID passed to _get_folder_objects()!"
+msgstr ""
+
+#: utils/onlineservices.py:457 utils/onlineservices.py:531
+msgid "Neither the folder ID not the user ID is valid!"
+msgstr ""
+
+#: utils/onlineservices.py:509
+msgid "You can delete other users only with a valid API key!"
+msgstr ""
+
+#: utils/onlineservices.py:515
+msgid "No current user present!"
+msgstr ""
+
+#: utils/onlineservices.py:538 utils/onlineservices.py:574
+msgid ""
+"You cannot clear folders created by other users without a valid API key!"
+msgstr ""
+
+#: utils/onlineservices.py:567
+msgid "No folder ID provided"
+msgstr ""
+
+#: utils/onlineservices.py:599
+msgid "Current user is not defined! Please create new user first."
+msgstr ""
+
+#: utils/onlineservices.py:602
+msgid "File '{}' is not accessable!"
+msgstr ""
+
+#: utils/onlineservices.py:651
+msgid "File '{}' already exists!"
+msgstr ""
+
+#: utils/onlineservices.py:670
+msgid "Empty file ID passed to create_file_link()!"
+msgstr ""
+
+#: utils/onlineservices.py:687
+msgid "Empty link ID passed to get_file_link()!"
+msgstr ""
+
+#: utils/onlineservices.py:699
+msgid "Empty link ID passed to update_file_link()!"
+msgstr ""
+
+#: utils/onlineservices.py:718
+msgid "Empty link ID passed to delete_file_link()!"
+msgstr ""
+
+#: utils/onlineservices.py:744
+msgid ""
+"Share object must be given a valid instance of Cloudstorage as the \"cloud\" "
+"argument!"
+msgstr ""
+
+#: utils/onlineservices.py:748
+msgid "See my new crossword"
+msgstr ""
+
+#: utils/onlineservices.py:758
+msgid "Cannot find social network '{}'!"
+msgstr ""
+
+#: utils/onlineservices.py:775
+msgid "Malformed URL or file path!"
+msgstr ""
+
+#: utils/update.py:12
+msgid ""
+"You do not appear to have a valid version of git installed!\n"
+"Please install git from https://git-scm.com/"
+msgstr ""
+
+#: utils/update.py:106
+msgid "Running {}..."
+msgstr ""
+
+#: utils/update.py:140
+msgid "No release branches in repository!"
+msgstr ""
