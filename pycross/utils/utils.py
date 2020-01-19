@@ -2,13 +2,21 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import sys, os, subprocess, traceback, uuid, tempfile
+import sys, os, subprocess, traceback, uuid, tempfile, gettext
 from datetime import datetime, time
 
 from .globalvars import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 
 ### ---------------------------- COMMON ---------------------------- ###
+
+def switch_lang(lang=''):
+    if not lang in ('', 'en', 'ru', 'fr', 'de', 'it', 'es'): return
+    if lang:
+        l = gettext.translation('base', './locale', languages=[lang])
+        l.install()
+    else:
+        gettext.install('base', './locale')
 
 def print_err(what, file=sys.stderr):
     print(what, file=file)

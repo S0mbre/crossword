@@ -169,7 +169,7 @@ class CWSettings:
         },
     'common':
         {
-            'temp_dir': '', 'autosave_cw': True
+            'temp_dir': '', 'autosave_cw': True, 'lang': 'en'
         }
     } # settings
          

@@ -4,7 +4,7 @@
 
 import gettext, os
 
-gettext.install('pyCross')
+gettext.install('base', './locale')
 
 def make_abspath(filename, root=''):
     # default root = pycross\

@@ -706,7 +706,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         cnt = self.m_tabWidget.count()
         if cnt > 1:
-            reply = MsgBox(_('Are you sure you want to close the window? There are {} tabs open.'), self, _('Confirm quit'), 'ask').format(cnt)
+            reply = MsgBox(_('Are you sure you want to close the window? There are {} tabs open.').format(cnt), self, _('Confirm quit'), 'ask')
             if reply != QtWidgets.QMessageBox.Yes:
                 event.ignore()
                 return

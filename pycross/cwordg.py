@@ -4,6 +4,7 @@
 
 import os, sys, traceback
 from utils.globalvars import *
+from utils.utils import switch_lang
 from PyQt5 import QtWebEngine, QtWebEngineWidgets, QtWebEngineCore
 from gui import QtCore, QtWidgets, MainWindow
 
@@ -13,7 +14,8 @@ def main():
     
     try:
         # change working dir to current for correct calls to git
-        os.chdir(os.path.dirname(os.path.abspath(__file__)))    
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))   
+        switch_lang('ru')
         # initialize Qt Core App settings
         QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
         # create QApplication instance

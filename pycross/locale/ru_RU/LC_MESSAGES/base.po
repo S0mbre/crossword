@@ -8,362 +8,367 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-01-18 23:45+1100\n"
-"PO-Revision-Date: 2020-01-18 23:52+1100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: ru_RU\n"
+"PO-Revision-Date: 2020-01-19 22:58+1100\n"
 "Language-Team: ru_RU <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
+"X-Generator: Poedit 2.2.4\n"
+"Last-Translator: \n"
+"Language: ru_RU\n"
 
 #: browser.py:44 browser.py:47
 msgid "Certificate Error"
-msgstr ""
+msgstr "Ошибка сертификата"
 
 #: browser.py:46
 msgid ""
 "{}\n"
 "Press YES to ignore certificate or NO to reject certificate."
 msgstr ""
+"{}\n"
+"Нажмите ДА, чтобы игнорировать предупреждение, или НЕТ, чтобы отклонить "
+"сертификат."
 
 #: browser.py:70
 msgid "Allow {} to access your location information?"
-msgstr ""
+msgstr "Предоставить {} доступ к данным о Вашем местоположении?"
 
 #: browser.py:71
 msgid "Allow {} to access your microphone?"
-msgstr ""
+msgstr "Предоставить {} доступ к микрофону?"
 
 #: browser.py:72
 msgid "Allow {} to access your webcam?"
-msgstr ""
+msgstr "Предоставить {} доступ к вебкамере?"
 
 #: browser.py:73
 msgid "Allow {} to access your microphone and webcam?"
-msgstr ""
+msgstr "Предоставить {} доступ к микрофону и вебкамере?"
 
 #: browser.py:74
 msgid "Allow {} to lock your mouse cursor?"
-msgstr ""
+msgstr "Разрешить {} блокировать мышь?"
 
 #: browser.py:75
 msgid "Allow {} to capture video of your desktop?"
-msgstr ""
+msgstr "Разрешить {} производить видеозахват Вашего экрана?"
 
 #: browser.py:76
 msgid "Allow {} to capture audio and video of your desktop?"
-msgstr ""
+msgstr "Разрешить {} производить аудио- и видеозахват экрана?"
 
 #: browser.py:77
 msgid "Allow {} to show notification on your desktop?"
-msgstr ""
+msgstr "Разрешить {} выводить уведомления на рабочем столе?"
 
 #: browser.py:79 browser.py:98
 msgid "Permission Request"
-msgstr ""
+msgstr "Запрос разрешения"
 
 #: browser.py:87
 msgid "Proxy user"
-msgstr ""
+msgstr "Имя пользователя"
 
 #: browser.py:87
 msgid "Proxy password"
-msgstr ""
+msgstr "Пароль"
 
 #: browser.py:98
+#, fuzzy
 msgid "Allow {} to open all {} links?"
-msgstr ""
+msgstr "Разрешить {} открывать все ссылки {}?"
 
 #: browser.py:176
 msgid "Inspect element"
-msgstr ""
+msgstr "Исследовать элемент"
 
 #: browser.py:181
 msgid "Open inspector in new window"
-msgstr ""
+msgstr "Открыть инспектор в новом окне"
 
 #: browser.py:210
 msgid "Page rendering stopped. Reload page?"
-msgstr ""
+msgstr "Загрузка остановлена. Обновить страницу?"
 
 #: browser.py:210
 msgid "Rendering stopped"
-msgstr ""
+msgstr "Загрузка остановлена"
 
 #: browser.py:381
 msgid "Untitled"
-msgstr ""
+msgstr "Без названия"
 
 #: browser.py:478
 msgid "New &Tab"
-msgstr ""
+msgstr "&Новая вкладка"
 
 #: browser.py:483
 msgid "C&lone Tab"
-msgstr ""
+msgstr "&Клонировать вкладку"
 
 #: browser.py:486
 msgid "&Close Tab"
-msgstr ""
+msgstr "&Закрыть вкладку"
 
 #: browser.py:489
 msgid "Close &Other Tabs"
-msgstr ""
+msgstr "Закрыть &другие вкладки"
 
 #: browser.py:492
 msgid "&Reload Tab"
-msgstr ""
+msgstr "&Обновить вкладку"
 
 #: browser.py:495
 msgid "Reload &All Tabs"
-msgstr ""
+msgstr "Обновить &все вкладки"
 
 #: browser.py:517 forms.py:40
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: browser.py:544
 msgid "Remove from list"
-msgstr ""
+msgstr "Удалить из списка"
 
 #: browser.py:548
 msgid "Stop download"
-msgstr ""
+msgstr "Остановить загрузку"
 
 #: browser.py:552
 msgid "%p% - {} of {} - {}/s"
-msgstr ""
+msgstr "%p% - {} из {} - {}/с"
 
 #: browser.py:555
 msgid "{} downloaded - {}/s"
-msgstr ""
+msgstr "{} загружено - {}/с"
 
 #: browser.py:560
 msgid "Completed - {} downloaded - {}/s"
-msgstr ""
+msgstr "Завершено - {} загружено - {}/с"
 
 #: browser.py:565
 msgid "Cancelled - {} downloaded - {}/s"
-msgstr ""
+msgstr "Отмена - {} загружено - {}/с"
 
 #: browser.py:570
 msgid "Interrupted - {}"
-msgstr ""
+msgstr "Прервано - {}"
 
 #: browser.py:583
 msgid "Downloads"
-msgstr ""
+msgstr "Загрузки"
 
 #: browser.py:597
 msgid "No downloads"
-msgstr ""
+msgstr "Нет загрузок"
 
 #: browser.py:609
 msgid "Save As"
-msgstr ""
+msgstr "Сохранить как"
 
 #: browser.py:709
 msgid "Are you sure you want to close the window? There are {} tabs open."
-msgstr ""
+msgstr "Закрыть окно браузера? Открыто {} активных вкладок."
 
 #: browser.py:709
 msgid "Confirm quit"
-msgstr ""
+msgstr "Подтверждение выхода"
 
 #: browser.py:732 gui.py:327
 msgid "&File"
-msgstr ""
+msgstr "&Файл"
 
 #: browser.py:734
 msgid "&New window"
-msgstr ""
+msgstr "&Новое окно"
 
 #: browser.py:735
 msgid "New &incognito window"
-msgstr ""
+msgstr "Новое окно &инкогнито"
 
 #: browser.py:736
 msgid "New &tab"
-msgstr ""
+msgstr "Новая &вкладка"
 
 #: browser.py:740
 msgid "&Open file..."
-msgstr ""
+msgstr "&Открыть файл..."
 
 #: browser.py:743
 msgid "&Close tab"
-msgstr ""
+msgstr "&Закрыть вкладку"
 
 #: browser.py:748 browser.py:753
 msgid "&Quit"
-msgstr ""
+msgstr "Вы&ход"
 
 #: browser.py:753
 msgid "&Close window"
-msgstr ""
+msgstr "З&акрыть окно"
 
 #: browser.py:757 gui.py:343
 msgid "&Edit"
-msgstr ""
+msgstr "&Правка"
 
 #: browser.py:759
 msgid "&Find"
-msgstr ""
+msgstr "&Найти"
 
 #: browser.py:763
 msgid "Find &next"
-msgstr ""
+msgstr "Найти &следующее"
 
 #: browser.py:767
 msgid "Find &previous"
-msgstr ""
+msgstr "Найти п&редыдущее"
 
 #: browser.py:775 gui.py:367
 msgid "&View"
-msgstr ""
+msgstr "&Вид"
 
 #: browser.py:777
 msgid "&Stop"
-msgstr ""
+msgstr "О&становить"
 
 #: browser.py:781
 msgid "&Reload"
-msgstr ""
+msgstr "О&бновить"
 
 #: browser.py:785
 msgid "Zoom &in"
-msgstr ""
+msgstr "Пр&иблизить"
 
 #: browser.py:789
 msgid "Zoom &out"
-msgstr ""
+msgstr "О&тдалить"
 
 #: browser.py:795
 msgid "&Fullscreen"
-msgstr ""
+msgstr "Полно&экранный режим"
 
 #: browser.py:802 browser.py:810
 msgid "Hide toolbar"
-msgstr ""
+msgstr "Скрыть панель инструментов"
 
 #: browser.py:807 gui.py:368
 msgid "Show toolbar"
-msgstr ""
+msgstr "Показать панель инструментов"
 
 #: browser.py:817 browser.py:826
 msgid "Hide status bar"
-msgstr ""
+msgstr "Скрыть статус-бар"
 
 #: browser.py:823
 msgid "Show status bar"
-msgstr ""
+msgstr "Показать статус-бар"
 
 #: browser.py:836
 msgid "&Window"
-msgstr ""
+msgstr "О&кно"
 
 #: browser.py:838
 msgid "Show next tab"
-msgstr ""
+msgstr "Следующая вкладка"
 
 #: browser.py:842
 msgid "Show previous tab"
-msgstr ""
+msgstr "Предыдущая вкладка"
 
 #: browser.py:864 gui.py:382
 msgid "&Help"
-msgstr ""
+msgstr "По&мощь"
 
 #: browser.py:865
 msgid "&About"
-msgstr ""
+msgstr "О про&грамме"
 
 #: browser.py:869
 msgid "Navigation"
-msgstr ""
+msgstr "Панель навигации"
 
 #: browser.py:878
 msgid "Go back in history"
-msgstr ""
+msgstr "Назад"
 
 #: browser.py:887
 msgid "Go forward in history"
-msgstr ""
+msgstr "Вперед"
 
 #: browser.py:903
 msgid "Show downloads"
-msgstr ""
+msgstr "Открыть загрузки"
 
 #: browser.py:921 browser.py:925
 msgid "Hide"
-msgstr ""
+msgstr "Скрыть"
 
 #: browser.py:945
 msgid "pyCross Browser [incognito]"
-msgstr ""
+msgstr "Браузер pyCross [ИНКОГНИТО]"
 
 #: browser.py:945
 msgid "pyCross Browser"
-msgstr ""
+msgstr "Браузер pyCross"
 
 #: browser.py:960
 msgid "Open web resource"
-msgstr ""
+msgstr "Открыть веб-ресурс"
 
 #: browser.py:960
 msgid "Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)"
-msgstr ""
+msgstr "Веб-файлы (*.html *.htm *.svg *.png *.gif *.svgz);;Все файлы (*.*)"
 
 #: browser.py:967
 msgid "Find"
-msgstr ""
+msgstr "Поиск"
 
 #: browser.py:967
 msgid "Find:"
-msgstr ""
+msgstr "Найти:"
 
 #: browser.py:981
 msgid "Stop loading page"
-msgstr ""
+msgstr "Прервать загрузку страницы"
 
 #: browser.py:986
 msgid "Reload page"
-msgstr ""
+msgstr "Обновить страницу"
 
 #: browser.py:1007
 msgid "'{}' not found"
-msgstr ""
+msgstr "'{}' не найдено"
 
 #: browser.py:1009
 msgid "'{}' found: {}/{}"
-msgstr ""
+msgstr "'{}' найдено: {}/{}"
 
 #: crossword.py:72 crossword.py:74
 msgid "Coords.start and Coords.end must be 2-tuples!"
-msgstr ""
+msgstr "Coords.start и Coords.end должны быть 2-элементными кортежами!"
 
 #: crossword.py:78 crossword.py:83
 msgid "End coordinate {} must be greater than the start coordinate {}!"
-msgstr ""
+msgstr "Конечная координата {} должна быть больше начальной {}!"
 
 #: crossword.py:86
 msgid "One coordinate must be equal!"
-msgstr ""
+msgstr "По крайней мере одна координата должна совпадать!"
 
 #: crossword.py:112
 msgid "Coords object :: start = {}, end = {}, dir = '{}'"
-msgstr ""
+msgstr "Объект Coords :: начало = {}, конец = {}, ориентация = '{}'"
 
 #: crossword.py:126
 msgid "Word length is not correct!"
-msgstr ""
+msgstr "Длина слова некорректна!"
 
 #: crossword.py:133
 msgid "Word object :: num = {}, start = {}, end = {}, dir = '{}'"
-msgstr ""
+msgstr "Объект Word :: № = {}, начало = {}, конец = {}, ориентация = '{}'"
 
 #: crossword.py:177
 msgid "Wrong 'data_type' argument: '{}'! Must be 'grid' OR 'words' OR 'file'!"
@@ -375,14 +380,14 @@ msgstr ""
 
 #: crossword.py:193
 msgid ""
-"Grid contains invalid characters! Must contain only [a-z], '{}', '{}' and"
-" '{}'."
+"Grid contains invalid characters! Must contain only [a-z], '{}', '{}' and "
+"'{}'."
 msgstr ""
 
 #: crossword.py:196
 msgid ""
-"Grid must be passed either as a list of strings or a single string of "
-"rows delimited by new-line symbols!"
+"Grid must be passed either as a list of strings or a single string of rows "
+"delimited by new-line symbols!"
 msgstr ""
 
 #: crossword.py:209
@@ -391,8 +396,7 @@ msgstr ""
 
 #: crossword.py:285
 msgid ""
-"\"words\" argument must be a non-empty collection of Word / Coords "
-"objects!"
+"\"words\" argument must be a non-empty collection of Word / Coords objects!"
 msgstr ""
 
 #: crossword.py:389 crossword.py:408
@@ -539,8 +543,8 @@ msgstr ""
 
 #: crossword.py:1647
 msgid ""
-"'method' argument ({}) is not valid! Must be one of: 'iter', 'recurse', "
-"or None / empty string."
+"'method' argument ({}) is not valid! Must be one of: 'iter', 'recurse', or "
+"None / empty string."
 msgstr ""
 
 #: crossword.py:1650
@@ -973,8 +977,8 @@ msgstr ""
 
 #: forms.py:892
 msgid ""
-"Higher sources in this list take higher precedence (use UP and DOWN "
-"buttons to move items)"
+"Higher sources in this list take higher precedence (use UP and DOWN buttons "
+"to move items)"
 msgstr ""
 
 #: forms.py:909 gui.py:196
@@ -991,8 +995,8 @@ msgstr ""
 
 #: forms.py:939
 msgid ""
-"Check / uncheck items to include in search (valid only for sources with "
-"POS data)"
+"Check / uncheck items to include in search (valid only for sources with POS "
+"data)"
 msgstr ""
 
 #: forms.py:950
@@ -1592,14 +1596,12 @@ msgstr ""
 
 #: forms.py:1618
 msgid ""
-"Check this to use one single API key for authentication (WARNING! NOT "
-"SAFE!)"
+"Check this to use one single API key for authentication (WARNING! NOT SAFE!)"
 msgstr ""
 
 #: forms.py:1620
 msgid ""
-"Use app inbuilt browser to open share links (otherwise, use system "
-"browser)"
+"Use app inbuilt browser to open share links (otherwise, use system browser)"
 msgstr ""
 
 #: forms.py:1622
@@ -1646,8 +1648,8 @@ msgstr ""
 
 #: forms.py:2706
 msgid ""
-"Press YES to load settings only for current page and YES TO ALL to load "
-"all settings"
+"Press YES to load settings only for current page and YES TO ALL to load all "
+"settings"
 msgstr ""
 
 #: forms.py:2709 forms.py:2724
@@ -2272,8 +2274,8 @@ msgstr ""
 #: gui.py:1255
 msgid ""
 "You don't have a registered user name for uploading and sharing files.\n"
-"Would you like to set a new user name yourself (YES) or let {} assign the"
-" name for you (NO)?"
+"Would you like to set a new user name yourself (YES) or let {} assign the "
+"name for you (NO)?"
 msgstr ""
 
 #: gui.py:1257 gui.py:1261 gui.py:1263 gui.py:1267
@@ -2364,8 +2366,8 @@ msgstr ""
 
 #: gui.py:1840
 msgid ""
-"You have unsaved changes in your current crossword. Would you like to "
-"save them?"
+"You have unsaved changes in your current crossword. Would you like to save "
+"them?"
 msgstr ""
 
 #: gui.py:1840 gui.py:2082
@@ -2396,8 +2398,8 @@ msgstr ""
 
 #: gui.py:2082
 msgid ""
-"You have unsaved changes in your current crossword. Are you sure to "
-"reload it from the file (all changes will be lost)?"
+"You have unsaved changes in your current crossword. Are you sure to reload "
+"it from the file (all changes will be lost)?"
 msgstr ""
 
 #: gui.py:2289
@@ -2508,7 +2510,8 @@ msgid "No current user present!"
 msgstr ""
 
 #: utils/onlineservices.py:538 utils/onlineservices.py:574
-msgid "You cannot clear folders created by other users without a valid API key!"
+msgid ""
+"You cannot clear folders created by other users without a valid API key!"
 msgstr ""
 
 #: utils/onlineservices.py:567
@@ -2545,8 +2548,8 @@ msgstr ""
 
 #: utils/onlineservices.py:744
 msgid ""
-"Share object must be given a valid instance of Cloudstorage as the "
-"\"cloud\" argument!"
+"Share object must be given a valid instance of Cloudstorage as the \"cloud\" "
+"argument!"
 msgstr ""
 
 #: utils/onlineservices.py:748
@@ -2574,4 +2577,3 @@ msgstr ""
 #: utils/update.py:140
 msgid "No release branches in repository!"
 msgstr ""
-
