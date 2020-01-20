@@ -2,30 +2,13 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import sys, os, subprocess, traceback, uuid, tempfile, gettext
+import sys, os, subprocess, traceback, uuid, tempfile
 from datetime import datetime, time
 
 from .globalvars import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 
 ### ---------------------------- COMMON ---------------------------- ###
-
-def switch_lang(lang=''):
-    if not lang in ('', 'en', 'ru', 'fr', 'de', 'it', 'es'): return
-    if lang:
-        l = gettext.translation('base', './locale', languages=[lang])
-        l.install()
-    else:
-        gettext.install('base', './locale')
-
-def print_err(what, file=sys.stderr):
-    print(what, file=file)
-
-def print_dbg(what, file=sys.stdout):    
-    print(what, file=file)
-        
-def print_help(what, file=sys.stdout):
-    print(what, file=file)
 
 def is_iterable(obj):
     try:
@@ -90,17 +73,16 @@ def str_to_timestamp(text, strformat='%Y-%m-%d %H-%M-%S'):
 def get_tempdir():
     return os.path.abspath(tempfile.gettempdir())
 
-def make_abspath(filename, root=''):
-    # default root = pycross\
-    if not root: root = os.path.dirname(os.path.dirname(__file__))
-    return os.path.abspath(os.path.join(root, filename))
-
 def bytes_human(value, suffix='B'):
     for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
         if abs(value) < 1024.0:
             return f"{value:3.1f}{unit}{suffix}"
         value /= 1024.0
     return f"{value:.1f}Yi{suffix}"
+
+def restart_app(closefunction):    
+    run_exe("python cwordg.py", external=True, capture_output=False, shell=True)
+    closefunction()
 
 ### ---------------------------- GUI ---------------------------- ###
 

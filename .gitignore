@@ -8,6 +8,5 @@ pycross/assets/*.txt
 */*.log
 */*.json
 */autosaved.xpf
-/*.bat
 /mynotes.txt
 /*.xpf

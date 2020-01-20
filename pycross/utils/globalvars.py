@@ -2,9 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import gettext, os
-
-gettext.install('base', './locale')
+import os, gettext
 
 def make_abspath(filename, root=''):
     # default root = pycross\
@@ -49,6 +47,13 @@ SQL_TABLES = {'words': {'table': 'twords', 'fwords': 'word', 'fpos': 'idpos'},
 HTTP_PROXIES = None # or dict, e.g. {'http': 'http://ip:port', 'https': 'http://ip:port'}
 HTTP_TIMEOUT = 5                 # ожидание соединения и ответа (сек.) None = вечно
 MAX_RESULTS = 500
+
+APP_LANGUAGES = [('English (US)', '', '', 'united-states-of-america.png', "The application must be restarted to apply new language settings. Restart now?"), 
+                 ('Russian', 'ru', 'Русский', 'russia.png', "Приложение должно быть перезапущено для применения новых настроек языка. Перезапустить сейчас?"), 
+                 ('German', 'de', 'Deutsch', 'germany.png', "Die Anwendung muss neu gestartet werden, um neue Spracheinstellungen zu übernehmen. Jetzt neu starten?"), 
+                 ('French', 'fr', 'Français', 'france.png', "L'application doit être redémarrée pour appliquer de nouveaux paramètres de langue. Redémarrer maintenant?"), 
+                 ('Italian', 'it', 'Italiano', 'italy.png', "È necessario riavviare l'applicazione per applicare le nuove impostazioni della lingua. Riavvia ora?"), 
+                 ('Spanish', 'es', 'Español', 'spain.png', "La aplicación debe reiniciarse para aplicar la nueva configuración de idioma. ¿Reiniciar ahora?")]
 
 CWSAVE_FILTERS = ['Crossword file (*.xpf *.ipuz)', 'PDF file (*.pdf)', 
                   'Image file (*.jpg *.png *.tif *.tiff *.bmp)', 'SVG vector image (*.svg)',
@@ -247,3 +252,34 @@ GOOGLE_COUNTRIES_GL = {'af': 'Afghanistan', 'al': 'Albania', 'dz': 'Algeria', 'a
     'um': 'United States Minor Outlying Islands', 'uy': 'Uruguay', 'uz': 'Uzbekistan', 'vu': 'Vanuatu', 
     've': 'Venezuela', 'vn': 'Viet Nam', 'vg': 'Virgin Islands, British', 'vi': 'Virgin Islands, U.S.', 
     'wf': 'Wallis and Futuna', 'eh': 'Western Sahara', 'ye': 'Yemen', 'zm': 'Zambia', 'zw': 'Zimbabwe'} 
+
+LANGAPPLIED = False    
+
+def readSettings():
+    """
+    Checks if 'settings.json' exists in the main directory.
+    If not, creates it with the default settings; otherwise, 
+    reads 'settings.json' to the global CWSettings.settings object.
+    """
+    from guisettings import CWSettings
+    if not CWSettings.validate_file(SETTINGS_FILE):
+        CWSettings.save_to_file(SETTINGS_FILE)
+    else:
+        try:
+            CWSettings.load_from_file(SETTINGS_FILE)
+        except Exception as err:
+            print(err)
+    return CWSettings.settings
+
+def switch_lang(lang=''):
+    global LANGAPPLIED
+    if not lang in ('', 'en', 'ru', 'fr', 'de', 'it', 'es'): return
+    try:
+        gettext.translation('base', './locale', languages=[lang] if lang else 'en').install()
+    except:
+        gettext.translation('base', './locale', languages=['en']).install()
+    LANGAPPLIED = True
+
+if not LANGAPPLIED:
+    settings = readSettings()
+    switch_lang(settings['common']['lang'])            

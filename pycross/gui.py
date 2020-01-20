@@ -64,7 +64,6 @@ class MainWindow(QtWidgets.QMainWindow):
     
     def __init__(self):        
         super().__init__()
-        self.readSettings()                    # read settings from 'settings.json'
         self.cw = None                         # Crossword instance
         self.cw_file = ''                      # currently opened cw file
         self.cw_modified = True                # flag showing that current cw has been changed since last save
@@ -106,26 +105,14 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         print(what, end=end)
         
-    def readSettings(self):
-        """
-        Checks if 'settings.json' exists in the main directory.
-        If not, creates it with the default settings; otherwise, 
-        reads 'settings.json' to the global CWSettings.settings object.
-        """
-        if not CWSettings.validate_file(SETTINGS_FILE):
-            CWSettings.save_to_file(SETTINGS_FILE)
-        else:
-            try:
-                CWSettings.load_from_file(SETTINGS_FILE)
-            except Exception as err:
-                self._log(err)
-    
     def initUI(self):
         """
         Creates all window elements: layouts, panels, toolbars, widgets.
         """
         # actions
         self.create_actions()
+        # language combo
+        self.UI_create_lang_combo()
         # main toolbar
         self.UI_create_toolbar()  
         # main menu
@@ -310,8 +297,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolbar_main.setMovable(False)
         self.toolbar_main.toggleViewAction().setEnabled(False)
         self.toolbar_main.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.toolbar_main.customContextMenuRequested.connect(self.on_toolbar_contextmenu)
-        #self.toolbar_from_settings()
+        self.toolbar_main.customContextMenuRequested.connect(self.on_toolbar_contextmenu)        
         self.addToolBar(self.toolbar_main)
 
     def toolbar_from_settings(self):
@@ -321,6 +307,19 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.toolbar_main.addSeparator()
             else:
                 self.toolbar_main.addAction(getattr(self, act_))
+        # add lang combo
+        self.toolbar_main.addSeparator()
+        self.toolbar_main.addWidget(self.combo_lang)
+
+    def UI_create_lang_combo(self):
+        self.combo_lang = QtWidgets.QComboBox()
+        self.combo_lang.setEditable(False)
+        for lang in APP_LANGUAGES:
+            self.combo_lang.addItem(QtGui.QIcon(f"{ICONFOLDER}/{lang[3]}"), f"{lang[0]}{(' (' + lang[2] + ')') if lang[2] else ''}", lang[1])
+        index = self.combo_lang.findData(CWSettings.settings['common']['lang'])
+        if index >= 0:
+            self.combo_lang.setCurrentIndex(index)
+        self.combo_lang.currentIndexChanged.connect(self.on_combo_lang)
 
     def UI_create_menu(self):
         self.menu_main = self.menuBar()
@@ -763,7 +762,7 @@ class MainWindow(QtWidgets.QMainWindow):
             model_index = header.logicalIndex(i)
             header_item = model.horizontalHeaderItem(model_index)
             if header_item:
-                cols.append({'name': header_item.text(), 
+                cols.append({'name': header_item.data(), 
                             'visible': not header.isSectionHidden(model_index), 
                             'width': header.sectionSize(model_index)})
         if cols: CWSettings.settings['clues']['columns'] = cols
@@ -774,7 +773,7 @@ class MainWindow(QtWidgets.QMainWindow):
         header = self.tvClues.header()
         for i in range(header.count()):
             model_index = header.logicalIndex(i)
-            if model.horizontalHeaderItem(model_index).text() == colname:
+            if model.horizontalHeaderItem(model_index).data() == colname:
                 return model_index
         return -1
 
@@ -783,7 +782,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if not model: return None
         colitem = model.horizontalHeaderItem(index)
         if not colitem: return None
-        colname = colitem.text()
+        colname = colitem.data()
         for col in CWSettings.settings['clues']['columns']:
             if col['name'] == colname:
                 return col
@@ -815,7 +814,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         datamodel = self.tvClues.model()
         if not datamodel or word is None: return None
-        dirs = {'h': _('Across'), 'v': _('Down')}
+        dirs = {'h': _('ACROSS'), 'v': _('DOWN')}
         items = datamodel.findItems(dirs[word.dir])
         if not len(items): return None
         root_item = items[0]
@@ -982,6 +981,20 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.cw.wordfilter = lambda w: not any(w.lower() == pattern.lower() for pattern in CWSettings.settings['wordsrc']['excluded']['words'])
 
     def update_clues_model(self):
+
+        def _localize_colname(name):
+            if name == 'Direction':
+                return _('Direction')
+            elif name == 'No':
+                return _('No')
+            elif name == 'Clue':
+                return _('Clue')
+            elif name == 'Letters':
+                return _('Letters')
+            elif name == 'Reply':
+                return _('Reply')
+            return ''
+
         sort_role = QtCore.Qt.UserRole + 2
         delegate = self.tvClues.itemDelegate()
         if delegate:
@@ -993,13 +1006,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cluesmodel = QtGui.QStandardItemModel(0, 5)
         self.cluesmodel.setSortRole(sort_role)
         col_labels = [col['name'] for col in CWSettings.settings['clues']['columns']]
-        self.cluesmodel.setHorizontalHeaderLabels(col_labels)
+        #self.cluesmodel.setHorizontalHeaderLabels(_localize_colnames(col_labels))
+        for i, col_label in enumerate(col_labels):
+            header_item = QtGui.QStandardItem(_localize_colname(col_label))
+            header_item.setData(col_label)
+            self.cluesmodel.setHorizontalHeaderItem(i, header_item)
         if not self.cw: 
             self.tvClues.setModel(self.cluesmodel)
             self.tvClues.show()
             return
-        root_items = {_('Across'): 'h', _('Down'): 'v'}
-        for k in sorted(root_items):
+        root_items = {_('ACROSS'): 'h', _('DOWN'): 'v'}
+        for k in sorted(root_items, key=lambda k: root_items[k]):
             root_item = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/crossword.png"), k)
             root_item.setData(k, sort_role)
             for w in self.cw.words.words:
@@ -1023,7 +1040,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 item_reply = QtGui.QStandardItem(val)
                 item_reply.setData(val, sort_role)
                 item_reply.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
-                items = {_('Direction'): item_dir, _('No'): item_num, _('Clue'): item_clue, _('Letters'): item_letters, _('Reply'): item_reply}
+                items = {'Direction': item_dir, 'No': item_num, 'Clue': item_clue, 'Letters': item_letters, 'Reply': item_reply}
                 root_item.appendRow([items[k] for k in col_labels])
             self.cluesmodel.appendRow(root_item)
             #for i in range(len(col_labels)):
@@ -1066,11 +1083,11 @@ class MainWindow(QtWidgets.QMainWindow):
                     model_index = header.logicalIndex(icol)
                     colitem = datamodel.horizontalHeaderItem(model_index)
                     if not colitem: continue
-                    col_name = colitem.text()
+                    col_name = colitem.data()
                     item = root_item.child(row_clue, model_index)
-                    if col_name == _('Clue'):
+                    if col_name == 'Clue':
                         fstyle = 'COMPLETE' if item.text() else 'INCOMPLETE'
-                    elif col_name == _('Reply'):
+                    elif col_name == 'Reply':
                         fstyle = 'COMPLETE' if not BLANK in item.text() else 'INCOMPLETE'
                     else:
                         fstyle = 'NORMAL'
@@ -1660,7 +1677,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 font_metrics = QtGui.QFontMetrics(painter.font())
 
                 if wdir != word.dir:
-                    txt = _('Across:') if word.dir == 'h' else _('Down:')   
+                    txt = _('ACROSS:') if word.dir == 'h' else _('DOWN:')   
                     row_height = font_metrics.boundingRect(txt).height()
                     top_offset += 200
                     if (top_offset + row_height) > (page_rect.height() - margins.bottom()):
@@ -1799,6 +1816,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # window size and pos
         CWSettings.settings['gui']['win_pos'] = (self.pos().x(), self.pos().y())
         CWSettings.settings['gui']['win_size'] = (self.width(), self.height())
+        CWSettings.settings['common']['lang'] = self.combo_lang.currentData()
         # clues column widths
         self.update_clue_column_settings()
 
@@ -2041,7 +2059,7 @@ class MainWindow(QtWidgets.QMainWindow):
         reply = self.check_save_required()
         if reply == QtWidgets.QMessageBox.Cancel or reply == QtWidgets.QMessageBox.NoButton: return
 
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', os.getcwd(), _('Crossword files (*.xpf *.ipuz);;All files (*.*)'))
+        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Crossword files (*.xpf *.ipuz);;All files (*.*)'))
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep).lower()
         ext = os.path.splitext(selected_path)[1][1:]
@@ -2502,4 +2520,21 @@ class MainWindow(QtWidgets.QMainWindow):
         # restore focus (update_cw_grid removes focus from tvClues)
         self.tvClues.setFocus()
 
-        
+    @QtCore.pyqtSlot(int)
+    def on_combo_lang(self, index):
+        """
+        When a new language in the language combo is picked.
+        """
+        lang = self.combo_lang.itemData(index)
+        sel_lang = None
+        for l in APP_LANGUAGES:
+            if l[1] == lang:
+                sel_lang = l
+                break
+        if sel_lang is None: return
+        if sel_lang == '': lang = ''
+        CWSettings.settings['common']['lang'] = lang
+        CWSettings.save_to_file(SETTINGS_FILE)
+        reply = MsgBox(sel_lang[4], self, _('Language settings'), 'ask')
+        if reply == QtWidgets.QMessageBox.Yes: 
+            restart_app(self.close)

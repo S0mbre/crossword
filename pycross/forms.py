@@ -515,7 +515,9 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.act_clear = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), _('Clear'), self.on_act_clear)
         self.tb.addSeparator()
         self.act_up = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-L.png"), _('Up'), self.on_act_up)
-        self.act_down = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), _('Down'), self.on_act_down)
+        self.act_down = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), 
+                                        # NOTE: arrow button
+                                        _('Down'), self.on_act_down)
         self.layout_right.addWidget(self.tb)
         self.layout_preview = QtWidgets.QVBoxLayout()
         self.l_added = QtWidgets.QLabel(_('Added items:'))
@@ -899,7 +901,9 @@ class SettingsDialog(BasicDialog):
         self.tb_src_mgmt.setOrientation(QtCore.Qt.Vertical)
         self.act_src_up = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
         self.act_src_up.triggered.connect(self.on_act_src_up)
-        self.act_src_down = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), _('Down'))
+        self.act_src_down = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), 
+                                                        # NOTE: arrow button
+                                                        _('Down'))
         self.act_src_down.triggered.connect(self.on_act_src_down)        
         self.tb_src_mgmt.addSeparator()
         self.act_src_add = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/plus.png"), _('Add'))
@@ -1199,8 +1203,8 @@ class SettingsDialog(BasicDialog):
         self.btn_clue_surrounding_color.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_clue_surrounding_color.clicked.connect(self.on_color_btn_clicked)
 
-        self.layout_clues.addRow('Font', self.btn_clue_normal_font)
-        self.layout_clues.addRow('Text alignment', self.combo_clue_normal_alignment)
+        self.layout_clues.addRow(_('Font'), self.btn_clue_normal_font)
+        self.layout_clues.addRow(_('Text alignment'), self.combo_clue_normal_alignment)
 
         self.layout_clues_wspacer1 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer1.addSpacing(20)
@@ -1218,13 +1222,13 @@ class SettingsDialog(BasicDialog):
         self.layout_clues_wspacer3 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer3.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer3)
-        self.layout_clues.addRow('Complete color', self.btn_clue_complete_bg_color)
-        self.layout_clues.addRow('Complete style', self.combo_clue_complete_style)
-        self.layout_clues.addRow('Complete font color', self.btn_clue_complete_fg_color) 
+        self.layout_clues.addRow(_('Complete color'), self.btn_clue_complete_bg_color)
+        self.layout_clues.addRow(_('Complete style'), self.combo_clue_complete_style)
+        self.layout_clues.addRow(_('Complete font color'), self.btn_clue_complete_fg_color) 
         self.layout_clues_wspacer31 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer31.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer31)   
-        self.layout_clues.addRow('Surrounding color', self.btn_clue_surrounding_color)    
+        self.layout_clues.addRow(_('Surrounding color'), self.btn_clue_surrounding_color)    
 
         self.layout_clues_wspacer4 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer4.addSpacing(20)
@@ -1250,7 +1254,9 @@ class SettingsDialog(BasicDialog):
         self.tb_clues_cols.setOrientation(QtCore.Qt.Vertical)
         self.act_cluecol_up = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
         self.act_cluecol_up.triggered.connect(self.on_act_cluecol_up)
-        self.act_cluecol_down = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), _('Down'))
+        self.act_cluecol_down = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), 
+                                                            # NOTE: arrow button
+                                                            _('Down'))
         self.act_cluecol_down.triggered.connect(self.on_act_cluecol_down)
         self.layout_gb_clues_cols.addWidget(self.tb_clues_cols)
 
@@ -3939,7 +3945,9 @@ class ReflectGridDialog(BasicDialog):
         self.layout_controls = QtWidgets.QVBoxLayout()
 
         self.ag_dir = QtWidgets.QActionGroup(self)
-        self.act_down = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), _('Down'))
+        self.act_down = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), 
+                                                # NOTE: arrow button
+                                                _('Down'))
         self.act_down.setCheckable(True)        
         self.act_down.toggled.connect(self.on_actdir)
         self.act_up = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))

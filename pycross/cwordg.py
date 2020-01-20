@@ -14,8 +14,7 @@ def main():
     
     try:
         # change working dir to current for correct calls to git
-        os.chdir(os.path.dirname(os.path.abspath(__file__)))   
-        switch_lang('ru')
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))           
         # initialize Qt Core App settings
         QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
         # create QApplication instance

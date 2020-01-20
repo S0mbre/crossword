@@ -299,6 +299,7 @@
 	},
 	"common": {
 		"temp_dir": "",
-		"autosave_cw": true
+		"autosave_cw": true,
+		"lang": ""
 	}
 }

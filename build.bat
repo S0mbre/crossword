@@ -1,0 +1,3 @@
+@echo off
+python setup.py bdist_wheel
+set /p=Press ENTER...
