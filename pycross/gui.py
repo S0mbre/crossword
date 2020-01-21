@@ -797,7 +797,7 @@ class MainWindow(QtWidgets.QMainWindow):
         root_item = item.parent()
         if not root_item: return None
         try:
-            col = self._logical_col_by_name('No')
+            col = self._logical_col_by_name('No.')
             if col < 0: return None
             num = int(root_item.child(item.row(), col).text())
             wdir = 'h' if root_item.text() == _('Across') else 'v'
@@ -818,7 +818,7 @@ class MainWindow(QtWidgets.QMainWindow):
         items = datamodel.findItems(dirs[word.dir])
         if not len(items): return None
         root_item = items[0]
-        col = self._logical_col_by_name(_('No'))
+        col = self._logical_col_by_name(_('No.'))
         if col < 0: return None
         for row in range(root_item.rowCount()):
             item_num = root_item.child(row, col)
@@ -985,8 +985,8 @@ class MainWindow(QtWidgets.QMainWindow):
         def _localize_colname(name):
             if name == 'Direction':
                 return _('Direction')
-            elif name == 'No':
-                return _('No')
+            elif name == 'No.':
+                return _('No.')
             elif name == 'Clue':
                 return _('Clue')
             elif name == 'Letters':
@@ -1040,7 +1040,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 item_reply = QtGui.QStandardItem(val)
                 item_reply.setData(val, sort_role)
                 item_reply.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
-                items = {'Direction': item_dir, 'No': item_num, 'Clue': item_clue, 'Letters': item_letters, 'Reply': item_reply}
+                items = {'Direction': item_dir, 'No.': item_num, 'Clue': item_clue, 'Letters': item_letters, 'Reply': item_reply}
                 root_item.appendRow([items[k] for k in col_labels])
             self.cluesmodel.appendRow(root_item)
             #for i in range(len(col_labels)):
@@ -1127,7 +1127,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(str)
     def on_share_clipboard_write(self, url):
         clipboard_copy(url)
-        MsgBox(_("Copied URL '{}' to clipboard").format(url), self, 'pyCross')
+        MsgBox(_("Copied URL '{}' to clipboard").format(url), self)
 
     @QtCore.pyqtSlot(QtCore.QThread, str)
     def on_share_error(self, thread, err):
@@ -1273,8 +1273,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if not username:
             reply = MsgBox(_("You don't have a registered user name for uploading and sharing files.\n"
             "Would you like to set a new user name yourself (YES) or let {} assign the name for you (NO)?").format(APP_NAME),
-            self, _('Create new user'), 'ask', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-            if reply == QtWidgets.QMessageBox.Yes:
+            self, _('Create new user'), 'ask')
+            if reply == 'yes':
                 # ask for new user name                
                 while not username:
                     res = UserInput(parent=self, title=_('Create new user'), label=_('Enter user name:'))
@@ -1283,8 +1283,8 @@ class MainWindow(QtWidgets.QMainWindow):
                         break
                     if cloud._user_exists(res[0]):
                         reply2 = MsgBox(_("Username {} is already occupied!\nUser another name (YES) or create name for you (NO)?").format(res[0]),
-                                        self, _('Create new user'), 'warn', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)                       
-                        if reply2 == QtWidgets.QMessageBox.Yes:
+                                        self, _('Create new user'), 'warn', ['yes', 'no'])                       
+                        if reply2 == 'yes':
                             continue
                         else:
                             break
@@ -1855,10 +1855,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def check_save_required(self, cancellable=True):
         if self.cw and self.cw_modified:
-            btn = QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
-            if cancellable: btn |= QtWidgets.QMessageBox.Cancel
+            btn = ['yes', 'no']
+            if cancellable: btn.append('cancel')
             reply = MsgBox(_('You have unsaved changes in your current crossword. Would you like to save them?'), self, _('Confirm Action'), 'ask', btn=btn)
-            if reply == QtWidgets.QMessageBox.Yes: 
+            if reply == 'yes': 
                 self.on_act_save(False)   
             return reply
         return None
@@ -2014,7 +2014,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_new(self, checked):
 
         reply = self.check_save_required()
-        if reply == QtWidgets.QMessageBox.Cancel or reply == QtWidgets.QMessageBox.NoButton: return
+        if not reply or reply == 'cancel': return
 
         if not hasattr(self, 'dia_load'):
             self.dia_load = LoadCwDialog(self)
@@ -2057,7 +2057,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_open(self, checked):
 
         reply = self.check_save_required()
-        if reply == QtWidgets.QMessageBox.Cancel or reply == QtWidgets.QMessageBox.NoButton: return
+        if not reply or reply == 'cancel': return
 
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Crossword files (*.xpf *.ipuz);;All files (*.*)'))
         if not selected_path[0]: return
@@ -2100,7 +2100,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if not self.cw_file: return
         if self.cw and self.cw_modified:
             reply = MsgBox(_('You have unsaved changes in your current crossword. Are you sure to reload it from the file (all changes will be lost)?'), self, _('Confirm Action'), 'ask')
-            if reply != QtWidgets.QMessageBox.Yes: return
+            if reply != 'yes': return
         old_cw = self.cw
         try:
             self.cw = Crossword(data=self.cw_file, data_type='file',
@@ -2118,7 +2118,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_close(self, checked):
         reply = self.check_save_required()
-        if reply == QtWidgets.QMessageBox.Cancel or reply == QtWidgets.QMessageBox.NoButton: return
+        if not reply or reply == 'cancel': return
 
         self.cw = None
         self.cw_file = ''
@@ -2536,5 +2536,5 @@ class MainWindow(QtWidgets.QMainWindow):
         CWSettings.settings['common']['lang'] = lang
         CWSettings.save_to_file(SETTINGS_FILE)
         reply = MsgBox(sel_lang[4], self, _('Language settings'), 'ask')
-        if reply == QtWidgets.QMessageBox.Yes: 
+        if reply == 'yes': 
             restart_app(self.close)

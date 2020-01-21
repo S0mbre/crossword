@@ -10,3 +10,4 @@ pycross/assets/*.txt
 */autosaved.xpf
 /mynotes.txt
 /*.xpf
+pycross/.vscode/

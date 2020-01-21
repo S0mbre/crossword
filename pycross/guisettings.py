@@ -75,7 +75,7 @@ class CWSettings:
                 'bg_color': 4294967295
             },
          'columns': [{'name': 'Direction', 'visible': True, 'width': -1}, 
-                     {'name': 'No', 'visible': True, 'width': -1}, 
+                     {'name': 'No.', 'visible': True, 'width': -1}, 
                      {'name': 'Clue', 'visible': True, 'width': -1}, 
                      {'name': 'Letters', 'visible': True, 'width': -1}, 
                      {'name': 'Reply', 'visible': True, 'width': -1}]

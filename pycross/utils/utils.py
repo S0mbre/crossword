@@ -154,21 +154,42 @@ def make_font(family, size=-1, weight=-1, italic=False, font_unit='pt'):
     font.setItalic(italic)
     #print(f"make_font: font_unit={font_unit}, family={font.family()}, size(pt) = {font.pointSize()}, size(px)={font.pixelSize()}")
     return font
+
+MSGBOX_BUTTONS = {'ok': (_('OK'), QtWidgets.QMessageBox.AcceptRole), 'yes': (_('Yes'), QtWidgets.QMessageBox.YesRole),
+                  'no': (_('No'), QtWidgets.QMessageBox.NoRole), 'cancel': (_('Cancel'), QtWidgets.QMessageBox.RejectRole),
+                  'yesall': (_('Yes to All'), QtWidgets.QMessageBox.YesRole), 'noall': (_('No to All'), QtWidgets.QMessageBox.NoRole),
+                  'apply': (_('Apply'), QtWidgets.QMessageBox.ApplyRole), 'reset': (_('Reset'), QtWidgets.QMessageBox.ResetRole),
+                  'open': (_('Open'), QtWidgets.QMessageBox.AcceptRole), 'save': (_('Save'), QtWidgets.QMessageBox.AcceptRole),
+                  'close': (_('Close'), QtWidgets.QMessageBox.RejectRole), 'discard': (_('Discard'), QtWidgets.QMessageBox.DestructiveRole),
+                  'restoredefaults': (_('Restore Defaults'), QtWidgets.QMessageBox.ResetRole), 'help': (_('Help'), QtWidgets.QMessageBox.HelpRole),
+                  'saveall': (_('Save All'), QtWidgets.QMessageBox.AcceptRole), 'abort': (_('Abort'), QtWidgets.QMessageBox.RejectRole),
+                  'retry': (_('Retry'), QtWidgets.QMessageBox.AcceptRole), 'ignore': (_('Ignore'), QtWidgets.QMessageBox.AcceptRole)}
+MSGBOX_TYPES = {'error': (QtWidgets.QMessageBox.Critical, ['ok']), 'warn': (QtWidgets.QMessageBox.Warning, ['ok']), 'ask': (QtWidgets.QMessageBox.Question, ['yes', 'no']), 
+                'info': (QtWidgets.QMessageBox.Information, ['ok']), '-': (QtWidgets.QMessageBox.NoIcon, ['ok'])}
     
-def MsgBox(what, parent=None, title='pyCross', msgtype='info', btn=None):
-    if msgtype == 'error':
-        msgtype = QtWidgets.QMessageBox.Critical
-        if btn is None: btn = QtWidgets.QMessageBox.Ok
-    elif msgtype == 'warn':
-        msgtype = QtWidgets.QMessageBox.Warning
-        if btn is None: btn = QtWidgets.QMessageBox.Ok
-    elif msgtype == 'ask':
-        msgtype = QtWidgets.QMessageBox.Question
-        if btn is None: btn = QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+def MsgBox(what, parent=None, title='pyCross', msgtype='info', btn=None, detailedText='', infoText='', execnow=True):
+    msgtype = MSGBOX_TYPES.get(msgtype, MSGBOX_TYPES['-'])
+    msgbox = QtWidgets.QMessageBox(parent)
+    msgbox.setIcon(msgtype[0])
+    msgbox.setWindowTitle(title)
+    msgbox.setText(what)
+    msgbox.setDetailedText(detailedText)
+    msgbox.setInformativeText(infoText)
+    if not btn: btn = msgtype[1]
+    for bt in btn:
+        if bt in MSGBOX_BUTTONS:
+            msgbox.addButton(MSGBOX_BUTTONS[bt][0], MSGBOX_BUTTONS[bt][1])        
+    if execnow:
+        msgbox.exec()
+        clk = msgbox.clickedButton()
+        if not clk: return ''
+        clktxt = clk.text()
+        for bt in MSGBOX_BUTTONS:
+            if MSGBOX_BUTTONS[bt][0] == clktxt:
+                return bt
+        return ''
     else:
-        msgtype = QtWidgets.QMessageBox.Information
-        if btn is None: btn = QtWidgets.QMessageBox.Ok
-    return QtWidgets.QMessageBox(msgtype, title, what, btn, parent).exec()
+        return msgbox
 
 def UserInput(dialogtype='text', parent=None, title='pyCross', label='', value=None, textmode='normal',
               valrange=None, decimals=1, step=1, comboeditable=True, comboitems=[]):

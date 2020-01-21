@@ -153,19 +153,16 @@ class LoadCwDialog(BasicDialog):
         
     def validate(self):
         if self.rb_grid.isChecked() and not os.path.isfile(self.le_pattern.text()):
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-            _('Pattern file is unavailable, please check!'), QtWidgets.QMessageBox.Ok, self).exec()
+            MsgBox(_('Pattern file is unavailable, please check!'), self, _('Error'), 'error')
             return False
         if self.rb_file.isChecked() and not os.path.isfile(self.le_file.text()):
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-            _('Crossword file is unavailable, please check!'), QtWidgets.QMessageBox.Ok, self).exec()
+            MsgBox(_('Crossword file is unavailable, please check!'), self, _('Error'), 'error')
             return False 
         try:
             int(self.le_rows.text())
             int(self.le_cols.text())
         except ValueError:
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-            _('Rows and columns must be valid numbers (e.g. 10)!'), QtWidgets.QMessageBox.Ok, self).exec()
+            MsgBox(_('Rows and columns must be valid numbers (e.g. 10)!'), self, _('Error'), 'error')
             return False
         return True
         
@@ -406,55 +403,45 @@ class WordSrcDialog(BasicDialog):
     
     def validate(self):
         if not self.le_name.text().strip():
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-            _('Source must have a non-empty name!'), QtWidgets.QMessageBox.Ok, self).exec()
+            MsgBox(_('Source must have a non-empty name!'), _('Error'), self, 'error')
             return False
         if self.rb_type_db.isChecked():
             if not self.le_dbfile.text() or not self.le_dbfile.text() in LANG:
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-                _('DB file path must be valid!'), QtWidgets.QMessageBox.Ok, self).exec()
+                MsgBox(_('DB file path must be valid!'), _('Error'), self, 'error')
                 return False
             try:
                 d = json.loads(self.le_dbtables.text())
                 if not isinstance(d, dict): raise Exception()
             except:
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-                _('DB tables field has incorrect value!'), QtWidgets.QMessageBox.Ok, self).exec()
+                MsgBox(_('DB tables field has incorrect value!'), _('Error'), self, 'error')
                 return False
             
         elif self.rb_type_file.isChecked():
             if not self.le_txtfile.text():
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-                _('Text file path must be valid!'), QtWidgets.QMessageBox.Ok, self).exec()
+                MsgBox(_('Text file path must be valid!'), _('Error'), self, 'error')
                 return False
             if not self.combo_fileenc.currentText():
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-                _('Text file encoding must not be empty!'), QtWidgets.QMessageBox.Ok, self).exec()
+                MsgBox(_('Text file encoding must not be empty!'), _('Error'), self, 'error')
                 return False
             delim = self.combo_file_delim.currentText()
             if not delim:
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-                _('Text file delimiter must not be empty!'), QtWidgets.QMessageBox.Ok, self).exec()
+                MsgBox(_('Text file delimiter must not be empty!'), _('Error'), self, 'error')
                 return False
             if not delim in (_('SPACE'), _('TAB')) and len(delim) > 1:
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-                _('Text file delimiter must be either "SPACE" or "TAB" or a single character!'), QtWidgets.QMessageBox.Ok, self).exec()
+                MsgBox(_('Text file delimiter must be either "SPACE" or "TAB" or a single character!'), _('Error'), self, 'error')
                 return False
             
         elif self.rb_type_list.isChecked():
             if self.chb_haspos.isChecked():
                 delim = self.combo_list_delim.currentText()
                 if not delim:
-                    QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-                    _('Word list delimiter must not be empty if is has parts of speech!'), QtWidgets.QMessageBox.Ok, self).exec()
+                    MsgBox(_('Word list delimiter must not be empty if is has parts of speech!'), _('Error'), self, 'error')
                     return False
                 if not delim in (_('SPACE'), _('TAB')) and len(delim) > 1:
-                    QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-                    _('Word list delimiter must be either "SPACE" or "TAB" or a single character!'), QtWidgets.QMessageBox.Ok, self).exec()
+                    MsgBox(_('Word list delimiter must be either "SPACE" or "TAB" or a single character!'), _('Error'), self, 'error')
                     return False
             if not self.te_wlist.toPlainText().strip():
-                QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-                _('Word list is empty or invalid!'), QtWidgets.QMessageBox.Ok, self).exec()
+                MsgBox(_('Word list is empty or invalid!'), _('Error'), self, 'error')
                 return False
             
         self.to_src()
@@ -2714,30 +2701,32 @@ class SettingsDialog(BasicDialog):
         """
         Restore default settings for current page or for all pages.
         """
-        btn = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, _('Restore defaults'), 
-            _('Press YES to restore defaults only for current page and YES TO ALL to restore all default settings'), 
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.YesToAll | QtWidgets.QMessageBox.Cancel, self).exec()
-        if btn != QtWidgets.QMessageBox.Cancel:
-            self.from_settings(self.default_settings, self.tree.currentItem().text(0) if btn == QtWidgets.QMessageBox.Yes else None)
+        msbox = MsgBox(_('Press YES to restore defaults only for current page and YES TO ALL to restore all default settings'), self,
+            _('Restore defaults'), 'ask', ['yes', 'yesall', 'cancel'], execnow=False)
+        msbox.exec()
+        clk = msgbox.clickedButton()
+        if clk and (clk.text() in (MSGBOX_BUTTONS['yes'][0], MSGBOX_BUTTONS['yesall'][0])):
+            self.from_settings(self.default_settings, self.tree.currentItem().text(0) if clk.text() == MSGBOX_BUTTONS['yes'][0] else None)
 
     @QtCore.pyqtSlot(bool) 
     def on_btn_load(self, checked):
         """
         Loads settings from file for current page or for all pages.
         """
-        btn = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, _('Load defaults'), 
-            _('Press YES to load settings only for current page and YES TO ALL to load all settings'), 
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.YesToAll | QtWidgets.QMessageBox.Cancel, self).exec()
-        if btn == QtWidgets.QMessageBox.Cancel: return
+        msbox = MsgBox(_('Press YES to load settings only for current page and YES TO ALL to load all settings'), self,
+            _('Load defaults'), 'ask', ['yes', 'yesall', 'cancel'], execnow=False)
+        msbox.exec()
+        clk = msgbox.clickedButton()
+        if not clk or (not clk.text() in (MSGBOX_BUTTONS['yes'][0], MSGBOX_BUTTONS['yesall'][0])): return
+
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Settings files (*.json)'))
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep).lower()
         settings = CWSettings.validate_file(selected_path)
         if not settings: 
-            QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, _('Error'), 
-            _("File '{}' has a wrong format or incomplete settings!").format(selected_path), QtWidgets.QMessageBox.Ok, self).exec()
+            MsgBox(_("File '{}' has a wrong format or incomplete settings!").format(selected_path), self, _('Error'), 'error')
             return
-        self.from_settings(settings, self.tree.currentItem().text(0) if btn == QtWidgets.QMessageBox.Yes else None)
+        self.from_settings(settings, self.tree.currentItem().text(0) if clk.text() == MSGBOX_BUTTONS['yes'][0] else None)
 
     @QtCore.pyqtSlot(bool) 
     def on_btn_save(self, checked):
@@ -4054,10 +4043,10 @@ class PasswordDialog(BasicDialog):
 
     def validate(self):
         if not self.allow_empty_user and not self.le_user.text():
-            MsgBox(_("{} field cannot be empty!").format(self.user_label))
+            MsgBox(_("{} field cannot be empty!").format(self.user_label), self, _('Error'), 'error')
             return False
         if not self.allow_empty_password and not self.le_pass.text():
-            MsgBox(_("{} field cannot be empty!").format(self.password_label))
+            MsgBox(_("{} field cannot be empty!").format(self.password_label), self, _('Error'), 'error')
             return False
         return True
 

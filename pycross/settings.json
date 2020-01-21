@@ -3,8 +3,8 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			166,
-			38
+			305,
+			95
 		],
 		"win_size": [
 			1425,
@@ -169,7 +169,7 @@
 				"width": 100
 			},
 			{
-				"name": "No",
+				"name": "No.",
 				"visible": true,
 				"width": 100
 			},

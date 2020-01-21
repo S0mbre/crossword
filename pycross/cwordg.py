@@ -7,6 +7,7 @@ from utils.globalvars import *
 from utils.utils import switch_lang
 from PyQt5 import QtWebEngine, QtWebEngineWidgets, QtWebEngineCore
 from gui import QtCore, QtWidgets, MainWindow
+from guisettings import CWSettings
 
 ## ******************************************************************************** ##
 
@@ -23,6 +24,19 @@ def main():
         QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
         QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.DnsPrefetchEnabled, True)
         QtWebEngineWidgets.QWebEngineProfile.defaultProfile().setUseForGlobalCertificateVerification()
+        # localize Qt widgets
+        lang = CWSettings.settings['common']['lang'] or 'en'  # by this moment, the settings will have been initialized from file
+        locale = QtCore.QLocale(lang)
+        locale_name = locale.name()
+        #print(locale_name)
+        QtCore.QLocale.setDefault(locale)
+        if lang != 'en':
+            qts = ('qtbase_', 'qt_')
+            for qt in qts:
+                translator = QtCore.QTranslator()
+                if translator.load(locale, qt, '', f"locale/{locale_name}/qt"):
+                    if not app.installTranslator(translator):
+                        print(f"Cannot install QT translator for locale '{locale_name}' and domain '{qt}'!")
         # create main window
         MainWindow()        
         # run app's event loop

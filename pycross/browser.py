@@ -44,9 +44,8 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
                 MsgBox(deferredError.errorDescription(), mainwindow, _('Certificate Error'), 'error')
             else:
                 reply = MsgBox(_("{}\nPress YES to ignore certificate or NO to reject certificate.").format(deferredError.errorDescription()), 
-                                mainwindow, _('Certificate Error'), 'warn', 
-                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-                if reply == QtWidgets.QMessageBox.Yes:
+                                mainwindow, _('Certificate Error'), 'warn', ['yes', 'no'])
+                if reply == 'yes':
                     deferredError.ignoreCertificateError()
                 else:
                     deferredError.rejectCertificate()
@@ -76,7 +75,7 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
                      QtWebEngineWidgets.QWebEnginePage.DesktopAudioVideoCapture: _('Allow {} to capture audio and video of your desktop?'),
                      QtWebEngineWidgets.QWebEnginePage.Notifications: _('Allow {} to show notification on your desktop?')} 
         mainwindow = self.view().window()        
-        if feature in questions and MsgBox(questions[feature].format(securityOrigin.host()), mainwindow, _('Permission Request'), 'ask') == QtWidgets.QMessageBox.Yes:
+        if feature in questions and MsgBox(questions[feature].format(securityOrigin.host()), mainwindow, _('Permission Request'), 'ask') == 'yes':
             self.setFeaturePermission(securityOrigin, feature, QtWebEngineWidgets.QWebEnginePage.PermissionGrantedByUser)
         else:
             self.setFeaturePermission(securityOrigin, feature, QtWebEngineWidgets.QWebEnginePage.PermissionDeniedByUser)
@@ -95,7 +94,7 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
     @QtCore.pyqtSlot(QtWebEngineCore.QWebEngineRegisterProtocolHandlerRequest)
     def on_registerProtocolHandlerRequested(self, request):
         mainwindow = self.view().window()
-        if MsgBox(_("Allow {} to open all {} links?").format(request.origin().host(), request.scheme()), mainwindow, _('Permission Request'), 'ask') == QtWidgets.QMessageBox.Yes:
+        if MsgBox(_("Allow {} to open all {} links?").format(request.origin().host(), request.scheme()), mainwindow, _('Permission Request'), 'ask') == 'yes':
             request.accept()
         else:
             request.reject()
@@ -207,7 +206,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
 
     @QtCore.pyqtSlot(QtWebEngineWidgets.QWebEnginePage.RenderProcessTerminationStatus, int)
     def on_renderProcessTerminated(self, terminationStatus, exitCode):
-        if MsgBox(_(f"Page rendering stopped. Reload page?"), self.window(), _('Rendering stopped'), 'ask') == QtWidgets.QMessageBox.Yes:
+        if MsgBox(_(f"Page rendering stopped. Reload page?"), self.window(), _('Rendering stopped'), 'ask') == 'yes':
             QtCore.QTimer.singleShot(0, self.reload)
 
 
@@ -707,7 +706,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
         cnt = self.m_tabWidget.count()
         if cnt > 1:
             reply = MsgBox(_('Are you sure you want to close the window? There are {} tabs open.').format(cnt), self, _('Confirm quit'), 'ask')
-            if reply != QtWidgets.QMessageBox.Yes:
+            if reply != 'yes':
                 event.ignore()
                 return
         event.accept()
