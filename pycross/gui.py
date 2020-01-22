@@ -100,7 +100,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.dia_settings = SettingsDialog(self)
         # execute actions for command-line args, if present
         self.execute_cli_args(**kwargs)
-        #register_file_types(['xpf', 'ipuz'])
 
     def _log(self, what, end='\n'):
         """
@@ -1417,31 +1416,34 @@ class MainWindow(QtWidgets.QMainWindow):
                          onvalidate=lambda bad_: self.gen_thread.sig_validate.emit(bad_),
                          on_progress=lambda cw_, complete_, total_: self.gen_thread.sig_progress.emit(cw_, complete_, total_))
 
-    def _guess_filetype(self, filepath):
-        if not filepath: return -1
-        ext = os.path.splitext(filepath)[1][1:].lower()
-        if ext in ('xpf', 'ipuz'): return 0
-        if ext == 'pdf': return 1
-        if ext in ('jpg', 'png', 'tif', 'tiff', 'bmp'): return 2
-        if ext == 'svg': return 3
-        return 4
-
-    def _get_filetype(self, filtername):
-        try:
-            return CWSAVE_FILTERS.index(filtername)
-        except:
-            pass
-        return -1
-
     def _save_cw(self, filepath=None, file_type=None):
+        def _guess_filetype(filepath):
+            if not filepath: return -1
+            ext = os.path.splitext(filepath)[1][1:].lower()
+            if ext in ('xpf', 'ipuz'): return 0
+            if ext == 'pdf': return 1
+            if ext in ('jpg', 'png', 'tif', 'tiff', 'bmp'): return 2
+            if ext == 'svg': return 3
+            return 4
+
+        def _get_filetype(filtername):
+            CWSAVE_FILTERS = [_('Crossword file (*.xpf *.ipuz)'), _('PDF file (*.pdf)'), 
+                    _('Image file (*.jpg *.png *.tif *.tiff *.bmp)'), _('SVG vector image (*.svg)'),
+                    _('Text file (*.txt)'), _('All files (*.*)')]
+            try:
+                return CWSAVE_FILTERS.index(filtername)
+            except:
+                pass
+            return -1
+            
         if filepath is None:
             filepath = self.cw_file
             
         if file_type is None:
-            file_type = self._guess_filetype(filepath)
+            file_type = _guess_filetype(filepath)
         else:
             if isinstance(file_type, str):
-                file_type = self._get_filetype(file_type)
+                file_type = _get_filetype(file_type)
             elif not isinstance(file_type, int):
                 file_type = -1
 
@@ -2123,6 +2125,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_saveas(self, checked):
         if not self.cw: return
         
+        CWSAVE_FILTERS = [_('Crossword file (*.xpf *.ipuz)'), _('PDF file (*.pdf)'), 
+                  _('Image file (*.jpg *.png *.tif *.tiff *.bmp)'), _('SVG vector image (*.svg)'),
+                  _('Text file (*.txt)'), _('All files (*.*)')]
         fname = 'crossword.xpf'
         selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), fname), 
             ';;'.join(CWSAVE_FILTERS), CWSAVE_FILTERS[0])

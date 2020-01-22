@@ -84,31 +84,103 @@ def restart_app(closefunction):
     run_exe("pythonw cwordg.py", external=True, capture_output=False, shell=True)
     closefunction()
 
-def register_file_types(filetypes):
+def file_types_registered(filetypes=('xpf', 'ipuz')):
     osname = platform.system()
-    if osname == 'Windows':
-        # create app entry
+    if osname == 'Windows':        
         import winreg
-        root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
-        hKey = winreg.CreateKey(root, f"Software\\Classes\\{APP_NAME}\\shell\\open\\command")
-        winreg.SetValueEx(hKey, '', 0, winreg.REG_SZ, f'"{make_abspath(sys.executable)}" "{make_abspath(sys.argv[0])}" -o "%1"')
-        winreg.CloseKey(hKey)
-        hKey = winreg.CreateKey(root, f"Software\\Classes\\{APP_NAME}\\DefaultIcon")
-        winreg.SetValueEx(hKey, '', 0, winreg.REG_SZ, f"{ICONFOLDER}\\main.ico")
-        winreg.CloseKey(hKey)
-        # create ext entries
-        for filetype in filetypes:
-            ftype = ('.' + filetype.lower()) if not filetype.startswith('.') else filetype.lower()
-            hKey = winreg.CreateKey(root, f"Software\\Classes\\{ftype}")
-            winreg.SetValueEx(hKey, '', 0, winreg.REG_SZ, APP_NAME)    
-            winreg.CloseKey(hKey)    
-        winreg.CloseKey(root)
+        try:
+            root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+            hKey = winreg.OpenKeyEx(root, f"Software\\Classes\\{APP_NAME}\\shell\\open\\command")
+            if winreg.QueryValue(hKey, '') != f'"{make_abspath(sys.executable)}" "{make_abspath(sys.argv[0])}" -o "%1"':
+                winreg.CloseKey(hKey)
+                return False
+            winreg.CloseKey(hKey)
+            for filetype in filetypes:
+                ftype = ('.' + filetype.lower()) if not filetype.startswith('.') else filetype.lower()
+                hKey = winreg.OpenKeyEx(root, f"Software\\Classes\\{ftype}")
+                if winreg.QueryValue(hKey, '') != APP_NAME:
+                    winreg.CloseKey(hKey)
+                    return False
+                winreg.CloseKey(hKey)
+            return True
+        except:
+            return False
 
     elif osname == 'Linux':
-        pass
+        # app in /usr/share/applications and edit /usr/share/applications/defaults.list (Ubuntu, Fedora, Debian...)
+        return False
 
     elif osname == 'Darwin':
-        pass
+        # see https://stackoverflow.com/a/2976711
+        return False
+
+    return False
+
+def register_file_types(filetypes=('xpf', 'ipuz'), register=True):
+    osname = platform.system()
+    if osname == 'Windows':        
+        import winreg
+        try:
+            root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+            # app entry
+            if register:
+                hKey = winreg.CreateKey(root, f"Software\\Classes\\{APP_NAME}\\shell\\open\\command")
+                winreg.SetValueEx(hKey, '', 0, winreg.REG_SZ, f'"{make_abspath(sys.executable)}" "{make_abspath(sys.argv[0])}" -o "%1"')
+                winreg.CloseKey(hKey)
+                hKey = winreg.CreateKey(root, f"Software\\Classes\\{APP_NAME}\\DefaultIcon")
+                winreg.SetValueEx(hKey, '', 0, winreg.REG_SZ, f"{ICONFOLDER}\\main.ico")
+                winreg.CloseKey(hKey)
+            else:
+                try:
+                    hKey = winreg.OpenKeyEx(root, f"Software\\Classes\\{APP_NAME}", 0, winreg.KEY_ALL_ACCESS)
+                    winreg.DeleteKey(hKey, 'DefaultIcon')
+                except:
+                    pass
+                try:
+                    hKey = winreg.OpenKeyEx(root, f"Software\\Classes\\{APP_NAME}\\shell\\open", 0, winreg.KEY_ALL_ACCESS)
+                    winreg.DeleteKey(hKey, 'command')
+                    hKey = winreg.OpenKeyEx(root, f"Software\\Classes\\{APP_NAME}\\shell", 0, winreg.KEY_ALL_ACCESS)
+                    winreg.DeleteKey(hKey, 'open')
+                    hKey = winreg.OpenKeyEx(root, f"Software\\Classes\\{APP_NAME}", 0, winreg.KEY_ALL_ACCESS)
+                    winreg.DeleteKey(hKey, 'shell')
+                    hKey = winreg.OpenKeyEx(root, f"Software\\Classes", 0, winreg.KEY_ALL_ACCESS)
+                    winreg.DeleteKey(hKey, APP_NAME)
+                except:
+                    pass
+            # ext entries
+            for filetype in filetypes:
+                ftype = ('.' + filetype.lower()) if not filetype.startswith('.') else filetype.lower()
+                if register:
+                    hKey = winreg.CreateKey(root, f"Software\\Classes\\{ftype}")
+                    winreg.SetValueEx(hKey, '', 0, winreg.REG_SZ, APP_NAME)
+                    winreg.CloseKey(hKey)    
+                else:
+                    try:
+                        hKey = winreg.OpenKeyEx(root, f"Software\\Classes", 0, winreg.KEY_ALL_ACCESS)
+                        winreg.DeleteKey(hKey, ftype)
+                    except:
+                        continue
+
+            winreg.CloseKey(root)    
+
+            # fast update file icons 
+            run_exe('ie4uinit.exe -show', False, False, shell=True)        
+            return True
+
+        except Exception as err:
+            print(str(err))
+            return False
+
+    elif osname == 'Linux':
+        # create app in /usr/share/applications and edit /usr/share/applications/defaults.list (Ubuntu, Fedora, Debian...)
+        return False
+
+    elif osname == 'Darwin':
+        # see https://stackoverflow.com/a/2976711
+        return False
+
+    # some oddball os...
+    return False
 
 ### ---------------------------- GUI ---------------------------- ###
 

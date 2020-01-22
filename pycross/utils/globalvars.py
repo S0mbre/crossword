@@ -55,10 +55,6 @@ APP_LANGUAGES = [('English (US)', '', '', 'united-states-of-america.png', "The a
                  ('Italian', 'it', 'Italiano', 'italy.png', "È necessario riavviare l'applicazione per applicare le nuove impostazioni della lingua. Riavvia ora?"), 
                  ('Spanish', 'es', 'Español', 'spain.png', "La aplicación debe reiniciarse para aplicar la nueva configuración de idioma. ¿Reiniciar ahora?")]
 
-CWSAVE_FILTERS = ['Crossword file (*.xpf *.ipuz)', 'PDF file (*.pdf)', 
-                  'Image file (*.jpg *.png *.tif *.tiff *.bmp)', 'SVG vector image (*.svg)',
-                  'Text file (*.txt)', 'All files (*.*)']
-
 NEWLINE = '\n'
 
 ENCODINGS = \

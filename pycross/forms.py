@@ -840,8 +840,17 @@ class SettingsDialog(BasicDialog):
         self.chb_autosave_cw = QtWidgets.QCheckBox('')
         self.chb_autosave_cw.setToolTip(_('Save crosswords on exit and load on startup'))
 
+        self.act_register_associations = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/star.png"), _('Register file associations'), None)
+        self.act_register_associations.setToolTip(_('Associate crossword files (*.xpf, *.ipuz) with {}').format(APP_NAME))
+        self.act_register_associations.triggered.connect(self.on_act_register_associations)
+        self.btn_register_associations = QtWidgets.QToolButton()
+        self.btn_register_associations.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.btn_register_associations.setDefaultAction(self.act_register_associations)
+        self.btn_register_associations.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+
         self.layout_common.addRow(_('Temp directory'), self.layout_tempdir)
         self.layout_common.addRow(_('Auto save/load crossword'), self.chb_autosave_cw)
+        self.layout_common.addRow(self.btn_register_associations)
 
         self.page_common.setLayout(self.layout_common)
         self.stacked.addWidget(self.page_common)
@@ -2167,6 +2176,10 @@ class SettingsDialog(BasicDialog):
         if page is None or page == _('Common'):
             self.le_tempdir.setText(settings['common']['temp_dir'])
             self.chb_autosave_cw.setChecked(settings['common']['autosave_cw'])
+            registered = file_types_registered()
+            self.act_register_associations.setData(int(registered))
+            self.act_register_associations.setText(_('Register file associations') if not registered else _('Unregister file associations'))
+            self.btn_register_associations.setStyleSheet(f"background-color: {'#7FFFD4' if registered else '#DC143C'}; border: none;")
         
         # engine
         if page is None or page == _('Generation'):
@@ -2989,6 +3002,20 @@ class SettingsDialog(BasicDialog):
         selected_path = selected_path.replace('/', os.sep).lower()
         if selected_path:
             self.le_tempdir.setText(selected_path if selected_path != default_dir else '')
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_register_associations(self, checked):
+        """
+        Register / unregister file associations with pyCross.
+        """
+        state = self.act_register_associations.data()
+        ok = register_file_types(register=(state==0))
+        if ok:
+            self.act_register_associations.setData(1 if state==0 else 0)
+            self.act_register_associations.setText(_('Register file associations') if state==1 else _('Unregister file associations'))
+            self.btn_register_associations.setStyleSheet(f"background-color: {'#7FFFD4' if state==0 else '#DC143C'}; border: none;")
+        else:
+            MsgBox(_('Could not assign file associations!'), self, _('Error'), 'error')
 
     @QtCore.pyqtSlot(bool)        
     def on_act_update_log_browse(self, checked):
