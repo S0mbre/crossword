@@ -19,4 +19,4 @@ echo UPDATE SUCCEEDED
 
 :lrestart
 cd pycross\
-python cwordg.py
+pythonw cwordg.py

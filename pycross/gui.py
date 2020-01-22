@@ -62,7 +62,7 @@ class ShareThread(QThreadStump):
 
 class MainWindow(QtWidgets.QMainWindow):
     
-    def __init__(self):        
+    def __init__(self, **kwargs):        
         super().__init__()
         self.cw = None                         # Crossword instance
         self.cw_file = ''                      # currently opened cw file
@@ -95,17 +95,20 @@ class MainWindow(QtWidgets.QMainWindow):
             on_get_recent=self.on_get_recent, on_before_update=self.on_before_update,
             on_norecent=self.on_norecent)
         # create window elements
-        self.initUI()
+        self.initUI(not kwargs.get('empty', False))
         # settings dialog
         self.dia_settings = SettingsDialog(self)
-        
+        # execute actions for command-line args, if present
+        self.execute_cli_args(**kwargs)
+        #register_file_types(['xpf', 'ipuz'])
+
     def _log(self, what, end='\n'):
         """
         Simple util method to print stuff to console.
         """
         print(what, end=end)
         
-    def initUI(self):
+    def initUI(self, autoloadcw=True):
         """
         Creates all window elements: layouts, panels, toolbars, widgets.
         """
@@ -132,7 +135,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/main.png"))
         # apply settings stored in CWSettings.settings
-        self.apply_config()        
+        self.apply_config(autoloadcw=autoloadcw)        
         # apply settings to clue table (column order and width)
         self.adjust_clues_header_columns()
         # show window
@@ -480,6 +483,25 @@ class MainWindow(QtWidgets.QMainWindow):
     def UI_create_context_menus(self):
         self.menu_crossword = CrosswordMenu(self)
 
+    def execute_cli_args(self, **kwargs):
+        """
+        Look for valid commands and execute them.
+        """
+        #print(kwargs)
+        newcw = kwargs.get('new', False)
+        if newcw:
+            self.cw = Crossword(data=Crossword.basic_grid(kwargs.get('cols', 15), kwargs.get('rows', 15), kwargs.get('pattern', 1)), data_type='grid',
+                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                log=CWSettings.settings['cw_settings']['log'])                    
+            self.update_cw()        
+            self.act_edit.setChecked(True)
+            return
+
+        openfile = kwargs.get('open', None)
+        if openfile:
+            self.open_cw(openfile)
+            return
+
     def delete_temp_files(self, delete_update_log=True):
         """
         Clears any temps left by the app's previous launches.
@@ -508,12 +530,12 @@ class MainWindow(QtWidgets.QMainWindow):
             except:
                 continue
         
-    def apply_config(self, save_settings=True):
+    def apply_config(self, save_settings=True, autoloadcw=True):
         """
         Applies settings found in CWSettings.settings and updates the settings file.
         """
         # autoload saved cw (see CWSettings.settings['common']['autosave_cw'])
-        self.autoload_cw()
+        if autoloadcw: self.autoload_cw()
         
         # gui
         if CWSettings.settings['gui']['theme'] and CWSettings.settings['gui']['theme'] != QtWidgets.QApplication.instance().style().objectName():
@@ -706,6 +728,32 @@ class MainWindow(QtWidgets.QMainWindow):
     
     def _item_in_word(self, cell_item: QtWidgets.QTableWidgetItem, word: Word):
         return word.does_cross((cell_item.column(), cell_item.row()))
+
+    def open_cw(self, selected_path):
+        ext = os.path.splitext(selected_path)[1][1:]
+        if ext in ('xpf', 'ipuz'):
+            # cw file
+            self.cw = Crossword(data=selected_path, data_type='file',
+                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                log=CWSettings.settings['cw_settings']['log'])
+        else:
+            # text file with grid
+            self.cw = Crossword(data=self.grid_from_file(selected_path), data_type='grid',
+                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                log=CWSettings.settings['cw_settings']['log'])
+        self.cw_file = selected_path
+        self.update_cw()
+        self.cw_modified = False
+
+    def close_cw(self):
+        self.cw = None
+        self.cw_file = ''
+        self.last_pressed_item = None
+        self.current_word = None
+        self.cw_modified = False
+        self.twCw.clear()
+        self.update_clues_model()        
+        self.update_actions()
     
     def update_current_word(self, on_intersect='current'):
         """
@@ -800,7 +848,7 @@ class MainWindow(QtWidgets.QMainWindow):
             col = self._logical_col_by_name('No.')
             if col < 0: return None
             num = int(root_item.child(item.row(), col).text())
-            wdir = 'h' if root_item.text() == _('Across') else 'v'
+            wdir = 'h' if root_item.text() == _('ACROSS') else 'v'
             return self.cw.words.find_by_num_dir(num, wdir)
         except Exception as err:
             self._log(err)
@@ -818,14 +866,14 @@ class MainWindow(QtWidgets.QMainWindow):
         items = datamodel.findItems(dirs[word.dir])
         if not len(items): return None
         root_item = items[0]
-        col = self._logical_col_by_name(_('No.'))
+        col = self._logical_col_by_name('No.')
         if col < 0: return None
         for row in range(root_item.rowCount()):
             item_num = root_item.child(row, col)
             try:
                 num = int(item_num.text())
                 if num == word.num:
-                    return {'num': item_num, 'text': root_item.child(row, self._logical_col_by_name(_('Reply'))), 'clue': root_item.child(row, self._logical_col_by_name(_('Clue')))}
+                    return {'num': item_num, 'text': root_item.child(row, self._logical_col_by_name('Reply')), 'clue': root_item.child(row, self._logical_col_by_name('Clue'))}
             except:
                 continue
         return None
@@ -913,7 +961,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.twCw.show()
     
     def update_cw_grid(self):
-        if not self.cw: return
+        if not isinstance(self.cw, Crossword): return
         try:
             self.twCw.itemClicked.disconnect()
             self.twCw.currentItemChanged.disconnect()
@@ -967,7 +1015,7 @@ class MainWindow(QtWidgets.QMainWindow):
         return QtWidgets.QTableWidgetItem(icon, text)
         
     def update_cw_params(self):
-        if not self.cw: return
+        if not isinstance(self.cw, Crossword): return
         self.cw.closelog()
         self.cw.wordsource = self.wordsrc
         self.cw.pos = CWSettings.settings['cw_settings']['pos']
@@ -1016,7 +1064,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.tvClues.show()
             return
         root_items = {_('ACROSS'): 'h', _('DOWN'): 'v'}
-        for k in sorted(root_items, key=lambda k: root_items[k]):
+        for k in sorted(root_items, key=lambda key: root_items[key]):
             root_item = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/crossword.png"), k)
             root_item.setData(k, sort_role)
             for w in self.cw.words.words:
@@ -2014,7 +2062,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_new(self, checked):
 
         reply = self.check_save_required()
-        if not reply or reply == 'cancel': return
+        if reply == '' or reply == 'cancel': return
 
         if not hasattr(self, 'dia_load'):
             self.dia_load = LoadCwDialog(self)
@@ -2057,25 +2105,11 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_open(self, checked):
 
         reply = self.check_save_required()
-        if not reply or reply == 'cancel': return
+        if reply == '' or reply == 'cancel': return
 
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Crossword files (*.xpf *.ipuz);;All files (*.*)'))
         if not selected_path[0]: return
-        selected_path = selected_path[0].replace('/', os.sep).lower()
-        ext = os.path.splitext(selected_path)[1][1:]
-        if ext in ('xpf', 'ipuz'):
-            # cw file
-            self.cw = Crossword(data=selected_path, data_type='file',
-                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
-                                log=CWSettings.settings['cw_settings']['log'])
-        else:
-            # text file with grid
-            self.cw = Crossword(data=self.grid_from_file(selected_path), data_type='grid',
-                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
-                                log=CWSettings.settings['cw_settings']['log'])
-        self.cw_file = selected_path
-        self.update_cw()
-        self.cw_modified = False
+        self.open_cw(selected_path[0].replace('/', os.sep).lower())
     
     @QtCore.pyqtSlot(bool)
     def on_act_save(self, checked):
@@ -2118,16 +2152,8 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_close(self, checked):
         reply = self.check_save_required()
-        if not reply or reply == 'cancel': return
-
-        self.cw = None
-        self.cw_file = ''
-        self.last_pressed_item = None
-        self.current_word = None
-        self.cw_modified = False
-        self.twCw.clear()
-        self.update_clues_model()        
-        self.update_actions()
+        if reply == '' or reply == 'cancel': return
+        self.close_cw()
 
     @QtCore.pyqtSlot(bool)
     def on_act_share(self, checked):

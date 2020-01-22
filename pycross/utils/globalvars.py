@@ -275,9 +275,9 @@ def switch_lang(lang=''):
     global LANGAPPLIED
     if not lang in ('', 'en', 'ru', 'fr', 'de', 'it', 'es'): return
     try:
-        gettext.translation('base', './locale', languages=[lang] if lang else 'en').install()
+        gettext.translation('base', make_abspath('./locale'), languages=[lang] if lang else 'en').install()
     except:
-        gettext.translation('base', './locale', languages=['en']).install()
+        gettext.translation('base', make_abspath('./locale'), languages=['en']).install()
     LANGAPPLIED = True
 
 if not LANGAPPLIED:

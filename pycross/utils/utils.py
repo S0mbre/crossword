@@ -2,7 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-import sys, os, subprocess, traceback, uuid, tempfile
+import sys, os, subprocess, traceback, uuid, tempfile, platform
 from datetime import datetime, time
 
 from .globalvars import *
@@ -81,8 +81,34 @@ def bytes_human(value, suffix='B'):
     return f"{value:.1f}Yi{suffix}"
 
 def restart_app(closefunction):    
-    run_exe("python cwordg.py", external=True, capture_output=False, shell=True)
+    run_exe("pythonw cwordg.py", external=True, capture_output=False, shell=True)
     closefunction()
+
+def register_file_types(filetypes):
+    osname = platform.system()
+    if osname == 'Windows':
+        # create app entry
+        import winreg
+        root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+        hKey = winreg.CreateKey(root, f"Software\\Classes\\{APP_NAME}\\shell\\open\\command")
+        winreg.SetValueEx(hKey, '', 0, winreg.REG_SZ, f'"{make_abspath(sys.executable)}" "{make_abspath(sys.argv[0])}" -o "%1"')
+        winreg.CloseKey(hKey)
+        hKey = winreg.CreateKey(root, f"Software\\Classes\\{APP_NAME}\\DefaultIcon")
+        winreg.SetValueEx(hKey, '', 0, winreg.REG_SZ, f"{ICONFOLDER}\\main.ico")
+        winreg.CloseKey(hKey)
+        # create ext entries
+        for filetype in filetypes:
+            ftype = ('.' + filetype.lower()) if not filetype.startswith('.') else filetype.lower()
+            hKey = winreg.CreateKey(root, f"Software\\Classes\\{ftype}")
+            winreg.SetValueEx(hKey, '', 0, winreg.REG_SZ, APP_NAME)    
+            winreg.CloseKey(hKey)    
+        winreg.CloseKey(root)
+
+    elif osname == 'Linux':
+        pass
+
+    elif osname == 'Darwin':
+        pass
 
 ### ---------------------------- GUI ---------------------------- ###
 

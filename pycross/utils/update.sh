@@ -20,4 +20,4 @@ if [ $retVal -e 0 ]; then
 fi
 
 cd pycross
-python3 cwordg.py
+pythonw cwordg.py

@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			305,
-			95
+			273,
+			19
 		],
 		"win_size": [
-			1425,
-			814
+			1440,
+			829
 		],
 		"toolbar_actions": [
 			"act_new",
@@ -186,7 +186,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 270
+				"width": 278
 			}
 		]
 	},
@@ -300,6 +300,6 @@
 	"common": {
 		"temp_dir": "",
 		"autosave_cw": true,
-		"lang": "ru"
+		"lang": ""
 	}
 }

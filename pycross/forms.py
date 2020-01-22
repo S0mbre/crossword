@@ -2704,7 +2704,7 @@ class SettingsDialog(BasicDialog):
         msbox = MsgBox(_('Press YES to restore defaults only for current page and YES TO ALL to restore all default settings'), self,
             _('Restore defaults'), 'ask', ['yes', 'yesall', 'cancel'], execnow=False)
         msbox.exec()
-        clk = msgbox.clickedButton()
+        clk = msbox.clickedButton()
         if clk and (clk.text() in (MSGBOX_BUTTONS['yes'][0], MSGBOX_BUTTONS['yesall'][0])):
             self.from_settings(self.default_settings, self.tree.currentItem().text(0) if clk.text() == MSGBOX_BUTTONS['yes'][0] else None)
 
@@ -2716,7 +2716,7 @@ class SettingsDialog(BasicDialog):
         msbox = MsgBox(_('Press YES to load settings only for current page and YES TO ALL to load all settings'), self,
             _('Load defaults'), 'ask', ['yes', 'yesall', 'cancel'], execnow=False)
         msbox.exec()
-        clk = msgbox.clickedButton()
+        clk = msbox.clickedButton()
         if not clk or (not clk.text() in (MSGBOX_BUTTONS['yes'][0], MSGBOX_BUTTONS['yesall'][0])): return
 
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Settings files (*.json)'))
