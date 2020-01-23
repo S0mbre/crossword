@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 cd "$(dirname "$0")"
 cd ../..
@@ -20,4 +20,4 @@ if [ $retVal -e 0 ]; then
 fi
 
 cd pycross
-pythonw cwordg.py
+python3 ./cwordg.py

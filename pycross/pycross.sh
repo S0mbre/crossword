@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 cd "$(dirname "$0")"
-pythonw cwordg.py
+python3 ./cwordg.py

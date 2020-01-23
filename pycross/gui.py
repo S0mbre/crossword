@@ -21,7 +21,7 @@ from crossword import Word, Crossword, CWError, FILLER, FILLER2, BLANK
 from wordsrc import DBWordsource, TextWordsource, TextfileWordsource, MultiWordsource
 from browser import Browser
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 class GenThread(QThreadStump):
     sig_timeout = QtCore.pyqtSignal(float)
@@ -37,7 +37,7 @@ class GenThread(QThreadStump):
         if on_gen_validate: self.sig_validate.connect(on_gen_validate)
         if on_gen_progress: self.sig_progress.connect(on_gen_progress)
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 class ShareThread(QThreadStump):
     sig_progress = QtCore.pyqtSignal(int, str)
@@ -58,7 +58,7 @@ class ShareThread(QThreadStump):
         if on_bearer_required: self.sig_bearer_required.connect(on_bearer_required)
         if on_prepare_url: self.sig_prepare_url.connect(on_prepare_url)
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 class MainWindow(QtWidgets.QMainWindow):
     

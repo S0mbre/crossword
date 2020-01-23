@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['rb_5fsource_5ftoggled_1612',['rb_source_toggled',['../classpycross_1_1forms_1_1_def_lookup_dialog.html#af9b9544f907ca4a806da94e2357ef030',1,'pycross::forms::DefLookupDialog']]],
+  ['rb_5ftoggled_1613',['rb_toggled',['../classpycross_1_1forms_1_1_load_cw_dialog.html#a0526eb50d0fb476c6e7c54fd032f0d9f',1,'pycross.forms.LoadCwDialog.rb_toggled()'],['../classpycross_1_1forms_1_1_word_src_dialog.html#adb6e617de0776cf7da1f69ed50f483f8',1,'pycross.forms.WordSrcDialog.rb_toggled()']]],
+  ['readsettings_1614',['readSettings',['../namespacepycross_1_1utils_1_1globalvars.html#a794081c883d8a0de19929421266556ff',1,'pycross::utils::globalvars']]],
+  ['redo_1615',['redo',['../classpycross_1_1utils_1_1undo_1_1_history.html#a120ffb0692186b81ecf23c7646165201',1,'pycross::utils::undo::History']]],
+  ['reflect_1616',['reflect',['../classpycross_1_1crossword_1_1_wordgrid.html#a27ffbda06edd2d839fa479b70d9ccdf2',1,'pycross::crossword::Wordgrid']]],
+  ['reflect_5fbottom_1617',['reflect_bottom',['../classpycross_1_1crossword_1_1_wordgrid.html#abbf2b8e2ac3bdfb0ca370078f19d24d6',1,'pycross::crossword::Wordgrid']]],
+  ['reflect_5fleft_1618',['reflect_left',['../classpycross_1_1crossword_1_1_wordgrid.html#aa68e1a715325dbcada0fe0c651ebc536',1,'pycross::crossword::Wordgrid']]],
+  ['reflect_5fright_1619',['reflect_right',['../classpycross_1_1crossword_1_1_wordgrid.html#a90be7d53317c4d38ef84f9d7e7c9b50b',1,'pycross::crossword::Wordgrid']]],
+  ['reflect_5ftop_1620',['reflect_top',['../classpycross_1_1crossword_1_1_wordgrid.html#af6d138242561f153991d10d955eb6078',1,'pycross::crossword::Wordgrid']]],
+  ['reformat_5fcells_1621',['reformat_cells',['../classpycross_1_1gui_1_1_main_window.html#a2ce99d3d29b14f403937ae75c4185b80',1,'pycross::gui::MainWindow']]],
+  ['reformat_5fclues_1622',['reformat_clues',['../classpycross_1_1gui_1_1_main_window.html#a1a1624ab4d982688d43b1f68da8b762f',1,'pycross::gui::MainWindow']]],
+  ['register_5ffile_5ftypes_1623',['register_file_types',['../namespacepycross_1_1utils_1_1utils.html#a30d0fc30cf5cdcd958164d3eeb5b43de',1,'pycross::utils::utils']]],
+  ['reloadalltabs_1624',['reloadAllTabs',['../classpycross_1_1browser_1_1_tab_widget.html#ade11bcbe47d2af73fdf2dd68e51d877c',1,'pycross::browser::TabWidget']]],
+  ['reloadtab_1625',['reloadTab',['../classpycross_1_1browser_1_1_tab_widget.html#a3219a49bf7719c4ff7b6a2994cd477de',1,'pycross::browser::TabWidget']]],
+  ['remove_1626',['remove',['../classpycross_1_1browser_1_1_download_manager_widget.html#aa966803292a4f04210c52eb0488d15dc',1,'pycross.browser.DownloadManagerWidget.remove()'],['../classpycross_1_1wordsrc_1_1_multi_wordsource.html#a4a3e9c39b8da2fa5174d10ebb0dd4ced',1,'pycross.wordsrc.MultiWordsource.remove()']]],
+  ['remove_5fcolumn_1627',['remove_column',['../classpycross_1_1crossword_1_1_wordgrid.html#a8c874f57e346ecf94195611f970c325b',1,'pycross::crossword::Wordgrid']]],
+  ['remove_5frow_1628',['remove_row',['../classpycross_1_1crossword_1_1_wordgrid.html#ad3d1ced5ad380703391ac307e327d08d',1,'pycross::crossword::Wordgrid']]],
+  ['rename_5ffile_1629',['rename_file',['../classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ad59ccab475673c59ff66acf49d0116c5',1,'pycross::utils::onlineservices::Cloudstorage']]],
+  ['rename_5ffolder_1630',['rename_folder',['../classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a7a8c614c377b68a5b24009f617315d1d',1,'pycross::utils::onlineservices::Cloudstorage']]],
+  ['reset_1631',['reset',['../classpycross_1_1crossword_1_1_wordgrid.html#a4097694a37ba1e19e2f1e8795c36ac9d',1,'pycross.crossword.Wordgrid.reset()'],['../classpycross_1_1forms_1_1_toolbar_customizer.html#a67bbfb848e88d3bbbbb6d1a91a0693f3',1,'pycross.forms.ToolbarCustomizer.reset()']]],
+  ['reset_5fused_1632',['reset_used',['../classpycross_1_1crossword_1_1_crossword.html#a8d6a19a10f1715d5aa07b9c7b2b6ba46',1,'pycross::crossword::Crossword']]],
+  ['restart_5fapp_1633',['restart_app',['../namespacepycross_1_1utils_1_1utils.html#ac2080ab17c90fb7e4037bda85825eaf0',1,'pycross::utils::utils']]],
+  ['restore_1634',['restore',['../classpycross_1_1crossword_1_1_wordgrid.html#aac089316f595b41cedd7f4ec622c8cce',1,'pycross::crossword::Wordgrid']]],
+  ['run_1635',['run',['../classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#af07c1b2c7abd7f33cbf862de7d0a3a51',1,'pycross::utils::utils::QThreadStump']]],
+  ['run_5fexe_1636',['run_exe',['../namespacepycross_1_1utils_1_1utils.html#a0d22dcd98d49a402949ea7a48d31b812',1,'pycross::utils::utils']]]
+];

@@ -1,0 +1,31 @@
+PROJECT_NAME           = "pyCross"
+PROJECT_NUMBER         = 0.2
+PROJECT_BRIEF          = "Pure-Python implementation of a crossword puzzle generator and editor"
+PROJECT_LOGO           = c:\_PROG_\Projects\crossword\pycross\assets\icons\main.ico
+OUTPUT_DIRECTORY       = c:\_PROG_\Projects\crossword\pycross\doc\apiref
+CREATE_SUBDIRS         = NO
+OUTPUT_LANGUAGE        = English
+EXTRACT_ALL            = YES
+INPUT                  = c:\_PROG_\Projects\crossword\pycross
+FILE_PATTERNS          = *.py *.pyw
+RECURSIVE              = YES
+EXCLUDE                = c:\_PROG_\Projects\crossword\pycross\assets c:\_PROG_\Projects\crossword\pycross\locale c:\_PROG_\Projects\crossword\pycross\doc
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_DOCBOOK       = NO
+ALIASES                = "lang_en=@if lang_en" \
+                         "lang_ru=@if lang_ru" \
+                         "end_lang=@endif"
+
+# Multi-lang comment block example:
+
+# ## @lang_en
+# # This is English documentation.
+# # @end_lang
+# # @lang_ru
+# # А это по-русски.
+# # @end_lang
+
+# Enable documentation sections for specific language:
+
+# ENABLED_SECTIONS       = lang_en lang_ru

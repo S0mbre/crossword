@@ -9,7 +9,7 @@ import sys, os, json, datetime, numpy as np, timeit, xml.etree.ElementTree as ET
 from operator import itemgetter
 from html.parser import HTMLParser
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 FILLER = '*'
 FILLER2 = '~'
@@ -23,23 +23,25 @@ ___**_*_**___
 *_*********_*"""
 LOG_INDENT = '\t'
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
+## General-purpose crossword exceptions.
 class CWError(Exception):
     pass
 
+## Generation timeout exception.
 class CWTimeoutError(CWError):
     pass
 
+## Generation interrupt exception.
 class CWStopCheck(CWError):
     pass
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
+## Utility class that converts HTML text to plain text.
+# Found solution here: https://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
 class MLStripper(HTMLParser):
-    """
-    Found solution here: https://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
-    """
     
     def __init__(self):
         super().__init__()
@@ -58,15 +60,27 @@ class MLStripper(HTMLParser):
         self.feed(text)
         return self.get_data()
 
-## ******************************************************************************** ##
-    
+# ******************************************************************************** #
+
+## @brief This is a base class for word objects, basically consisting of a pair of (x, y) coordinates:
+# the start coordinate given by Coords::start and the end coordinate given by Coords::end.
+#
+# All coordinates are given as 2-tuples (x, y): x = row, y = column (0-based)
 class Coords:
     
+    ## The Coords constructor:
+    # initializes and validates Coords::start and Coords::end
+    # @param coord_start [2-tuple] the start coordinate (x, y)
+    # @param coord_end [2-tuple] the end coordinate (x, y)
     def __init__(self, coord_start, coord_end):
+        ## [2-tuple] the start coordinate (x, y)
         self.start = coord_start
+        ## [2-tuple] the end coordinate (x, y)
         self.end = coord_end
         self.validate()
         
+    ## Validates the start and end coordinates passed to Coords::__init__()
+    # @exception CWError at least one coordinate is incorrect (relevant to the other)
     def validate(self):
         if not isinstance(self.start, tuple) or not isinstance(self.end, tuple):
             raise CWError(_('Coords.start and Coords.end must be 2-tuples!'))
@@ -76,6 +90,7 @@ class Coords:
             # vertical            
             if self.end[1] <= self.start[1]:
                 raise CWError(_('End coordinate {} must be greater than the start coordinate {}!').format(repr(self.end), repr(self.start)))
+            ## [str] Direction of the start-to-end vector: 'h' = 'horizontal', 'v' = 'vertical'
             self.dir = 'v'
         elif self.start[1] == self.end[1]:
             # horizontal
@@ -84,7 +99,9 @@ class Coords:
             self.dir = 'h'
         else:
             raise CWError(_('One coordinate must be equal!'))
-            
+
+    ## Outputs a list of (x,y) coordinates (2-tuples) between Coords::start and Coords::end
+    # @returns [list] a list of coordinate 2-tuples beginning with Coords::start and ending with Coords::end
     def coord_array(self):
         if self.dir == 'h': 
             l = self.end[0] - self.start[0] + 1
@@ -93,25 +110,25 @@ class Coords:
             l = self.end[1] - self.start[1] + 1
             return [(self.start[0], i + self.start[1]) for i in range(l)]
         
+    ## Checks if a coordinate lies anywhere between Coords::start and Coords::end
+    # @param coord [tuple] the coordinate to check
+    # @returns [bool] True if coord crosses (lies between Coords::start and Coords::end), False otherwise
     def does_cross(self, coord):
         for c in self.coord_array():
             if c == coord: 
                 return True
         return False
-    
-    """
-    def __eq__(self, other):
-        return self.start == other.start and self.end == other.end and self.dir == other.dir
-    """
-        
+
+    ## Python len() overload: the distance between Coords::start and Coords::end
     def __len__(self):
         cooord_index = 1 if self.dir == 'v' else 0
         return self.end[cooord_index] - self.start[cooord_index] + 1
     
+    ## Python repr() overload: human-readable representation of Coords
     def __repr__(self):
         return _("Coords object :: start = {}, end = {}, dir = '{}'").format(repr(self.start), repr(self.end), self.dir)
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 class Word(Coords):
     
@@ -132,7 +149,7 @@ class Word(Coords):
     def __repr__(self):
         return _("Word object :: num = {}, start = {}, end = {}, dir = '{}'").format(self.num, repr(self.start), repr(self.end), self.dir)
     
-## ******************************************************************************** ## 
+# ******************************************************************************** # 
         
 class CWInfo:
     
@@ -147,7 +164,7 @@ class CWInfo:
     def __str__(self):
         return '\n'.join((f"{key}='{value}'" for key, value in self.__dict__.items()))
     
-## ******************************************************************************** ##
+# ******************************************************************************** #
         
 class Wordgrid:
     
@@ -1025,7 +1042,7 @@ class Wordgrid:
         return s
             
         
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 class Crossword:
     

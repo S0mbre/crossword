@@ -5,7 +5,7 @@
 from utils.globalvars import *
 
 import re, csv, numpy as np, itertools
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 class Wordsource:
     
@@ -50,7 +50,7 @@ class Wordsource:
     def __bool__(self):
         return self.isvalid()
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 class DBWordsource(Wordsource):
     
@@ -112,7 +112,7 @@ class DBWordsource(Wordsource):
         if shuffle: results = self.shuffle(results)
         return self.truncate(results) if truncate else results
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
         
 class TextWordsource(Wordsource):
     
@@ -148,7 +148,7 @@ class TextWordsource(Wordsource):
         if shuffle: results = self.shuffle(results)
         return self.truncate(results) if truncate else results
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 class TextfileWordsource(TextWordsource):
 
@@ -162,7 +162,7 @@ class TextfileWordsource(TextWordsource):
                 if len(row) > 1 and not self.bpos: self.bpos = True
         Wordsource.__init__(self, max_fetch, shuffle)
                 
-## ******************************************************************************** ##
+# ******************************************************************************** #
         
 class MultiWordsource(Wordsource):
     

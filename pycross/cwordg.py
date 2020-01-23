@@ -5,12 +5,13 @@
 import os, sys, traceback, argparse
 from utils.globalvars import *
 from utils.utils import switch_lang
-from PyQt5 import QtWebEngine, QtWebEngineWidgets, QtWebEngineCore
+from PyQt5 import QtWebEngineWidgets
 from gui import QtCore, QtWidgets, MainWindow
 from guisettings import CWSettings
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
+## Main function that creates and launches the application.
 def main():
 
     parser = argparse.ArgumentParser()
@@ -45,7 +46,7 @@ def main():
             for qt in qts:
                 translator = QtCore.QTranslator()
                 if translator.load(locale, qt, '', f"locale/{locale_name}/qt"):
-                    if not app.installTranslator(translator):
+                    if not app.installTranslator(translator) and DEBUGGING:
                         print(_("Cannot install QT translator for locale '{}' and domain '{}'!").format(locale_name, qt))
         # create main window (passing all found command-line args)
         MainWindow(**vars(args))        
@@ -64,7 +65,8 @@ def main():
         traceback.print_exc(limit=None)
         sys.exit(1)
     
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
+## Program entry point.
 if __name__ == '__main__':  
     main() 

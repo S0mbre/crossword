@@ -5,7 +5,7 @@
 from utils.globalvars import *
 import sqlite3, os, re, codecs
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 
 SQL_CREATE_TABLES = \
 f"create table if not exists {SQL_TABLES['pos']['table']} (\n" \
@@ -27,7 +27,7 @@ f"insert or replace into {SQL_TABLES['words']['table']} ({SQL_TABLES['words']['f
 f"values('{BRACES}', (select {SQL_TABLES['pos']['fid']} from {SQL_TABLES['pos']['table']} where {SQL_TABLES['pos']['fpos']} = '{BRACES}'));"
 
 
-## ******************************************************************************** ##
+# ******************************************************************************** #
 class Sqlitedb:
     
     def __init__(self, dbname=None):

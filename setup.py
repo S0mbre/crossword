@@ -15,6 +15,9 @@ def get_all_files(root_dir):
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
+    
+with open("requirements.txt", "r") as reqs:
+    pip_requirements = reqs.readlines()
 
 setuptools.setup(
     name=APP_NAME,
@@ -32,7 +35,7 @@ setuptools.setup(
     #package_data={'pycross': ['assets/*', 'assets/dic/*', 'assets/icons/*', 
     #                          'utils/*', '*.bat', '*.json', '*.sh', '../.gitignore'] + \
     #                          [f"../{d}" for d in get_all_files('.git')]},    
-    install_requires=['requests', 'numpy', 'PyQt5>=5.14', 'PyQtWebEngine>=5.14', 'pandas', 'altair'],
+    install_requires=pip_requirements,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",

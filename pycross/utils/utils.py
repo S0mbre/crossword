@@ -8,7 +8,7 @@ from datetime import datetime, time
 from .globalvars import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 
-### ---------------------------- COMMON ---------------------------- ###
+# ---------------------------- COMMON ---------------------------- #
 
 def is_iterable(obj):
     try:
@@ -182,7 +182,7 @@ def register_file_types(filetypes=('xpf', 'ipuz'), register=True):
     # some oddball os...
     return False
 
-### ---------------------------- GUI ---------------------------- ###
+# ---------------------------- GUI ---------------------------- #
 
 class QThreadStump(QtCore.QThread):
 
@@ -240,7 +240,7 @@ class QThreadStump(QtCore.QThread):
                 traceback.print_exc(limit=None)
                 self.sig_error.emit(self, str(err))
 
-## ------------------------------------------------------------------------ ##      
+# ------------------------------------------------------------------------ #  
         
 def make_font(family, size=-1, weight=-1, italic=False, font_unit='pt'):
     font = QtGui.QFont(family)
