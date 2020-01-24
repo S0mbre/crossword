@@ -83,7 +83,6 @@ class CWSettings:
     'lookup':
         {
             'default_lang': 'en',
-            'timeout': 5,
             'dics': {'show': True, 'exact_match': False, 'bad_pos': 'UNKNOWN', 'show_pos': True, 
                        'mw_apikey': '', 'yandex_key': ''},
             'google': {'show': True, 'exact_match': False, 'file_types': [], 'lang': [], 
@@ -132,7 +131,12 @@ class CWSettings:
         },
     'common':
         {
-            'temp_dir': '', 'autosave_cw': True, 'lang': ''
+            'temp_dir': '', 'autosave_cw': True, 'lang': '', 
+            'web': 
+                {
+                    'proxy': {'use_system': True, 'http': '', 'https': ''},
+                    'req_timeout': 5
+                }
         }
     } # settings
          

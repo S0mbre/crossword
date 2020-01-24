@@ -311,14 +311,15 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.toolbar_main.addAction(getattr(self, act_))
         # add lang combo
         self.toolbar_main.addSeparator()
-        self.toolbar_main.addWidget(self.combo_lang)
+        self.toolbar_main.addWidget(self.combo_lang).setVisible(True)
+        self.toolbar_main.show()
 
     def UI_create_lang_combo(self):
         self.combo_lang = QtWidgets.QComboBox()
         self.combo_lang.setEditable(False)
         for lang in APP_LANGUAGES:
             self.combo_lang.addItem(QtGui.QIcon(f"{ICONFOLDER}/{lang[3]}"), f"{lang[0]}{(' (' + lang[2] + ')') if lang[2] else ''}", lang[1])
-        index = self.combo_lang.findData(CWSettings.settings['common']['lang'])
+        index = self.combo_lang.findData(CWSettings.settings['common'].get('lang', ''))
         if index >= 0:
             self.combo_lang.setCurrentIndex(index)
         self.combo_lang.currentIndexChanged.connect(self.on_combo_lang)
@@ -1314,7 +1315,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 on_error=lambda err: thread.sig_error.emit(thread, err) if thread else None,
                 show_errors=thread is None, 
                 on_apikey_required=lambda res: thread.sig_apikey_required.emit(res) if thread else None,
-                on_bearer_required=lambda res: thread.sig_bearer_required.emit(res) if thread else None)
+                on_bearer_required=lambda res: thread.sig_bearer_required.emit(res) if thread else None,
+                timeout=(settings['common']['web']['req_timeout'] * 1000) or None)
         
         username = settings['user'] or None
         if not username:
@@ -1348,7 +1350,8 @@ class MainWindow(QtWidgets.QMainWindow):
         on_clipboard_write = lambda url: thread.sig_clipboard_write.emit(url) if thread else None
         
         self.sharer = Share(cloud, on_clipboard_write=on_clipboard_write, 
-                            on_prepare_url=on_prepare_url, stop_check=self.act_stop.isChecked)
+                            on_prepare_url=on_prepare_url, stop_check=self.act_stop.isChecked,
+                            timeout=(settings['common']['web']['req_timeout'] * 1000) or None)
 
     def share_url(self, url, headers={'Content-Type': 'application/json'}, error_keymap=Share.ERRMAP):
         # open share link in inbuilt browser
@@ -2550,6 +2553,9 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.tvClues.setCurrentIndex(item.index())
         # restore focus (update_cw_grid removes focus from tvClues)
         self.tvClues.setFocus()
+
+    def set_selected_lang(self):
+        CWSettings.settings['common']['lang'] = self.combo_lang.currentData()
 
     @QtCore.pyqtSlot(int)
     def on_combo_lang(self, index):

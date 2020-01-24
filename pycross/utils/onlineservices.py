@@ -72,7 +72,8 @@ class GoogleSearch:
         req = self.encode_search()
         if DEBUGGING:
             print(_("GOOGLE SEARCH REQUEST = '{}'").format(req))
-        res = requests.get(req, timeout=self.timeout)
+        proxies = {'http': self.settings['common']['web']['proxy']['http'], 'https': self.settings['common']['web']['proxy']['https']} if not self.settings['common']['web']['proxy']['use_system'] else None
+        res = requests.get(req, timeout=self.timeout, proxies=proxies)
         if res:
             if DEBUGGING:
                 print(_("GOOGLE SEARCH RESULT = '{}'").format(res.text))
@@ -129,7 +130,8 @@ class OnlineDictionary(ABC):
         req = self.prepare_request_url(word)
         if DEBUGGING:
             print(_("DICTIONARY SEARCH REQUEST = '{}'").format(req))
-        res = requests.get(self.prepare_request_url(word), timeout=self.timeout)
+        proxies = {'http': self.settings['common']['web']['proxy']['http'], 'https': self.settings['common']['web']['proxy']['https']} if not self.settings['common']['web']['proxy']['use_system'] else None
+        res = requests.get(self.prepare_request_url(word), timeout=self.timeout, proxies=proxies)
         if res:
             if DEBUGGING:
                 print(_("DICTIONARY SEARCH RESULT = '{}'").format(res.text))
@@ -288,6 +290,8 @@ class Cloudstorage:
         res = None      
         try:
             kwargs['timeout'] = kwargs.get('timeout', self.timeout)
+            if not self.settings['common']['web']['proxy']['use_system']:
+                kwargs['proxies'] = {'http': self.settings['common']['web']['proxy']['http'], 'https': self.settings['common']['web']['proxy']['https']} 
             res = methods[command](url, **kwargs)
             if res is None: raise Exception(_("Empty result returned by request '{}'").format(url))
             if DEBUGGING:
@@ -551,8 +555,8 @@ class Cloudstorage:
                 req = f"{self._baseurl}files/{urllib.parse.quote(obj['id'])}/?permanent=true"
             if req:
                 try:
-                    res = requests.delete(req, headers=self._make_headers('application/octet-stream'))
-                    results.append(bool(res))
+                    res = self._request(req, 'delete', 'bool', headers=self._make_headers('application/octet-stream'))
+                    results.append(res)
                 except Exception:
                     results.append(False)
 

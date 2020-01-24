@@ -192,7 +192,6 @@
 	},
 	"lookup": {
 		"default_lang": "en",
-		"timeout": 5,
 		"dics": {
 			"show": true,
 			"exact_match": false,
@@ -300,6 +299,14 @@
 	"common": {
 		"temp_dir": "",
 		"autosave_cw": true,
-		"lang": ""
+		"lang": "",
+		"web": {
+			"proxy": {
+				"use_system": true,
+				"http": "",
+				"https": ""
+			},
+			"req_timeout": 5
+		}
 	}
 }

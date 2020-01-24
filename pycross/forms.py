@@ -821,8 +821,11 @@ class SettingsDialog(BasicDialog):
         """
         # Common
         self.page_common = QtWidgets.QWidget()
-        self.layout_common = QtWidgets.QFormLayout()
-        self.layout_common.setSpacing(10)
+        self.layout_common = QtWidgets.QVBoxLayout()
+
+        self.gb_commonsettings = QtWidgets.QGroupBox(_('Common settings'))
+        self.layout_gb_commonsettings = QtWidgets.QFormLayout()
+        self.layout_gb_commonsettings.setSpacing(10)
 
         self.le_tempdir = QtWidgets.QLineEdit('')
         self.le_tempdir.setToolTip(_('Temp directory (leave EMPTY for default)'))
@@ -848,9 +851,39 @@ class SettingsDialog(BasicDialog):
         self.btn_register_associations.setDefaultAction(self.act_register_associations)
         self.btn_register_associations.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
 
-        self.layout_common.addRow(_('Temp directory'), self.layout_tempdir)
-        self.layout_common.addRow(_('Auto save/load crossword'), self.chb_autosave_cw)
-        self.layout_common.addRow(self.btn_register_associations)
+        self.layout_gb_commonsettings.addRow(_('Temp directory'), self.layout_tempdir)
+        self.layout_gb_commonsettings.addRow(_('Auto save/load crossword'), self.chb_autosave_cw)
+        self.layout_gb_commonsettings.addRow(_('Register file associations'), self.btn_register_associations)
+        self.gb_commonsettings.setLayout(self.layout_gb_commonsettings)
+        self.layout_common.addWidget(self.gb_commonsettings)
+
+        self.gb_netsettings = QtWidgets.QGroupBox(_('Net settings'))
+        self.layout_gb_netsettings = QtWidgets.QFormLayout()
+        self.layout_gb_netsettings.setSpacing(10)
+
+        self.spin_req_timeout = QtWidgets.QSpinBox()
+        self.spin_req_timeout.setRange(0, 60)
+        self.spin_req_timeout.setValue(5)
+
+        self.layout_proxysettings = QtWidgets.QVBoxLayout()
+        self.layout_proxysettings.setContentsMargins(0, 0, 0, 0)
+        self.chb_system_proxy = QtWidgets.QCheckBox(_('Use system proxy settings'))
+        self.layout_proxysettings.addWidget(self.chb_system_proxy)
+        self.layout_proxysettings2 = QtWidgets.QFormLayout()
+        self.layout_proxysettings2.setContentsMargins(0, 0, 0, 0)        
+        self.le_http_proxy = QtWidgets.QLineEdit('')
+        self.le_http_proxy.setToolTip(_('HTTP proxy and port, e.g. http://192.168.1.10:3333'))
+        self.le_https_proxy = QtWidgets.QLineEdit('')
+        self.le_https_proxy.setToolTip(_('HTTPS proxy and port, e.g. https://192.168.1.10:3333'))
+        self.layout_proxysettings2.addRow(_('HTTP proxy'), self.le_http_proxy)
+        self.layout_proxysettings2.addRow(_('HTTPS proxy'), self.le_https_proxy)
+        self.layout_proxysettings.addLayout(self.layout_proxysettings2)
+        self.chb_system_proxy.stateChanged.connect(self.on_chb_system_proxy)
+
+        self.layout_gb_netsettings.addRow(_('Request timeout (sec):'), self.spin_req_timeout)
+        self.layout_gb_netsettings.addRow(_('Proxy settings:'), self.layout_proxysettings)
+        self.gb_netsettings.setLayout(self.layout_gb_netsettings)
+        self.layout_common.addWidget(self.gb_netsettings)
 
         self.page_common.setLayout(self.layout_common)
         self.stacked.addWidget(self.page_common)
@@ -1282,12 +1315,8 @@ class SettingsDialog(BasicDialog):
             self.combo_lookup_deflang.addItem(v, QtCore.QVariant(k))
         self.combo_lookup_deflang.setEditable(False)
         self.combo_lookup_deflang.setCurrentIndex(0)
-        # timeout
-        self.spin_lookup_timeout = QtWidgets.QSpinBox()
-        self.spin_lookup_timeout.setRange(0, 60)
-        self.spin_lookup_timeout.setValue(5)
+        
         self.layout_lookup_top.addRow(_('Default language:'), self.combo_lookup_deflang)
-        self.layout_lookup_top.addRow(_('Request timeout (sec):'), self.spin_lookup_timeout)
         self.layout_lookup.addLayout(self.layout_lookup_top)
 
         # dictionaries
@@ -1664,6 +1693,13 @@ class SettingsDialog(BasicDialog):
         # common
         settings['common']['temp_dir'] = self.le_tempdir.text()
         settings['common']['autosave_cw'] = self.chb_autosave_cw.isChecked()
+        settings['common']['web'] = {}
+        settings['common']['web']['req_timeout'] = self.spin_req_timeout.value()
+        settings['common']['web']['proxy'] = {}
+        settings['common']['web']['proxy']['use_system'] = self.chb_system_proxy.isChecked()
+        settings['common']['web']['proxy']['http'] = self.le_http_proxy.text()
+        settings['common']['web']['proxy']['https'] = self.le_https_proxy.text()
+        self.mainwindow.set_selected_lang()
 
         # user interface
         settings['gui']['theme'] = self.combo_apptheme.currentText()
@@ -2026,7 +2062,6 @@ class SettingsDialog(BasicDialog):
             
         # lookup
         settings['lookup']['default_lang'] = self.combo_lookup_deflang.currentData()
-        settings['lookup']['timeout'] = self.spin_lookup_timeout.value()
 
         settings['lookup']['dics'] = {}
         settings['lookup']['dics']['show'] = self.chb_dics_show.isChecked()
@@ -2180,7 +2215,11 @@ class SettingsDialog(BasicDialog):
             self.act_register_associations.setData(int(registered))
             self.act_register_associations.setText(_('Register file associations') if not registered else _('Unregister file associations'))
             self.btn_register_associations.setStyleSheet(f"background-color: {'#7FFFD4' if registered else '#DC143C'}; border: none;")
-        
+            self._set_spin_value_safe(self.spin_req_timeout, settings['common']['web']['req_timeout'])
+            self.chb_system_proxy.setChecked(settings['common']['web']['proxy']['use_system'])
+            self.le_http_proxy.setText(settings['common']['web']['proxy']['http'])
+            self.le_https_proxy.setText(settings['common']['web']['proxy']['https'])
+
         # engine
         if page is None or page == _('Generation'):
             # timeout
@@ -2525,7 +2564,6 @@ class SettingsDialog(BasicDialog):
         # Lookup
         if page is None or page == _('Definition lookup'):
             self.combo_lookup_deflang.setCurrentText(LANG[settings['lookup']['default_lang']])
-            self._set_spin_value_safe(self.spin_lookup_timeout, settings['lookup']['timeout'])
 
             self.chb_dics_show.setChecked(settings['lookup']['dics']['show'])
             self.chb_dics_exact.setChecked(settings['lookup']['dics']['exact_match'])
@@ -3028,6 +3066,12 @@ class SettingsDialog(BasicDialog):
         if not selected_path[0]: return
         selected_path =  os.path.relpath(selected_path[0], os.path.dirname(__file__)).replace('/', os.sep)
         self.le_update_logfile.setText(selected_path)
+
+    @QtCore.pyqtSlot(int)        
+    def on_chb_system_proxy(self, state):
+        self.le_http_proxy.setEnabled(state==QtCore.Qt.Unchecked)
+        self.le_https_proxy.setEnabled(state==QtCore.Qt.Unchecked)
+
         
 # ******************************************************************************** #
 # *****          CwTable
@@ -3718,21 +3762,21 @@ class DefLookupDialog(BasicDialog):
 
     def update_dict_engine(self):
         self.update_language()
-        timeout = CWSettings.settings['lookup']['timeout'] * 1000
+        timeout = CWSettings.settings['common']['web']['req_timeout'] * 1000
         if self.lang == 'en':
-            self.dict_engine = MWDict(CWSettings.settings, timeout)
+            self.dict_engine = MWDict(CWSettings.settings, timeout or None)
         else:
-            self.dict_engine = YandexDict(CWSettings.settings, f"{self.lang}-{self.lang}", timeout)
+            self.dict_engine = YandexDict(CWSettings.settings, f"{self.lang}-{self.lang}", timeout or None)
 
     def update_google_engine(self):
         settings = CWSettings.settings['lookup']['google']
-        timeout = CWSettings.settings['lookup']['timeout'] * 1000
+        timeout = CWSettings.settings['common']['web']['req_timeout'] * 1000
         #settings['lang'] = self.lang
         self.google_engine = GoogleSearch(CWSettings.settings, self.word, exact_match=settings['exact_match'],
             file_types=settings['file_types'], lang=settings['lang'], country=settings['country'],
             interface_lang=settings['interface_lang'], link_site=settings['link_site'],
             related_site=settings['related_site'], in_site=settings['in_site'],
-            nresults=settings['nresults'], safe_search=settings['safe_search'], timeout=timeout) 
+            nresults=settings['nresults'], safe_search=settings['safe_search'], timeout=timeout or None) 
 
     def add_pages(self):
         # 1. Dictionary
