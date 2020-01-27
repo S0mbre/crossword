@@ -4,7 +4,7 @@
 
 from datetime import datetime
 from pathlib import Path, PurePath
-import os, sys, subprocess, json, traceback
+import os, sys, subprocess, json, traceback, platform
 
 from .globalvars import *
 
@@ -36,23 +36,30 @@ class Updater:
         self.git_installed = self._check_git()        
         self._init_update_info()
 
-    def _run_exe(self, args, external=False, capture_output=True, encoding=ENCODING, 
-            creationflags=subprocess.CREATE_NO_WINDOW, timeout=None, shell=False, **kwargs):
+    def _run_exe(self, args, external=False, capture_output=True, stdout=subprocess.PIPE, encoding=ENCODING, 
+                timeout=None, shell=False, **kwargs):
         try:
+            osname = platform.system()        
             if external:
-                return subprocess.Popen(args, 
-                    creationflags=(subprocess.DETACHED_PROCESS | creationflags), 
-                    stdout=self.print_to, stderr=subprocess.STDOUT,
-                    encoding=encoding, shell=shell, **kwargs) if capture_output else \
-                       subprocess.Popen(args, 
-                    creationflags=(subprocess.DETACHED_PROCESS | creationflags), 
-                    encoding=encoding, shell=shell, **kwargs)
+                if osname == 'Windows':
+                    creationflags=subprocess.CREATE_NO_WINDOW | subprocess.DETACHED_PROCESS
+                    return subprocess.Popen(args, 
+                        creationflags=creationflags, 
+                        stdout=stdout if capture_output else None, 
+                        stderr=subprocess.STDOUT if capture_output else None,
+                        encoding=encoding, shell=shell, **kwargs)
+                else: # assume Unix
+                    return subprocess.Popen(['nohup'] + args, 
+                        stdout=stdout if capture_output else None, 
+                        stderr=subprocess.STDOUT if capture_output else None,
+                        encoding=encoding, shell=shell, preexec_fn=os.setpgrp,
+                        **kwargs)
             else:
                 return subprocess.run(args, 
                     capture_output=capture_output, encoding=encoding, 
                     timeout=timeout, shell=shell, **kwargs)
         except Exception as err:
-            traceback.print_exc(file=self.print_to)
+            traceback.print_exc(limit=None)
             raise
 
     def _datetime_to_str(self, dt=None, strformat='%Y-%m-%d %H-%M-%S'):

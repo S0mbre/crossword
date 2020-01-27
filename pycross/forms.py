@@ -743,7 +743,7 @@ class SettingsDialog(BasicDialog):
         
     def load_default_settings(self):
         """
-        Loads the default settings from 'defsettings.json'.
+        Loads the default settings from 'defsettings.pxjson'.
         """
         defsettings = CWSettings.validate_file(DEFAULT_SETTINGS_FILE)
         if defsettings: return defsettings
@@ -1699,7 +1699,7 @@ class SettingsDialog(BasicDialog):
         settings['common']['web']['proxy']['use_system'] = self.chb_system_proxy.isChecked()
         settings['common']['web']['proxy']['http'] = self.le_http_proxy.text()
         settings['common']['web']['proxy']['https'] = self.le_https_proxy.text()
-        self.mainwindow.set_selected_lang()
+        settings['common']['lang'] = self.mainwindow.combo_lang.currentData()
 
         # user interface
         settings['gui']['theme'] = self.combo_apptheme.currentText()
@@ -2770,7 +2770,7 @@ class SettingsDialog(BasicDialog):
         clk = msbox.clickedButton()
         if not clk or (not clk.text() in (MSGBOX_BUTTONS['yes'][0], MSGBOX_BUTTONS['yesall'][0])): return
 
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Settings files (*.json)'))
+        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Settings files (*.pxjson)'))
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep).lower()
         settings = CWSettings.validate_file(selected_path)
@@ -2784,9 +2784,10 @@ class SettingsDialog(BasicDialog):
         """
         Saves current settings to file.
         """
-        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), 'settings.json'), _('Settings files (*.json)'))
+        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), 'settings.pxjson'), _('Settings files (*.pxjson)'))
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep).lower()
+        CWSettings.settings = self.to_settings()
         CWSettings.save_to_file(selected_path)
 
     @QtCore.pyqtSlot(int)

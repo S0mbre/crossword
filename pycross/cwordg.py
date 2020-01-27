@@ -3,11 +3,6 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 import os, sys, traceback, argparse
-from utils.globalvars import *
-from utils.utils import switch_lang
-from PyQt5 import QtWebEngineWidgets
-from gui import QtCore, QtWidgets, MainWindow
-from guisettings import CWSettings
 
 # ******************************************************************************** #
 
@@ -15,6 +10,7 @@ from guisettings import CWSettings
 def main():
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--settings', help='Load settings from file')
     parser.add_argument('-o', '--open', help='Open crossword file')
     parser.add_argument('-n', '--new', action='store_true', help='Create crossword')
     parser.add_argument('--cols', type=int, default=15, help='Number of columns')
@@ -24,7 +20,24 @@ def main():
     parser.add_argument('-a', '--addsrc', default='', action='append', help='Add word source') # see WordSrcDialog definition in forms.py for source string format
     args = parser.parse_args()
 
-    try:
+    from utils.globalvars import readSettings, switch_lang, DEBUGGING
+
+    # read settings      
+    if args.settings:
+        settings_file = args.settings
+    elif args.open and os.path.splitext(args.open)[1][1:].lower() == 'pxjson':
+        settings_file = args.open
+        args.open = None
+    else:
+        settings_file = None    
+    settings = readSettings(settings_file)
+    # switch language
+    switch_lang(settings['common']['lang']) 
+
+    from PyQt5 import QtWebEngineWidgets
+    from gui import QtCore, QtWidgets, MainWindow
+
+    try:        
         # change working dir to current for correct calls to git
         os.chdir(os.path.dirname(os.path.abspath(__file__)))           
         # initialize Qt Core App settings
@@ -36,7 +49,7 @@ def main():
         QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.DnsPrefetchEnabled, True)
         QtWebEngineWidgets.QWebEngineProfile.defaultProfile().setUseForGlobalCertificateVerification()
         # localize Qt widgets
-        lang = CWSettings.settings['common']['lang'] or 'en'  # by this moment, the settings will have been initialized from file
+        lang = settings['common']['lang'] or 'en' 
         locale = QtCore.QLocale(lang)
         locale_name = locale.name()
         #print(locale_name)

@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			232,
-			126
+			86,
+			20
 		],
 		"win_size": [
-			1285,
-			700
+			1561,
+			919
 		],
 		"toolbar_actions": [
 			"act_new",
@@ -55,7 +55,7 @@
 		"line": 1,
 		"line_color": 4288716964,
 		"line_width": 1,
-		"active_cell_color": 4294967040,
+		"active_cell_color": 4279509828,
 		"header": false,
 		"cell_size": 50,
 		"numbers": {
@@ -70,62 +70,62 @@
 	},
 	"cell_format": {
 		"NORMAL": {
-			"bg_color": 4294967295,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
-			"fg_color": 4278190080,
+			"fg_color": 4294967295,
 			"fg_pattern": 1,
 			"flags": 33,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		},
 		"HILITE": {
-			"bg_color": 4294966721,
+			"bg_color": 4280303713,
 			"bg_pattern": 1,
-			"fg_color": 4278190080,
+			"fg_color": 4294967295,
 			"fg_pattern": 1,
 			"flags": 33,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		},
 		"BLANK": {
-			"bg_color": 4294967295,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
-			"fg_color": 4278190080,
+			"fg_color": 4294967295,
 			"fg_pattern": 1,
 			"flags": 33,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		},
 		"FILLER": {
-			"bg_color": 4278190080,
+			"bg_color": 4281611316,
 			"bg_pattern": 1,
 			"fg_color": 0,
 			"fg_pattern": 1,
 			"flags": 0,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		},
 		"FILLER2": {
-			"bg_color": 4288716964,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
 			"fg_color": 0,
 			"fg_pattern": 1,
 			"flags": 0,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		}
@@ -140,9 +140,9 @@
 	},
 	"clues": {
 		"NORMAL": {
-			"bg_color": 4294967295,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
-			"fg_color": 4278190080,
+			"fg_color": 4294967295,
 			"font_size": 9,
 			"font_name": "Arial",
 			"font_weight": 50,
@@ -150,43 +150,43 @@
 			"align": 1
 		},
 		"INCOMPLETE": {
-			"bg_color": 4294957016,
+			"bg_color": 4282058247,
 			"bg_pattern": 1,
-			"fg_color": 4278190080
+			"fg_color": 4294967295
 		},
 		"COMPLETE": {
-			"bg_color": 4292870103,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
-			"fg_color": 4278190080
+			"fg_color": 4294967295
 		},
 		"SURROUNDING": {
-			"bg_color": 4294967295
+			"bg_color": 4284308829
 		},
 		"columns": [
 			{
 				"name": "Direction",
 				"visible": true,
-				"width": 100
+				"width": -1
 			},
 			{
 				"name": "No.",
 				"visible": true,
-				"width": 100
+				"width": -1
 			},
 			{
 				"name": "Clue",
 				"visible": true,
-				"width": 100
+				"width": -1
 			},
 			{
 				"name": "Letters",
-				"visible": true,
-				"width": 100
+				"visible": false,
+				"width": -1
 			},
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 203
+				"width": -1
 			}
 		]
 	},
@@ -223,7 +223,7 @@
 			12,
 			20
 		],
-		"layout": "\u0430\u0432\u0442\u043e",
+		"layout": "auto",
 		"font_embed": true,
 		"antialias": true,
 		"print_cw": true,

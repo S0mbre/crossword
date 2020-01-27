@@ -30,8 +30,8 @@ APP_EMAIL = 's00mbre@gmail.com'
 # default encoding
 ENCODING = 'utf-8'
 
-SETTINGS_FILE = make_abspath('settings.json')
-DEFAULT_SETTINGS_FILE = make_abspath('defsettings.json')
+SETTINGS_FILE = make_abspath('settings.pxjson')
+DEFAULT_SETTINGS_FILE = make_abspath('defsettings.pxjson')
 UPDATE_FILE = make_abspath('update.json')
 SAVEDCW_FILE = make_abspath('autosaved.xpf')
 DICFOLDER = make_abspath('assets/dic')
@@ -251,31 +251,30 @@ GOOGLE_COUNTRIES_GL = {'af': 'Afghanistan', 'al': 'Albania', 'dz': 'Algeria', 'a
 
 LANGAPPLIED = False    
 
-def readSettings():
+def readSettings(settings_file=None):
     """
-    Checks if 'settings.json' exists in the main directory.
+    Checks if 'settings.pxjson' exists in the main directory.
     If not, creates it with the default settings; otherwise, 
-    reads 'settings.json' to the global CWSettings.settings object.
+    reads 'settings.pxjson' to the global CWSettings.settings object.
     """
     from guisettings import CWSettings
-    if not CWSettings.validate_file(SETTINGS_FILE):
-        CWSettings.save_to_file(SETTINGS_FILE)
+    if not settings_file or not os.path.isfile(settings_file):
+        settings_file = SETTINGS_FILE
+    if not CWSettings.validate_file(settings_file):
+        CWSettings.save_to_file(settings_file)
     else:
         try:
-            CWSettings.load_from_file(SETTINGS_FILE)
+            CWSettings.load_from_file(settings_file)
         except Exception as err:
             print(err)
     return CWSettings.settings
 
 def switch_lang(lang=''):
-    global LANGAPPLIED
+    global LANGAPPLIED    
     if not lang in ('', 'en', 'ru', 'fr', 'de', 'it', 'es'): return
-    try:
-        gettext.translation('base', make_abspath('./locale'), languages=[lang] if lang else 'en').install()
-    except:
-        gettext.translation('base', make_abspath('./locale'), languages=['en']).install()
-    LANGAPPLIED = True
-
-if not LANGAPPLIED:
-    settings = readSettings()
-    switch_lang(settings['common']['lang'])            
+    if not LANGAPPLIED:
+        try:
+            gettext.translation('base', make_abspath('./locale'), languages=[lang] if lang else 'en').install()
+        except:
+            gettext.translation('base', make_abspath('./locale'), languages=['en']).install()
+        LANGAPPLIED = True

@@ -1,0 +1,312 @@
+{
+	"gui": {
+		"theme": "Fusion",
+		"toolbar_pos": 0,
+		"win_pos": [
+			156,
+			18
+		],
+		"win_size": [
+			1561,
+			919
+		],
+		"toolbar_actions": [
+			"act_new",
+			"act_open",
+			"act_save",
+			"act_saveas",
+			"act_share",
+			"SEP",
+			"act_edit",
+			"act_addrow",
+			"act_delrow",
+			"act_addcol",
+			"act_delcol",
+			"SEP",
+			"act_reflect",
+			"SEP",
+			"act_gen",
+			"act_clear",
+			"act_clear_wd",
+			"act_erase_wd",
+			"act_suggest",
+			"act_lookup",
+			"act_editclue",
+			"SEP",
+			"act_wsrc",
+			"act_info",
+			"act_stats",
+			"act_print",
+			"SEP",
+			"act_config",
+			"act_update",
+			"act_help"
+		]
+	},
+	"cw_settings": {
+		"timeout": 60.0,
+		"method": "recurse",
+		"pos": "N",
+		"log": null
+	},
+	"grid_style": {
+		"scale": 100,
+		"show": true,
+		"line": 1,
+		"line_color": 4288716964,
+		"line_width": 1,
+		"active_cell_color": 4279509828,
+		"header": false,
+		"cell_size": 50,
+		"numbers": {
+			"show": true,
+			"color": 4288716964,
+			"font_size": 8,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": true
+		},
+		"char_case": "upper"
+	},
+	"cell_format": {
+		"NORMAL": {
+			"bg_color": 4284308829,
+			"bg_pattern": 1,
+			"fg_color": 4294967295,
+			"fg_pattern": 1,
+			"flags": 33,
+			"font_size": 14,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": false,
+			"align": 132
+		},
+		"HILITE": {
+			"bg_color": 4280303713,
+			"bg_pattern": 1,
+			"fg_color": 4294967295,
+			"fg_pattern": 1,
+			"flags": 33,
+			"font_size": 14,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": false,
+			"align": 132
+		},
+		"BLANK": {
+			"bg_color": 4284308829,
+			"bg_pattern": 1,
+			"fg_color": 4294967295,
+			"fg_pattern": 1,
+			"flags": 33,
+			"font_size": 14,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": false,
+			"align": 132
+		},
+		"FILLER": {
+			"bg_color": 4281611316,
+			"bg_pattern": 1,
+			"fg_color": 0,
+			"fg_pattern": 1,
+			"flags": 0,
+			"font_size": 14,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": false,
+			"align": 132
+		},
+		"FILLER2": {
+			"bg_color": 4284308829,
+			"bg_pattern": 1,
+			"fg_color": 0,
+			"fg_pattern": 1,
+			"flags": 0,
+			"font_size": 14,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": false,
+			"align": 132
+		}
+	},
+	"wordsrc": {
+		"maxres": 500,
+		"sources": [],
+		"excluded": {
+			"words": [],
+			"regex": false
+		}
+	},
+	"clues": {
+		"NORMAL": {
+			"bg_color": 4284308829,
+			"bg_pattern": 1,
+			"fg_color": 4294967295,
+			"font_size": 9,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": false,
+			"align": 1
+		},
+		"INCOMPLETE": {
+			"bg_color": 4282058247,
+			"bg_pattern": 1,
+			"fg_color": 4294967295
+		},
+		"COMPLETE": {
+			"bg_color": 4284308829,
+			"bg_pattern": 1,
+			"fg_color": 4294967295
+		},
+		"SURROUNDING": {
+			"bg_color": 4284308829
+		},
+		"columns": [
+			{
+				"name": "Direction",
+				"visible": true,
+				"width": 100
+			},
+			{
+				"name": "No.",
+				"visible": true,
+				"width": 100
+			},
+			{
+				"name": "Clue",
+				"visible": true,
+				"width": 100
+			},
+			{
+				"name": "Letters",
+				"visible": false,
+				"width": 0
+			},
+			{
+				"name": "Reply",
+				"visible": true,
+				"width": 436
+			}
+		]
+	},
+	"lookup": {
+		"default_lang": "en",
+		"dics": {
+			"show": true,
+			"exact_match": false,
+			"show_pos": true,
+			"bad_pos": "UNKNOWN",
+			"mw_apikey": "",
+			"yandex_key": ""
+		},
+		"google": {
+			"show": true,
+			"exact_match": false,
+			"safe_search": false,
+			"file_types": [],
+			"lang": [],
+			"interface_lang": [],
+			"country": [],
+			"link_site": "",
+			"related_site": "",
+			"in_site": "",
+			"nresults": -1,
+			"api_key": "",
+			"api_cse": ""
+		}
+	},
+	"printing": {
+		"margins": [
+			12,
+			16,
+			12,
+			20
+		],
+		"layout": "auto",
+		"font_embed": true,
+		"antialias": true,
+		"print_cw": true,
+		"print_clues": true,
+		"clear_cw": true,
+		"print_clue_letters": true,
+		"print_info": true,
+		"color_print": true,
+		"openfile": true,
+		"cw_title": "<t>",
+		"clues_title": "Clues",
+		"header_font": {
+			"font_size": 20,
+			"font_name": "Verdana",
+			"font_weight": 75,
+			"font_italic": false,
+			"color": 4278190335
+		},
+		"info_font": {
+			"font_size": 14,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": false,
+			"color": 4278190080
+		},
+		"clue_number_font": {
+			"font_size": 14,
+			"font_name": "Arial",
+			"font_weight": 75,
+			"font_italic": false,
+			"color": 4278190080
+		},
+		"clue_font": {
+			"font_size": 14,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": false,
+			"color": 4278190080
+		},
+		"clue_letters_font": {
+			"font_size": 14,
+			"font_name": "Arial",
+			"font_weight": 50,
+			"font_italic": true,
+			"color": 4278190080
+		}
+	},
+	"export": {
+		"openfile": true,
+		"clear_cw": true,
+		"img_resolution": 72,
+		"pdf_resolution": 1200,
+		"mm_per_cell": 20,
+		"img_output_quality": 95,
+		"svg_title": "<t>",
+		"svg_description": ""
+	},
+	"update": {
+		"check_every": 1,
+		"only_major_versions": false,
+		"auto_update": false,
+		"restart_on_update": true,
+		"logfile": "update.log"
+	},
+	"sharing": {
+		"account": "",
+		"bearer_token": "",
+		"use_api_key": false,
+		"root_folder": "",
+		"user": "",
+		"use_own_browser": true
+	},
+	"common": {
+		"temp_dir": "",
+		"autosave_cw": true,
+		"web": {
+			"req_timeout": 5,
+			"proxy": {
+				"use_system": true,
+				"http": "",
+				"https": ""
+			}
+		},
+		"lang": "ru"
+	}
+}

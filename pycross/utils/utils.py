@@ -38,16 +38,23 @@ def walk_dir(root_path, abs_path=True, recurse=True, dir_process_function=None,
         if not recurse: break
 
 def run_exe(args, external=False, capture_output=True, stdout=subprocess.PIPE, encoding=ENCODING, 
-             creationflags=subprocess.CREATE_NO_WINDOW, timeout=None, shell=False, **kwargs):
+            timeout=None, shell=False, **kwargs):
     try:
+        osname = platform.system()        
         if external:
-            return subprocess.Popen(args, 
-                creationflags=(subprocess.DETACHED_PROCESS | creationflags), 
-                stdout=stdout, stderr=subprocess.STDOUT,
-                encoding=encoding, shell=shell, **kwargs) if capture_output else \
-                    subprocess.Popen(args, 
-                creationflags=(subprocess.DETACHED_PROCESS | creationflags), 
-                encoding=encoding, shell=shell, **kwargs)
+            if osname == 'Windows':
+                creationflags=subprocess.CREATE_NO_WINDOW | subprocess.DETACHED_PROCESS
+                return subprocess.Popen(args, 
+                    creationflags=creationflags, 
+                    stdout=stdout if capture_output else None, 
+                    stderr=subprocess.STDOUT if capture_output else None,
+                    encoding=encoding, shell=shell, **kwargs)
+            else: # assume Unix
+                return subprocess.Popen(['nohup'] + args, 
+                    stdout=stdout if capture_output else None, 
+                    stderr=subprocess.STDOUT if capture_output else None,
+                    encoding=encoding, shell=shell, preexec_fn=os.setpgrp,
+                    **kwargs)
         else:
             return subprocess.run(args, 
                 capture_output=capture_output, encoding=encoding, 
@@ -84,7 +91,7 @@ def restart_app(closefunction):
     run_exe("pythonw cwordg.py", external=True, capture_output=False, shell=True)
     closefunction()
 
-def file_types_registered(filetypes=('xpf', 'ipuz')):
+def file_types_registered(filetypes=('xpf', 'ipuz', 'pxjson')):
     osname = platform.system()
     if osname == 'Windows':        
         import winreg
@@ -116,7 +123,7 @@ def file_types_registered(filetypes=('xpf', 'ipuz')):
 
     return False
 
-def register_file_types(filetypes=('xpf', 'ipuz'), register=True):
+def register_file_types(filetypes=('xpf', 'ipuz', 'pxjson'), register=True):
     osname = platform.system()
     if osname == 'Windows':        
         import winreg
