@@ -11,11 +11,15 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 # ---------------------------- COMMON ---------------------------- #
 
 def is_iterable(obj):
+    if isinstance(obj, str): return False
     try:
         _ = iter(obj)
         return True
     except:
         return False
+        
+def getosname():
+    return platform.system()
 
 def generate_uuid():
     return uuid.uuid4().hex
@@ -49,8 +53,8 @@ def run_exe(args, external=False, capture_output=True, stdout=subprocess.PIPE, e
                     stdout=stdout if capture_output else None, 
                     stderr=subprocess.STDOUT if capture_output else None,
                     encoding=encoding, shell=shell, **kwargs)
-            else: # assume Unix
-                return subprocess.Popen(['nohup'] + args, 
+            else: # todo: use 'xdg-open' or 'gnome-open'... depending on linux desktop
+                return subprocess.Popen('nohup ' + (args if isinstance(args, str) else ' '.join(args)), 
                     stdout=stdout if capture_output else None, 
                     stderr=subprocess.STDOUT if capture_output else None,
                     encoding=encoding, shell=shell, preexec_fn=os.setpgrp,
@@ -87,8 +91,9 @@ def bytes_human(value, suffix='B'):
         value /= 1024.0
     return f"{value:.1f}Yi{suffix}"
 
-def restart_app(closefunction):    
-    run_exe("pythonw cwordg.py", external=True, capture_output=False, shell=True)
+def restart_app(closefunction):
+    osname = platform.system()
+    run_exe('pythonw cwordg.py' if osname == 'Windows' else 'python3 ./cwordg.py', external=True, capture_output=False, shell=True)
     closefunction()
 
 def file_types_registered(filetypes=('xpf', 'ipuz', 'pxjson')):

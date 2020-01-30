@@ -2772,7 +2772,7 @@ class SettingsDialog(BasicDialog):
 
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Settings files (*.pxjson)'))
         if not selected_path[0]: return
-        selected_path = selected_path[0].replace('/', os.sep).lower()
+        selected_path = selected_path[0].replace('/', os.sep)
         settings = CWSettings.validate_file(selected_path)
         if not settings: 
             MsgBox(_("File '{}' has a wrong format or incomplete settings!").format(selected_path), self, _('Error'), 'error')
@@ -2786,7 +2786,7 @@ class SettingsDialog(BasicDialog):
         """
         selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), 'settings.pxjson'), _('Settings files (*.pxjson)'))
         if not selected_path[0]: return
-        selected_path = selected_path[0].replace('/', os.sep).lower()
+        selected_path = selected_path[0].replace('/', os.sep)
         CWSettings.settings = self.to_settings()
         CWSettings.save_to_file(selected_path)
 
@@ -3036,9 +3036,9 @@ class SettingsDialog(BasicDialog):
         Browse for temp dir.
         """
         current_dir = self.le_tempdir.text()
-        default_dir = get_tempdir().replace('/', os.sep).lower()
+        default_dir = get_tempdir().replace('/', os.sep)
         selected_path = QtWidgets.QFileDialog.getExistingDirectory(self, _('Select directory'), current_dir or default_dir)
-        selected_path = selected_path.replace('/', os.sep).lower()
+        selected_path = selected_path.replace('/', os.sep)
         if selected_path:
             self.le_tempdir.setText(selected_path if selected_path != default_dir else '')
 

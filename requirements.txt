@@ -1,7 +1,7 @@
 pip
-requests
-numpy
 PyQt5>=5.14
 PyQtWebEngine>=5.14
+requests
+numpy
 pandas
 altair

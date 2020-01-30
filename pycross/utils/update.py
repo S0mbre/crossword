@@ -49,7 +49,7 @@ class Updater:
                         stderr=subprocess.STDOUT if capture_output else None,
                         encoding=encoding, shell=shell, **kwargs)
                 else: # assume Unix
-                    return subprocess.Popen(['nohup'] + args, 
+                    return subprocess.Popen('nohup ' + (args if isinstance(args, str) else ' '.join(args)), 
                         stdout=stdout if capture_output else None, 
                         stderr=subprocess.STDOUT if capture_output else None,
                         encoding=encoding, shell=shell, preexec_fn=os.setpgrp,

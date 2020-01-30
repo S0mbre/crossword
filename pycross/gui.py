@@ -1484,8 +1484,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def save_cw(self, filepath=None, file_type=None):
         res = self._save_cw(filepath, file_type)
         if not res: return False
+        if filepath is None:
+            filepath = self.cw_file
         if res[1] in (2, 3) and CWSettings.settings['export']['openfile']:
-            run_exe(filepath, True, False, shell=True)    
+            run_exe(filepath if getosname() == 'Windows' else f'xdg-open "{filepath}"', True, False, shell=True)    
 
         self.cw_file = os.path.abspath(res[0])
         self.cw_modified = False
@@ -1587,7 +1589,7 @@ class MainWindow(QtWidgets.QMainWindow):
             if settings['openfile'] and printer.outputFormat() == QtPrintSupport.QPrinter.PdfFormat:
                 pdf_file = printer.outputFileName()
                 if os.path.isfile(pdf_file):
-                    run_exe(pdf_file, True, False, shell=True)                    
+                    run_exe(pdf_file if getosname() == 'Windows' else f'xdg-open "{pdf_file}"', True, False, shell=True)
 
         except Exception as err:            
             MsgBox(str(err), self, _('Error'), 'error')
@@ -2077,14 +2079,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cw_file = ''
         
         if self.dia_load.rb_grid.isChecked():
-            selected_path = self.dia_load.le_pattern.text().lower()
+            selected_path = self.dia_load.le_pattern.text()
             self.cw = Crossword(data=self.grid_from_file(selected_path), data_type='grid',
                                 wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
                                 log=CWSettings.settings['cw_settings']['log'])
             self.cw_file = selected_path
         
         elif self.dia_load.rb_file.isChecked():
-            selected_path = self.dia_load.le_file.text().lower()
+            selected_path = self.dia_load.le_file.text()
             self.cw = Crossword(data=selected_path, data_type='file',
                                 wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
                                 log=CWSettings.settings['cw_settings']['log'])
@@ -2114,7 +2116,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), os.getcwd(), _('Crossword files (*.xpf *.ipuz);;All files (*.*)'))
         if not selected_path[0]: return
-        self.open_cw(selected_path[0].replace('/', os.sep).lower())
+        self.open_cw(selected_path[0].replace('/', os.sep))
     
     @QtCore.pyqtSlot(bool)
     def on_act_save(self, checked):
@@ -2135,7 +2137,7 @@ class MainWindow(QtWidgets.QMainWindow):
         selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), fname), 
             ';;'.join(CWSAVE_FILTERS), CWSAVE_FILTERS[0])
         if not selected_path[0]: return
-        self.save_cw(selected_path[0].replace('/', os.sep).lower(), selected_path[1])
+        self.save_cw(selected_path[0].replace('/', os.sep), selected_path[1])
 
     @QtCore.pyqtSlot(bool)
     def on_act_reload(self, checked):

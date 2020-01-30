@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-cd "$(dirname "$0")"
+cd "$(dirname "${BASH_SOURCE[0]}")"
 python3 ./cwordg.py

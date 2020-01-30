@@ -1,6 +1,6 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-cd "$(dirname "$0")"
+cd "$(dirname "${BASH_SOURCE[0]}")"
 cd ../..
 
 git fetch
