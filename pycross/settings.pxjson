@@ -3,8 +3,8 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			211,
-			26
+			209,
+			71
 		],
 		"win_size": [
 			1561,
@@ -291,9 +291,9 @@
 	"sharing": {
 		"account": "",
 		"bearer_token": "",
-		"use_api_key": false,
+		"use_api_key": true,
 		"root_folder": "",
-		"user": "",
+		"user": "root",
 		"use_own_browser": true
 	},
 	"common": {
@@ -308,5 +308,6 @@
 			}
 		},
 		"lang": "ru"
-	}
+	},
+	"root_folder": ""
 }

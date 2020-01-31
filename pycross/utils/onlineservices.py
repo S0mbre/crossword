@@ -243,12 +243,12 @@ class Cloudstorage:
         self.init_settings(auto_create_user)        
 
     def init_settings(self, auto_create_user=True):        
-        self._accid = self.settings['account'] or Cloudstorage.ACCID
+        self._accid = self.settings['sharing']['account'] or Cloudstorage.ACCID
         self._baseurl = f"{Cloudstorage.APIURL}accounts/{self._accid}/storage/"
         self._rootid = ''
-        rootname = self.settings['root_folder'] \
-            if (self.settings['root_folder'] and self.settings['account'] \
-                and self.settings['bearer_token']) else Cloudstorage.ROOTNAME
+        rootname = self.settings['sharing']['root_folder'] \
+            if (self.settings['sharing']['root_folder'] and self.settings['sharing']['account'] \
+                and self.settings['sharing']['bearer_token']) else Cloudstorage.ROOTNAME
         new_folder = self._create_folder(rootname)
         if new_folder:
             self._rootid = new_folder[1]                  
@@ -257,7 +257,7 @@ class Cloudstorage:
             self._error(_("Unable to create/access folder '{}'!").format(rootname))    
 
         if auto_create_user:
-            self._find_or_create_user(self.settings['user'], True)
+            self._find_or_create_user(self.settings['sharing']['user'], True)
         else:
             self._update_users()
 
@@ -325,7 +325,7 @@ class Cloudstorage:
             self._apikey = res[0] if res[1] else None
 
     def _get_bearer(self):
-        self._bearer = self.settings.get('bearer_token', None)
+        self._bearer = self.settings['sharing'].get('bearer_token', None)
         if not self._bearer:            
             res = [None, False]
             if self.on_bearer_required:
@@ -334,11 +334,11 @@ class Cloudstorage:
             else:
                 res = UserInput(label=_('Enter your Bearer token'), textmode='password')            
             self._bearer = res[0] if res[1] else None
-            self.settings['bearer_token'] = self._bearer or ''
+            self.settings['sharing']['bearer_token'] = self._bearer or ''
 
     def _make_headers(self, content_type='application/json', force_api_key=False):
         auth = None
-        if self.settings['use_api_key'] or force_api_key:
+        if self.settings['sharing']['use_api_key'] or force_api_key:
             self._get_apikey()
             if not self._apikey:
                 self._error(_('No valid API key provided!\nProvide a valid API key or change your "use_api_key" settings\nto use a different authentication method.'), raise_error=True)
@@ -489,7 +489,7 @@ class Cloudstorage:
                     # if on_user_exist is not set, or if it returns True,
                     # assign the existing user data to the current one
                     self._user = u
-                    self.settings['user'] = u[0]
+                    self.settings['sharing']['user'] = u[0]
                     return True                        
                 else:
                     # otherwise, return False
@@ -502,7 +502,7 @@ class Cloudstorage:
         if new_user:
             self.users.append(new_user)
             self._user = new_user
-            self.settings['user'] = username
+            self.settings['sharing']['user'] = username
             return True
         return False
 

@@ -1309,16 +1309,15 @@ class MainWindow(QtWidgets.QMainWindow):
             self.share_thread.unlock()
 
     def create_cloud(self, thread):
-        settings = CWSettings.settings['sharing']
-        cloud = Cloudstorage(settings, auto_create_user=False,
+        cloud = Cloudstorage(CWSettings.settings, auto_create_user=False,
                 on_user_exist=lambda username: False, on_update_users=None,
                 on_error=lambda err: thread.sig_error.emit(thread, err) if thread else None,
                 show_errors=thread is None, 
                 on_apikey_required=lambda res: thread.sig_apikey_required.emit(res) if thread else None,
                 on_bearer_required=lambda res: thread.sig_bearer_required.emit(res) if thread else None,
-                timeout=(settings['common']['web']['req_timeout'] * 1000) or None)
+                timeout=(CWSettings.settings['common']['web']['req_timeout'] * 1000) or None)
         
-        username = settings['user'] or None
+        username = CWSettings.settings['sharing']['user'] or None
         if not username:
             reply = MsgBox(_("You don't have a registered user name for uploading and sharing files.\n"
             "Would you like to set a new user name yourself (YES) or let {} assign the name for you (NO)?").format(APP_NAME),
@@ -1351,7 +1350,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
         self.sharer = Share(cloud, on_clipboard_write=on_clipboard_write, 
                             on_prepare_url=on_prepare_url, stop_check=self.act_stop.isChecked,
-                            timeout=(settings['common']['web']['req_timeout'] * 1000) or None)
+                            timeout=(CWSettings.settings['common']['web']['req_timeout'] * 1000) or None)
 
     def share_url(self, url, headers={'Content-Type': 'application/json'}, error_keymap=Share.ERRMAP):
         # open share link in inbuilt browser
