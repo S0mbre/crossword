@@ -13,6 +13,7 @@ EXCLUDE                = pycross\assets pycross\locale pycross\doc
 GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 GENERATE_DOCBOOK       = NO
+EXTRACT_PRIVATE        = YES
 ALIASES                = "lang_en=@if lang_en" \
                          "lang_ru=@if lang_ru" \
                          "end_lang=@endif"

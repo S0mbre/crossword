@@ -72,6 +72,8 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">pycross.utils.onlineservices.Cloudstorage Class Reference</div>  </div>
@@ -138,6 +140,66 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a83c1604d8127a03f5f52c3023e7c13b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af438ee342c16e6fdbdbab070687e0b5e"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#af438ee342c16e6fdbdbab070687e0b5e">ROOTNAME</a> = 'pycrossall'</td></tr>
 <tr class="separator:af438ee342c16e6fdbdbab070687e0b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a55d1ddc8cb3c4bade671081560621e0e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a55d1ddc8cb3c4bade671081560621e0e">_error</a> (self, message, code=None, title=_('Error'), msgtype='error', raise_error=False)</td></tr>
+<tr class="separator:a55d1ddc8cb3c4bade671081560621e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38d651fb9230b0ed25b67cc8bd31d68b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a38d651fb9230b0ed25b67cc8bd31d68b">_error_tostr</a> (self, error)</td></tr>
+<tr class="separator:a38d651fb9230b0ed25b67cc8bd31d68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e71cb48afc0a593da3579d6f55fee51"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0e71cb48afc0a593da3579d6f55fee51">_request</a> (self, url, command='get', returntype='json', error_keymap={ 'message':'message', 'code':'status_code'}, **kwargs)</td></tr>
+<tr class="separator:a0e71cb48afc0a593da3579d6f55fee51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c3e3e93d3c46d1895cd0243ba3cac09"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a2c3e3e93d3c46d1895cd0243ba3cac09">_get_apikey</a> (self)</td></tr>
+<tr class="separator:a2c3e3e93d3c46d1895cd0243ba3cac09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd774184454d57f4a37cd55ef1db9c25"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#afd774184454d57f4a37cd55ef1db9c25">_get_bearer</a> (self)</td></tr>
+<tr class="separator:afd774184454d57f4a37cd55ef1db9c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeafd3a88031897f73acf0c80b7624ced"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aeafd3a88031897f73acf0c80b7624ced">_make_headers</a> (self, content_type='application/json', force_api_key=False)</td></tr>
+<tr class="separator:aeafd3a88031897f73acf0c80b7624ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72542948a720ab2ef34169d485610aa1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a72542948a720ab2ef34169d485610aa1">_create_account</a> (self)</td></tr>
+<tr class="separator:a72542948a720ab2ef34169d485610aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a877ebd8dad4afe42ac09d8a0a86e988c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a877ebd8dad4afe42ac09d8a0a86e988c">_get_accounts</a> (self, enabled=None, admin=None, search=None)</td></tr>
+<tr class="separator:a877ebd8dad4afe42ac09d8a0a86e988c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9224329a9efcf2ef4848c93f976761b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ad9224329a9efcf2ef4848c93f976761b">_get_account_matadata</a> (self, account_id, retrieve_tokens=False, retrieve_full=True)</td></tr>
+<tr class="separator:ad9224329a9efcf2ef4848c93f976761b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5cffc156e0fa70076a83a43559ffc7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0e5cffc156e0fa70076a83a43559ffc7">_get_quota</a> (self)</td></tr>
+<tr class="separator:a0e5cffc156e0fa70076a83a43559ffc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7070bf42f560c045663145f934da53ce"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a7070bf42f560c045663145f934da53ce">_get_folder_objects</a> (self, fid, recurse=False)</td></tr>
+<tr class="separator:a7070bf42f560c045663145f934da53ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab852970d027e5e04042355123393d518"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab852970d027e5e04042355123393d518">_get_folder_ancestors</a> (self, folder_id)</td></tr>
+<tr class="separator:ab852970d027e5e04042355123393d518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3e1823c9490463fc4f27fc3f7103b67"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#af3e1823c9490463fc4f27fc3f7103b67">_is_user_folder</a> (self, folder_id)</td></tr>
+<tr class="separator:af3e1823c9490463fc4f27fc3f7103b67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1fdb2cda96df214a7d757c4c57cdeb4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa1fdb2cda96df214a7d757c4c57cdeb4">_generate_username</a> (self)</td></tr>
+<tr class="separator:aa1fdb2cda96df214a7d757c4c57cdeb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f463c2d6716a33de010a9113fe094e2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a2f463c2d6716a33de010a9113fe094e2">_create_folder</a> (self, folder_name, parent_id='root', error_on_exist=False)</td></tr>
+<tr class="separator:a2f463c2d6716a33de010a9113fe094e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01ce9c2474d9f0d693707424e541b9d8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a01ce9c2474d9f0d693707424e541b9d8">_update_users</a> (self)</td></tr>
+<tr class="separator:a01ce9c2474d9f0d693707424e541b9d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a8fe97584b469e7a8e5e721e3ccc954"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a3a8fe97584b469e7a8e5e721e3ccc954">_get_file_metadata</a> (self, file_id)</td></tr>
+<tr class="separator:a3a8fe97584b469e7a8e5e721e3ccc954"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f8f1e9cc9a944cac732570009a6ccdc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5f8f1e9cc9a944cac732570009a6ccdc">_get_folder_metadata</a> (self, folder_id=None)</td></tr>
+<tr class="separator:a5f8f1e9cc9a944cac732570009a6ccdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf8447cbf3dc4fdd15297d814af6e1fa"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aaf8447cbf3dc4fdd15297d814af6e1fa">_user_exists</a> (self, username, update_user_list=False)</td></tr>
+<tr class="separator:aaf8447cbf3dc4fdd15297d814af6e1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af03c1378ff0607c6c8340ae9722714e8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#af03c1378ff0607c6c8340ae9722714e8">_find_or_create_user</a> (self, username=None, update_user_list=False)</td></tr>
+<tr class="separator:af03c1378ff0607c6c8340ae9722714e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec8c34bf5fe43df14410d4850d40751d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aec8c34bf5fe43df14410d4850d40751d">_delete_user</a> (self, username=None)</td></tr>
+<tr class="separator:aec8c34bf5fe43df14410d4850d40751d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a3e56f966086d5ecd88de7820651a3d5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a3e56f966086d5ecd88de7820651a3d5e">_accid</a></td></tr>
+<tr class="separator:a3e56f966086d5ecd88de7820651a3d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2b022a8e908d22a3c1a60177a8fd01"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5d2b022a8e908d22a3c1a60177a8fd01">_baseurl</a></td></tr>
+<tr class="separator:a5d2b022a8e908d22a3c1a60177a8fd01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55060307846d7be639366497fa6de075"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a55060307846d7be639366497fa6de075">_rootid</a></td></tr>
+<tr class="separator:a55060307846d7be639366497fa6de075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa01fb8d79c86f4fba9c501a64716c528"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa01fb8d79c86f4fba9c501a64716c528">_apikey</a></td></tr>
+<tr class="separator:aa01fb8d79c86f4fba9c501a64716c528"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcfb5df062ace983e57128aae8498688"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#abcfb5df062ace983e57128aae8498688">_bearer</a></td></tr>
+<tr class="separator:abcfb5df062ace983e57128aae8498688"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2bde0d07d595c41b5a26cea108c958a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa2bde0d07d595c41b5a26cea108c958a">_user</a></td></tr>
+<tr class="separator:aa2bde0d07d595c41b5a26cea108c958a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5ca6c22d5db49ee9d99b9ab570cf206e"></a>
@@ -217,6 +279,828 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a72542948a720ab2ef34169d485610aa1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72542948a720ab2ef34169d485610aa1">&#9670;&nbsp;</a></span>_create_account()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._create_account </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Create a new client account and bind it to the Kloudless/pycross app.
+Retrieved Account ID and Bearer Token will be written to settings.
+TODO: Implement when default Dropbox storage is not enough.
+</pre> 
+</div>
+</div>
+<a id="a2f463c2d6716a33de010a9113fe094e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f463c2d6716a33de010a9113fe094e2">&#9670;&nbsp;</a></span>_create_folder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._create_folder </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>folder_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>parent_id</em> = <code>'root'</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>error_on_exist</em> = <code>False</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aec8c34bf5fe43df14410d4850d40751d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec8c34bf5fe43df14410d4850d40751d">&#9670;&nbsp;</a></span>_delete_user()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._delete_user </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>username</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a55d1ddc8cb3c4bade671081560621e0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55d1ddc8cb3c4bade671081560621e0e">&#9670;&nbsp;</a></span>_error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._error </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>code</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>title</em> = <code>_('Error')</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>msgtype</em> = <code>'error'</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>raise_error</em> = <code>False</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a38d651fb9230b0ed25b67cc8bd31d68b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38d651fb9230b0ed25b67cc8bd31d68b">&#9670;&nbsp;</a></span>_error_tostr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._error_tostr </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>error</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af03c1378ff0607c6c8340ae9722714e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af03c1378ff0607c6c8340ae9722714e8">&#9670;&nbsp;</a></span>_find_or_create_user()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._find_or_create_user </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>username</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>update_user_list</em> = <code>False</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Creates or finds the subfolder: dropbox/pycrossall/&lt;username&gt;.
+If found and 'error_on_exist' == True, displays error and quits.
+Otherwise, sets self._user = (user_name, user_id).
+On any failure, self._user will be set to None.
+If username == None (default), an automatic username is generated.
+</pre> 
+</div>
+</div>
+<a id="aa1fdb2cda96df214a7d757c4c57cdeb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1fdb2cda96df214a7d757c4c57cdeb4">&#9670;&nbsp;</a></span>_generate_username()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._generate_username </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad9224329a9efcf2ef4848c93f976761b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9224329a9efcf2ef4848c93f976761b">&#9670;&nbsp;</a></span>_get_account_matadata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._get_account_matadata </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>account_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>retrieve_tokens</em> = <code>False</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>retrieve_full</em> = <code>True</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Service method: gets metadata for account specified by 'account_id'.
+</pre> 
+</div>
+</div>
+<a id="a877ebd8dad4afe42ac09d8a0a86e988c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a877ebd8dad4afe42ac09d8a0a86e988c">&#9670;&nbsp;</a></span>_get_accounts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._get_accounts </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>enabled</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>admin</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>search</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Service method: lists all accounts tied to the pycross app on Kloudless.
+</pre> 
+</div>
+</div>
+<a id="a2c3e3e93d3c46d1895cd0243ba3cac09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c3e3e93d3c46d1895cd0243ba3cac09">&#9670;&nbsp;</a></span>_get_apikey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._get_apikey </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afd774184454d57f4a37cd55ef1db9c25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd774184454d57f4a37cd55ef1db9c25">&#9670;&nbsp;</a></span>_get_bearer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._get_bearer </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3a8fe97584b469e7a8e5e721e3ccc954"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a8fe97584b469e7a8e5e721e3ccc954">&#9670;&nbsp;</a></span>_get_file_metadata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._get_file_metadata </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>file_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Retrieves the metadata of the given file: name, path, size, date, etc.
+</pre> 
+</div>
+</div>
+<a id="ab852970d027e5e04042355123393d518"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab852970d027e5e04042355123393d518">&#9670;&nbsp;</a></span>_get_folder_ancestors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._get_folder_ancestors </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>folder_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5f8f1e9cc9a944cac732570009a6ccdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f8f1e9cc9a944cac732570009a6ccdc">&#9670;&nbsp;</a></span>_get_folder_metadata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._get_folder_metadata </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>folder_id</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Retrieves the metadata of the given folder: name, path, size, date, etc.
+If 'folder_id' is None, the current user's folder will be used.
+</pre> 
+</div>
+</div>
+<a id="a7070bf42f560c045663145f934da53ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7070bf42f560c045663145f934da53ce">&#9670;&nbsp;</a></span>_get_folder_objects()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._get_folder_objects </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>fid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>recurse</em> = <code>False</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0e5cffc156e0fa70076a83a43559ffc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e5cffc156e0fa70076a83a43559ffc7">&#9670;&nbsp;</a></span>_get_quota()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._get_quota </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Retrieves storage quota information.
+</pre> 
+</div>
+</div>
+<a id="af3e1823c9490463fc4f27fc3f7103b67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3e1823c9490463fc4f27fc3f7103b67">&#9670;&nbsp;</a></span>_is_user_folder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._is_user_folder </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>folder_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Checks if given folder is inside current user's folder.
+</pre> 
+</div>
+</div>
+<a id="aeafd3a88031897f73acf0c80b7624ced"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeafd3a88031897f73acf0c80b7624ced">&#9670;&nbsp;</a></span>_make_headers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._make_headers </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>content_type</em> = <code>'application/json'</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>force_api_key</em> = <code>False</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0e71cb48afc0a593da3579d6f55fee51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e71cb48afc0a593da3579d6f55fee51">&#9670;&nbsp;</a></span>_request()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._request </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>url</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>command</em> = <code>'get'</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>returntype</em> = <code>'json'</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>error_keymap</em> = <code>{'message':&#160;'message',&#160;'code':&#160;'status_code'}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">**&#160;</td>
+          <td class="paramname"><em>kwargs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a01ce9c2474d9f0d693707424e541b9d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01ce9c2474d9f0d693707424e541b9d8">&#9670;&nbsp;</a></span>_update_users()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._update_users </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Updates the list of subfolders present in dropbox/pycrossall root folder.
+The names of these subfolders correspond to the names of the
+registered users.
+</pre> 
+</div>
+</div>
+<a id="aaf8447cbf3dc4fdd15297d814af6e1fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf8447cbf3dc4fdd15297d814af6e1fa">&#9670;&nbsp;</a></span>_user_exists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._user_exists </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>username</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>update_user_list</em> = <code>False</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a0d93552b41907b39f70fda3d3afb2183"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d93552b41907b39f70fda3d3afb2183">&#9670;&nbsp;</a></span>clear_folder()</h2>
 
@@ -733,6 +1617,138 @@ Otherwise, the uploaded file will be automatically renamed.
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a3e56f966086d5ecd88de7820651a3d5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e56f966086d5ecd88de7820651a3d5e">&#9670;&nbsp;</a></span>_accid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.utils.onlineservices.Cloudstorage._accid</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa01fb8d79c86f4fba9c501a64716c528"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa01fb8d79c86f4fba9c501a64716c528">&#9670;&nbsp;</a></span>_apikey</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.utils.onlineservices.Cloudstorage._apikey</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d2b022a8e908d22a3c1a60177a8fd01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d2b022a8e908d22a3c1a60177a8fd01">&#9670;&nbsp;</a></span>_baseurl</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.utils.onlineservices.Cloudstorage._baseurl</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abcfb5df062ace983e57128aae8498688"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcfb5df062ace983e57128aae8498688">&#9670;&nbsp;</a></span>_bearer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.utils.onlineservices.Cloudstorage._bearer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a55060307846d7be639366497fa6de075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55060307846d7be639366497fa6de075">&#9670;&nbsp;</a></span>_rootid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.utils.onlineservices.Cloudstorage._rootid</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa2bde0d07d595c41b5a26cea108c958a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2bde0d07d595c41b5a26cea108c958a">&#9670;&nbsp;</a></span>_user</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.utils.onlineservices.Cloudstorage._user</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a83c1604d8127a03f5f52c3023e7c13b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a83c1604d8127a03f5f52c3023e7c13b9">&#9670;&nbsp;</a></span>ACCID</h2>
 

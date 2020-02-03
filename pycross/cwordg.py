@@ -9,6 +9,7 @@ import os, sys, traceback, argparse
 ## Main function that creates and launches the application.
 def main():
 
+    # parse command-line parameters
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--settings', help='Load settings from file')
     parser.add_argument('-o', '--open', help='Open crossword file')
@@ -31,6 +32,7 @@ def main():
     else:
         settings_file = None    
     settings = readSettings(settings_file)
+    
     # switch language
     switch_lang(settings['common']['lang']) 
 

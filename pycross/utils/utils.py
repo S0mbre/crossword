@@ -53,7 +53,7 @@ def run_exe(args, external=False, capture_output=True, stdout=subprocess.PIPE, e
                     stdout=stdout if capture_output else None, 
                     stderr=subprocess.STDOUT if capture_output else None,
                     encoding=encoding, shell=shell, **kwargs)
-            else: # todo: use 'xdg-open' or 'gnome-open'... depending on linux desktop
+            else:
                 return subprocess.Popen('nohup ' + (args if isinstance(args, str) else ' '.join(args)), 
                     stdout=stdout if capture_output else None, 
                     stderr=subprocess.STDOUT if capture_output else None,
@@ -61,7 +61,8 @@ def run_exe(args, external=False, capture_output=True, stdout=subprocess.PIPE, e
                     **kwargs)
         else:
             return subprocess.run(args, 
-                capture_output=capture_output, encoding=encoding, 
+                capture_output=capture_output,                 
+                encoding=encoding, 
                 timeout=timeout, shell=shell, **kwargs)
     except Exception as err:
         traceback.print_exc(limit=None)
@@ -119,8 +120,12 @@ def file_types_registered(filetypes=('xpf', 'ipuz', 'pxjson')):
             return False
 
     elif osname == 'Linux':
-        # app in /usr/share/applications and edit /usr/share/applications/defaults.list (Ubuntu, Fedora, Debian...)
-        return False
+        appname = APP_NAME.lower()
+        res = run_exe(f'xdg-mime query default x-scheme-handler/{appname}', False, True, shell=True)
+        return os.path.isfile(os.path.expanduser(LINUX_APP_PATH)) and \
+                os.path.isfile(os.path.expanduser(LINUX_MIME_XML)) and \
+                res.returncode == 0 and \
+                res.stdout.strip() == f"{appname}.desktop"
 
     elif osname == 'Darwin':
         # see https://stackoverflow.com/a/2976711
@@ -129,6 +134,7 @@ def file_types_registered(filetypes=('xpf', 'ipuz', 'pxjson')):
     return False
 
 def register_file_types(filetypes=('xpf', 'ipuz', 'pxjson'), register=True):
+    if not filetypes: return False
     osname = platform.system()
     if osname == 'Windows':        
         import winreg
@@ -184,8 +190,48 @@ def register_file_types(filetypes=('xpf', 'ipuz', 'pxjson'), register=True):
             return False
 
     elif osname == 'Linux':
-        # create app in /usr/share/applications and edit /usr/share/applications/defaults.list (Ubuntu, Fedora, Debian...)
-        return False
+        # example at https://askubuntu.com/questions/108925/how-to-tell-chrome-what-to-do-with-a-magnet-link/133693#133693
+        appname = APP_NAME.lower()
+        if register:
+            # create MIME app in '~/.local/share/applications'
+            with open(os.path.expanduser(LINUX_APP_PATH), 'w') as f:
+                f.write(LINUX_MIME_APP.format(f'python3 "{make_abspath(sys.argv[0])}" -o',
+                        appname, f"{APP_NAME} launcher"))
+            # add row to '~/.local/share/applications/mimeapps.list'
+            res = run_exe(f"xdg-mime default {appname}.desktop x-scheme-handler/{appname}", shell=True)            
+            if res.returncode: return False
+            # check successful assignment
+            res = run_exe(f'xdg-mime query default x-scheme-handler/{appname}', shell=True)            
+            if res.returncode or res.stdout.strip() != f"{appname}.desktop":
+                # failed to add association
+                return False
+            # install MIME types
+            ftypes = []
+            for filetype in filetypes:
+                ftype = ('.' + filetype.lower()) if not filetype.startswith('.') else filetype.lower()
+                ftypes.append(f'<glob pattern="*{ftype}"/>')
+            with open(os.path.expanduser(LINUX_MIME_XML), 'w') as f:
+                f.write(LINUX_MIME_TYPES.format(f"x-scheme-handler/{appname}", 
+                        f"{APP_NAME} settings and cw files", '\n    '.join(ftypes)))
+            res = run_exe(f'xdg-mime install {LINUX_MIME_XML}', shell=True)            
+            if res.returncode: return False
+            # install icon
+            res = run_exe(f'xdg-icon-resource install --context mimetypes --size 64 {ICONFOLDER}/main.png x-scheme-handler-{appname}', shell=True)            
+            return not res.returncode and not res.stdout.strip()
+            
+        else:
+            try:
+                # uninstall icon
+                run_exe(f'xdg-icon-resource uninstall --size 64 {ICONFOLDER}/main', capture_output=False, shell=True)
+                # uninstall MIME types
+                run_exe(f'xdg-mime uninstall {LINUX_MIME_XML}', capture_output=False, shell=True)
+                # delete MIME XML
+                run_exe(f'rm {LINUX_MIME_XML}', capture_output=False, shell=True)
+                # delete MIME app
+                run_exe(f'rm {LINUX_APP_PATH}', capture_output=False, shell=True)
+                return True
+            except:
+                return False
 
     elif osname == 'Darwin':
         # see https://stackoverflow.com/a/2976711

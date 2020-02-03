@@ -92,10 +92,14 @@ class Updater:
 
     def _parse_version(self, version_str, max_versions=-1):
         version_str = self._strip_version_az(version_str)
-        if max_versions > 0:
-            return tuple([int(v) for v in version_str.split('.')][:max_versions])
-        else:
-            return tuple([int(v) for v in version_str.split('.')])
+        try:
+            if max_versions > 0:
+                return tuple([int(v) for v in version_str.split('.')][:max_versions])
+            else:
+                return tuple([int(v) for v in version_str.split('.')])
+        except:
+            # version string is incorrectly formatted
+            return None
 
     def _compare_versions(self, v1, v2, max_versions=-1, major_only=False):
         tv1 = self._parse_version(v1, max_versions)
@@ -137,7 +141,9 @@ class Updater:
                         include = True
                         break
             if not include: continue
-            branches[self._parse_version(br)] = (br, entry[0])
+            parsed = self._parse_version(br)
+            if not parsed is None:
+                branches[parsed] = (br, entry[0])
         return branches
 
     def _get_recent_version(self):

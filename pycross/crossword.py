@@ -2,6 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
+## @package pycross
 from utils.globalvars import *
 from utils.utils import *
 
@@ -68,8 +69,7 @@ class MLStripper(HTMLParser):
 # All coordinates are given as 2-tuples (x, y): x = row, y = column (0-based)
 class Coords:
     
-    ## The Coords constructor:
-    # initializes and validates Coords::start and Coords::end
+    ## The Coords constructor: initializes and validates Coords::start and Coords::end
     # @param coord_start [2-tuple] the start coordinate (x, y)
     # @param coord_end [2-tuple] the end coordinate (x, y)
     def __init__(self, coord_start, coord_end):

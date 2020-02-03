@@ -2,6 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
+## @package utils
 import os, gettext
 
 def make_abspath(filename, root=''):
@@ -75,6 +76,25 @@ ENCODINGS = \
  'utf_16_le', 'utf_7', 'utf_8', 'utf_8_sig']
 
 FONT_WEIGHTS = {100: 0, 200: 12, 300: 25, 400: 50, 500: 57, 600: 63, 700: 75, 800: 81, 900: 87}
+
+LINUX_APP_PATH = '~/.local/share/applications/{}.desktop'.format(APP_NAME.lower())
+LINUX_MIME_APP = \
+"""[Desktop Entry]
+Type=Application
+Exec={} %u
+StartupNotify=true
+Terminal=false
+MimeType=x-scheme-handler/{}
+Name={}"""
+LINUX_MIME_TYPES = \
+"""<?xml version="1.0"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+  <mime-type type="{}">
+    <comment>{}</comment>
+    {}
+  </mime-type>
+</mime-info>"""
+LINUX_MIME_XML = f'~/.local/share/applications/{APP_NAME.lower()}-{APP_NAME.lower()}.xml'
 
 MW_DIC_KEY = '71ae1f74-7edb-4683-be03-8e3d7348660d'            # MW Collegiate Dictionary & Audio API key
 MW_DIC_HTTP = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/{}?key={}'

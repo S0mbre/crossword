@@ -72,6 +72,8 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classpycross_1_1crossword_1_1_crossword-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">pycross.crossword.Crossword Class Reference</div>  </div>
@@ -146,6 +148,16 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ab6027eca86b51e3ada3733f4ecc9775c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cd8dea61647d444be1167d37d428644"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644">log</a></td></tr>
 <tr class="separator:a0cd8dea61647d444be1167d37d428644"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a5866675eeae1d68e14d462bef1836f34"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a5866675eeae1d68e14d462bef1836f34">_log</a> (self, what, end='\n')</td></tr>
+<tr class="separator:a5866675eeae1d68e14d462bef1836f34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a757e46210048e5c02cc38033b063f1d1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a757e46210048e5c02cc38033b063f1d1">_slog</a></td></tr>
+<tr class="separator:a757e46210048e5c02cc38033b063f1d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af13119701b7685dc98436ef3431510b8"></a>
@@ -272,6 +284,49 @@ info, on_reset, on_clear, on_change, on_clear_word, on_putchar etc.
 </div><div class="memdoc">
 <pre class="fragment">String converter operator overload. 
 Outputs Crossword object as a crossword grid.
+</pre> 
+</div>
+</div>
+<a id="a5866675eeae1d68e14d462bef1836f34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5866675eeae1d68e14d462bef1836f34">&#9670;&nbsp;</a></span>_log()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.crossword.Crossword._log </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>what</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>end</em> = <code>'\n'</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Prints debug/log message ('what') to self.log with optional line-ending char ('end').
 </pre> 
 </div>
 </div>
@@ -925,6 +980,28 @@ from the USED list.
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a757e46210048e5c02cc38033b063f1d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a757e46210048e5c02cc38033b063f1d1">&#9670;&nbsp;</a></span>_slog</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.crossword.Crossword._slog</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a463a3a1c7e4b510b43f5f577846a75b3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a463a3a1c7e4b510b43f5f577846a75b3">&#9670;&nbsp;</a></span>bufferedlog</h2>
 

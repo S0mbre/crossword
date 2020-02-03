@@ -76,6 +76,9 @@ $(function() {
 <div class="title">pycross.gui.ShareThread Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Crossword sharing (in social networks) thread class.  
+ <a href="classpycross_1_1gui_1_1_share_thread.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.gui.ShareThread:</div>
 <div class="dyncontent">
@@ -89,6 +92,7 @@ Inheritance diagram for pycross.gui.ShareThread:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8feb965d93c179a418228542e3b0153e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_share_thread.html#a8feb965d93c179a418228542e3b0153e">__init__</a> (self, on_progress=None, on_upload=None, on_clipboard_write=None, on_apikey_required=None, on_bearer_required=None, on_prepare_url=None, on_start=None, on_finish=None, <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a18ecf99d13099693ff6017bcc640786b">on_run</a>=None, on_error=None)</td></tr>
+<tr class="memdesc:a8feb965d93c179a418228542e3b0153e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes signals binding them to callbacks passed to constructor.  <a href="classpycross_1_1gui_1_1_share_thread.html#a8feb965d93c179a418228542e3b0153e">More...</a><br /></td></tr>
 <tr class="separator:a8feb965d93c179a418228542e3b0153e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpycross_1_1utils_1_1utils_1_1_q_thread_stump"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpycross_1_1utils_1_1utils_1_1_q_thread_stump')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html">pycross.utils.utils.QThreadStump</a></td></tr>
 <tr class="memitem:a2590c0f1a6bdfda16a2399e31cf17d85 inherit pub_methods_classpycross_1_1utils_1_1utils_1_1_q_thread_stump"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a2590c0f1a6bdfda16a2399e31cf17d85">__del__</a> (self)</td></tr>
@@ -105,16 +109,22 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a2404634b1002de84b545aef5d6960eea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_share_thread.html#a2404634b1002de84b545aef5d6960eea">sig_progress</a> = QtCore.pyqtSignal(int, str)</td></tr>
+<tr class="memdesc:a2404634b1002de84b545aef5d6960eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">On-progress (sharing) signal.  <a href="classpycross_1_1gui_1_1_share_thread.html#a2404634b1002de84b545aef5d6960eea">More...</a><br /></td></tr>
 <tr class="separator:a2404634b1002de84b545aef5d6960eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05b4c3a663371fa64d511d9b8803f8e2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_share_thread.html#a05b4c3a663371fa64d511d9b8803f8e2">sig_upload_file</a> = QtCore.pyqtSignal(str, str)</td></tr>
+<tr class="memdesc:a05b4c3a663371fa64d511d9b8803f8e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">File upload signal.  <a href="classpycross_1_1gui_1_1_share_thread.html#a05b4c3a663371fa64d511d9b8803f8e2">More...</a><br /></td></tr>
 <tr class="separator:a05b4c3a663371fa64d511d9b8803f8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d47442f58d140ae397089106daf28b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_share_thread.html#a3d47442f58d140ae397089106daf28b6">sig_apikey_required</a> = QtCore.pyqtSignal('PyQt_PyObject')</td></tr>
+<tr class="memdesc:a3d47442f58d140ae397089106daf28b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">API key request signal.  <a href="classpycross_1_1gui_1_1_share_thread.html#a3d47442f58d140ae397089106daf28b6">More...</a><br /></td></tr>
 <tr class="separator:a3d47442f58d140ae397089106daf28b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1cd17e7cc897bf7b5a75bc693be11ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_share_thread.html#ae1cd17e7cc897bf7b5a75bc693be11ee">sig_bearer_required</a> = QtCore.pyqtSignal('PyQt_PyObject')</td></tr>
+<tr class="memdesc:ae1cd17e7cc897bf7b5a75bc693be11ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bearer token request signal.  <a href="classpycross_1_1gui_1_1_share_thread.html#ae1cd17e7cc897bf7b5a75bc693be11ee">More...</a><br /></td></tr>
 <tr class="separator:ae1cd17e7cc897bf7b5a75bc693be11ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b11572b56bb852c112e0a5e8154fa71"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_share_thread.html#a2b11572b56bb852c112e0a5e8154fa71">sig_prepare_url</a> = QtCore.pyqtSignal(str)</td></tr>
+<tr class="memdesc:a2b11572b56bb852c112e0a5e8154fa71"><td class="mdescLeft">&#160;</td><td class="mdescRight">URL prepared signal.  <a href="classpycross_1_1gui_1_1_share_thread.html#a2b11572b56bb852c112e0a5e8154fa71">More...</a><br /></td></tr>
 <tr class="separator:a2b11572b56bb852c112e0a5e8154fa71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0272a54ecaa64a903affe07d2a6361c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_share_thread.html#a0272a54ecaa64a903affe07d2a6361c6">sig_clipboard_write</a> = QtCore.pyqtSignal(str)</td></tr>
+<tr class="memdesc:a0272a54ecaa64a903affe07d2a6361c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clipboard copy signal.  <a href="classpycross_1_1gui_1_1_share_thread.html#a0272a54ecaa64a903affe07d2a6361c6">More...</a><br /></td></tr>
 <tr class="separator:a0272a54ecaa64a903affe07d2a6361c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_classpycross_1_1utils_1_1utils_1_1_q_thread_stump"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classpycross_1_1utils_1_1utils_1_1_q_thread_stump')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html">pycross.utils.utils.QThreadStump</a></td></tr>
 <tr class="memitem:af56499a3e3c3c945df4c963f0955f8c6 inherit pub_static_attribs_classpycross_1_1utils_1_1utils_1_1_q_thread_stump"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#af56499a3e3c3c945df4c963f0955f8c6">sig_error</a> = QtCore.pyqtSignal(QtCore.QThread, str)</td></tr>
@@ -130,7 +140,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:af73b85d238ba1250b95431f72d0b6b2d inherit pub_attribs_classpycross_1_1utils_1_1utils_1_1_q_thread_stump"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#af73b85d238ba1250b95431f72d0b6b2d">mutex</a></td></tr>
 <tr class="separator:af73b85d238ba1250b95431f72d0b6b2d inherit pub_attribs_classpycross_1_1utils_1_1utils_1_1_q_thread_stump"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Crossword sharing (in social networks) thread class. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8feb965d93c179a418228542e3b0153e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8feb965d93c179a418228542e3b0153e">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -211,6 +223,8 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Initializes signals binding them to callbacks passed to constructor. </p>
+
 <p>Reimplemented from <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a31e0b662058e938b25d938d18c6b2955">pycross.utils.utils.QThreadStump</a>.</p>
 
 </div>
@@ -236,6 +250,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>API key request signal. </p>
+
 </div>
 </div>
 <a id="ae1cd17e7cc897bf7b5a75bc693be11ee"></a>
@@ -257,6 +273,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Bearer token request signal. </p>
 
 </div>
 </div>
@@ -280,6 +298,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Clipboard copy signal. </p>
+
 </div>
 </div>
 <a id="a2b11572b56bb852c112e0a5e8154fa71"></a>
@@ -301,6 +321,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>URL prepared signal. </p>
 
 </div>
 </div>
@@ -324,6 +346,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>On-progress (sharing) signal. </p>
+
 </div>
 </div>
 <a id="a05b4c3a663371fa64d511d9b8803f8e2"></a>
@@ -345,6 +369,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>File upload signal. </p>
 
 </div>
 </div>

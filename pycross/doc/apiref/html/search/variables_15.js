@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['zoominaction_2419',['zoomInAction',['../classpycross_1_1browser_1_1_browser_window.html#ac03a0bbdc550dd6a69e8ca0e311369d7',1,'pycross::browser::BrowserWindow']]],
-  ['zoomoutaction_2420',['zoomOutAction',['../classpycross_1_1browser_1_1_browser_window.html#ac906809fb91a350d5270025c2a83a8c3',1,'pycross::browser::BrowserWindow']]]
+  ['yan_5fdaily_5freq_2582',['YAN_DAILY_REQ',['../namespacepycross_1_1utils_1_1globalvars.html#ac511021b8dacc3618bf943795598d14d',1,'pycross::utils::globalvars']]],
+  ['yan_5fdict_5fhttp_2583',['YAN_DICT_HTTP',['../namespacepycross_1_1utils_1_1globalvars.html#a1f92f3503c9ebb5cdb715113e621632c',1,'pycross::utils::globalvars']]],
+  ['yan_5fdict_5fkey_2584',['YAN_DICT_KEY',['../namespacepycross_1_1utils_1_1globalvars.html#ad533520c17b297ff2701c45b1680d724',1,'pycross::utils::globalvars']]]
 ];
