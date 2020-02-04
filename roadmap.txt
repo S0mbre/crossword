@@ -1,3 +1,4 @@
+* + [v. 0.2] runs on Linux <tested in Debian-based Kali Linux 2019.4 with virtualenv>
 * + [v. 0.2] configure shuffle / no shuffle of word sources
 * + [v. 0.2] inbuilt browser
 * + [v. 0.2] editable main toolbar
@@ -8,8 +9,10 @@
 	* Shareaholic API (social sharing aggregator):
 		https://www.shareaholic.com/api/
 * + [v. 0.2] display generation progress in progress bar
-* + [v. 0.3] internationalization support (translations)
-* + [v. 0.3] optionally associate cw file types (XPF, IPUZ) with pyCross
+* + [v. 0.2] internationalization support (translations)
+* + [v. 0.2] optionally associate cw file types (XPF, IPUZ) with pyCross
+* + [v. 0.2] API reference generation with Doxygen (see pycross/doc/apiref)
+* [v. 0.3] Docker support (to run from docker on Linux / OSX)
 * [v. 0.3] highlight in cw:
 	* words not found in current sources
 * [v. 0.3] secure Kloudless access to users through OAuth 2 authentication (rather than raw API key)
