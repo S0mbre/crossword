@@ -80,28 +80,28 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Initializes class members
     def __init__(self, **kwargs):        
         super().__init__()
-        ## Crossword instance
+        ## [crossword::Crossword] instance
         self.cw = None   
-        ## currently opened cw file                      
+        ## [str] currently opened cw file                      
         self.cw_file = ''             
-        ## flag showing that current cw has been changed since last save         
+        ## [bool] flag showing that current cw has been changed since last save         
         self.cw_modified = True                
-        ## current word in grid
-        self.current_word = None               \
-        ## last pressed cell in cw grid
+        ## [Word] currently selected word in grid
+        self.current_word = None
+        ## [QtWidgets.QTableWidgetItem] last pressed cell in cw grid
         self.last_pressed_item = None     
-        ## Share object     
+        ## [utils::onlineservices::Share] object     
         self.sharer = None       
-        ## empty word source instance              
+        ## [wordsrc::MultiWordsource] empty word source instance              
         self.wordsrc = MultiWordsource()       
-        ## files to delete on startup / close
+        ## [list] files to delete on startup / close
         self.garbage = []                      
-        ## cw generation worker thread
+        ## [GenThread] cw generation worker thread
         self.gen_thread = GenThread(on_gen_timeout=self.on_gen_timeout, on_gen_stopped=self.on_gen_stop, 
                                     on_gen_validate=self.on_gen_validate, on_gen_progress=self.on_gen_progress, 
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
                                     on_run=self.generate_cw_worker, on_error=self.on_gen_error)
-        ## sharer worker thread
+        ## [ShareThread] sharer worker thread
         self.share_thread = ShareThread(on_progress=self.on_share_progress, 
             on_upload=self.on_share_upload, on_clipboard_write=self.on_share_clipboard_write,
             on_apikey_required=self.on_share_apikey_required, on_bearer_required=self.on_share_bearer_required,
@@ -109,9 +109,9 @@ class MainWindow(QtWidgets.QMainWindow):
             on_start=self.on_share_start, on_finish=self.on_share_finish, on_run=self.on_share_run,
             on_error=self.on_share_error)
 
-        ## thread list to keep track of all spawned threads
+        ## [list] thread list to keep track of all spawned threads
         self.threads = ['gen_thread', 'share_thread']
-        ## Updater instance (used to run app update checks and updates)
+        ## [Updater] instance (used to run app update checks and updates)
         self.updater = Updater(APP_NAME, APP_VERSION, GIT_REPO, UPDATE_FILE,
             make_abspath(CWSettings.settings['update']['logfile']),
             CWSettings.settings['update']['check_every'], 
@@ -120,7 +120,7 @@ class MainWindow(QtWidgets.QMainWindow):
             on_norecent=self.on_norecent)
         # create window elements
         self.initUI(not kwargs.get('empty', False))
-        ## SettingsDialog instance (settings window)
+        ## [SettingsDialog] instance (settings window)
         self.dia_settings = SettingsDialog(self)
         # execute actions for command-line args, if present
         self.execute_cli_args(**kwargs)
@@ -1481,7 +1481,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 self, _('Generation finished'), 'info' if not bad_ else 'warn')
 
     ## Slot fires to show progress of cw generation thread (MainWindow::gen_thread).
-    # @param cw_ [Crossword] pointer to the Crossword object that runs the generation
+    # @param cw_ [crossword::Crossword] pointer to the Crossword object that runs the generation
     # @param complete_ [int] number of completed (filled) words
     # @param total_ [int] total number of words in cw grid
     @QtCore.pyqtSlot('PyQt_PyObject', int, int)
@@ -1518,8 +1518,8 @@ class MainWindow(QtWidgets.QMainWindow):
     # If not set (None), MainWindow::cw_file will be used (the currently open cw file)
     # @param file_type [str|int] the file type used to save / export the crossword.
     # If not set (None), the app will attempt to infer it from the filepath extension.
-    # Otherwise, it can be a string representing the file filter - see _get_filetype::CWSAVE_FILTERS,
-    # or an integer representing the index of the filter in _get_filetype::CWSAVE_FILTERS
+    # Otherwise, it can be a string representing the file filter - see _get_filetype() - CWSAVE_FILTERS,
+    # or an integer representing the index of the filter in _get_filetype() - CWSAVE_FILTERS
     def _save_cw(self, filepath=None, file_type=None):
         def _guess_filetype(filepath):
             if not filepath: return -1
@@ -1700,13 +1700,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## @brief Util function: replaces string macros like <t> by crossword metadata, like CWInfo::title.
     # The following macros are supported:
-    #   * <t> = cw title
-    #   * <a> = cw author
-    #   * <p> = cw publisher
-    #   * <c> = cw copyright
-    #   * <d> = cw date
-    #   * <rows> = number of rows
-    #   * <cols> = number of columns
+    #   * '\<t\>' = cw title
+    #   * '\<a\>' = cw author
+    #   * '\<p\>' = cw publisher
+    #   * '\<c\>' = cw copyright
+    #   * '\<d\>' = cw date
+    #   * '<rows>' = number of rows
+    #   * '<cols>' = number of columns
     # @param txt [str] the text containing macros
     # @param grid [Wordgrid] the Wordgrid object (crosword grid)
     def _apply_macros(self, txt, grid):
@@ -2199,6 +2199,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         
     # ----- Slots ----- #
     
+    ## Slot for MainWindow::act_new: creates a new crossword from file, structure or parameters.
     @QtCore.pyqtSlot(bool)        
     def on_act_new(self, checked):
 
@@ -2242,6 +2243,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.dia_load.rb_empty.isChecked():
             self.act_edit.setChecked(True)
             
+    ## Slot for MainWindow::act_open: loads crossword from a file (showing an Open File dialog).
+    # @see open_cw()
     @QtCore.pyqtSlot(bool)
     def on_act_open(self, checked):
 
@@ -2252,6 +2255,9 @@ class MainWindow(QtWidgets.QMainWindow):
         if not selected_path[0]: return
         self.open_cw(selected_path[0].replace('/', os.sep))
     
+    ## Slot for MainWindow::act_save: saves current crossword to the same file it was opened from
+    # and resets its modified status to False.
+    # @see save_cw()
     @QtCore.pyqtSlot(bool)
     def on_act_save(self, checked):
         if not self.cw or not self.cw_modified: return
@@ -2260,6 +2266,9 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.save_cw()   
 
+    ## Slot for MainWindow::act_saveas: shows a Save As dialog and saves current crossword to the selected file
+    # and resets its modified status to False.
+    # @see save_cw()
     @QtCore.pyqtSlot(bool)
     def on_act_saveas(self, checked):
         if not self.cw: return
@@ -2273,6 +2282,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if not selected_path[0]: return
         self.save_cw(selected_path[0].replace('/', os.sep), selected_path[1])
 
+    ## Slot for MainWindow::act_reload: reloads current crossword from the original file
+    # (user will be asked to save the changes first, if the cw has been modified).
     @QtCore.pyqtSlot(bool)
     def on_act_reload(self, checked):
         if not self.cw_file: return
@@ -2293,17 +2304,18 @@ class MainWindow(QtWidgets.QMainWindow):
             except Exception as err2:
                 self._log(err2)
 
+    ## Slot for MainWindow::act_close: closes current crossword calling close_cw().
     @QtCore.pyqtSlot(bool)
     def on_act_close(self, checked):
         reply = self.check_save_required()
         if reply == '' or reply == 'cancel': return
         self.close_cw()
 
+    ## @brief Slot for MainWindow::act_share: shares current crossword in social networks.
+    # The share dialog MainWindow::dia_share is shown for user to configure the sharing settings.
     @QtCore.pyqtSlot(bool)
     def on_act_share(self, checked):
-        """
-        Share CW in social networks.
-        """       
+        ## share settings dialog    
         self.dia_share = ShareDialog(self, self)
         if not self.dia_share.exec(): return
         if not hasattr(self, 'share_thread') or self.share_thread is None:
@@ -2315,10 +2327,13 @@ class MainWindow(QtWidgets.QMainWindow):
             on_error=self.on_share_error)
         self.share_thread.start()
         
+    ## Slot for MainWindow::act_exit: quits the application calling close() on the main window.
     @QtCore.pyqtSlot(bool)
     def on_act_exit(self, checked):
         self.close()
 
+    ## @brief Slot for MainWindow::act_addrow: adds a new row after the selected one.
+    # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
     def on_act_addrow(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
@@ -2326,6 +2341,8 @@ class MainWindow(QtWidgets.QMainWindow):
             self.cw.words.add_row(self.twCw.currentRow())
             self.update_cw()
 
+    ## @brief Slot for MainWindow::act_addcol: adds a new column after the selected one.
+    # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
     def on_act_addcol(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
@@ -2333,6 +2350,8 @@ class MainWindow(QtWidgets.QMainWindow):
             self.cw.words.add_column(self.twCw.currentColumn())
             self.update_cw()
 
+    ## @brief Slot for MainWindow::act_delrow: deletes the selected row.
+    # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
     def on_act_delrow(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
@@ -2340,6 +2359,8 @@ class MainWindow(QtWidgets.QMainWindow):
             self.cw.words.remove_row(self.twCw.currentRow())
             self.update_cw()
 
+    ## @brief Slot for MainWindow::act_delcol: deletes the selected column.
+    # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
     def on_act_delcol(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
@@ -2347,6 +2368,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.cw.words.remove_column(self.twCw.currentColumn())
             self.update_cw()
 
+    ## @brief Slot for MainWindow::act_reflect: reflects (duplicates) the current cw grid
+    # (all cells) to any position (left, right, up, down).
+    # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
     def on_act_reflect(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
@@ -2374,6 +2398,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cw.words.reflect(direction, self.dia_reflect.chb_mirror.isChecked(), self.dia_reflect.chb_reverse.isChecked(), border)
         self.update_cw()
 
+    ## @brief Slot for MainWindow::act_clear_wd: clears currently selected word without affecting
+    # any crossing words.
+    # This action effectively clears only the 'free' letters in the selected word.
+    # @see Compare with on_act_erase_wd() that erases all letters in the word.
+    # Also see Crossword::clear_word()
     @QtCore.pyqtSlot(bool)
     def on_act_clear_wd(self, checked):
         if not self.cw or not self.current_word or self.cw.words.is_word_blank(self.current_word):
@@ -2381,6 +2410,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cw.clear_word(self.current_word, False)
         self.update_cw_grid()
 
+    ## @brief Slot for MainWindow::act_erase_wd: clears currently selected word (all letters).
+    # Compared to on_act_clear_wd(), this action affects crossing words, if any, since
+    # it clears ALL the letters in the word, clearing them from the crossing words as well.
+    # @see Also see Crossword::clear_word()
     @QtCore.pyqtSlot(bool)
     def on_act_erase_wd(self, checked):
         if not self.cw or not self.current_word or self.cw.words.is_word_blank(self.current_word):
@@ -2388,6 +2421,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cw.clear_word(self.current_word, True)
         self.update_cw_grid()
     
+    ## Slot for MainWindow::act_gen: generates (fills) the current crossword taking word
+    # suggestions from the active word sources.
+    # @see Crossword::generate()
     @QtCore.pyqtSlot(bool)        
     def on_act_gen(self, checked):
         if not self.cw: return     
@@ -2399,21 +2435,29 @@ class MainWindow(QtWidgets.QMainWindow):
         self.gen_thread.start()
         self.update_actions()
         
+    ## @brief Slot for MainWindow::act_stop: stops the currently running operation(s).
+    # These operations can be either cw generation or cw sharing, which run
+    # in a separate thread, to avoid blocking the UI.
+    # @see stop_all_threads()
     @QtCore.pyqtSlot(bool)        
     def on_act_stop(self, checked):
         if checked:
             self.stop_all_threads()
 
+    ## @brief On Changed slot for MainWindow::act_stop.
+    # Hides or shows the Stop button in the status bar based on the action's visibility.
     @QtCore.pyqtSlot() 
     def on_act_stop_changed(self):
         if hasattr(self, 'statusbar_btnstop'):
             self.statusbar_btnstop.setVisible(self.act_stop.isVisible())
     
+    ## @brief Slot for MainWindow::act_edit: updates cell formatting in crossword and actions.
     @QtCore.pyqtSlot(bool)        
     def on_act_edit(self, checked):
         self.reformat_cells()
         self.update_actions()
 
+    ## @brief Slot for MainWindow::act_view_showtoolbar: shows or hides the main toolbar.
     @QtCore.pyqtSlot(bool)
     def on_act_view_showtoolbar(self, checked):
         last_tb_pos = CWSettings.settings['gui']['toolbar_pos']
@@ -2427,6 +2471,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.toolbar_main.hide()
             CWSettings.settings['gui']['toolbar_pos'] = 4
 
+    ## @brief Slot for MainWindow::act_editclue: activates the editing mode for the current word's clue.
     @QtCore.pyqtSlot(bool)        
     def on_act_editclue(self, checked):
         clue = self._clue_items_from_word(self.current_word)
@@ -2436,12 +2481,17 @@ class MainWindow(QtWidgets.QMainWindow):
             self.tvClues.setFocus()
             self.tvClues.edit(index)
     
+    ## @brief Slot for MainWindow::act_clear: clears the current crossword.
+    # @see Crossword::clear()
     @QtCore.pyqtSlot(bool)        
     def on_act_clear(self, checked):
         if not self.cw: return
         self.cw.clear()
         self.update_cw_grid()
 
+    ## @brief Slot for MainWindow::act_suggest: brings up a list of words for the selected one in the grid
+    # and lets the user place it into the grid.
+    # @see get_word_suggestion()
     @QtCore.pyqtSlot(bool)        
     def on_act_suggest(self, checked):
         if not self.cw: return
@@ -2452,6 +2502,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cw.change_word(self.current_word, sug)
         self.update_cw_grid()
 
+    ## @brief Slot for MainWindow::act_lookup: looks up the current word's definition / meaning
+    # in a dictionary and/or Google.
+    # The looked-up definition may then be used to fill the corresponding clue.
     @QtCore.pyqtSlot(bool)
     def on_act_lookup(self, checked):
         if not self.cw: return
@@ -2459,6 +2512,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if CWSettings.settings['lookup']['dics']['show'] or CWSettings.settings['lookup']['google']['show']:
             wordstr = self.cw.words.get_word_str(self.current_word)
             if not hasattr(self, 'dia_lookup'):
+                ## word meaning lookup dialog
                 self.dia_lookup = DefLookupDialog(wordstr, parent=self)
             else:
                 self.dia_lookup.word = wordstr
@@ -2479,40 +2533,49 @@ class MainWindow(QtWidgets.QMainWindow):
             MsgBox(_('No lookup sources are active! Please go to Settings (F11) to verify your lookup source configuration.'), 
                    self, _('No Lookup Sources'), 'warn')
         
+    ## @brief Slot for MainWindow::act_wsrc: opens the word source settings to let the use
+    # choose / add word sources for crossword generation.
     @QtCore.pyqtSlot(bool) 
     def on_act_wsrc(self, checked):
         self.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(2).child(0))
         self.on_act_config(False)
     
+    ## @brief Slot for MainWindow::act_info: shows the crossword information window
+    # where the user can change cw attributes like title, author, etc.
+    # @see CwInfoDialog
     @QtCore.pyqtSlot(bool)        
     def on_act_info(self, checked):
         if not self.cw: return
         if not hasattr(self, 'dia_info'):
+            ## crossword information edit dialog
             self.dia_info = CwInfoDialog(self, self)
         else:
             self.dia_info.init()            
         if self.dia_info.exec():
             self.cw.words.info = self.dia_info.to_info()
         
+    ## @brief Slot for MainWindow::act_print: prints current CW and/or clues to printer or PDF.
+    # @see print_cw()
     @QtCore.pyqtSlot(bool)        
     def on_act_print(self, checked):
-        """
-        Prints current CW and/or clues to printer or PDF.
-        """
         if not self.cw: return
         self.print_cw()
     
+    ## @brief Slot for MainWindow::act_config: shows the application Settings dialog.
+    # If the dialog is closed by pressing OK, the new settings are applied with apply_config()
     @QtCore.pyqtSlot(bool)        
     def on_act_config(self, checked):
         if not self.dia_settings.exec(): return
         settings = self.dia_settings.to_settings()
         # apply settings only if they are different from current
         if json.dumps(settings, sort_keys=True) != json.dumps(CWSettings.settings, sort_keys=True):
-            #print(json.dumps(CWSettings.settings, sort_keys=True))
-            #print(json.dumps(settings, sort_keys=True))
             CWSettings.settings = settings
             self.apply_config()
 
+    ## @brief Slot for MainWindow::act_update: checks for app updates on the server (github).
+    # If a new version is available and the user accepts it, the app will close down
+    # and update itself, then start up again.
+    # @see MainWindow::updater
     @QtCore.pyqtSlot(bool)        
     def on_act_update(self, checked):    
         if not self.updater.git_installed: return
@@ -2521,16 +2584,28 @@ class MainWindow(QtWidgets.QMainWindow):
         # close self
         self.close()
    
+    ## @brief Slot for MainWindow::act_help: opens up the Help documentation.
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
         MsgBox(_('To be implemented in next release ))'), self, title=_('Show help docs'))
 
+    ## @brief Slot for MainWindow::act_about: shows the About dialog.
     @QtCore.pyqtSlot(bool)        
     def on_act_about(self, checked):
         if not hasattr(self, 'dia_about'):
+            ## About dialog
             self.dia_about = AboutDialog(self)
         self.dia_about.exec()
 
+    ## @brief Slot for MainWindow::act_stats: shows the current crossword's statistics.
+    # The stats is accumulated with Wordgrid::update_stats() and includes the following data:
+    #   * word count
+    #   * completed word count
+    #   * blank word count
+    #   * Down word count
+    #   * Across word count
+    #   * words with completed clues count
+    # The data is visualized as an HTML chart in the inbuilt or system web browser.
     @QtCore.pyqtSlot(bool)
     def on_act_stats(self, checked):
         if not self.cw: return
@@ -2539,6 +2614,7 @@ class MainWindow(QtWidgets.QMainWindow):
         def on_chart_save(filename):
             url = os.path.abspath(filename)
             if not hasattr(self, 'browser'):
+                ## inbuilt web browser
                 self.browser = Browser()
                 self.browser.navigate(url)
             try:
@@ -2562,34 +2638,41 @@ class MainWindow(QtWidgets.QMainWindow):
                    text_props={'align': 'left', 'baseline': 'middle', 'dx': 3},
                    interactive=False, scale_factor=10, svg=True, on_save=on_chart_save)
 
+    ## @brief Fires when MainWindow::statusbar_l2 is double-clicked.
+    # When double-clicked on the app version (if a new version is available), the updater is launched.
+    # @see on_act_update()
     @QtCore.pyqtSlot(QtGui.QMouseEvent)
     def on_statusbar_l2_dblclicked(self, event):
         if not self.statusbar_l2.text(): return
         self.on_act_update(False)
         
+    ## @brief Fires when MainWindow::slider_cw_scale is moved: rescales the crossword grid.
+    # @param value [int] the MainWindow::slider_cw_scale value (scale %)
+    # @see scale_cw()
     @QtCore.pyqtSlot(int)
     def on_slider_cw_scale(self, value):
         self.scale_cw(value)        
         
+    ## @brief Fires when a new cw grid cell is focused.
+    # @param current [QtWidgets.QTableWidgetItem] the currently focused cell
+    # @param previous [QtWidgets.QTableWidgetItem] the previously focused cell
     @QtCore.pyqtSlot(QtWidgets.QTableWidgetItem, QtWidgets.QTableWidgetItem)
-    def on_cw_current_item_changed(self, current, previous):
-        """
-        When a new grid cell item is focused.
-        """        
+    def on_cw_current_item_changed(self, current, previous):      
         self.update_current_word('flip' if self.last_pressed_item==current else 'current')            
         self.reformat_cells()
         self.last_pressed_item = current
         
+    ## @brief Fires when a cw grid cell is clicked (pressed).
+    # @param item [QtWidgets.QTableWidgetItem] the pressed cell
     @QtCore.pyqtSlot(QtWidgets.QTableWidgetItem)
     def on_cw_item_clicked(self, item):
-        """
-        When a new grid cell item is clicked (pressed).
-        """
         if self.twCw.currentItem() == item:
             self.update_current_word('flip' if self.last_pressed_item==item else 'current')            
             self.reformat_cells()
             self.last_pressed_item = item
 
+    ## @brief Fires when the custom context meny is requested on the crossword grid.
+    # @param point [QtCore.QPoint] the current cursor position (relative to grid coordinates)
     @QtCore.pyqtSlot(QtCore.QPoint)
     def on_twCw_contextmenu(self, point):
         if not self.current_word: return
@@ -2597,6 +2680,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if not cell_item: return
         self.menu_crossword.exec(self.twCw.mapToGlobal(point))
 
+    ## @brief Fires when the custom context meny is requested on the main toolbar.
+    # @param point [QtCore.QPoint] the current cursor position (relative to toolbar coordinates)
     @QtCore.pyqtSlot(QtCore.QPoint)
     def on_toolbar_contextmenu(self, point):
         @QtCore.pyqtSlot() 
@@ -2607,6 +2692,9 @@ class MainWindow(QtWidgets.QMainWindow):
         menu.addAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Configure toolbar...'), on_tb_contextmenuaction)
         menu.exec(self.toolbar_main.mapToGlobal(point))
 
+    ## @brief Fires when one or severals clue rows are selected in MainWindow::tvClues.
+    # @param selected [QtCore.QItemSelection] the selected items
+    # @param deselected [QtCore.QItemSelection] the deselected items
     @QtCore.pyqtSlot(QtCore.QItemSelection, QtCore.QItemSelection)
     def on_tvClues_selected(self, selected, deselected):
         model = self.tvClues.model()
@@ -2619,6 +2707,9 @@ class MainWindow(QtWidgets.QMainWindow):
             if not item or item.column() > 0: continue
             item.setIcon(QtGui.QIcon())
 
+    ## @brief Fires when the currenly selected clue item in MainWindow::tvClues has changed.
+    # @param current [QtCore.QModelIndex] the currently selected items
+    # @param previous [QtCore.QModelIndex] the previously selected items
     @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
     def on_tvClues_current_changed(self, current, previous):
         if self.twCw.hasFocus(): return
@@ -2631,21 +2722,22 @@ class MainWindow(QtWidgets.QMainWindow):
             self.twCw.setCurrentItem(None)
             self.twCw.setCurrentCell(word.start[1], word.start[0])
 
+    ## @brief Fires when the clues table columns have been moved by dragging.
+    # @param logicalIndex [int] the column's logical (independent) index
+    # @param oldVisualIndex [int] the column's previous position (as seen in the table)
+    # @param newVisualIndex [int] the column's new position (as seen in the table)
+    # @see update_clue_column_settings()
     @QtCore.pyqtSlot(int, int, int)
     def on_tvClues_column_moved(self, logicalIndex, oldVisualIndex, newVisualIndex):
-        """
-        Fires when the clues table columns have been moved by dragging.
-        """
         # save new column order to global settings
         self.update_clue_column_settings()
 
+    ## @brief Fires every time a cell in clues table has been edited (manually) and
+    # is about to write data back to the underlying model. 
+    # We implement this slot to validate the entered text, update the CW grid and the clues table.
+    # @param editor [QWidget] the internal widget used for editing the clue item (here = QLineEdit)
     @QtCore.pyqtSlot('QWidget*')
-    def on_clues_editor_commit(self, editor):     
-        """
-        Fires every time a cell in clues table has been edited (manually) and
-        is about to write data back to model. We implement this slot
-        to validate the entered text, update the CW grid and the clues table.
-        """   
+    def on_clues_editor_commit(self, editor):      
         model = self.tvClues.model()
         if not model: return
         index = self.tvClues.currentIndex()
@@ -2693,11 +2785,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def set_selected_lang(self):
         CWSettings.settings['common']['lang'] = self.combo_lang.currentData()
 
+    ## @brief Fires when a new language in the language combo is picked.
+    # @param index [int] the selected index in the language combo
     @QtCore.pyqtSlot(int)
     def on_combo_lang(self, index):
-        """
-        When a new language in the language combo is picked.
-        """
         lang = self.combo_lang.itemData(index)
         sel_lang = None
         for l in APP_LANGUAGES:

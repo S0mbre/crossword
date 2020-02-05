@@ -13,6 +13,8 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -144,7 +146,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7652e70c6b8ff8e40b599bd7764c9b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the crossword grid from a text file and returns the grid as a list of rows.  <a href="classpycross_1_1gui_1_1_main_window.html#a7652e70c6b8ff8e40b599bd7764c9b2f">More...</a><br /></td></tr>
 <tr class="separator:a7652e70c6b8ff8e40b599bd7764c9b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a9d7fa5302fa67cb0e92d0cf317df4d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5a9d7fa5302fa67cb0e92d0cf317df4d">autosave_cw</a> (self)</td></tr>
-<tr class="memdesc:a5a9d7fa5302fa67cb0e92d0cf317df4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the currently open crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="Crossword instance.">MainWindow::cw</a>) to the default autosave file (SAVEDCW_FILE).  <a href="classpycross_1_1gui_1_1_main_window.html#a5a9d7fa5302fa67cb0e92d0cf317df4d">More...</a><br /></td></tr>
+<tr class="memdesc:a5a9d7fa5302fa67cb0e92d0cf317df4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the currently open crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="[crossword::Crossword] instance">MainWindow::cw</a>) to the default autosave file (SAVEDCW_FILE).  <a href="classpycross_1_1gui_1_1_main_window.html#a5a9d7fa5302fa67cb0e92d0cf317df4d">More...</a><br /></td></tr>
 <tr class="separator:a5a9d7fa5302fa67cb0e92d0cf317df4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbc552c19fb0e08fecde290502d82d1e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#acbc552c19fb0e08fecde290502d82d1e">autoload_cw</a> (self)</td></tr>
 <tr class="memdesc:acbc552c19fb0e08fecde290502d82d1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads self.cw from the default autosave file (SAVEDCW_FILE) if present.  <a href="classpycross_1_1gui_1_1_main_window.html#acbc552c19fb0e08fecde290502d82d1e">More...</a><br /></td></tr>
@@ -195,67 +197,67 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2499d87d50c2b863f9e6b82dc46365b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default word source filter for Crossword constructor.  <a href="classpycross_1_1gui_1_1_main_window.html#a2499d87d50c2b863f9e6b82dc46365b2">More...</a><br /></td></tr>
 <tr class="separator:a2499d87d50c2b863f9e6b82dc46365b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada5cd88c9d744abc3bef180f4888ee39"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ada5cd88c9d744abc3bef180f4888ee39">on_share_start</a> (self)</td></tr>
-<tr class="memdesc:ada5cd88c9d744abc3bef180f4888ee39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the share thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) starts up.  <a href="classpycross_1_1gui_1_1_main_window.html#ada5cd88c9d744abc3bef180f4888ee39">More...</a><br /></td></tr>
+<tr class="memdesc:ada5cd88c9d744abc3bef180f4888ee39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the share thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) starts up.  <a href="classpycross_1_1gui_1_1_main_window.html#ada5cd88c9d744abc3bef180f4888ee39">More...</a><br /></td></tr>
 <tr class="separator:ada5cd88c9d744abc3bef180f4888ee39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab98ee88701dc4671cd836b3d0271fb57"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ab98ee88701dc4671cd836b3d0271fb57">on_share_progress</a> (self, percent, status)</td></tr>
 <tr class="memdesc:ab98ee88701dc4671cd836b3d0271fb57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires during the sharing thread's progress.  <a href="classpycross_1_1gui_1_1_main_window.html#ab98ee88701dc4671cd836b3d0271fb57">More...</a><br /></td></tr>
 <tr class="separator:ab98ee88701dc4671cd836b3d0271fb57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49695f87aa9e8e248f306bcbec2feb73"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49695f87aa9e8e248f306bcbec2feb73">on_share_upload</a> (self, filepth, url)</td></tr>
-<tr class="memdesc:a49695f87aa9e8e248f306bcbec2feb73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a> has uploaded the file (crossword) to the cloud storage.  <a href="classpycross_1_1gui_1_1_main_window.html#a49695f87aa9e8e248f306bcbec2feb73">More...</a><br /></td></tr>
+<tr class="memdesc:a49695f87aa9e8e248f306bcbec2feb73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a> has uploaded the file (crossword) to the cloud storage.  <a href="classpycross_1_1gui_1_1_main_window.html#a49695f87aa9e8e248f306bcbec2feb73">More...</a><br /></td></tr>
 <tr class="separator:a49695f87aa9e8e248f306bcbec2feb73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85ea64ed2792185f555ec98d1a729f1d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a85ea64ed2792185f555ec98d1a729f1d">on_share_clipboard_write</a> (self, url)</td></tr>
 <tr class="memdesc:a85ea64ed2792185f555ec98d1a729f1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer has copied the destination URL of the shared file to the clipboard.  <a href="classpycross_1_1gui_1_1_main_window.html#a85ea64ed2792185f555ec98d1a729f1d">More...</a><br /></td></tr>
 <tr class="separator:a85ea64ed2792185f555ec98d1a729f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a079a7f089628c6407b7d618a316fa62a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a079a7f089628c6407b7d618a316fa62a">on_share_error</a> (self, thread, err)</td></tr>
-<tr class="memdesc:a079a7f089628c6407b7d618a316fa62a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) has encountered an error.  <a href="classpycross_1_1gui_1_1_main_window.html#a079a7f089628c6407b7d618a316fa62a">More...</a><br /></td></tr>
+<tr class="memdesc:a079a7f089628c6407b7d618a316fa62a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) has encountered an error.  <a href="classpycross_1_1gui_1_1_main_window.html#a079a7f089628c6407b7d618a316fa62a">More...</a><br /></td></tr>
 <tr class="separator:a079a7f089628c6407b7d618a316fa62a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a237e01d5deeba628d633f8a7d8ffe791"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a237e01d5deeba628d633f8a7d8ffe791">on_share_finish</a> (self)</td></tr>
-<tr class="memdesc:a237e01d5deeba628d633f8a7d8ffe791"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) has completed its operation.  <a href="classpycross_1_1gui_1_1_main_window.html#a237e01d5deeba628d633f8a7d8ffe791">More...</a><br /></td></tr>
+<tr class="memdesc:a237e01d5deeba628d633f8a7d8ffe791"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) has completed its operation.  <a href="classpycross_1_1gui_1_1_main_window.html#a237e01d5deeba628d633f8a7d8ffe791">More...</a><br /></td></tr>
 <tr class="separator:a237e01d5deeba628d633f8a7d8ffe791"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1e18a8516a9c41c7530bd528ed80fd4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac1e18a8516a9c41c7530bd528ed80fd4">on_share_apikey_required</a> (self, res)</td></tr>
-<tr class="memdesc:ac1e18a8516a9c41c7530bd528ed80fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) must ask user for an API key.  <a href="classpycross_1_1gui_1_1_main_window.html#ac1e18a8516a9c41c7530bd528ed80fd4">More...</a><br /></td></tr>
+<tr class="memdesc:ac1e18a8516a9c41c7530bd528ed80fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) must ask user for an API key.  <a href="classpycross_1_1gui_1_1_main_window.html#ac1e18a8516a9c41c7530bd528ed80fd4">More...</a><br /></td></tr>
 <tr class="separator:ac1e18a8516a9c41c7530bd528ed80fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac308b16a1249c6dcc14a120fa8d6a0b0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac308b16a1249c6dcc14a120fa8d6a0b0">on_share_bearer_required</a> (self, res)</td></tr>
-<tr class="memdesc:ac308b16a1249c6dcc14a120fa8d6a0b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) must ask user for a Bearer Token.  <a href="classpycross_1_1gui_1_1_main_window.html#ac308b16a1249c6dcc14a120fa8d6a0b0">More...</a><br /></td></tr>
+<tr class="memdesc:ac308b16a1249c6dcc14a120fa8d6a0b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) must ask user for a Bearer Token.  <a href="classpycross_1_1gui_1_1_main_window.html#ac308b16a1249c6dcc14a120fa8d6a0b0">More...</a><br /></td></tr>
 <tr class="separator:ac308b16a1249c6dcc14a120fa8d6a0b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64369123ce2c2f732f49506e908625d5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a64369123ce2c2f732f49506e908625d5">on_share_prepare_url</a> (self, url)</td></tr>
 <tr class="memdesc:a64369123ce2c2f732f49506e908625d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer has prepared the URL for sharing on a social network.  <a href="classpycross_1_1gui_1_1_main_window.html#a64369123ce2c2f732f49506e908625d5">More...</a><br /></td></tr>
 <tr class="separator:a64369123ce2c2f732f49506e908625d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacead2e77dc9e2ea5dd490d1bfc38c69"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aacead2e77dc9e2ea5dd490d1bfc38c69">on_share_run</a> (self)</td></tr>
-<tr class="memdesc:aacead2e77dc9e2ea5dd490d1bfc38c69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main worker slot (function) for the sharer thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>).  <a href="classpycross_1_1gui_1_1_main_window.html#aacead2e77dc9e2ea5dd490d1bfc38c69">More...</a><br /></td></tr>
+<tr class="memdesc:aacead2e77dc9e2ea5dd490d1bfc38c69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main worker slot (function) for the sharer thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>).  <a href="classpycross_1_1gui_1_1_main_window.html#aacead2e77dc9e2ea5dd490d1bfc38c69">More...</a><br /></td></tr>
 <tr class="separator:aacead2e77dc9e2ea5dd490d1bfc38c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9a004ce228c7563dcd47c55f4771e34"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad9a004ce228c7563dcd47c55f4771e34">create_cloud</a> (self, thread)</td></tr>
-<tr class="memdesc:ad9a004ce228c7563dcd47c55f4771e34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the sharer object (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6a64fa626343bd96f9aec8a05b2626f9" title="Share object">MainWindow::sharer</a>).  <a href="classpycross_1_1gui_1_1_main_window.html#ad9a004ce228c7563dcd47c55f4771e34">More...</a><br /></td></tr>
+<tr class="memdesc:ad9a004ce228c7563dcd47c55f4771e34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the sharer object (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6a64fa626343bd96f9aec8a05b2626f9" title="[utils::onlineservices::Share] object">MainWindow::sharer</a>).  <a href="classpycross_1_1gui_1_1_main_window.html#ad9a004ce228c7563dcd47c55f4771e34">More...</a><br /></td></tr>
 <tr class="separator:ad9a004ce228c7563dcd47c55f4771e34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a4911aeb59f419fbec5537cc7ad78c6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7a4911aeb59f419fbec5537cc7ad78c6">share_url</a> (self, url, headers={ 'Content-Type':'application/json'}, error_keymap=<a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a5ec90f447994f06cc1e51d5abb77b036">Share.ERRMAP</a>)</td></tr>
 <tr class="memdesc:a7a4911aeb59f419fbec5537cc7ad78c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a share link in inbuilt or external browser (for sharing)  <a href="classpycross_1_1gui_1_1_main_window.html#a7a4911aeb59f419fbec5537cc7ad78c6">More...</a><br /></td></tr>
 <tr class="separator:a7a4911aeb59f419fbec5537cc7ad78c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51408dca2046f7466937b764e2980d1d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a51408dca2046f7466937b764e2980d1d">on_generate_start</a> (self)</td></tr>
-<tr class="memdesc:a51408dca2046f7466937b764e2980d1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) starts up.  <a href="classpycross_1_1gui_1_1_main_window.html#a51408dca2046f7466937b764e2980d1d">More...</a><br /></td></tr>
+<tr class="memdesc:a51408dca2046f7466937b764e2980d1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) starts up.  <a href="classpycross_1_1gui_1_1_main_window.html#a51408dca2046f7466937b764e2980d1d">More...</a><br /></td></tr>
 <tr class="separator:a51408dca2046f7466937b764e2980d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1568f687cf222c8a6c450aba92aafc3e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a1568f687cf222c8a6c450aba92aafc3e">on_generate_finish</a> (self)</td></tr>
-<tr class="memdesc:a1568f687cf222c8a6c450aba92aafc3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) has completed.  <a href="classpycross_1_1gui_1_1_main_window.html#a1568f687cf222c8a6c450aba92aafc3e">More...</a><br /></td></tr>
+<tr class="memdesc:a1568f687cf222c8a6c450aba92aafc3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) has completed.  <a href="classpycross_1_1gui_1_1_main_window.html#a1568f687cf222c8a6c450aba92aafc3e">More...</a><br /></td></tr>
 <tr class="separator:a1568f687cf222c8a6c450aba92aafc3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4432dea69539e45a74b80efce6323dcf"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a4432dea69539e45a74b80efce6323dcf">on_gen_timeout</a> (self, timeout_)</td></tr>
-<tr class="memdesc:a4432dea69539e45a74b80efce6323dcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) has timed out.  <a href="classpycross_1_1gui_1_1_main_window.html#a4432dea69539e45a74b80efce6323dcf">More...</a><br /></td></tr>
+<tr class="memdesc:a4432dea69539e45a74b80efce6323dcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) has timed out.  <a href="classpycross_1_1gui_1_1_main_window.html#a4432dea69539e45a74b80efce6323dcf">More...</a><br /></td></tr>
 <tr class="separator:a4432dea69539e45a74b80efce6323dcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a014e789202c723e989c1f67c6b102926"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a014e789202c723e989c1f67c6b102926">on_gen_stop</a> (self)</td></tr>
-<tr class="memdesc:a014e789202c723e989c1f67c6b102926"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) has been stopped.  <a href="classpycross_1_1gui_1_1_main_window.html#a014e789202c723e989c1f67c6b102926">More...</a><br /></td></tr>
+<tr class="memdesc:a014e789202c723e989c1f67c6b102926"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) has been stopped.  <a href="classpycross_1_1gui_1_1_main_window.html#a014e789202c723e989c1f67c6b102926">More...</a><br /></td></tr>
 <tr class="separator:a014e789202c723e989c1f67c6b102926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af14cee5b44faa6600b0fc5fc6215224b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#af14cee5b44faa6600b0fc5fc6215224b">on_gen_error</a> (self, thread, err)</td></tr>
-<tr class="memdesc:af14cee5b44faa6600b0fc5fc6215224b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) has encountered an error.  <a href="classpycross_1_1gui_1_1_main_window.html#af14cee5b44faa6600b0fc5fc6215224b">More...</a><br /></td></tr>
+<tr class="memdesc:af14cee5b44faa6600b0fc5fc6215224b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) has encountered an error.  <a href="classpycross_1_1gui_1_1_main_window.html#af14cee5b44faa6600b0fc5fc6215224b">More...</a><br /></td></tr>
 <tr class="separator:af14cee5b44faa6600b0fc5fc6215224b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59bcece6ded670952c09fe4e8d0f33e4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a59bcece6ded670952c09fe4e8d0f33e4">on_gen_validate</a> (self, bad_)</td></tr>
 <tr class="memdesc:a59bcece6ded670952c09fe4e8d0f33e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generator has completed and needs to validate the words in the grid.  <a href="classpycross_1_1gui_1_1_main_window.html#a59bcece6ded670952c09fe4e8d0f33e4">More...</a><br /></td></tr>
 <tr class="separator:a59bcece6ded670952c09fe4e8d0f33e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a7b5fb08cb437efec455e89ff33ae13"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a2a7b5fb08cb437efec455e89ff33ae13">on_gen_progress</a> (self, cw_, complete_, total_)</td></tr>
-<tr class="memdesc:a2a7b5fb08cb437efec455e89ff33ae13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires to show progress of cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>).  <a href="classpycross_1_1gui_1_1_main_window.html#a2a7b5fb08cb437efec455e89ff33ae13">More...</a><br /></td></tr>
+<tr class="memdesc:a2a7b5fb08cb437efec455e89ff33ae13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires to show progress of cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>).  <a href="classpycross_1_1gui_1_1_main_window.html#a2a7b5fb08cb437efec455e89ff33ae13">More...</a><br /></td></tr>
 <tr class="separator:a2a7b5fb08cb437efec455e89ff33ae13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af30e876e7a65007cb5e1d428f34d6535"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#af30e876e7a65007cb5e1d428f34d6535">generate_cw_worker</a> (self)</td></tr>
-<tr class="memdesc:af30e876e7a65007cb5e1d428f34d6535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main worker function for the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>).  <a href="classpycross_1_1gui_1_1_main_window.html#af30e876e7a65007cb5e1d428f34d6535">More...</a><br /></td></tr>
+<tr class="memdesc:af30e876e7a65007cb5e1d428f34d6535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main worker function for the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>).  <a href="classpycross_1_1gui_1_1_main_window.html#af30e876e7a65007cb5e1d428f34d6535">More...</a><br /></td></tr>
 <tr class="separator:af30e876e7a65007cb5e1d428f34d6535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a666c774911bc71f5a7bebf46b308fd94"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a666c774911bc71f5a7bebf46b308fd94">save_cw</a> (self, filepath=None, file_type=None)</td></tr>
-<tr class="memdesc:a666c774911bc71f5a7bebf46b308fd94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves / exports the current crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="Crossword instance.">MainWindow::cw</a>) to a given file and file type.  <a href="classpycross_1_1gui_1_1_main_window.html#a666c774911bc71f5a7bebf46b308fd94">More...</a><br /></td></tr>
+<tr class="memdesc:a666c774911bc71f5a7bebf46b308fd94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves / exports the current crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="[crossword::Crossword] instance">MainWindow::cw</a>) to a given file and file type.  <a href="classpycross_1_1gui_1_1_main_window.html#a666c774911bc71f5a7bebf46b308fd94">More...</a><br /></td></tr>
 <tr class="separator:a666c774911bc71f5a7bebf46b308fd94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12c345395ceb916ba420e7182d5f8b00"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a12c345395ceb916ba420e7182d5f8b00">export_cw</a> (self, filepath, scale=1.0)</td></tr>
 <tr class="memdesc:a12c345395ceb916ba420e7182d5f8b00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports crossword grid to image file.  <a href="classpycross_1_1gui_1_1_main_window.html#a12c345395ceb916ba420e7182d5f8b00">More...</a><br /></td></tr>
@@ -276,7 +278,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1d94c408ae0e5cd7a9a12c04626963db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies clues header column widths from <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">CWSettings::settings</a>.  <a href="classpycross_1_1gui_1_1_main_window.html#a1d94c408ae0e5cd7a9a12c04626963db">More...</a><br /></td></tr>
 <tr class="separator:a1d94c408ae0e5cd7a9a12c04626963db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada33a3748d29c62a56536fdec79837fb"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ada33a3748d29c62a56536fdec79837fb">on_get_recent</a> (self, new_version)</td></tr>
-<tr class="memdesc:ada33a3748d29c62a56536fdec79837fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="Updater instance (used to run app update checks and updates)">MainWindow::updater</a>, fires when a new release is found.  <a href="classpycross_1_1gui_1_1_main_window.html#ada33a3748d29c62a56536fdec79837fb">More...</a><br /></td></tr>
+<tr class="memdesc:ada33a3748d29c62a56536fdec79837fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="[Updater] instance (used to run app update checks and updates)">MainWindow::updater</a>, fires when a new release is found.  <a href="classpycross_1_1gui_1_1_main_window.html#ada33a3748d29c62a56536fdec79837fb">More...</a><br /></td></tr>
 <tr class="separator:ada33a3748d29c62a56536fdec79837fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5df865096692aaa28539442c5410992d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5df865096692aaa28539442c5410992d">stop_all_threads</a> (self)</td></tr>
 <tr class="memdesc:a5df865096692aaa28539442c5410992d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops all running threads.  <a href="classpycross_1_1gui_1_1_main_window.html#a5df865096692aaa28539442c5410992d">More...</a><br /></td></tr>
@@ -300,138 +302,181 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab198424edb933189ded80fd5f42e3b0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when the updater has found no newer versions on the server.  <a href="classpycross_1_1gui_1_1_main_window.html#ab198424edb933189ded80fd5f42e3b0f">More...</a><br /></td></tr>
 <tr class="separator:ab198424edb933189ded80fd5f42e3b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7675c60a6d0250a5dc98b7f31cc4e1e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ab7675c60a6d0250a5dc98b7f31cc4e1e">on_act_new</a> (self, checked)</td></tr>
+<tr class="memdesc:ab7675c60a6d0250a5dc98b7f31cc4e1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a37f1c9925554a3fa949cfcce9ce8f500" title="new crossword action">MainWindow::act_new</a>: creates a new crossword from file, structure or parameters.  <a href="classpycross_1_1gui_1_1_main_window.html#ab7675c60a6d0250a5dc98b7f31cc4e1e">More...</a><br /></td></tr>
 <tr class="separator:ab7675c60a6d0250a5dc98b7f31cc4e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a3f7e5eccc2287f366126f67f045abd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5a3f7e5eccc2287f366126f67f045abd">on_act_open</a> (self, checked)</td></tr>
+<tr class="memdesc:a5a3f7e5eccc2287f366126f67f045abd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aff8a7309a861abfabdf21f0dcd861181" title="open crossword (file) action">MainWindow::act_open</a>: loads crossword from a file (showing an Open File dialog).  <a href="classpycross_1_1gui_1_1_main_window.html#a5a3f7e5eccc2287f366126f67f045abd">More...</a><br /></td></tr>
 <tr class="separator:a5a3f7e5eccc2287f366126f67f045abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad681b645507418ce032ed688cde5fcc8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad681b645507418ce032ed688cde5fcc8">on_act_save</a> (self, checked)</td></tr>
+<tr class="memdesc:ad681b645507418ce032ed688cde5fcc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae53de02edf39466147fcc029a64e2794" title="crossword save action">MainWindow::act_save</a>: saves current crossword to the same file it was opened from and resets its modified status to False.  <a href="classpycross_1_1gui_1_1_main_window.html#ad681b645507418ce032ed688cde5fcc8">More...</a><br /></td></tr>
 <tr class="separator:ad681b645507418ce032ed688cde5fcc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a726faa3920fd36bcc6134519b7ae7811"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a726faa3920fd36bcc6134519b7ae7811">on_act_saveas</a> (self, checked)</td></tr>
+<tr class="memdesc:a726faa3920fd36bcc6134519b7ae7811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a361ab5081246d9eda616ee35c42531b5" title="crossword save as (export) action">MainWindow::act_saveas</a>: shows a Save As dialog and saves current crossword to the selected file and resets its modified status to False.  <a href="classpycross_1_1gui_1_1_main_window.html#a726faa3920fd36bcc6134519b7ae7811">More...</a><br /></td></tr>
 <tr class="separator:a726faa3920fd36bcc6134519b7ae7811"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3869ed642496c812ac94c1590a04f87"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa3869ed642496c812ac94c1590a04f87">on_act_reload</a> (self, checked)</td></tr>
+<tr class="memdesc:aa3869ed642496c812ac94c1590a04f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a204aa45816610722c12317baaf77e929" title="crossword reload (from file) action">MainWindow::act_reload</a>: reloads current crossword from the original file (user will be asked to save the changes first, if the cw has been modified).  <a href="classpycross_1_1gui_1_1_main_window.html#aa3869ed642496c812ac94c1590a04f87">More...</a><br /></td></tr>
 <tr class="separator:aa3869ed642496c812ac94c1590a04f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1454c0f24f9a3e6cf5b887fd2f92049"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#af1454c0f24f9a3e6cf5b887fd2f92049">on_act_close</a> (self, checked)</td></tr>
+<tr class="memdesc:af1454c0f24f9a3e6cf5b887fd2f92049"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa9923602f772bd9f73334411f09a2ea9" title="crossword close action">MainWindow::act_close</a>: closes current crossword calling <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa4b1c431b0fc2e5dc967c982633a8a39" title="Closes the currently open crossword (freeing self.cw).">close_cw()</a>.  <a href="classpycross_1_1gui_1_1_main_window.html#af1454c0f24f9a3e6cf5b887fd2f92049">More...</a><br /></td></tr>
 <tr class="separator:af1454c0f24f9a3e6cf5b887fd2f92049"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5abea71f2e3e2b3b813e3db30e509fa1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5abea71f2e3e2b3b813e3db30e509fa1">on_act_share</a> (self, checked)</td></tr>
+<tr class="memdesc:a5abea71f2e3e2b3b813e3db30e509fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a4cdeb8270a95b3b5863c78108ba47b54" title="crossword share action">MainWindow::act_share</a>: shares current crossword in social networks.  <a href="classpycross_1_1gui_1_1_main_window.html#a5abea71f2e3e2b3b813e3db30e509fa1">More...</a><br /></td></tr>
 <tr class="separator:a5abea71f2e3e2b3b813e3db30e509fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9a77763566c415aefaac67e36794707"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae9a77763566c415aefaac67e36794707">on_act_exit</a> (self, checked)</td></tr>
+<tr class="memdesc:ae9a77763566c415aefaac67e36794707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae1b17b9240e4cc965c95caf9e6a0f91d" title="quit application action">MainWindow::act_exit</a>: quits the application calling close() on the main window.  <a href="classpycross_1_1gui_1_1_main_window.html#ae9a77763566c415aefaac67e36794707">More...</a><br /></td></tr>
 <tr class="separator:ae9a77763566c415aefaac67e36794707"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02d64c395a416bf485ff5f0069014210"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a02d64c395a416bf485ff5f0069014210">on_act_addrow</a> (self, checked)</td></tr>
+<tr class="memdesc:a02d64c395a416bf485ff5f0069014210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#add267448eb273dad56b33f8764a6a5d3" title="add row action">MainWindow::act_addrow</a>: adds a new row after the selected one.  <a href="classpycross_1_1gui_1_1_main_window.html#a02d64c395a416bf485ff5f0069014210">More...</a><br /></td></tr>
 <tr class="separator:a02d64c395a416bf485ff5f0069014210"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a536fd50fc969a0cc0752c9b3d71f6b74"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a536fd50fc969a0cc0752c9b3d71f6b74">on_act_addcol</a> (self, checked)</td></tr>
+<tr class="memdesc:a536fd50fc969a0cc0752c9b3d71f6b74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a74795903b09af49a3a0985accc1c4b24" title="add column action">MainWindow::act_addcol</a>: adds a new column after the selected one.  <a href="classpycross_1_1gui_1_1_main_window.html#a536fd50fc969a0cc0752c9b3d71f6b74">More...</a><br /></td></tr>
 <tr class="separator:a536fd50fc969a0cc0752c9b3d71f6b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06bedcc57036e48f597d74aa981b0a6b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a06bedcc57036e48f597d74aa981b0a6b">on_act_delrow</a> (self, checked)</td></tr>
+<tr class="memdesc:a06bedcc57036e48f597d74aa981b0a6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5f3ce49ab368b8f5227531cd1230809c" title="delete row action">MainWindow::act_delrow</a>: deletes the selected row.  <a href="classpycross_1_1gui_1_1_main_window.html#a06bedcc57036e48f597d74aa981b0a6b">More...</a><br /></td></tr>
 <tr class="separator:a06bedcc57036e48f597d74aa981b0a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3992f634555b3f9368e11274e358e19"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa3992f634555b3f9368e11274e358e19">on_act_delcol</a> (self, checked)</td></tr>
+<tr class="memdesc:aa3992f634555b3f9368e11274e358e19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa15cddc90b7e16f4ccaaaee1501f2302" title="delete column action">MainWindow::act_delcol</a>: deletes the selected column.  <a href="classpycross_1_1gui_1_1_main_window.html#aa3992f634555b3f9368e11274e358e19">More...</a><br /></td></tr>
 <tr class="separator:aa3992f634555b3f9368e11274e358e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02ee7265c61953b77d4691efcdb8db8f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a02ee7265c61953b77d4691efcdb8db8f">on_act_reflect</a> (self, checked)</td></tr>
+<tr class="memdesc:a02ee7265c61953b77d4691efcdb8db8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a017120426fe4c4363f35273a410448e4" title="reflect (duplicate) grid action">MainWindow::act_reflect</a>: reflects (duplicates) the current cw grid (all cells) to any position (left, right, up, down).  <a href="classpycross_1_1gui_1_1_main_window.html#a02ee7265c61953b77d4691efcdb8db8f">More...</a><br /></td></tr>
 <tr class="separator:a02ee7265c61953b77d4691efcdb8db8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cc84f9ca3c5b06e27941c94b574dbf6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3cc84f9ca3c5b06e27941c94b574dbf6">on_act_clear_wd</a> (self, checked)</td></tr>
+<tr class="memdesc:a3cc84f9ca3c5b06e27941c94b574dbf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a457229a5fdb7f62c43b675b34f8e6138" title="clear word action">MainWindow::act_clear_wd</a>: clears currently selected word without affecting any crossing words.  <a href="classpycross_1_1gui_1_1_main_window.html#a3cc84f9ca3c5b06e27941c94b574dbf6">More...</a><br /></td></tr>
 <tr class="separator:a3cc84f9ca3c5b06e27941c94b574dbf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a745ded9dccd8b997ba3d98b9362b445c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a745ded9dccd8b997ba3d98b9362b445c">on_act_erase_wd</a> (self, checked)</td></tr>
+<tr class="memdesc:a745ded9dccd8b997ba3d98b9362b445c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a884e3cb9dc65b7561f98de4c963d43ae" title="erase word action">MainWindow::act_erase_wd</a>: clears currently selected word (all letters).  <a href="classpycross_1_1gui_1_1_main_window.html#a745ded9dccd8b997ba3d98b9362b445c">More...</a><br /></td></tr>
 <tr class="separator:a745ded9dccd8b997ba3d98b9362b445c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a312e5439523f26b099d426849ccb0de8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a312e5439523f26b099d426849ccb0de8">on_act_gen</a> (self, checked)</td></tr>
+<tr class="memdesc:a312e5439523f26b099d426849ccb0de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3376b0759d954788663530bdef33c682" title="crossword generate (fill) action">MainWindow::act_gen</a>: generates (fills) the current crossword taking word suggestions from the active word sources.  <a href="classpycross_1_1gui_1_1_main_window.html#a312e5439523f26b099d426849ccb0de8">More...</a><br /></td></tr>
 <tr class="separator:a312e5439523f26b099d426849ccb0de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93aaca64ea00220566c891a2cc5361c6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a93aaca64ea00220566c891a2cc5361c6">on_act_stop</a> (self, checked)</td></tr>
+<tr class="memdesc:a93aaca64ea00220566c891a2cc5361c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#af6b259db07865adbf9a769accd29dbc9" title="stop (current operation) action">MainWindow::act_stop</a>: stops the currently running operation(s).  <a href="classpycross_1_1gui_1_1_main_window.html#a93aaca64ea00220566c891a2cc5361c6">More...</a><br /></td></tr>
 <tr class="separator:a93aaca64ea00220566c891a2cc5361c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f8a5fe9d720775e66e608eb08de470e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a4f8a5fe9d720775e66e608eb08de470e">on_act_stop_changed</a> (self)</td></tr>
+<tr class="memdesc:a4f8a5fe9d720775e66e608eb08de470e"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Changed slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#af6b259db07865adbf9a769accd29dbc9" title="stop (current operation) action">MainWindow::act_stop</a>.  <a href="classpycross_1_1gui_1_1_main_window.html#a4f8a5fe9d720775e66e608eb08de470e">More...</a><br /></td></tr>
 <tr class="separator:a4f8a5fe9d720775e66e608eb08de470e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f7517d4456ced108985852e0eb3b35c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5f7517d4456ced108985852e0eb3b35c">on_act_edit</a> (self, checked)</td></tr>
+<tr class="memdesc:a5f7517d4456ced108985852e0eb3b35c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaaefc1070e4cf5040dd1f15c6bb820b9" title="crossword edit action (toggle editing mode)">MainWindow::act_edit</a>: updates cell formatting in crossword and actions.  <a href="classpycross_1_1gui_1_1_main_window.html#a5f7517d4456ced108985852e0eb3b35c">More...</a><br /></td></tr>
 <tr class="separator:a5f7517d4456ced108985852e0eb3b35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94ae96d20aefad89a565b914af82fa8e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a94ae96d20aefad89a565b914af82fa8e">on_act_view_showtoolbar</a> (self, checked)</td></tr>
+<tr class="memdesc:a94ae96d20aefad89a565b914af82fa8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6d0a8ef33bc3a1ac0b97c297b7503c3a">MainWindow::act_view_showtoolbar</a>: shows or hides the main toolbar.  <a href="classpycross_1_1gui_1_1_main_window.html#a94ae96d20aefad89a565b914af82fa8e">More...</a><br /></td></tr>
 <tr class="separator:a94ae96d20aefad89a565b914af82fa8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81f5c24ad24f662ae96d79267df633b4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a81f5c24ad24f662ae96d79267df633b4">on_act_editclue</a> (self, checked)</td></tr>
+<tr class="memdesc:a81f5c24ad24f662ae96d79267df633b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad2533979759245ab6060e62444bb10d1" title="go to clue action">MainWindow::act_editclue</a>: activates the editing mode for the current word's clue.  <a href="classpycross_1_1gui_1_1_main_window.html#a81f5c24ad24f662ae96d79267df633b4">More...</a><br /></td></tr>
 <tr class="separator:a81f5c24ad24f662ae96d79267df633b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac83ecc1cbbe3451c6010fdc64ee56d40"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac83ecc1cbbe3451c6010fdc64ee56d40">on_act_clear</a> (self, checked)</td></tr>
+<tr class="memdesc:ac83ecc1cbbe3451c6010fdc64ee56d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#af4876ff8348e1674cd669c843bb13a7d" title="grid clear action">MainWindow::act_clear</a>: clears the current crossword.  <a href="classpycross_1_1gui_1_1_main_window.html#ac83ecc1cbbe3451c6010fdc64ee56d40">More...</a><br /></td></tr>
 <tr class="separator:ac83ecc1cbbe3451c6010fdc64ee56d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa3d53fa1ccd0df0cd0f1b39f4f2bc52"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaa3d53fa1ccd0df0cd0f1b39f4f2bc52">on_act_suggest</a> (self, checked)</td></tr>
+<tr class="memdesc:aaa3d53fa1ccd0df0cd0f1b39f4f2bc52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53b85bc2fd3ad6059e297e65fbfbad40" title="suggest word action">MainWindow::act_suggest</a>: brings up a list of words for the selected one in the grid and lets the user place it into the grid.  <a href="classpycross_1_1gui_1_1_main_window.html#aaa3d53fa1ccd0df0cd0f1b39f4f2bc52">More...</a><br /></td></tr>
 <tr class="separator:aaa3d53fa1ccd0df0cd0f1b39f4f2bc52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a654dbb09d5a503bc2914011db2a9c6e4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a654dbb09d5a503bc2914011db2a9c6e4">on_act_lookup</a> (self, checked)</td></tr>
+<tr class="memdesc:a654dbb09d5a503bc2914011db2a9c6e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6e29a99a15e78103444a4c61d5797671" title="lookup word action">MainWindow::act_lookup</a>: looks up the current word's definition / meaning in a dictionary and/or Google.  <a href="classpycross_1_1gui_1_1_main_window.html#a654dbb09d5a503bc2914011db2a9c6e4">More...</a><br /></td></tr>
 <tr class="separator:a654dbb09d5a503bc2914011db2a9c6e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aece01cc7c7db89c508ba375bea18551f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aece01cc7c7db89c508ba375bea18551f">on_act_wsrc</a> (self, checked)</td></tr>
+<tr class="memdesc:aece01cc7c7db89c508ba375bea18551f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ab4e522d24edea4ab9a63dd4e1490cfa0" title="edit word sources action">MainWindow::act_wsrc</a>: opens the word source settings to let the use choose / add word sources for crossword generation.  <a href="classpycross_1_1gui_1_1_main_window.html#aece01cc7c7db89c508ba375bea18551f">More...</a><br /></td></tr>
 <tr class="separator:aece01cc7c7db89c508ba375bea18551f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cc8d36c0b1103a6faa608938dcd5d82"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3cc8d36c0b1103a6faa608938dcd5d82">on_act_info</a> (self, checked)</td></tr>
+<tr class="memdesc:a3cc8d36c0b1103a6faa608938dcd5d82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aee49d17fea554a8c3d4e3554477356c3" title="show / edit crossword info action">MainWindow::act_info</a>: shows the crossword information window where the user can change cw attributes like title, author, etc.  <a href="classpycross_1_1gui_1_1_main_window.html#a3cc8d36c0b1103a6faa608938dcd5d82">More...</a><br /></td></tr>
 <tr class="separator:a3cc8d36c0b1103a6faa608938dcd5d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa22289368850dd517491f71e5021f7ed"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa22289368850dd517491f71e5021f7ed">on_act_print</a> (self, checked)</td></tr>
+<tr class="memdesc:aa22289368850dd517491f71e5021f7ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5cc88016c8042076774fa27400525c62" title="print (cw / clues) action">MainWindow::act_print</a>: prints current CW and/or clues to printer or PDF.  <a href="classpycross_1_1gui_1_1_main_window.html#aa22289368850dd517491f71e5021f7ed">More...</a><br /></td></tr>
 <tr class="separator:aa22289368850dd517491f71e5021f7ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9eb33af1c34a7f635248fe1c2f50168"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac9eb33af1c34a7f635248fe1c2f50168">on_act_config</a> (self, checked)</td></tr>
+<tr class="memdesc:ac9eb33af1c34a7f635248fe1c2f50168"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad4decccb725e4086c0f8bba345493172" title="configure settings action">MainWindow::act_config</a>: shows the application Settings dialog.  <a href="classpycross_1_1gui_1_1_main_window.html#ac9eb33af1c34a7f635248fe1c2f50168">More...</a><br /></td></tr>
 <tr class="separator:ac9eb33af1c34a7f635248fe1c2f50168"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1dcce94b9fa6d3ad0e9707d9c6cff0f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad1dcce94b9fa6d3ad0e9707d9c6cff0f">on_act_update</a> (self, checked)</td></tr>
+<tr class="memdesc:ad1dcce94b9fa6d3ad0e9707d9c6cff0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac046a19b478c1b48b0a602fae2920e8c" title="check for update action">MainWindow::act_update</a>: checks for app updates on the server (github).  <a href="classpycross_1_1gui_1_1_main_window.html#ad1dcce94b9fa6d3ad0e9707d9c6cff0f">More...</a><br /></td></tr>
 <tr class="separator:ad1dcce94b9fa6d3ad0e9707d9c6cff0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51746b2388dd890e09fd12a95724c474"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a51746b2388dd890e09fd12a95724c474">on_act_help</a> (self, checked)</td></tr>
+<tr class="memdesc:a51746b2388dd890e09fd12a95724c474"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#afeab03b21e3a0019b27ad60cdeff55f7" title="show help docs action">MainWindow::act_help</a>: opens up the Help documentation.  <a href="classpycross_1_1gui_1_1_main_window.html#a51746b2388dd890e09fd12a95724c474">More...</a><br /></td></tr>
 <tr class="separator:a51746b2388dd890e09fd12a95724c474"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a263c405fc3b8aaa352eaabb510464e2f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a263c405fc3b8aaa352eaabb510464e2f">on_act_about</a> (self, checked)</td></tr>
+<tr class="memdesc:a263c405fc3b8aaa352eaabb510464e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae7d5d52eaec18cf2449242ea4d85bbb4" title="show About action">MainWindow::act_about</a>: shows the About dialog.  <a href="classpycross_1_1gui_1_1_main_window.html#a263c405fc3b8aaa352eaabb510464e2f">More...</a><br /></td></tr>
 <tr class="separator:a263c405fc3b8aaa352eaabb510464e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae331da0f5e2a7b86c9baed02d6595759"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae331da0f5e2a7b86c9baed02d6595759">on_act_stats</a> (self, checked)</td></tr>
+<tr class="memdesc:ae331da0f5e2a7b86c9baed02d6595759"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a9b6becffe7c498b36b65d6049f58c251" title="show crossword stats action">MainWindow::act_stats</a>: shows the current crossword's statistics.  <a href="classpycross_1_1gui_1_1_main_window.html#ae331da0f5e2a7b86c9baed02d6595759">More...</a><br /></td></tr>
 <tr class="separator:ae331da0f5e2a7b86c9baed02d6595759"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7080ac2dce2771506550bea923313dce"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7080ac2dce2771506550bea923313dce">on_statusbar_l2_dblclicked</a> (self, event)</td></tr>
+<tr class="memdesc:a7080ac2dce2771506550bea923313dce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a15f819e37dcc8897944d7d6408670d0b" title="status bar text 2 (other messages)">MainWindow::statusbar_l2</a> is double-clicked.  <a href="classpycross_1_1gui_1_1_main_window.html#a7080ac2dce2771506550bea923313dce">More...</a><br /></td></tr>
 <tr class="separator:a7080ac2dce2771506550bea923313dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3ce18cbf1ced6c45846f4dc4ae58bec"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac3ce18cbf1ced6c45846f4dc4ae58bec">on_slider_cw_scale</a> (self, value)</td></tr>
+<tr class="memdesc:ac3ce18cbf1ced6c45846f4dc4ae58bec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3090446c9165459f3f1b7ee308ae0071" title="cw scale slider">MainWindow::slider_cw_scale</a> is moved: rescales the crossword grid.  <a href="classpycross_1_1gui_1_1_main_window.html#ac3ce18cbf1ced6c45846f4dc4ae58bec">More...</a><br /></td></tr>
 <tr class="separator:ac3ce18cbf1ced6c45846f4dc4ae58bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecf059b31388407f4f16f4b5e77cf894"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aecf059b31388407f4f16f4b5e77cf894">on_cw_current_item_changed</a> (self, current, previous)</td></tr>
+<tr class="memdesc:aecf059b31388407f4f16f4b5e77cf894"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when a new cw grid cell is focused.  <a href="classpycross_1_1gui_1_1_main_window.html#aecf059b31388407f4f16f4b5e77cf894">More...</a><br /></td></tr>
 <tr class="separator:aecf059b31388407f4f16f4b5e77cf894"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac669b6a585ca79a6400022c6736eb57a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac669b6a585ca79a6400022c6736eb57a">on_cw_item_clicked</a> (self, item)</td></tr>
+<tr class="memdesc:ac669b6a585ca79a6400022c6736eb57a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when a cw grid cell is clicked (pressed).  <a href="classpycross_1_1gui_1_1_main_window.html#ac669b6a585ca79a6400022c6736eb57a">More...</a><br /></td></tr>
 <tr class="separator:ac669b6a585ca79a6400022c6736eb57a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abef3b15b2a4834a6d53d1be83df680aa"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#abef3b15b2a4834a6d53d1be83df680aa">on_twCw_contextmenu</a> (self, point)</td></tr>
+<tr class="memdesc:abef3b15b2a4834a6d53d1be83df680aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when the custom context meny is requested on the crossword grid.  <a href="classpycross_1_1gui_1_1_main_window.html#abef3b15b2a4834a6d53d1be83df680aa">More...</a><br /></td></tr>
 <tr class="separator:abef3b15b2a4834a6d53d1be83df680aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc54655cd72c09ca57be545d36b45dc5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#afc54655cd72c09ca57be545d36b45dc5">on_toolbar_contextmenu</a> (self, point)</td></tr>
+<tr class="memdesc:afc54655cd72c09ca57be545d36b45dc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when the custom context meny is requested on the main toolbar.  <a href="classpycross_1_1gui_1_1_main_window.html#afc54655cd72c09ca57be545d36b45dc5">More...</a><br /></td></tr>
 <tr class="separator:afc54655cd72c09ca57be545d36b45dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa34b90548edd1ea7590d452946fb74f4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa34b90548edd1ea7590d452946fb74f4">on_tvClues_selected</a> (self, selected, deselected)</td></tr>
+<tr class="memdesc:aa34b90548edd1ea7590d452946fb74f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when one or severals clue rows are selected in <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a883e14b7cb682b4a1a56938ce809cbaa" title="clues table">MainWindow::tvClues</a>.  <a href="classpycross_1_1gui_1_1_main_window.html#aa34b90548edd1ea7590d452946fb74f4">More...</a><br /></td></tr>
 <tr class="separator:aa34b90548edd1ea7590d452946fb74f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a343f8cbe6d553108da320fac8d391a25"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a343f8cbe6d553108da320fac8d391a25">on_tvClues_current_changed</a> (self, current, previous)</td></tr>
+<tr class="memdesc:a343f8cbe6d553108da320fac8d391a25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when the currenly selected clue item in <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a883e14b7cb682b4a1a56938ce809cbaa" title="clues table">MainWindow::tvClues</a> has changed.  <a href="classpycross_1_1gui_1_1_main_window.html#a343f8cbe6d553108da320fac8d391a25">More...</a><br /></td></tr>
 <tr class="separator:a343f8cbe6d553108da320fac8d391a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f40dd95bf505b1e57f24f4a030c63ad"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a2f40dd95bf505b1e57f24f4a030c63ad">on_tvClues_column_moved</a> (self, logicalIndex, oldVisualIndex, newVisualIndex)</td></tr>
+<tr class="memdesc:a2f40dd95bf505b1e57f24f4a030c63ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when the clues table columns have been moved by dragging.  <a href="classpycross_1_1gui_1_1_main_window.html#a2f40dd95bf505b1e57f24f4a030c63ad">More...</a><br /></td></tr>
 <tr class="separator:a2f40dd95bf505b1e57f24f4a030c63ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72b000081d7131e697604958dd75a011"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a72b000081d7131e697604958dd75a011">on_clues_editor_commit</a> (self, editor)</td></tr>
+<tr class="memdesc:a72b000081d7131e697604958dd75a011"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires every time a cell in clues table has been edited (manually) and is about to write data back to the underlying model.  <a href="classpycross_1_1gui_1_1_main_window.html#a72b000081d7131e697604958dd75a011">More...</a><br /></td></tr>
 <tr class="separator:a72b000081d7131e697604958dd75a011"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf9fb4372f9a34c5089f4cc41acb2e64"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaf9fb4372f9a34c5089f4cc41acb2e64">set_selected_lang</a> (self)</td></tr>
 <tr class="separator:aaf9fb4372f9a34c5089f4cc41acb2e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1a70687e22750713a3e7d8a6eccbf4d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad1a70687e22750713a3e7d8a6eccbf4d">on_combo_lang</a> (self, index)</td></tr>
+<tr class="memdesc:ad1a70687e22750713a3e7d8a6eccbf4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when a new language in the language combo is picked.  <a href="classpycross_1_1gui_1_1_main_window.html#ad1a70687e22750713a3e7d8a6eccbf4d">More...</a><br /></td></tr>
 <tr class="separator:ad1a70687e22750713a3e7d8a6eccbf4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a53c3fe7e5acc6e3ad49bf6af590eddc4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4">cw</a></td></tr>
-<tr class="memdesc:a53c3fe7e5acc6e3ad49bf6af590eddc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crossword instance.  <a href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4">More...</a><br /></td></tr>
+<tr class="memdesc:a53c3fe7e5acc6e3ad49bf6af590eddc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1crossword_1_1_crossword.html">crossword::Crossword</a>] instance  <a href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4">More...</a><br /></td></tr>
 <tr class="separator:a53c3fe7e5acc6e3ad49bf6af590eddc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7154ba87d4cfa05d88f7bd5f168ef48b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7154ba87d4cfa05d88f7bd5f168ef48b">cw_file</a></td></tr>
-<tr class="memdesc:a7154ba87d4cfa05d88f7bd5f168ef48b"><td class="mdescLeft">&#160;</td><td class="mdescRight">currently opened cw file <br  />
+<tr class="memdesc:a7154ba87d4cfa05d88f7bd5f168ef48b"><td class="mdescLeft">&#160;</td><td class="mdescRight">[str] currently opened cw file <br  />
   <a href="classpycross_1_1gui_1_1_main_window.html#a7154ba87d4cfa05d88f7bd5f168ef48b">More...</a><br /></td></tr>
 <tr class="separator:a7154ba87d4cfa05d88f7bd5f168ef48b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00e4455403f2ed3ba1ba70632fe42a2b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a00e4455403f2ed3ba1ba70632fe42a2b">cw_modified</a></td></tr>
-<tr class="memdesc:a00e4455403f2ed3ba1ba70632fe42a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">flag showing that current cw has been changed since last save <br  />
+<tr class="memdesc:a00e4455403f2ed3ba1ba70632fe42a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">[bool] flag showing that current cw has been changed since last save <br  />
   <a href="classpycross_1_1gui_1_1_main_window.html#a00e4455403f2ed3ba1ba70632fe42a2b">More...</a><br /></td></tr>
 <tr class="separator:a00e4455403f2ed3ba1ba70632fe42a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa765053955dbe449e502657cda1cd12a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa765053955dbe449e502657cda1cd12a">current_word</a></td></tr>
-<tr class="memdesc:aa765053955dbe449e502657cda1cd12a"><td class="mdescLeft">&#160;</td><td class="mdescRight">current word in grid  <a href="classpycross_1_1gui_1_1_main_window.html#aa765053955dbe449e502657cda1cd12a">More...</a><br /></td></tr>
+<tr class="memdesc:aa765053955dbe449e502657cda1cd12a"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Word] currently selected word in grid  <a href="classpycross_1_1gui_1_1_main_window.html#aa765053955dbe449e502657cda1cd12a">More...</a><br /></td></tr>
 <tr class="separator:aa765053955dbe449e502657cda1cd12a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b775b8e19e1b5d47df504e9390de7f7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a9b775b8e19e1b5d47df504e9390de7f7">last_pressed_item</a></td></tr>
-<tr class="memdesc:a9b775b8e19e1b5d47df504e9390de7f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">last pressed cell in cw grid  <a href="classpycross_1_1gui_1_1_main_window.html#a9b775b8e19e1b5d47df504e9390de7f7">More...</a><br /></td></tr>
+<tr class="memdesc:a9b775b8e19e1b5d47df504e9390de7f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">[QtWidgets.QTableWidgetItem] last pressed cell in cw grid  <a href="classpycross_1_1gui_1_1_main_window.html#a9b775b8e19e1b5d47df504e9390de7f7">More...</a><br /></td></tr>
 <tr class="separator:a9b775b8e19e1b5d47df504e9390de7f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a64fa626343bd96f9aec8a05b2626f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6a64fa626343bd96f9aec8a05b2626f9">sharer</a></td></tr>
-<tr class="memdesc:a6a64fa626343bd96f9aec8a05b2626f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Share object <br  />
+<tr class="memdesc:a6a64fa626343bd96f9aec8a05b2626f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html">utils::onlineservices::Share</a>] object <br  />
   <a href="classpycross_1_1gui_1_1_main_window.html#a6a64fa626343bd96f9aec8a05b2626f9">More...</a><br /></td></tr>
 <tr class="separator:a6a64fa626343bd96f9aec8a05b2626f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8696ec5ab6d833c6d87a42de15010b9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a8696ec5ab6d833c6d87a42de15010b9b">wordsrc</a></td></tr>
-<tr class="memdesc:a8696ec5ab6d833c6d87a42de15010b9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">empty word source instance <br  />
+<tr class="memdesc:a8696ec5ab6d833c6d87a42de15010b9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html">wordsrc::MultiWordsource</a>] empty word source instance <br  />
   <a href="classpycross_1_1gui_1_1_main_window.html#a8696ec5ab6d833c6d87a42de15010b9b">More...</a><br /></td></tr>
 <tr class="separator:a8696ec5ab6d833c6d87a42de15010b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adecdac8c7cacff18aeffd8f0ae013325"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#adecdac8c7cacff18aeffd8f0ae013325">garbage</a></td></tr>
-<tr class="memdesc:adecdac8c7cacff18aeffd8f0ae013325"><td class="mdescLeft">&#160;</td><td class="mdescRight">files to delete on startup / close  <a href="classpycross_1_1gui_1_1_main_window.html#adecdac8c7cacff18aeffd8f0ae013325">More...</a><br /></td></tr>
+<tr class="memdesc:adecdac8c7cacff18aeffd8f0ae013325"><td class="mdescLeft">&#160;</td><td class="mdescRight">[list] files to delete on startup / close  <a href="classpycross_1_1gui_1_1_main_window.html#adecdac8c7cacff18aeffd8f0ae013325">More...</a><br /></td></tr>
 <tr class="separator:adecdac8c7cacff18aeffd8f0ae013325"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49e723994a8ac7e863e54d98edd761ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca">gen_thread</a></td></tr>
-<tr class="memdesc:a49e723994a8ac7e863e54d98edd761ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">cw generation worker thread  <a href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca">More...</a><br /></td></tr>
+<tr class="memdesc:a49e723994a8ac7e863e54d98edd761ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1gui_1_1_gen_thread.html" title="Crossword generation thread class.">GenThread</a>] cw generation worker thread  <a href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca">More...</a><br /></td></tr>
 <tr class="separator:a49e723994a8ac7e863e54d98edd761ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d4afad49bc23080412f422b2bd97979"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979">share_thread</a></td></tr>
-<tr class="memdesc:a7d4afad49bc23080412f422b2bd97979"><td class="mdescLeft">&#160;</td><td class="mdescRight">sharer worker thread  <a href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979">More...</a><br /></td></tr>
+<tr class="memdesc:a7d4afad49bc23080412f422b2bd97979"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1gui_1_1_share_thread.html" title="Crossword sharing (in social networks) thread class.">ShareThread</a>] sharer worker thread  <a href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979">More...</a><br /></td></tr>
 <tr class="separator:a7d4afad49bc23080412f422b2bd97979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cb30c7274cf2da6334b3c8dda8995ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a0cb30c7274cf2da6334b3c8dda8995ab">threads</a></td></tr>
-<tr class="memdesc:a0cb30c7274cf2da6334b3c8dda8995ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">thread list to keep track of all spawned threads  <a href="classpycross_1_1gui_1_1_main_window.html#a0cb30c7274cf2da6334b3c8dda8995ab">More...</a><br /></td></tr>
+<tr class="memdesc:a0cb30c7274cf2da6334b3c8dda8995ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">[list] thread list to keep track of all spawned threads  <a href="classpycross_1_1gui_1_1_main_window.html#a0cb30c7274cf2da6334b3c8dda8995ab">More...</a><br /></td></tr>
 <tr class="separator:a0cb30c7274cf2da6334b3c8dda8995ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6544e721b4d03c234bba3b0a7b482233"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">updater</a></td></tr>
-<tr class="memdesc:a6544e721b4d03c234bba3b0a7b482233"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updater instance (used to run app update checks and updates)  <a href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">More...</a><br /></td></tr>
+<tr class="memdesc:a6544e721b4d03c234bba3b0a7b482233"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Updater] instance (used to run app update checks and updates)  <a href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">More...</a><br /></td></tr>
 <tr class="separator:a6544e721b4d03c234bba3b0a7b482233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae961661e14882c046b54c0e432150bb6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae961661e14882c046b54c0e432150bb6">dia_settings</a></td></tr>
-<tr class="memdesc:ae961661e14882c046b54c0e432150bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">SettingsDialog instance (settings window)  <a href="classpycross_1_1gui_1_1_main_window.html#ae961661e14882c046b54c0e432150bb6">More...</a><br /></td></tr>
+<tr class="memdesc:ae961661e14882c046b54c0e432150bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">[SettingsDialog] instance (settings window)  <a href="classpycross_1_1gui_1_1_main_window.html#ae961661e14882c046b54c0e432150bb6">More...</a><br /></td></tr>
 <tr class="separator:ae961661e14882c046b54c0e432150bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37f1c9925554a3fa949cfcce9ce8f500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a37f1c9925554a3fa949cfcce9ce8f500">act_new</a></td></tr>
 <tr class="memdesc:a37f1c9925554a3fa949cfcce9ce8f500"><td class="mdescLeft">&#160;</td><td class="mdescRight">new crossword action  <a href="classpycross_1_1gui_1_1_main_window.html#a37f1c9925554a3fa949cfcce9ce8f500">More...</a><br /></td></tr>
@@ -591,18 +636,24 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ad65095fb28fd45923aa74f83c0b016e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad65095fb28fd45923aa74f83c0b016e8">cluesmodel</a></td></tr>
 <tr class="separator:ad65095fb28fd45923aa74f83c0b016e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f5374babae997a2dae6a7e1173868df"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a1f5374babae997a2dae6a7e1173868df">browser</a></td></tr>
+<tr class="memdesc:a1f5374babae997a2dae6a7e1173868df"><td class="mdescLeft">&#160;</td><td class="mdescRight">inbuilt web browser  <a href="classpycross_1_1gui_1_1_main_window.html#a1f5374babae997a2dae6a7e1173868df">More...</a><br /></td></tr>
 <tr class="separator:a1f5374babae997a2dae6a7e1173868df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa04898a39781b5979c72272678d63f9c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa04898a39781b5979c72272678d63f9c">dia_load</a></td></tr>
 <tr class="separator:aa04898a39781b5979c72272678d63f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d892fca1129c6d783e7c1eb3e35235b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a1d892fca1129c6d783e7c1eb3e35235b">dia_share</a></td></tr>
+<tr class="memdesc:a1d892fca1129c6d783e7c1eb3e35235b"><td class="mdescLeft">&#160;</td><td class="mdescRight">share settings dialog <br  />
+  <a href="classpycross_1_1gui_1_1_main_window.html#a1d892fca1129c6d783e7c1eb3e35235b">More...</a><br /></td></tr>
 <tr class="separator:a1d892fca1129c6d783e7c1eb3e35235b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaccb128e05020f17f7c24281b1e6f12d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaccb128e05020f17f7c24281b1e6f12d">dia_reflect</a></td></tr>
 <tr class="separator:aaccb128e05020f17f7c24281b1e6f12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a951a20299d23567427a2b4c405d3ec58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a951a20299d23567427a2b4c405d3ec58">dia_lookup</a></td></tr>
+<tr class="memdesc:a951a20299d23567427a2b4c405d3ec58"><td class="mdescLeft">&#160;</td><td class="mdescRight">word meaning lookup dialog  <a href="classpycross_1_1gui_1_1_main_window.html#a951a20299d23567427a2b4c405d3ec58">More...</a><br /></td></tr>
 <tr class="separator:a951a20299d23567427a2b4c405d3ec58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad371977d7083ce4e20be9b39a87c4e21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad371977d7083ce4e20be9b39a87c4e21">dia_info</a></td></tr>
+<tr class="memdesc:ad371977d7083ce4e20be9b39a87c4e21"><td class="mdescLeft">&#160;</td><td class="mdescRight">crossword information edit dialog  <a href="classpycross_1_1gui_1_1_main_window.html#ad371977d7083ce4e20be9b39a87c4e21">More...</a><br /></td></tr>
 <tr class="separator:ad371977d7083ce4e20be9b39a87c4e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18e1066fe66a12a6af020fd2efc5b08b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a18e1066fe66a12a6af020fd2efc5b08b">dia_about</a></td></tr>
+<tr class="memdesc:a18e1066fe66a12a6af020fd2efc5b08b"><td class="mdescLeft">&#160;</td><td class="mdescRight">About dialog.  <a href="classpycross_1_1gui_1_1_main_window.html#a18e1066fe66a12a6af020fd2efc5b08b">More...</a><br /></td></tr>
 <tr class="separator:a18e1066fe66a12a6af020fd2efc5b08b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -711,22 +762,20 @@ Private Member Functions</h2></td></tr>
 
 <p>Util function: replaces string macros like &lt;t&gt; by crossword metadata, like CWInfo::title. </p>
 <p>The following macros are supported:</p><ul>
-<li>&lt;t&gt; = cw title</li>
-<li>= cw author</li>
-<li></li>
-</ul>
-<p>= cw publisher</p><ul>
-<li><code> = cw copyright</code></li>
-<li><code>&lt;d&gt; = cw date</code></li>
-<li><code>&lt;rows&gt; = number of rows</code></li>
-<li><code>&lt;cols&gt; = number of columns <dl class="params"><dt>Parameters</dt><dd>
+<li>'&lt;t&gt;' = cw title</li>
+<li>'&lt;a&gt;' = cw author</li>
+<li>'&lt;p&gt;' = cw publisher</li>
+<li>'&lt;c&gt;' = cw copyright</li>
+<li>'&lt;d&gt;' = cw date</li>
+<li>'&lt;rows&gt;' = number of rows</li>
+<li>'&lt;cols&gt;' = number of columns <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">txt</td><td>[str] the text containing macros </td></tr>
     <tr><td class="paramname">grid</td><td>[Wordgrid] the Wordgrid object (crosword grid) </td></tr>
   </table>
   </dd>
 </dl>
-</code></li>
+</li>
 </ul>
 
 </div>
@@ -1062,8 +1111,8 @@ Private Member Functions</h2></td></tr>
 <p>Util function to save or export current crossword to a given file and file type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filepath</td><td>[str] the full path to the file where the cw must be saved. If not set (None), <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7154ba87d4cfa05d88f7bd5f168ef48b" title="currently opened cw file">MainWindow::cw_file</a> will be used (the currently open cw file) </td></tr>
-    <tr><td class="paramname">file_type</td><td>[str|int] the file type used to save / export the crossword. If not set (None), the app will attempt to infer it from the filepath extension. Otherwise, it can be a string representing the file filter - see _get_filetype::CWSAVE_FILTERS, or an integer representing the index of the filter in _get_filetype::CWSAVE_FILTERS </td></tr>
+    <tr><td class="paramname">filepath</td><td>[str] the full path to the file where the cw must be saved. If not set (None), <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7154ba87d4cfa05d88f7bd5f168ef48b" title="[str] currently opened cw file">MainWindow::cw_file</a> will be used (the currently open cw file) </td></tr>
+    <tr><td class="paramname">file_type</td><td>[str|int] the file type used to save / export the crossword. If not set (None), the app will attempt to infer it from the filepath extension. Otherwise, it can be a string representing the file filter - see _get_filetype() - CWSAVE_FILTERS, or an integer representing the index of the filter in _get_filetype() - CWSAVE_FILTERS </td></tr>
   </table>
   </dd>
 </dl>
@@ -1206,7 +1255,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Saves the currently open crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="Crossword instance.">MainWindow::cw</a>) to the default autosave file (SAVEDCW_FILE). </p>
+<p>Saves the currently open crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="[crossword::Crossword] instance">MainWindow::cw</a>) to the default autosave file (SAVEDCW_FILE). </p>
 
 </div>
 </div>
@@ -1363,7 +1412,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the sharer object (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6a64fa626343bd96f9aec8a05b2626f9" title="Share object">MainWindow::sharer</a>). </p>
+<p>Initializes the sharer object (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6a64fa626343bd96f9aec8a05b2626f9" title="[utils::onlineservices::Share] object">MainWindow::sharer</a>). </p>
 <p>Uploads exported crosswords (as images, PDF etc) to the Kloudless cloud storage and shares the resulting URL in social networks (via the Shareaholic service). </p>
 
 </div>
@@ -1499,8 +1548,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Main worker function for the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>). </p>
-<p>Generates (fills) the current crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="Crossword instance.">MainWindow::cw</a>) </p>
+<p>Main worker function for the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>). </p>
+<p>Generates (fills) the current crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="[crossword::Crossword] instance">MainWindow::cw</a>) </p>
 
 </div>
 </div>
@@ -1533,7 +1582,7 @@ Private Member Functions</h2></td></tr>
 <p>Shows the Suggest Word dialog to suggest variants for a given word. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">wordstr</td><td>[str] the string representation (mask) of the target word (<a class="el" href="namespacepycross_1_1crossword.html#a423f957b80b2300635537bd124e313c5">crossword::FILLER</a>, <a class="el" href="namespacepycross_1_1crossword.html#a733507dc19c234e8ff24a0cc53ebb88a">crossword::FILLER2</a> and <a class="el" href="namespacepycross_1_1crossword.html#afb3aa0c5f1d57c3fe81d05ec8b95bc05">crossword::BLANK</a> symbols are used) </td></tr>
+    <tr><td class="paramname">wordstr</td><td>[str] the string representation (mask) of the target word (<a class="el" href="namespacepycross_1_1crossword.html#a423f957b80b2300635537bd124e313c5" title="the placeholder used for filled (blocked / stopped) cells inside the cw grid (those that are usually ...">crossword::FILLER</a>, <a class="el" href="namespacepycross_1_1crossword.html#a733507dc19c234e8ff24a0cc53ebb88a" title="the placeholder used for surrounding cells around the cw grid (used chiefly when the grid is of non-r...">crossword::FILLER2</a> and <a class="el" href="namespacepycross_1_1crossword.html#afb3aa0c5f1d57c3fe81d05ec8b95bc05" title="the placeholder used for blank cells">crossword::BLANK</a> symbols are used) </td></tr>
   </table>
   </dd>
 </dl>
@@ -1683,6 +1732,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae7d5d52eaec18cf2449242ea4d85bbb4" title="show About action">MainWindow::act_about</a>: shows the About dialog. </p>
+
 </div>
 </div>
 <a id="a536fd50fc969a0cc0752c9b3d71f6b74"></a>
@@ -1710,6 +1761,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a74795903b09af49a3a0985accc1c4b24" title="add column action">MainWindow::act_addcol</a>: adds a new column after the selected one. </p>
+<p>The action is available only in the Editing mode (when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaaefc1070e4cf5040dd1f15c6bb820b9" title="crossword edit action (toggle editing mode)">MainWindow::act_edit</a> is checked). </p>
 
 </div>
 </div>
@@ -1739,6 +1793,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#add267448eb273dad56b33f8764a6a5d3" title="add row action">MainWindow::act_addrow</a>: adds a new row after the selected one. </p>
+<p>The action is available only in the Editing mode (when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaaefc1070e4cf5040dd1f15c6bb820b9" title="crossword edit action (toggle editing mode)">MainWindow::act_edit</a> is checked). </p>
+
 </div>
 </div>
 <a id="ac83ecc1cbbe3451c6010fdc64ee56d40"></a>
@@ -1766,6 +1823,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#af4876ff8348e1674cd669c843bb13a7d" title="grid clear action">MainWindow::act_clear</a>: clears the current crossword. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#af0cb022073a853ae3521e656e3d93b10">Crossword::clear()</a> </dd></dl>
 
 </div>
 </div>
@@ -1795,6 +1855,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a457229a5fdb7f62c43b675b34f8e6138" title="clear word action">MainWindow::act_clear_wd</a>: clears currently selected word without affecting any crossing words. </p>
+<p>This action effectively clears only the 'free' letters in the selected word. </p><dl class="section see"><dt>See also</dt><dd>Compare with <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a745ded9dccd8b997ba3d98b9362b445c" title="Slot for MainWindow::act_erase_wd: clears currently selected word (all letters).">on_act_erase_wd()</a> that erases all letters in the word. Also see <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ac1310eb1bd930780c819ef1e5ed6fc35">Crossword::clear_word()</a> </dd></dl>
+
 </div>
 </div>
 <a id="af1454c0f24f9a3e6cf5b887fd2f92049"></a>
@@ -1822,6 +1885,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa9923602f772bd9f73334411f09a2ea9" title="crossword close action">MainWindow::act_close</a>: closes current crossword calling <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa4b1c431b0fc2e5dc967c982633a8a39" title="Closes the currently open crossword (freeing self.cw).">close_cw()</a>. </p>
 
 </div>
 </div>
@@ -1851,6 +1916,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad4decccb725e4086c0f8bba345493172" title="configure settings action">MainWindow::act_config</a>: shows the application Settings dialog. </p>
+<p>If the dialog is closed by pressing OK, the new settings are applied with <a class="el" href="classpycross_1_1gui_1_1_main_window.html#adc7875e39f9b1ea21170040fe7ea139e" title="Applies settings found in CWSettings::settings and updates the settings file.">apply_config()</a> </p>
+
 </div>
 </div>
 <a id="aa3992f634555b3f9368e11274e358e19"></a>
@@ -1878,6 +1946,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa15cddc90b7e16f4ccaaaee1501f2302" title="delete column action">MainWindow::act_delcol</a>: deletes the selected column. </p>
+<p>The action is available only in the Editing mode (when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaaefc1070e4cf5040dd1f15c6bb820b9" title="crossword edit action (toggle editing mode)">MainWindow::act_edit</a> is checked). </p>
 
 </div>
 </div>
@@ -1907,6 +1978,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5f3ce49ab368b8f5227531cd1230809c" title="delete row action">MainWindow::act_delrow</a>: deletes the selected row. </p>
+<p>The action is available only in the Editing mode (when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaaefc1070e4cf5040dd1f15c6bb820b9" title="crossword edit action (toggle editing mode)">MainWindow::act_edit</a> is checked). </p>
+
 </div>
 </div>
 <a id="a5f7517d4456ced108985852e0eb3b35c"></a>
@@ -1934,6 +2008,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaaefc1070e4cf5040dd1f15c6bb820b9" title="crossword edit action (toggle editing mode)">MainWindow::act_edit</a>: updates cell formatting in crossword and actions. </p>
 
 </div>
 </div>
@@ -1963,6 +2039,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad2533979759245ab6060e62444bb10d1" title="go to clue action">MainWindow::act_editclue</a>: activates the editing mode for the current word's clue. </p>
+
 </div>
 </div>
 <a id="a745ded9dccd8b997ba3d98b9362b445c"></a>
@@ -1990,6 +2068,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a884e3cb9dc65b7561f98de4c963d43ae" title="erase word action">MainWindow::act_erase_wd</a>: clears currently selected word (all letters). </p>
+<p>Compared to <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3cc84f9ca3c5b06e27941c94b574dbf6" title="Slot for MainWindow::act_clear_wd: clears currently selected word without affecting any crossing word...">on_act_clear_wd()</a>, this action affects crossing words, if any, since it clears ALL the letters in the word, clearing them from the crossing words as well. </p><dl class="section see"><dt>See also</dt><dd>Also see <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ac1310eb1bd930780c819ef1e5ed6fc35">Crossword::clear_word()</a> </dd></dl>
 
 </div>
 </div>
@@ -2019,6 +2100,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae1b17b9240e4cc965c95caf9e6a0f91d" title="quit application action">MainWindow::act_exit</a>: quits the application calling close() on the main window. </p>
+
 </div>
 </div>
 <a id="a312e5439523f26b099d426849ccb0de8"></a>
@@ -2046,6 +2129,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3376b0759d954788663530bdef33c682" title="crossword generate (fill) action">MainWindow::act_gen</a>: generates (fills) the current crossword taking word suggestions from the active word sources. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ad571ecad9026be8b61f813f4f737c55e">Crossword::generate()</a> </dd></dl>
 
 </div>
 </div>
@@ -2075,6 +2161,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#afeab03b21e3a0019b27ad60cdeff55f7" title="show help docs action">MainWindow::act_help</a>: opens up the Help documentation. </p>
+
 </div>
 </div>
 <a id="a3cc8d36c0b1103a6faa608938dcd5d82"></a>
@@ -2102,6 +2190,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aee49d17fea554a8c3d4e3554477356c3" title="show / edit crossword info action">MainWindow::act_info</a>: shows the crossword information window where the user can change cw attributes like title, author, etc. </p>
+<dl class="section see"><dt>See also</dt><dd>CwInfoDialog </dd></dl>
 
 </div>
 </div>
@@ -2131,6 +2222,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6e29a99a15e78103444a4c61d5797671" title="lookup word action">MainWindow::act_lookup</a>: looks up the current word's definition / meaning in a dictionary and/or Google. </p>
+<p>The looked-up definition may then be used to fill the corresponding clue. </p>
+
 </div>
 </div>
 <a id="ab7675c60a6d0250a5dc98b7f31cc4e1e"></a>
@@ -2158,6 +2252,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a37f1c9925554a3fa949cfcce9ce8f500" title="new crossword action">MainWindow::act_new</a>: creates a new crossword from file, structure or parameters. </p>
 
 </div>
 </div>
@@ -2187,6 +2283,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aff8a7309a861abfabdf21f0dcd861181" title="open crossword (file) action">MainWindow::act_open</a>: loads crossword from a file (showing an Open File dialog). </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#abfc74c481e6bcdc254eaa6b4d5046711" title="Loads the crossword (self.cw) from a given file.">open_cw()</a> </dd></dl>
+
 </div>
 </div>
 <a id="aa22289368850dd517491f71e5021f7ed"></a>
@@ -2214,8 +2313,10 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Prints current CW and/or clues to printer or PDF.
-</pre> 
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5cc88016c8042076774fa27400525c62" title="print (cw / clues) action">MainWindow::act_print</a>: prints current CW and/or clues to printer or PDF. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3f1a61fa1b54ed62c71fa11cf6bdb968" title="Prints current crossword (and optionally clues) to file or printer.">print_cw()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a02ee7265c61953b77d4691efcdb8db8f"></a>
@@ -2243,6 +2344,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a017120426fe4c4363f35273a410448e4" title="reflect (duplicate) grid action">MainWindow::act_reflect</a>: reflects (duplicates) the current cw grid (all cells) to any position (left, right, up, down). </p>
+<p>The action is available only in the Editing mode (when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aaaefc1070e4cf5040dd1f15c6bb820b9" title="crossword edit action (toggle editing mode)">MainWindow::act_edit</a> is checked). </p>
 
 </div>
 </div>
@@ -2272,6 +2376,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a204aa45816610722c12317baaf77e929" title="crossword reload (from file) action">MainWindow::act_reload</a>: reloads current crossword from the original file (user will be asked to save the changes first, if the cw has been modified). </p>
+
 </div>
 </div>
 <a id="ad681b645507418ce032ed688cde5fcc8"></a>
@@ -2299,6 +2405,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae53de02edf39466147fcc029a64e2794" title="crossword save action">MainWindow::act_save</a>: saves current crossword to the same file it was opened from and resets its modified status to False. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a666c774911bc71f5a7bebf46b308fd94" title="Saves / exports the current crossword (MainWindow::cw) to a given file and file type.">save_cw()</a> </dd></dl>
 
 </div>
 </div>
@@ -2328,6 +2437,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a361ab5081246d9eda616ee35c42531b5" title="crossword save as (export) action">MainWindow::act_saveas</a>: shows a Save As dialog and saves current crossword to the selected file and resets its modified status to False. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a666c774911bc71f5a7bebf46b308fd94" title="Saves / exports the current crossword (MainWindow::cw) to a given file and file type.">save_cw()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a5abea71f2e3e2b3b813e3db30e509fa1"></a>
@@ -2355,8 +2467,10 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Share CW in social networks.
-</pre> 
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a4cdeb8270a95b3b5863c78108ba47b54" title="crossword share action">MainWindow::act_share</a>: shares current crossword in social networks. </p>
+<p>The share dialog <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a1d892fca1129c6d783e7c1eb3e35235b" title="share settings dialog">MainWindow::dia_share</a> is shown for user to configure the sharing settings. </p>
+
 </div>
 </div>
 <a id="ae331da0f5e2a7b86c9baed02d6595759"></a>
@@ -2384,6 +2498,16 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a9b6becffe7c498b36b65d6049f58c251" title="show crossword stats action">MainWindow::act_stats</a>: shows the current crossword's statistics. </p>
+<p>The stats is accumulated with Wordgrid::update_stats() and includes the following data:</p><ul>
+<li>word count</li>
+<li>completed word count</li>
+<li>blank word count</li>
+<li>Down word count</li>
+<li>Across word count</li>
+<li>words with completed clues count The data is visualized as an HTML chart in the inbuilt or system web browser. </li>
+</ul>
 
 </div>
 </div>
@@ -2413,6 +2537,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#af6b259db07865adbf9a769accd29dbc9" title="stop (current operation) action">MainWindow::act_stop</a>: stops the currently running operation(s). </p>
+<p>These operations can be either cw generation or cw sharing, which run in a separate thread, to avoid blocking the UI. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5df865096692aaa28539442c5410992d" title="Stops all running threads.">stop_all_threads()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a4f8a5fe9d720775e66e608eb08de470e"></a>
@@ -2430,6 +2557,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>On Changed slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#af6b259db07865adbf9a769accd29dbc9" title="stop (current operation) action">MainWindow::act_stop</a>. </p>
+<p>Hides or shows the Stop button in the status bar based on the action's visibility. </p>
 
 </div>
 </div>
@@ -2459,6 +2589,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53b85bc2fd3ad6059e297e65fbfbad40" title="suggest word action">MainWindow::act_suggest</a>: brings up a list of words for the selected one in the grid and lets the user place it into the grid. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac541c13546f392d72968c178caac12a8" title="Shows the Suggest Word dialog to suggest variants for a given word.">get_word_suggestion()</a> </dd></dl>
+
 </div>
 </div>
 <a id="ad1dcce94b9fa6d3ad0e9707d9c6cff0f"></a>
@@ -2486,6 +2619,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac046a19b478c1b48b0a602fae2920e8c" title="check for update action">MainWindow::act_update</a>: checks for app updates on the server (github). </p>
+<p>If a new version is available and the user accepts it, the app will close down and update itself, then start up again. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="[Updater] instance (used to run app update checks and updates)">MainWindow::updater</a> </dd></dl>
 
 </div>
 </div>
@@ -2515,6 +2651,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6d0a8ef33bc3a1ac0b97c297b7503c3a">MainWindow::act_view_showtoolbar</a>: shows or hides the main toolbar. </p>
+
 </div>
 </div>
 <a id="aece01cc7c7db89c508ba375bea18551f"></a>
@@ -2542,6 +2680,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ab4e522d24edea4ab9a63dd4e1490cfa0" title="edit word sources action">MainWindow::act_wsrc</a>: opens the word source settings to let the use choose / add word sources for crossword generation. </p>
 
 </div>
 </div>
@@ -2614,10 +2754,15 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Fires every time a cell in clues table has been edited (manually) and
-is about to write data back to model. We implement this slot
-to validate the entered text, update the CW grid and the clues table.
-</pre> 
+
+<p>Fires every time a cell in clues table has been edited (manually) and is about to write data back to the underlying model. </p>
+<p>We implement this slot to validate the entered text, update the CW grid and the clues table. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">editor</td><td>[QWidget] the internal widget used for editing the clue item (here = QLineEdit) </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ad1a70687e22750713a3e7d8a6eccbf4d"></a>
@@ -2645,8 +2790,15 @@ to validate the entered text, update the CW grid and the clues table.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">When a new language in the language combo is picked.
-</pre> 
+
+<p>Fires when a new language in the language combo is picked. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>[int] the selected index in the language combo </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="aecf059b31388407f4f16f4b5e77cf894"></a>
@@ -2680,8 +2832,16 @@ to validate the entered text, update the CW grid and the clues table.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">When a new grid cell item is focused.
-</pre> 
+
+<p>Fires when a new cw grid cell is focused. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">current</td><td>[QtWidgets.QTableWidgetItem] the currently focused cell </td></tr>
+    <tr><td class="paramname">previous</td><td>[QtWidgets.QTableWidgetItem] the previously focused cell </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ac669b6a585ca79a6400022c6736eb57a"></a>
@@ -2709,8 +2869,15 @@ to validate the entered text, update the CW grid and the clues table.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">When a new grid cell item is clicked (pressed).
-</pre> 
+
+<p>Fires when a cw grid cell is clicked (pressed). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>[QtWidgets.QTableWidgetItem] the pressed cell </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ab336fdfcb4ccfde89611c6afffecead9"></a>
@@ -2807,7 +2974,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) has encountered an error. </p>
+<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) has encountered an error. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">thread</td><td>[QtCore.QThread] the generation thread object (<a class="el" href="classpycross_1_1gui_1_1_gen_thread.html" title="Crossword generation thread class.">GenThread</a>) </td></tr>
@@ -2856,10 +3023,10 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires to show progress of cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>). </p>
+<p>Slot fires to show progress of cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cw_</td><td>[Crossword] pointer to the Crossword object that runs the generation </td></tr>
+    <tr><td class="paramname">cw_</td><td>[<a class="el" href="classpycross_1_1crossword_1_1_crossword.html">crossword::Crossword</a>] pointer to the Crossword object that runs the generation </td></tr>
     <tr><td class="paramname">complete_</td><td>[int] number of completed (filled) words </td></tr>
     <tr><td class="paramname">total_</td><td>[int] total number of words in cw grid </td></tr>
   </table>
@@ -2884,7 +3051,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) has been stopped. </p>
+<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) has been stopped. </p>
 
 </div>
 </div>
@@ -2914,7 +3081,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) has timed out. </p>
+<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) has timed out. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">timeout_</td><td>[float] timeout in (fractions of) seconds </td></tr>
@@ -2976,7 +3143,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) has completed. </p>
+<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) has completed. </p>
 
 </div>
 </div>
@@ -2996,7 +3163,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="cw generation worker thread">MainWindow::gen_thread</a>) starts up. </p>
+<p>Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>) starts up. </p>
 <p>Performs preliminary UI element setups. </p>
 
 </div>
@@ -3027,7 +3194,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Callback for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="Updater instance (used to run app update checks and updates)">MainWindow::updater</a>, fires when a new release is found. </p>
+<p>Callback for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="[Updater] instance (used to run app update checks and updates)">MainWindow::updater</a>, fires when a new release is found. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">new_version</td><td>[str] new version found on the server, e.g. '1.1' </td></tr>
@@ -3119,7 +3286,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) must ask user for an API key. </p>
+<p>Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) must ask user for an API key. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">res</td><td>[list] input data for the request handler: res[0] = API key entered by user [str] res[1] = user dialog result [bool]: True = OK, False = Cancel </td></tr>
@@ -3155,7 +3322,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) must ask user for a Bearer Token. </p>
+<p>Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) must ask user for a Bearer Token. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">res</td><td>[list] input data for the request handler: res[0] = Bearer Token entered by user [str] res[1] = user dialog result [bool]: True = OK, False = Cancel </td></tr>
@@ -3233,7 +3400,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) has encountered an error. </p>
+<p>Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) has encountered an error. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">thread</td><td>[QtCore.QThread] the sharer thread (<a class="el" href="classpycross_1_1gui_1_1_share_thread.html" title="Crossword sharing (in social networks) thread class.">ShareThread</a>) </td></tr>
@@ -3260,7 +3427,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) has completed its operation. </p>
+<p>Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) has completed its operation. </p>
 
 </div>
 </div>
@@ -3359,7 +3526,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Main worker slot (function) for the sharer thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>). </p>
+<p>Main worker slot (function) for the sharer thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>). </p>
 
 </div>
 </div>
@@ -3379,7 +3546,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when the share thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a>) starts up. </p>
+<p>Slot fires when the share thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a>) starts up. </p>
 <p>Clears status bar messages and updates actions. </p>
 
 </div>
@@ -3416,7 +3583,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Slot fires when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="sharer worker thread">MainWindow::share_thread</a> has uploaded the file (crossword) to the cloud storage. </p>
+<p>Slot fires when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="[ShareThread] sharer worker thread">MainWindow::share_thread</a> has uploaded the file (crossword) to the cloud storage. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filepth</td><td>[str] the source file full path </td></tr>
@@ -3453,6 +3620,15 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
+<p>Fires when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3090446c9165459f3f1b7ee308ae0071" title="cw scale slider">MainWindow::slider_cw_scale</a> is moved: rescales the crossword grid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>[int] the <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3090446c9165459f3f1b7ee308ae0071" title="cw scale slider">MainWindow::slider_cw_scale</a> value (scale %) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3a503b217af927ca326471cf5f04967c" title="Changes the scale of the crossword grid.">scale_cw()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a7080ac2dce2771506550bea923313dce"></a>
@@ -3481,6 +3657,9 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
+<p>Fires when <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a15f819e37dcc8897944d7d6408670d0b" title="status bar text 2 (other messages)">MainWindow::statusbar_l2</a> is double-clicked. </p>
+<p>When double-clicked on the app version (if a new version is available), the updater is launched. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad1dcce94b9fa6d3ad0e9707d9c6cff0f" title="Slot for MainWindow::act_update: checks for app updates on the server (github).">on_act_update()</a> </dd></dl>
+
 </div>
 </div>
 <a id="afc54655cd72c09ca57be545d36b45dc5"></a>
@@ -3508,6 +3687,14 @@ to validate the entered text, update the CW grid and the clues table.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Fires when the custom context meny is requested on the main toolbar. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">point</td><td>[QtCore.QPoint] the current cursor position (relative to toolbar coordinates) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -3548,8 +3735,18 @@ to validate the entered text, update the CW grid and the clues table.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Fires when the clues table columns have been moved by dragging.
-</pre> 
+
+<p>Fires when the clues table columns have been moved by dragging. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">logicalIndex</td><td>[int] the column's logical (independent) index </td></tr>
+    <tr><td class="paramname">oldVisualIndex</td><td>[int] the column's previous position (as seen in the table) </td></tr>
+    <tr><td class="paramname">newVisualIndex</td><td>[int] the column's new position (as seen in the table) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a8f313f5b792c1ecec0940b671fe02607" title="Updates the settings (CWSettings::settings) with current clue table&#39;s column parameters.">update_clue_column_settings()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a343f8cbe6d553108da320fac8d391a25"></a>
@@ -3583,6 +3780,15 @@ to validate the entered text, update the CW grid and the clues table.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Fires when the currenly selected clue item in <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a883e14b7cb682b4a1a56938ce809cbaa" title="clues table">MainWindow::tvClues</a> has changed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">current</td><td>[QtCore.QModelIndex] the currently selected items </td></tr>
+    <tr><td class="paramname">previous</td><td>[QtCore.QModelIndex] the previously selected items </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -3618,6 +3824,15 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
+<p>Fires when one or severals clue rows are selected in <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a883e14b7cb682b4a1a56938ce809cbaa" title="clues table">MainWindow::tvClues</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">selected</td><td>[QtCore.QItemSelection] the selected items </td></tr>
+    <tr><td class="paramname">deselected</td><td>[QtCore.QItemSelection] the deselected items </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="abef3b15b2a4834a6d53d1be83df680aa"></a>
@@ -3645,6 +3860,14 @@ to validate the entered text, update the CW grid and the clues table.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Fires when the custom context meny is requested on the crossword grid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">point</td><td>[QtCore.QPoint] the current cursor position (relative to grid coordinates) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -3794,7 +4017,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Saves / exports the current crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="Crossword instance.">MainWindow::cw</a>) to a given file and file type. </p>
+<p>Saves / exports the current crossword (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="[crossword::Crossword] instance">MainWindow::cw</a>) to a given file and file type. </p>
 <dl class="section see"><dt>See also</dt><dd>Description in <a class="el" href="classpycross_1_1gui_1_1_main_window.html#af97f1eb932b47905f4372410351c169b" title="Util function to save or export current crossword to a given file and file type.">_save_cw()</a> </dd></dl>
 
 </div>
@@ -3957,7 +4180,7 @@ to validate the entered text, update the CW grid and the clues table.
 <p>Opens a share link in inbuilt or external browser (for sharing) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">url</td><td>[str] the share URL generated by <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6a64fa626343bd96f9aec8a05b2626f9" title="Share object">MainWindow::sharer</a> </td></tr>
+    <tr><td class="paramname">url</td><td>[str] the share URL generated by <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6a64fa626343bd96f9aec8a05b2626f9" title="[utils::onlineservices::Share] object">MainWindow::sharer</a> </td></tr>
     <tr><td class="paramname">headers</td><td>[dict] HTTP headers passed to the request </td></tr>
     <tr><td class="paramname">error_keymap</td><td>[dict] error code-to-message mapping </td></tr>
   </table>
@@ -4919,6 +5142,8 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
+<p>inbuilt web browser </p>
+
 </div>
 </div>
 <a id="ad65095fb28fd45923aa74f83c0b016e8"></a>
@@ -4963,7 +5188,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>current word in grid </p>
+<p>[Word] currently selected word in grid </p>
 
 </div>
 </div>
@@ -4979,7 +5204,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Crossword instance. </p>
+<p>[<a class="el" href="classpycross_1_1crossword_1_1_crossword.html">crossword::Crossword</a>] instance </p>
 
 </div>
 </div>
@@ -4995,7 +5220,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>currently opened cw file <br  />
+<p>[str] currently opened cw file <br  />
  </p>
 
 </div>
@@ -5012,7 +5237,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>flag showing that current cw has been changed since last save <br  />
+<p>[bool] flag showing that current cw has been changed since last save <br  />
  </p>
 
 </div>
@@ -5045,6 +5270,8 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
+<p>About dialog. </p>
+
 </div>
 </div>
 <a id="ad371977d7083ce4e20be9b39a87c4e21"></a>
@@ -5058,6 +5285,8 @@ to validate the entered text, update the CW grid and the clues table.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>crossword information edit dialog </p>
 
 </div>
 </div>
@@ -5087,6 +5316,8 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
+<p>word meaning lookup dialog </p>
+
 </div>
 </div>
 <a id="aaccb128e05020f17f7c24281b1e6f12d"></a>
@@ -5115,7 +5346,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>SettingsDialog instance (settings window) </p>
+<p>[SettingsDialog] instance (settings window) </p>
 
 </div>
 </div>
@@ -5131,6 +5362,9 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
+<p>share settings dialog <br  />
+ </p>
+
 </div>
 </div>
 <a id="adecdac8c7cacff18aeffd8f0ae013325"></a>
@@ -5145,7 +5379,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>files to delete on startup / close </p>
+<p>[list] files to delete on startup / close </p>
 
 </div>
 </div>
@@ -5161,7 +5395,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>cw generation worker thread </p>
+<p>[<a class="el" href="classpycross_1_1gui_1_1_gen_thread.html" title="Crossword generation thread class.">GenThread</a>] cw generation worker thread </p>
 
 </div>
 </div>
@@ -5191,7 +5425,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>last pressed cell in cw grid </p>
+<p>[QtWidgets.QTableWidgetItem] last pressed cell in cw grid </p>
 
 </div>
 </div>
@@ -5347,7 +5581,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>sharer worker thread </p>
+<p>[<a class="el" href="classpycross_1_1gui_1_1_share_thread.html" title="Crossword sharing (in social networks) thread class.">ShareThread</a>] sharer worker thread </p>
 
 </div>
 </div>
@@ -5363,7 +5597,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Share object <br  />
+<p>[<a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html">utils::onlineservices::Share</a>] object <br  />
  </p>
 <p>Share instance used for cloud upload / sharing. </p>
 
@@ -5493,7 +5727,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>thread list to keep track of all spawned threads </p>
+<p>[list] thread list to keep track of all spawned threads </p>
 
 </div>
 </div>
@@ -5557,7 +5791,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>Updater instance (used to run app update checks and updates) </p>
+<p>[Updater] instance (used to run app update checks and updates) </p>
 
 </div>
 </div>
@@ -5573,7 +5807,7 @@ to validate the entered text, update the CW grid and the clues table.
       </table>
 </div><div class="memdoc">
 
-<p>empty word source instance <br  />
+<p>[<a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html">wordsrc::MultiWordsource</a>] empty word source instance <br  />
  </p>
 
 </div>

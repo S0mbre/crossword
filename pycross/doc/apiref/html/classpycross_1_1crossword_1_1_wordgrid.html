@@ -13,6 +13,8 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -77,22 +79,32 @@ $(function() {
 <div class="title">pycross.crossword.Wordgrid Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Core crossword implementation - a grid of characters + internal <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects.  
+ <a href="classpycross_1_1crossword_1_1_wordgrid.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a50bd3014b9fcd4a9ad0b87c174471b85"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a50bd3014b9fcd4a9ad0b87c174471b85">__init__</a> (self, data, data_type='<a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a2fc4b3a94b50bf7dc63718a3f5dd03b7">grid</a>', <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#ac45295055daff5571b1c73cac2cd4221">info</a>=<a class="el" href="classpycross_1_1crossword_1_1_c_w_info.html">CWInfo</a>(), <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a5835ec149c38856603b569451e53e888">on_reset</a>=None, <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a30c3eab22644e463cd7fb46e13e30105">on_clear</a>=None, <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a345f3ab1b2abd42b8e9717accdeb0282">on_change</a>=None, <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a3da6f83095b1dce5ad7426933e7a5084">on_clear_word</a>=None, <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a6e4007f182fcc164eb04a41b2858cd64">on_putchar</a>=None)</td></tr>
+<tr class="memdesc:a50bd3014b9fcd4a9ad0b87c174471b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor initializes the words and grid from the given grid data.  <a href="classpycross_1_1crossword_1_1_wordgrid.html#a50bd3014b9fcd4a9ad0b87c174471b85">More...</a><br /></td></tr>
 <tr class="separator:a50bd3014b9fcd4a9ad0b87c174471b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7e4f3fee6ef522992631b7cc9faa138"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#af7e4f3fee6ef522992631b7cc9faa138">initialize</a> (self, data, data_type='<a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a2fc4b3a94b50bf7dc63718a3f5dd03b7">grid</a>')</td></tr>
+<tr class="memdesc:af7e4f3fee6ef522992631b7cc9faa138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the internal char grid and words collection from given data.  <a href="classpycross_1_1crossword_1_1_wordgrid.html#af7e4f3fee6ef522992631b7cc9faa138">More...</a><br /></td></tr>
 <tr class="separator:af7e4f3fee6ef522992631b7cc9faa138"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70aa906b7d8fefb92d415a585ab18197"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a70aa906b7d8fefb92d415a585ab18197">validate</a> (self, <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a2fc4b3a94b50bf7dc63718a3f5dd03b7">grid</a>)</td></tr>
+<tr class="memdesc:a70aa906b7d8fefb92d415a585ab18197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the grid is appropriate.  <a href="classpycross_1_1crossword_1_1_wordgrid.html#a70aa906b7d8fefb92d415a585ab18197">More...</a><br /></td></tr>
 <tr class="separator:a70aa906b7d8fefb92d415a585ab18197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4097694a37ba1e19e2f1e8795c36ac9d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a4097694a37ba1e19e2f1e8795c36ac9d">reset</a> (self, <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a2fc4b3a94b50bf7dc63718a3f5dd03b7">grid</a>=None, update_internal_strings=False)</td></tr>
+<tr class="memdesc:a4097694a37ba1e19e2f1e8795c36ac9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reconstructs the internal grid from the given grid data.  <a href="classpycross_1_1crossword_1_1_wordgrid.html#a4097694a37ba1e19e2f1e8795c36ac9d">More...</a><br /></td></tr>
 <tr class="separator:a4097694a37ba1e19e2f1e8795c36ac9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65c3ffd6fc9f4328b2c733ef5769dba4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a65c3ffd6fc9f4328b2c733ef5769dba4">from_words</a> (self, <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a37be103a5788fc41586648ef622da6e8">words</a>, update_internal_strings=False)</td></tr>
+<tr class="memdesc:a65c3ffd6fc9f4328b2c733ef5769dba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the internal grid, dimensions and words from the given collection of <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects.  <a href="classpycross_1_1crossword_1_1_wordgrid.html#a65c3ffd6fc9f4328b2c733ef5769dba4">More...</a><br /></td></tr>
 <tr class="separator:a65c3ffd6fc9f4328b2c733ef5769dba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a745308fe5de43227a44655a20e072f84"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a745308fe5de43227a44655a20e072f84">grid_from_file</a> (self, gridfile)</td></tr>
+<tr class="memdesc:a745308fe5de43227a44655a20e072f84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Util function that reads a text file into a list of strings suitable as internal grid data.  <a href="classpycross_1_1crossword_1_1_wordgrid.html#a745308fe5de43227a44655a20e072f84">More...</a><br /></td></tr>
 <tr class="separator:a745308fe5de43227a44655a20e072f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd97301716ce4b85ffaf633cbbc1eea8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#abd97301716ce4b85ffaf633cbbc1eea8">from_file</a> (self, filename, file_format=None)</td></tr>
+<tr class="memdesc:abd97301716ce4b85ffaf633cbbc1eea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes grid data from a crossword file, text file, or JSON-formatter <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> collection dump.  <a href="classpycross_1_1crossword_1_1_wordgrid.html#abd97301716ce4b85ffaf633cbbc1eea8">More...</a><br /></td></tr>
 <tr class="separator:abd97301716ce4b85ffaf633cbbc1eea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4157a92a973747773928420ed271bbf5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a4157a92a973747773928420ed271bbf5">to_file</a> (self, filename, file_format=None)</td></tr>
 <tr class="separator:a4157a92a973747773928420ed271bbf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,12 +208,16 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a1721693f0a8b1d2b8e61b598ab16bf14"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a1721693f0a8b1d2b8e61b598ab16bf14">old_words</a></td></tr>
 <tr class="separator:a1721693f0a8b1d2b8e61b598ab16bf14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37be103a5788fc41586648ef622da6e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a37be103a5788fc41586648ef622da6e8">words</a></td></tr>
+<tr class="memdesc:a37be103a5788fc41586648ef622da6e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal words list (list of <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects)  <a href="classpycross_1_1crossword_1_1_wordgrid.html#a37be103a5788fc41586648ef622da6e8">More...</a><br /></td></tr>
 <tr class="separator:a37be103a5788fc41586648ef622da6e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fc4b3a94b50bf7dc63718a3f5dd03b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a2fc4b3a94b50bf7dc63718a3f5dd03b7">grid</a></td></tr>
+<tr class="memdesc:a2fc4b3a94b50bf7dc63718a3f5dd03b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal 2-dimensional character grid e.g.  <a href="classpycross_1_1crossword_1_1_wordgrid.html#a2fc4b3a94b50bf7dc63718a3f5dd03b7">More...</a><br /></td></tr>
 <tr class="separator:a2fc4b3a94b50bf7dc63718a3f5dd03b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa460773de56441d061a4a6ea290b6b71"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#aa460773de56441d061a4a6ea290b6b71">width</a></td></tr>
+<tr class="memdesc:aa460773de56441d061a4a6ea290b6b71"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of columns in grid  <a href="classpycross_1_1crossword_1_1_wordgrid.html#aa460773de56441d061a4a6ea290b6b71">More...</a><br /></td></tr>
 <tr class="separator:aa460773de56441d061a4a6ea290b6b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bf5abfe349b8fda041635437185b690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a4bf5abfe349b8fda041635437185b690">height</a></td></tr>
+<tr class="memdesc:a4bf5abfe349b8fda041635437185b690"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of rows in grid  <a href="classpycross_1_1crossword_1_1_wordgrid.html#a4bf5abfe349b8fda041635437185b690">More...</a><br /></td></tr>
 <tr class="separator:a4bf5abfe349b8fda041635437185b690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa020dd4660db76a1d3743566d71f9849"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#aa020dd4660db76a1d3743566d71f9849">stats</a></td></tr>
 <tr class="separator:aa020dd4660db76a1d3743566d71f9849"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,7 +245,10 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a37341f2df275bb071d5a45f50091d09d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a37341f2df275bb071d5a45f50091d09d">_word_lengths</a> (self)</td></tr>
 <tr class="separator:a37341f2df275bb071d5a45f50091d09d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Core crossword implementation - a grid of characters + internal <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects. </p>
+<p>This class provides most of the methods required to operate with crosswords on the low level, such as adding/deleting words, file I/O, replacing characters, checking word completeness, counting grid stats and so on. Low-level methods work on the internal character grid, i.e. with individual characters. Higher-level methods work with <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects (i.e. words). The class implements a 2-way correspondence between characters and words. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a50bd3014b9fcd4a9ad0b87c174471b85"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50bd3014b9fcd4a9ad0b87c174471b85">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -297,8 +316,62 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Constructor initializes the words and grid from the given grid data.
-</pre> 
+
+<p>Constructor initializes the words and grid from the given grid data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>[list|str] the input data to initialize the grid from; can be any of:<ul>
+<li>[list] list of grid rows, each row being itself either a concatenated string, e.g. '<em>*</em>*_*', or a list of characters, e.g. ['_', '*', '_', '*']</li>
+<li>[list] list of <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects</li>
+<li>[str] a single newline-delimited string representing the whole grid, see <a class="el" href="namespacepycross_1_1crossword.html#a0dfe8ebc053c5efc5e72ca7ee7cf5a29" title="a default cw grid structure - used by Crossword constructor as default grid initializer">crossword::DEFAULT_GRID</a></li>
+<li>[str] full path to an XPF or IPUZ crossword file, or a simple text file containing the cw grid </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">data_type</td><td>[str] hint used by the program to process the 'data' argument, can be any of:<ul>
+<li>'grid' = data is a list or str-type grid</li>
+<li>'words' = data is a list of <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects</li>
+<li>'file' = data is a file path </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">info</td><td>[<a class="el" href="classpycross_1_1crossword_1_1_c_w_info.html" title="A simple structure to hold crossword meta information, such as title, author, etc.">CWInfo</a>] crossword meta information, default = <a class="el" href="classpycross_1_1crossword_1_1_c_w_info.html" title="A simple structure to hold crossword meta information, such as title, author, etc.">CWInfo</a> default constructor </td></tr>
+    <tr><td class="paramname">on_reset</td><td>[callable] callback function triggered when the grid is reset via <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a4097694a37ba1e19e2f1e8795c36ac9d" title="Reconstructs the internal grid from the given grid data.">reset()</a> Callback parameters are:<ul>
+<li>[<a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">Wordgrid</a>] pointer to the calling class instance</li>
+<li>[list] pointer to <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a2fc4b3a94b50bf7dc63718a3f5dd03b7" title="internal 2-dimensional character grid e.g.">Wordgrid::grid</a> </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">on_clear</td><td>[callable] callback function triggered when the grid is cleared via <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#ad69c94a1421718e7ceed7d3d4b994e04">clear()</a> Callback parameters are:<ul>
+<li>[<a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">Wordgrid</a>] pointer to the calling class instance </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">on_change</td><td>[callable] callback function triggered when a word is changed via <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a568b86856c75311fb46d751606c5c1e5">change_word()</a> Callback parameters are:<ul>
+<li>[<a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">Wordgrid</a>] pointer to the calling class instance</li>
+<li>[<a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a>] <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> object being changed</li>
+<li>[str] word's text before the change </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">on_clear_word</td><td>[callable] callback function triggered when a word is cleared via <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a8066b5d704fc3096eaae7013fbcd2d83">clear_word()</a> Callback parameters are:<ul>
+<li>[<a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">Wordgrid</a>] pointer to the calling class instance</li>
+<li>[<a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a>] <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> object being cleared</li>
+<li>[str] word's text before clearing </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">on_putchar</td><td>[callable] callback function triggered when a charater is set in the grid via <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#acf6ba5e8186083078ef7c5f7da1a0089">put_char()</a> Callback parameters are:<ul>
+<li>[<a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">Wordgrid</a>] pointer to the calling class instance</li>
+<li>[Coord|2-tuple] coordinate of the character</li>
+<li>[str] character's previous value</li>
+<li>[str] character's new value </li>
+</ul>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classpycross_1_1crossword_1_1_c_w_error.html" title="General-purpose crossword exceptions.">CWError</a></td><td>wrong 'data_type' value </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -1201,6 +1274,21 @@ It accepts a single argument - a Word object, and returns True to exclude and Fa
       </table>
 </div><div class="memdoc">
 
+<p>Initializes grid data from a crossword file, text file, or JSON-formatter <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> collection dump. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>[str] path to the source file The file type can be any of:<ul>
+<li>XPF = see <a href="https://www.xwordinfo.com/XPF/">https://www.xwordinfo.com/XPF/</a></li>
+<li>IPUZ = see <a href="http://www.ipuz.org/">http://www.ipuz.org/</a></li>
+<li>JSON = a JSON dump of a list of <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects</li>
+<li>other (text) = a simple text file containing raw grid data </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">file_format</td><td>[str] hint to tell the program the file format (must be 'xpf', 'ipuz', 'json' or None). If None, the file type will be guessed from the file extension. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a65c3ffd6fc9f4328b2c733ef5769dba4"></a>
@@ -1234,10 +1322,22 @@ It accepts a single argument - a Word object, and returns True to exclude and Fa
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Constructs the internal grid, dimensions and words (with/without clues)
-from the given collection of Word objects ('words'). This is essentially
-the reverse of reset(), which constructs words from a given grid structure.
-</pre> 
+
+<p>Constructs the internal grid, dimensions and words from the given collection of <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects. </p>
+<p>This is essentially the reverse of <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a4097694a37ba1e19e2f1e8795c36ac9d" title="Reconstructs the internal grid from the given grid data.">reset()</a>, which constructs words from a given grid structure. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">words</td><td>[iterable] collection of source <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects used to populate the grid </td></tr>
+    <tr><td class="paramname">update_internal_strings</td><td>[bool] tells the function to update each <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> object's string representation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classpycross_1_1crossword_1_1_c_w_error.html" title="General-purpose crossword exceptions.">CWError</a></td><td>None 'words' argument is not initialized or inappropriate </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a8a94337d360227c1edc8b9fe7f2c64ff"></a>
@@ -1321,7 +1421,16 @@ the reverse of reset(), which constructs words from a given grid structure.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment"></pre> 
+
+<p>Util function that reads a text file into a list of strings suitable as internal grid data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gridfile</td><td>[str] path to the source text file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[list of str] grid rows as a list of concatenated strings </dd></dl>
+
 </div>
 </div>
 <a id="af7e4f3fee6ef522992631b7cc9faa138"></a>
@@ -1355,6 +1464,15 @@ the reverse of reset(), which constructs words from a given grid structure.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initializes the internal char grid and words collection from given data. </p>
+<dl class="section see"><dt>See also</dt><dd>See arguments and description in <b>init</b>() </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classpycross_1_1crossword_1_1_c_w_error.html" title="General-purpose crossword exceptions.">CWError</a></td><td>wrong 'data_type' value </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1879,14 +1997,28 @@ See reflect_bottom() for description of arguments.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Reconstructs the internal grid dimensions from the given
-grid pattern ('grid'). The following class members are fully re-initialized:
-    * words (list of Word) - the collection of Word objects
-    * grid (list of str) - the internal grid pattern OR the existing self.grid if == None
-    * width (int) - the horizontal size (in cells)
-    * height (int) - the vertical size (in cells)
-'update_internal_strings' tells the function to update each Word object's string representation
-</pre> 
+
+<p>Reconstructs the internal grid from the given grid data. </p>
+<p>The following class members are fully re-initialized:</p><ul>
+<li>words (list of <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a>) - the collection of <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects</li>
+<li>grid (list of str) - the internal grid pattern OR the existing self.grid if == None</li>
+<li>width (int) - the horizontal size (in cells)</li>
+<li>height (int) - the vertical size (in cells) <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">grid</td><td>[list|str] crossword grid &ndash; see 'data' argument in <b>init</b>() If None, <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a2fc4b3a94b50bf7dc63718a3f5dd03b7" title="internal 2-dimensional character grid e.g.">Wordgrid::grid</a> will be used, if initialized (otherwise, an exception will be raised) </td></tr>
+    <tr><td class="paramname">update_internal_strings</td><td>[bool] tells the function to update each <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> object's string representation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classpycross_1_1crossword_1_1_c_w_error.html" title="General-purpose crossword exceptions.">CWError</a></td><td>None 'grid' argument while <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a2fc4b3a94b50bf7dc63718a3f5dd03b7" title="internal 2-dimensional character grid e.g.">Wordgrid::grid</a> not initialized </td></tr>
+  </table>
+  </dd>
+</dl>
+</li>
+</ul>
+
 </div>
 </div>
 <a id="aac089316f595b41cedd7f4ec622c8cce"></a>
@@ -2062,10 +2194,25 @@ assending order: first on rows, then on columns.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Checks if the grid is appropriate:
-    * must be a 'str' or 'list' type
-    * must contain only a-z characters, BLANK, or FILLER, or FILLER2
-</pre> 
+
+<p>Checks if the grid is appropriate. </p>
+<p>The grid must:</p><ul>
+<li>be a 'str' or 'list' type</li>
+<li>contain only [a-z] characters, <a class="el" href="namespacepycross_1_1crossword.html#afb3aa0c5f1d57c3fe81d05ec8b95bc05" title="the placeholder used for blank cells">crossword::BLANK</a>, or <a class="el" href="namespacepycross_1_1crossword.html#a423f957b80b2300635537bd124e313c5" title="the placeholder used for filled (blocked / stopped) cells inside the cw grid (those that are usually ...">crossword::FILLER</a>, or <a class="el" href="namespacepycross_1_1crossword.html#a733507dc19c234e8ff24a0cc53ebb88a" title="the placeholder used for surrounding cells around the cw grid (used chiefly when the grid is of non-r...">crossword::FILLER2</a> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">grid</td><td>[list|str] crossword grid: either a newline-delimited single string or a 2-dimension list of individual characters (of type [str]) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classpycross_1_1crossword_1_1_c_w_error.html" title="General-purpose crossword exceptions.">CWError</a></td><td>incorrectly formatted grid </td></tr>
+  </table>
+  </dd>
+</dl>
+</li>
+</ul>
+
 </div>
 </div>
 <a id="a850783e8c5dc6d2aa41add06f166dffe"></a>
@@ -2109,6 +2256,9 @@ assending order: first on rows, then on columns.
       </table>
 </div><div class="memdoc">
 
+<p>internal 2-dimensional character grid e.g. </p>
+<p>[['f', 'a', 't', 'h', 'e', 'r', '*', '_', 'o', 'm'], [...]] </p>
+
 </div>
 </div>
 <a id="a4bf5abfe349b8fda041635437185b690"></a>
@@ -2122,6 +2272,8 @@ assending order: first on rows, then on columns.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>number of rows in grid </p>
 
 </div>
 </div>
@@ -2249,6 +2401,8 @@ assending order: first on rows, then on columns.
       </table>
 </div><div class="memdoc">
 
+<p>number of columns in grid </p>
+
 </div>
 </div>
 <a id="a37be103a5788fc41586648ef622da6e8"></a>
@@ -2262,6 +2416,8 @@ assending order: first on rows, then on columns.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>internal words list (list of <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects) </p>
 
 </div>
 </div>

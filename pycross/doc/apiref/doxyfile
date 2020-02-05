@@ -17,6 +17,8 @@ EXTRACT_PRIVATE        = YES
 ALIASES                = "lang_en=@if lang_en" \
                          "lang_ru=@if lang_ru" \
                          "end_lang=@endif"
+HTML_EXTRA_STYLESHEET  = "pycross\doc\apiref\css\dark\custom.css" \
+                         "pycross\doc\apiref\css\dark\custom_dark_theme.css"
 
 # Multi-lang comment block example:
 

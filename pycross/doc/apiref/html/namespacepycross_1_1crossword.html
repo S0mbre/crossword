@@ -13,6 +13,8 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -87,6 +89,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">General-purpose crossword exceptions.  <a href="classpycross_1_1crossword_1_1_c_w_error.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_c_w_info.html">CWInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple structure to hold crossword meta information, such as title, author, etc.  <a href="classpycross_1_1crossword_1_1_c_w_info.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_c_w_stop_check.html">CWStopCheck</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generation interrupt exception.  <a href="classpycross_1_1crossword_1_1_c_w_stop_check.html#details">More...</a><br /></td></tr>
@@ -98,21 +101,28 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility class that converts HTML text to plain text.  <a href="classpycross_1_1crossword_1_1_m_l_stripper.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_word.html">Word</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of a single word in a hypothetical crossword.  <a href="classpycross_1_1crossword_1_1_word.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html">Wordgrid</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core crossword implementation - a grid of characters + internal <a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a> objects.  <a href="classpycross_1_1crossword_1_1_wordgrid.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a423f957b80b2300635537bd124e313c5"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1crossword.html#a423f957b80b2300635537bd124e313c5">FILLER</a> = '*'</td></tr>
+<tr class="memdesc:a423f957b80b2300635537bd124e313c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">the placeholder used for filled (blocked / stopped) cells inside the cw grid (those that are usually shown as black cells in print)  <a href="namespacepycross_1_1crossword.html#a423f957b80b2300635537bd124e313c5">More...</a><br /></td></tr>
 <tr class="separator:a423f957b80b2300635537bd124e313c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a733507dc19c234e8ff24a0cc53ebb88a"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1crossword.html#a733507dc19c234e8ff24a0cc53ebb88a">FILLER2</a> = '~'</td></tr>
+<tr class="memdesc:a733507dc19c234e8ff24a0cc53ebb88a"><td class="mdescLeft">&#160;</td><td class="mdescRight">the placeholder used for surrounding cells around the cw grid (used chiefly when the grid is of non-rectangular form)  <a href="namespacepycross_1_1crossword.html#a733507dc19c234e8ff24a0cc53ebb88a">More...</a><br /></td></tr>
 <tr class="separator:a733507dc19c234e8ff24a0cc53ebb88a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb3aa0c5f1d57c3fe81d05ec8b95bc05"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1crossword.html#afb3aa0c5f1d57c3fe81d05ec8b95bc05">BLANK</a> = '_'</td></tr>
+<tr class="memdesc:afb3aa0c5f1d57c3fe81d05ec8b95bc05"><td class="mdescLeft">&#160;</td><td class="mdescRight">the placeholder used for blank cells  <a href="namespacepycross_1_1crossword.html#afb3aa0c5f1d57c3fe81d05ec8b95bc05">More...</a><br /></td></tr>
 <tr class="separator:afb3aa0c5f1d57c3fe81d05ec8b95bc05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dfe8ebc053c5efc5e72ca7ee7cf5a29"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1crossword.html#a0dfe8ebc053c5efc5e72ca7ee7cf5a29">DEFAULT_GRID</a> = \</td></tr>
+<tr class="memdesc:a0dfe8ebc053c5efc5e72ca7ee7cf5a29"><td class="mdescLeft">&#160;</td><td class="mdescRight">a default cw grid structure - used by <a class="el" href="classpycross_1_1crossword_1_1_crossword.html">Crossword</a> constructor as default grid initializer  <a href="namespacepycross_1_1crossword.html#a0dfe8ebc053c5efc5e72ca7ee7cf5a29">More...</a><br /></td></tr>
 <tr class="separator:a0dfe8ebc053c5efc5e72ca7ee7cf5a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb91b42f989ff62631e61a2a05e4fb0c"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1crossword.html#abb91b42f989ff62631e61a2a05e4fb0c">LOG_INDENT</a> = '\t'</td></tr>
+<tr class="memdesc:abb91b42f989ff62631e61a2a05e4fb0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">indentation character(s) in log messages  <a href="namespacepycross_1_1crossword.html#abb91b42f989ff62631e61a2a05e4fb0c">More...</a><br /></td></tr>
 <tr class="separator:abb91b42f989ff62631e61a2a05e4fb0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -128,6 +138,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>the placeholder used for blank cells </p>
+
 </div>
 </div>
 <a id="a0dfe8ebc053c5efc5e72ca7ee7cf5a29"></a>
@@ -141,6 +153,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>a default cw grid structure - used by <a class="el" href="classpycross_1_1crossword_1_1_crossword.html">Crossword</a> constructor as default grid initializer </p>
 
 </div>
 </div>
@@ -156,6 +170,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>the placeholder used for filled (blocked / stopped) cells inside the cw grid (those that are usually shown as black cells in print) </p>
+
 </div>
 </div>
 <a id="a733507dc19c234e8ff24a0cc53ebb88a"></a>
@@ -170,6 +186,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>the placeholder used for surrounding cells around the cw grid (used chiefly when the grid is of non-rectangular form) </p>
+
 </div>
 </div>
 <a id="abb91b42f989ff62631e61a2a05e4fb0c"></a>
@@ -183,6 +201,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>indentation character(s) in log messages </p>
 
 </div>
 </div>

@@ -12,9 +12,15 @@ from html.parser import HTMLParser
 
 # ******************************************************************************** #
 
+## the placeholder used for filled (blocked / stopped) cells inside the cw grid
+# (those that are usually shown as black cells in print)
 FILLER = '*'
+## the placeholder used for surrounding cells around the cw grid
+# (used chiefly when the grid is of non-rectangular form)
 FILLER2 = '~'
+## the placeholder used for blank cells
 BLANK = '_'
+## a default cw grid structure - used by Crossword constructor as default grid initializer
 DEFAULT_GRID = \
 """____*___*____
 *_*_______*_*
@@ -22,6 +28,7 @@ DEFAULT_GRID = \
 *_**_____****
 ___**_*_**___
 *_*********_*"""
+## indentation character(s) in log messages
 LOG_INDENT = '\t'
 
 # ******************************************************************************** #
@@ -69,7 +76,7 @@ class MLStripper(HTMLParser):
 # All coordinates are given as 2-tuples (x, y): x = row, y = column (0-based)
 class Coords:
     
-    ## The Coords constructor: initializes and validates Coords::start and Coords::end
+    ## The Coords constructor: initializes and validates Coords::start and Coords::end.
     # @param coord_start [2-tuple] the start coordinate (x, y)
     # @param coord_end [2-tuple] the end coordinate (x, y)
     def __init__(self, coord_start, coord_end):
@@ -79,7 +86,7 @@ class Coords:
         self.end = coord_end
         self.validate()
         
-    ## Validates the start and end coordinates passed to Coords::__init__()
+    ## Validates the start and end coordinates passed to Coords::__init__().
     # @exception CWError at least one coordinate is incorrect (relevant to the other)
     def validate(self):
         if not isinstance(self.start, tuple) or not isinstance(self.end, tuple):
@@ -100,7 +107,7 @@ class Coords:
         else:
             raise CWError(_('One coordinate must be equal!'))
 
-    ## Outputs a list of (x,y) coordinates (2-tuples) between Coords::start and Coords::end
+    ## Outputs a list of (x,y) coordinates (2-tuples) between Coords::start and Coords::end.
     # @returns [list] a list of coordinate 2-tuples beginning with Coords::start and ending with Coords::end
     def coord_array(self):
         if self.dir == 'h': 
@@ -110,7 +117,7 @@ class Coords:
             l = self.end[1] - self.start[1] + 1
             return [(self.start[0], i + self.start[1]) for i in range(l)]
         
-    ## Checks if a coordinate lies anywhere between Coords::start and Coords::end
+    ## Checks if a coordinate lies anywhere between Coords::start and Coords::end.
     # @param coord [tuple] the coordinate to check
     # @returns [bool] True if coord crosses (lies between Coords::start and Coords::end), False otherwise
     def does_cross(self, coord):
@@ -119,61 +126,125 @@ class Coords:
                 return True
         return False
 
-    ## Python len() overload: the distance between Coords::start and Coords::end
+    ## Python len() overload: the distance between Coords::start and Coords::end.
     def __len__(self):
         cooord_index = 1 if self.dir == 'v' else 0
         return self.end[cooord_index] - self.start[cooord_index] + 1
     
-    ## Python repr() overload: human-readable representation of Coords
+    ## Python repr() overload: human-readable representation of Coords.
     def __repr__(self):
         return _("Coords object :: start = {}, end = {}, dir = '{}'").format(repr(self.start), repr(self.end), self.dir)
 
 # ******************************************************************************** #
 
+## @brief Implementation of a single word in a hypothetical crossword.
+# The class adds to Coords the word number (as found in a crossword), word string, and clue text.
 class Word(Coords):
     
+    ## Initializes and validates data.
+    # @param coord_start [2-tuple] the start coordinate (x, y)
+    # @param coord_end [2-tuple] the end coordinate (x, y)
+    # @param num [int] word number (in a hypothetical cw grid)
+    # @param clue [str] word clue text, e.g. "NBA superstar Jordan's first name"
+    # @param word [str] word text, e.g. "FATHER"
     def __init__(self, coord_start, coord_end, num=0, clue='', word=None):
         super().__init__(coord_start, coord_end)
+        ## [int] word number (in a hypothetical cw grid)
         self.num = num
+        ## [str] word clue text
         self.clue = clue
         self.set_word(word)
         
+    ## Sets the internal word string (text).
+    # @param wd [str] the word text
+    # @exception CWError passed word has incorrect length (not corresponding to Coords::__len__())
     def set_word(self, wd):
         if not wd is None and len(wd) != len(self):
             raise CWError(_('Word length is not correct!'))
+        ## [str] word text
         self.word = wd
         
+    ## Python hash() overload: to make Word objects comparable / searchable in collections.
     def __hash__(self):
         return hash((self.start, self.dir))
                 
+    ## Python repr() overload: human-readable representation of Word object.
     def __repr__(self):
         return _("Word object :: num = {}, start = {}, end = {}, dir = '{}'").format(self.num, repr(self.start), repr(self.end), self.dir)
     
 # ******************************************************************************** # 
-        
+
+## @brief A simple structure to hold crossword meta information, such as title, author, etc.        
 class CWInfo:
     
     def __init__(self, title='', author='', editor='', publisher='', cpyright='', date=None):
+        ## [str] title
         self.title = title
+        ## [str] author name
         self.author = author
+        ## [str] editor name
         self.editor = editor
+        ## [str] publisher name
         self.publisher = publisher
+        ## [str] copyright info
         self.cpyright = cpyright
+        ## [datetime] creation date
         self.date = date
 
+    ## Python str() overload for handy console output
     def __str__(self):
         return '\n'.join((f"{key}='{value}'" for key, value in self.__dict__.items()))
     
 # ******************************************************************************** #
-        
+
+## @brief Core crossword implementation - a grid of characters + internal Word objects.
+# This class provides most of the methods required to operate with crosswords on
+# the low level, such as adding/deleting words, file I/O, replacing characters,
+# checking word completeness, counting grid stats and so on.
+# Low-level methods work on the internal character grid, i.e. with individual characters.
+# Higher-level methods work with Word objects (i.e. words). The class implements a 2-way
+# correspondence between characters and words.
 class Wordgrid:
     
+    ## Constructor initializes the words and grid from the given grid data.
+    # @param data [list|str] the input data to initialize the grid from; can be any of:
+    #   * [list] list of grid rows, each row being itself either a concatenated string, 
+    #            e.g. '_*_*_*', or a list of characters, e.g. ['_', '*', '_', '*']
+    #   * [list] list of Word objects
+    #   * [str] a single newline-delimited string representing the whole grid, see crossword::DEFAULT_GRID
+    #   * [str] full path to an XPF or IPUZ crossword file, or a simple text file containing the cw grid
+    # @param data_type [str] hint used by the program to process the 'data' argument, can be any of:
+    #   * 'grid' = data is a list or str-type grid
+    #   * 'words' = data is a list of Word objects
+    #   * 'file' = data is a file path
+    # @param info [CWInfo] crossword meta information, default = CWInfo default constructor
+    # @param on_reset [callable] callback function triggered when the grid is reset via reset()
+    # Callback parameters are:
+    #   * [Wordgrid] pointer to the calling class instance
+    #   * [list] pointer to Wordgrid::grid
+    # @param on_clear [callable] callback function triggered when the grid is cleared via clear()
+    # Callback parameters are:
+    #   * [Wordgrid] pointer to the calling class instance
+    # @param on_change [callable] callback function triggered when a word is changed via change_word()
+    # Callback parameters are:
+    #   * [Wordgrid] pointer to the calling class instance
+    #   * [Word] Word object being changed
+    #   * [str] word's text before the change
+    # @param on_clear_word [callable] callback function triggered when a word is cleared via clear_word()
+    # Callback parameters are:
+    #   * [Wordgrid] pointer to the calling class instance
+    #   * [Word] Word object being cleared
+    #   * [str] word's text before clearing
+    # @param on_putchar [callable] callback function triggered when a charater is set in the grid via put_char()
+    # Callback parameters are:
+    #   * [Wordgrid] pointer to the calling class instance
+    #   * [Coord|2-tuple] coordinate of the character
+    #   * [str] character's previous value
+    #   * [str] character's new value
+    # @exception CWError wrong 'data_type' value
     def __init__(self, data, data_type='grid', info=CWInfo(), 
                  on_reset=None, on_clear=None, on_change=None, 
-                 on_clear_word=None, on_putchar=None):   
-        """
-        Constructor initializes the words and grid from the given grid data.
-        """
+                 on_clear_word=None, on_putchar=None):
         self.info = info
         self.on_reset = on_reset
         self.on_clear = on_clear
@@ -183,6 +254,9 @@ class Wordgrid:
         self.old_words = None
         self.initialize(data, data_type)
             
+    ## Initializes the internal char grid and words collection from given data.
+    # @see See arguments and description in __init__()
+    # @exception CWError wrong 'data_type' value
     def initialize(self, data, data_type='grid'):
         if data_type == 'grid':
             self.reset(data)
@@ -193,12 +267,14 @@ class Wordgrid:
         else:
             raise CWError(_("Wrong 'data_type' argument: '{}'! Must be 'grid' OR 'words' OR 'file'!").format(data_type))
         
+    ## @brief Checks if the grid is appropriate.
+    # The grid must:
+    #   * be a 'str' or 'list' type
+    #   * contain only [a-z] characters, crossword::BLANK, or crossword::FILLER, or crossword::FILLER2
+    # @param grid [list|str] crossword grid: either a newline-delimited single string 
+    # or a 2-dimension list of individual characters (of type [str])
+    # @exception CWError incorrectly formatted grid
     def validate(self, grid):
-        """
-        Checks if the grid is appropriate:
-            * must be a 'str' or 'list' type
-            * must contain only a-z characters, BLANK, or FILLER, or FILLER2
-        """
         if isinstance(grid, str):
             grid = grid.split('\n')
             if len(grid) < 2:
@@ -212,16 +288,18 @@ class Wordgrid:
         
         raise CWError(_('Grid must be passed either as a list of strings or a single string of rows delimited by new-line symbols!'))                  
         
+    ## @brief Reconstructs the internal grid from the given grid data.
+    # The following class members are fully re-initialized:
+    #   * Wordgrid::words - the collection of Word objects
+    #   * Wordgrid::grid - the internal grid pattern OR the existing self.grid if == None
+    #   * Wordgrid::width - the horizontal size (in cells)
+    #   * Wordgrid::height - the vertical size (in cells)
+    # @param grid [list|str] crossword grid -- see 'data' argument in __init__()
+    # If None, Wordgrid::grid will be used, if initialized (otherwise, an exception will be raised)
+    # @param update_internal_strings [bool] tells the function to update each 
+    # Word object's string representation
+    # @exception CWError None 'grid' argument while Wordgrid::grid not initialized 
     def reset(self, grid=None, update_internal_strings=False):
-        """
-        Reconstructs the internal grid dimensions from the given
-        grid pattern ('grid'). The following class members are fully re-initialized:
-            * words (list of Word) - the collection of Word objects
-            * grid (list of str) - the internal grid pattern OR the existing self.grid if == None
-            * width (int) - the horizontal size (in cells)
-            * height (int) - the vertical size (in cells)
-        'update_internal_strings' tells the function to update each Word object's string representation
-        """
         if grid is None and not getattr(self, 'grid', None): 
             raise CWError(_('Cannot call reset() on a null grid!'))
             
@@ -239,7 +317,7 @@ class Wordgrid:
         
         # get number of rows
         lgrid = len(grid)   
-        # initialize words list
+        ## internal words list (list of Word objects)
         self.words = []
         
         # get get horizontal words
@@ -286,19 +364,27 @@ class Wordgrid:
         
         # sort words using default sorting method
         self.sort()
+        ## internal 2-dimensional character grid
+        # e.g. [['f', 'a', 't', 'h', 'e', 'r', '*', '_', 'o', 'm'], [...]]
         self.grid = grid
+        ## number of columns in grid
         self.width = grid_width
+        ## number of rows in grid
         self.height = lgrid  
         if update_internal_strings: self.update_word_strings()
         if self.on_reset: self.on_reset(self, self.grid)
         
+    ## @brief Constructs the internal grid, dimensions and words 
+    # from the given collection of Word objects.
+    # 
+    # This is essentially the reverse of reset(), 
+    # which constructs words from a given grid structure.
+    # @param words [iterable] collection of source Word objects used to populate the grid
+    # @param update_internal_strings [bool] tells the function to update each 
+    # Word object's string representation
+    # @exception CWError None 'words' argument is not initialized or inappropriate
     def from_words(self, words, update_internal_strings=False):
-        """
-        Constructs the internal grid, dimensions and words (with/without clues)
-        from the given collection of Word objects ('words'). This is essentially
-        the reverse of reset(), which constructs words from a given grid structure.
-        """
-        if not words or not hasattr(words, '__iter__') or not isinstance(words[0], Coords):
+        if not words or not is_iterable(words) or not isinstance(words[0], Coords):
             raise CWError(_(f'"words" argument must be a non-empty collection of Word / Coords objects!'))
             
         # calculate the grid dimensions
@@ -333,9 +419,10 @@ class Wordgrid:
         # update Word objects if necessary
         if update_internal_strings: self.update_word_strings()
 
+    ## Util function that reads a text file into a list of strings suitable as internal grid data.
+    # @param gridfile [str] path to the source text file
+    # @returns [list of str] grid rows as a list of concatenated strings
     def grid_from_file(self, gridfile):
-        """
-        """
         cwgrid = []
         with open(gridfile, 'r', encoding=ENCODING, errors='replace') as file:
             for ln in file:
@@ -346,6 +433,15 @@ class Wordgrid:
                 cwgrid.append(s)            
         return cwgrid
         
+    ## Initializes grid data from a crossword file, text file, or JSON-formatter Word collection dump.
+    # @param filename [str] path to the source file
+    # The file type can be any of:
+    #   * XPF = see https://www.xwordinfo.com/XPF/
+    #   * IPUZ = see http://www.ipuz.org/ 
+    #   * JSON = a JSON dump of a list of Word objects 
+    #   * other (text) = a simple text file containing raw grid data
+    # @param file_format [str] hint to tell the program the file format (must be 'xpf', 'ipuz', 'json' or None).
+    # If None, the file type will be guessed from the file extension.
     def from_file(self, filename, file_format=None):
         if file_format is None:
             file_format = os.path.splitext(filename)[1][1:].lower()

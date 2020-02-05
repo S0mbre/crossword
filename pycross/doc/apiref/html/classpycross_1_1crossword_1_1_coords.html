@@ -13,6 +13,8 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -85,7 +87,7 @@ Inheritance diagram for pycross.crossword.Coords:</div>
  <div class="center">
   <img src="classpycross_1_1crossword_1_1_coords.png" usemap="#pycross.crossword.Coords_map" alt=""/>
   <map id="pycross.crossword.Coords_map" name="pycross.crossword.Coords_map">
-<area href="classpycross_1_1crossword_1_1_word.html" alt="pycross.crossword.Word" shape="rect" coords="0,56,165,80"/>
+<area href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword." alt="pycross.crossword.Word" shape="rect" coords="0,56,165,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -95,7 +97,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2198c362c1a76155ec0664d6a5632d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classpycross_1_1crossword_1_1_coords.html" title="This is a base class for word objects, basically consisting of a pair of (x, y) coordinates: the star...">Coords</a> constructor: initializes and validates <a class="el" href="classpycross_1_1crossword_1_1_coords.html#aafee679e31e2ee629dce0ddc75fe3828" title="[2-tuple] the start coordinate (x, y)">Coords::start</a> and <a class="el" href="classpycross_1_1crossword_1_1_coords.html#acc3af819e1679272318353da4805d375" title="[2-tuple] the end coordinate (x, y)">Coords::end</a>.  <a href="classpycross_1_1crossword_1_1_coords.html#a2198c362c1a76155ec0664d6a5632d1a">More...</a><br /></td></tr>
 <tr class="separator:a2198c362c1a76155ec0664d6a5632d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16cc083a8e65dc36b44fd750e419f742"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_coords.html#a16cc083a8e65dc36b44fd750e419f742">validate</a> (self)</td></tr>
-<tr class="memdesc:a16cc083a8e65dc36b44fd750e419f742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the start and end coordinates passed to <a class="el" href="classpycross_1_1crossword_1_1_coords.html" title="This is a base class for word objects, basically consisting of a pair of (x, y) coordinates: the star...">Coords</a>::<b>init</b>()  <a href="classpycross_1_1crossword_1_1_coords.html#a16cc083a8e65dc36b44fd750e419f742">More...</a><br /></td></tr>
+<tr class="memdesc:a16cc083a8e65dc36b44fd750e419f742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the start and end coordinates passed to <a class="el" href="classpycross_1_1crossword_1_1_coords.html" title="This is a base class for word objects, basically consisting of a pair of (x, y) coordinates: the star...">Coords</a>::<b>init</b>().  <a href="classpycross_1_1crossword_1_1_coords.html#a16cc083a8e65dc36b44fd750e419f742">More...</a><br /></td></tr>
 <tr class="separator:a16cc083a8e65dc36b44fd750e419f742"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3d44731dacf062c80a40a60016e1a41"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_coords.html#ab3d44731dacf062c80a40a60016e1a41">coord_array</a> (self)</td></tr>
 <tr class="memdesc:ab3d44731dacf062c80a40a60016e1a41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outputs a list of (x,y) coordinates (2-tuples) between <a class="el" href="classpycross_1_1crossword_1_1_coords.html#aafee679e31e2ee629dce0ddc75fe3828" title="[2-tuple] the start coordinate (x, y)">Coords::start</a> and <a class="el" href="classpycross_1_1crossword_1_1_coords.html#acc3af819e1679272318353da4805d375" title="[2-tuple] the end coordinate (x, y)">Coords::end</a>.  <a href="classpycross_1_1crossword_1_1_coords.html#ab3d44731dacf062c80a40a60016e1a41">More...</a><br /></td></tr>
@@ -286,7 +288,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Validates the start and end coordinates passed to <a class="el" href="classpycross_1_1crossword_1_1_coords.html" title="This is a base class for word objects, basically consisting of a pair of (x, y) coordinates: the star...">Coords</a>::<b>init</b>() </p>
+<p>Validates the start and end coordinates passed to <a class="el" href="classpycross_1_1crossword_1_1_coords.html" title="This is a base class for word objects, basically consisting of a pair of (x, y) coordinates: the star...">Coords</a>::<b>init</b>(). </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classpycross_1_1crossword_1_1_c_w_error.html" title="General-purpose crossword exceptions.">CWError</a></td><td>at least one coordinate is incorrect (relevant to the other) </td></tr>

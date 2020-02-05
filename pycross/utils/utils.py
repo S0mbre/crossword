@@ -2,6 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
+## @package utils
 import sys, os, subprocess, traceback, uuid, tempfile, platform
 from datetime import datetime, time
 

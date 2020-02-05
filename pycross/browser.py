@@ -7,6 +7,7 @@
 # https://doc.qt.io/qt-5/qtwebengine-webenginewidgets-simplebrowser-example.html
 # ******************************************************************************** #
 
+## @package pycross
 from PyQt5 import (QtGui, QtCore, QtWidgets, QtNetwork, 
                     QtWebEngineWidgets, QtWebEngineCore)
 
