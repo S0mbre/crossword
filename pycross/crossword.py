@@ -245,12 +245,19 @@ class Wordgrid:
     def __init__(self, data, data_type='grid', info=CWInfo(), 
                  on_reset=None, on_clear=None, on_change=None, 
                  on_clear_word=None, on_putchar=None):
+        ## [CWInfo] crossword meta info, such as title, author, etc.
         self.info = info
+        ## callback function triggered when the grid is reset via reset()
         self.on_reset = on_reset
+        ## callback function triggered when the grid is cleared via clear()
         self.on_clear = on_clear
+        ## callback function triggered when a word is changed via change_word()
         self.on_change = on_change
+        ## callback function triggered when a word is cleared via clear_word()
         self.on_clear_word = on_clear_word
+        ## callback function triggered when a charater is set in the grid via put_char()
         self.on_putchar = on_putchar
+        ## backup of Wordgrid::words used in save() and restore()
         self.old_words = None
         self.initialize(data, data_type)
             
@@ -462,6 +469,8 @@ class Wordgrid:
             # assume simple grid text file
             self.reset(self.grid_from_file(filename))
     
+    ## Exports the crossword grid to a file.
+    # @see Description of arguments in from_file()
     def to_file(self, filename, file_format=None):
         if file_format is None:
             file_format = os.path.splitext(filename)[1][1:].lower()
@@ -481,6 +490,10 @@ class Wordgrid:
             with open(filename, 'w', encoding=ENCODING) as outfile:
                 outfile.write(self.tostr())
 
+    ## @brief Util function to parse IPUZ files.
+    # Resets Wordgrid::grid and Wordgrid::info from the file data.
+    # @param filename [str] path to the source file (*.ipuz)
+    # @see http://www.ipuz.org/ 
     def _parse_ipuz(self, filename):
 
         def _get_char(el, default=BLANK):
@@ -531,6 +544,13 @@ class Wordgrid:
                 w = self.find_by_num_dir(ipuz_w[0], 'h' if k == 'Across' else 'v')
                 if w: w.clue = ipuz_w[1]
 
+    ## @brief Util function to save the grid and info to an IPUZ file.
+    # Exports data from Wordgrid::grid and Wordgrid::info to the file.
+    # Since IPUZ files are JSON-formatted, json.dump() is used for exporting.
+    # @param filename [str] path to the source file (*.ipuz)
+    # @param ipuz_version [str] IPUZ API version (=2)
+    # @param ipuz_kind [str] IPUZ puzzle kind (=crossword)
+    # @see http://www.ipuz.org/ 
     def _save_ipuz(self, filename, ipuz_version='2', ipuz_kind='1'):
         ipuz = {'version': f"http://ipuz.org/v{ipuz_version}", 'kind': [f"http://ipuz.org/crossword#{ipuz_kind}"]}
         if self.info.title: ipuz['title'] = self.info.title
@@ -552,6 +572,10 @@ class Wordgrid:
         with open(filename, 'w', encoding=ENCODING) as outfile:
             json.dump(ipuz, outfile, ensure_ascii=False, indent='\t')
     
+    ## @brief Util function to parse XPF files.
+    # Resets Wordgrid::grid and Wordgrid::info from the file data.
+    # @param filename [str] path to the source file (*.xpf)
+    # @see https://www.xwordinfo.com/XPF/
     def _parse_xpf(self, filename):
         tree = ET.parse(filename)
         root = tree.getroot()
@@ -594,6 +618,12 @@ class Wordgrid:
             w = self.find_by_coord_dir(coord, direction)
             if w: w.clue = clue_str
             
+    ## @brief Util function to save the grid and info to an XPF file.
+    # Exports data from Wordgrid::grid and Wordgrid::info to the file.
+    # Since XPF files are XML-formatted, ElementTree (DOM) is used for exporting.
+    # @param filename [str] path to the source file (*.xpf)
+    # @param xpf_version [str] XPF API version (=1.0)
+    # @see https://www.xwordinfo.com/XPF/
     def _save_xpf(self, filename, xpf_version='1.0'):
         if not self.words: return
         root = ET.Element('Puzzles')
@@ -629,6 +659,9 @@ class Wordgrid:
         tree = ET.ElementTree(root)
         tree.write(filename, encoding=ENCODING, xml_declaration=True)
             
+    ## Util function: converts HTML to plain text.
+    # @param text [str] HTML-formatted text
+    # @returns [str] plain text
     def _strip_html(self, text):
         if text.startswith('![CDATA[') and text.endswith(']]'):
             text = text[8:-2]
@@ -636,70 +669,68 @@ class Wordgrid:
         text = stripper.strip(text)
         return text
     
+    ## Updates the internal strings for each word in grid.
     def update_word_strings(self):
-        """
-        Updates the internal strings for each word in grid.
-        """
         for w in self.words:
             w.set_word(self.get_word_str(w))
     
+    ## @brief Validates characters to use in the crossword grid.
+    # Only [a-z] (in any language, not ony ASCII!), BLANK, FILLER, and FILLER2 characters are allowed.
+    # @param char [str] character to validate
+    # @exception CWError invalid character
     def _validate_char(self, char):
         if not char.isalpha() and not char in (BLANK, FILLER, FILLER2):
             raise CWError(_('Character "{}" is invalid!').format(char))
     
+    ## Checks if the given coordinate lies within the grid dimensions.
+    # @param coord [2-tuple] coordinate to validate
+    # @exception CWError coordinate out of range
     def _validate_coord(self, coord):
-        """
-        Checks if the given coordinate lies within the grid range.
-        Raises an error if out of range.
-        """
         if coord[0] < 0 or coord[0] >= self.width or coord[1] < 0 or coord[1] >= self.height:
             raise CWError(_("Coordinate {} is out of the grid range (w={}, h={})!").format(repr(coord), self.width, self.height))
     
+    ## Checks if all the words are completed (have no blanks left).
+    # @returns [bool] True if grid contains no blanks, False otherwise
     def is_complete(self):
-        """
-        Checks if all the words are completed (have no blanks left).
-        """
         for r in self.grid:
             if BLANK in r: return False
         return True
 
+    ## @brief Removes the given row from grid. 
+    # Use with care! Destroys word structure.
+    # @param row [int] index of row to delete
     def remove_row(self, row):
-        """
-        Removes the given row from grid. Use with care! Destroys word structure.
-        """
         if row >= 0 and row < self.height:
             del self.grid[row]
             self.reset()
 
+    ## @brief Removes the given column from grid. 
+    # Use with care! Destroys word structure.
+    # @param col [int] index of column to delete
     def remove_column(self, col):
-        """
-        Removes the given column from grid. Use with care! Destroys word structure.
-        """
         if col >= 0 and col < self.width:
             for row in self.grid:
                 del row[col]
             self.reset()
 
+    ## @brief Inserts a new row after the one given by 'index'.
+    # If 'index' == -1, appends a row after the last one.    
+    # Use with care! Destroys word structure.
+    # @param index [int] index of row after which a new one will be inserted
+    # @param char [str] fill character for new row (default = BLANK)
     def add_row(self, index=-1, char=BLANK):
-        """
-        Inserts an empty row after the one given by 'index'.
-        If index == -1, appends a row after the last one.
-        'char' = fill character (default = BLANK).
-        Use with care! Destroys word structure.
-        """
         if index < 0 or index >= self.height:
             self.grid.append([char] * self.width)
         else:
             self.grid.insert(index, [char] * self.width)
         self.reset()
 
+    ## @brief Inserts a new column after the one given by 'index'.
+    # If 'index' == -1, appends a column after the last one.    
+    # Use with care! Destroys word structure.
+    # @param index [int] index of column after which a new one will be inserted
+    # @param char [str] fill character for new column (default = BLANK)
     def add_column(self, index=-1, char=BLANK):
-        """
-        Inserts an empty column after the one given by 'index'.
-        If index == -1, appends a column after the last one.
-        'char' = fill character (default = BLANK).
-        Use with care! Destroys word structure.
-        """
         for row in self.grid:
             if index < 0 or index >= self.width:
                 row.append(char)
@@ -707,20 +738,9 @@ class Wordgrid:
                 row.insert(index, char)
         self.reset()
 
+    ## Duplicates the current grid by reflecting its cells downwards.
+    # @see reflect() for description of arguments.
     def reflect_bottom(self, mirror=True, reverse=True, border=''):
-        """
-        Duplicates the current grid by reflecting its cells down.
-        * If 'mirror' is True (default), reflection will be mirror-like
-        (symmetrical against bottom line).
-        * If 'reverse' is True (default), reflection will be inverted
-        from left to right.
-        * If both arguments are False, a simle copy-paste duplication will
-        be performed.
-        * If 'border' is an empty string (default), no extra row will be put
-        between the existing and the new (reflected) cells.
-        Otherwise, 'border' is a 2-character pattern for the extra row,
-        e.g. '* ' means sequence of FILL and BLANK, '**' means all filled, etc.
-        """
         last_row = len(self.grid)
 
         if border:
@@ -740,11 +760,9 @@ class Wordgrid:
         self.grid += to_insert
         self.reset()
 
+    ## Duplicates the current grid by reflecting its cells upwards.
+    # @see reflect() for description of arguments.
     def reflect_top(self, mirror=True, reverse=True, border=''):
-        """
-        Duplicates the current grid by reflecting its cells up.
-        See reflect_bottom() for description of arguments.
-        """
         first_row = 0
         
         if border:
@@ -766,11 +784,9 @@ class Wordgrid:
         self.grid[0:0] = to_insert
         self.reset()
 
+    ## Duplicates the current grid by reflecting its cells to the right.
+    # @see reflect() for description of arguments.
     def reflect_right(self, mirror=True, reverse=True, border=''):
-        """
-        Duplicates the current grid by reflecting its cells right.
-        See reflect_bottom() for description of arguments.
-        """
         self.height = len(self.grid)
         last_col = self.width - 1
 
@@ -796,11 +812,9 @@ class Wordgrid:
 
         self.reset()
 
+    ## Duplicates the current grid by reflecting its cells to the left.
+    # @see reflect() for description of arguments.
     def reflect_left(self, mirror=True, reverse=True, border=''):
-        """
-        Duplicates the current grid by reflecting its cells left.
-        See reflect_bottom() for description of arguments.
-        """
         self.height = len(self.grid)
         first_col = 0
 
@@ -827,10 +841,26 @@ class Wordgrid:
 
         self.reset()
 
+    ## @brief Duplicates the current grid by reflecting its cells in a given direction.
+    # @param direction [str] the direction to duplicate / reflect the current grid:
+    #   * 'd[own]'  = downwards
+    #   * 'u[p]'    = upwards
+    #   * 'r[ight]' = to the right
+    #   * 'l[eft]'  = to the left
+    # @param mirror [bool] if True (default), reflection will be mirror-like
+    # (symmetrical against bottom line).
+    # @param reverse [bool] if True (default), reflection will be inverted
+    # from left to right.
+    # @param border [str] fill pattern for a border (row or column)
+    # between the existing and reflected blocks of cells.
+    # 
+    # If both 'mirror' and 'reflect' are False, a simle copy-paste duplication will
+    # be performed.
+    # If 'border' is an empty string (default), no extra row will be put
+    # between the existing and the new (reflected) cells.
+    # Otherwise, 'border' is a 2-character pattern for the extra row,
+    # e.g. '* ' means sequence of FILL and BLANK, '**' means all filled, etc.
     def reflect(self, direction='d', mirror=True, reverse=True, border=''):
-        """
-        Combined method for 'reflect_...' methods above.
-        """
         d = direction[-1].lower()
         if d == 'd':
             self.reflect_bottom(mirror, reverse, border)
@@ -841,10 +871,13 @@ class Wordgrid:
         elif d == 'l':
             self.reflect_left(mirror, reverse, border)
     
+    ## Finds all words intersecting the given word.
+    # @param word [Word] the given Word object for which intersects are to be searched
+    # @param word_coord_tuples [bool] if True, the results will include both the
+    # intersecting words and the intersect coordinates (as list of 2-tuples);
+    # otherwise, only the list of intersecting Word objects is returned
+    # @returns [list] list of Word objects or (Word, coord) tuples depending on 'word_coord_tuples'
     def intersects_of(self, word, word_coord_tuples=True):
-        """
-        Finds all words intersecting the given word.
-        """
         index1 = 0 if word.dir == 'h' else 1
         index2 = 0 if index1 else 1
         intersects = []
@@ -858,17 +891,16 @@ class Wordgrid:
                     intersects.append(w)
         return intersects
     
+    ## @brief Retrieves a next incomplete word (fully or partially blank).
+    # @param method [str] governs the search algorithm; it can be one of:
+    #   * 'first-incomplete' (default): the first incomplete word will be returned
+    #   * 'most-complete': the first word having the least blanks will be returned
+    #   * 'most-incomplete': the first word having the most blanks will be returned (i.e. fully blank word)
+    #   * 'random': a random incomplete word will be returned
+    # @param exclude [callable] allows excluding words from search.
+    # It accepts a single argument - a Word object, and returns True to exclude it and False otherwise
+    # @returns [Word|None] a next incomplete Word object in the grid, or None if no such words are found
     def find_incomplete(self, method='most-complete', exclude=None):
-        """
-        Retrieves a next incomplete word (fully or partially blank).
-        The 'method' argument (str) governs the search algorithm; it can be one of:
-            - 'first-incomplete' (default): the first incomplete word will be returned
-            - 'most-complete': the first word having the least blanks will be returned
-            - 'most-incomplete': the first word having the most blanks will be returned (i.e. fully blank word)
-            - 'random': a random incomplete word will be returned
-        The 'exclude' argument (callable) allows excluding words from search.
-        It accepts a single argument - a Word object, and returns True to exclude and False otherwise.
-        """
         word = (None, 0)
         words = []
         for w in self.words:
@@ -896,6 +928,8 @@ class Wordgrid:
                 
         return None
     
+    ## Counts incomplete words (those containing at least one BLANK).
+    # @returns [int] number of incomplete words
     def count_incomplete(self):
         c = 0
         for w in self.words:
@@ -903,11 +937,22 @@ class Wordgrid:
                 c += 1
         return c
     
+    ## @brief Gets the text of a Word object in the grid.
+    # Since the internal structure of Wordgrid is a matrix of characters 
+    # rather than an array of words, word strings (text representations)
+    # are not available at runtime and must be requested with this method.
+    # @param w [Word] the Word object to get the text for
+    # @returns [str] the text representation of the word (e.g. "father")
+    # @see update_word_strings()
     def get_word_str(self, w):
         if not w in self.words: 
             raise CWError(_("Word '{}' is absent from grid!").format(str(w)))
         return ''.join(self.grid[coord[1]][coord[0]] for coord in w.coord_array())
     
+    ## Checks if a word is complete (has no blanks).
+    # @param w [Word] the Word object
+    # @returns [bool] True if the word has no BLANK characters, False otherwise
+    # @see is_word_blank() - the reverse method
     def is_word_complete(self, w):
         if not w in self.words: 
             raise CWError(_("Word '{}' is absent from grid!").format(str(w)))
@@ -916,15 +961,33 @@ class Wordgrid:
                 return False
         return True
     
+    ## Checks if a word is blank (consists entirely of BLANK characters).
+    # @param w [Word] the Word object
+    # @returns [bool] True if the word has no characters other than BLANK, False otherwise
+    # @see is_word_complete() - the reverse method
     def is_word_blank(self, w):
         return self.get_word_str(w) == BLANK * len(w)
     
+    ## Finds a Word object in the Wordgrid::words collection.
+    # @param word [Word] the Word object to look for
+    # @returns [Word|None] the found Word object or None if not found
     def find(self, word):
         for w in self.words:
             if w == word:
                 return w
         return None
     
+    ## @brief Retrieves words intersecting the given coordinate.
+    # The method retrieves at most 2 words (across and down) for a given coordinate in the grid.
+    # @param coord [2-tuple] the (x, y) coordinate in the grid to find words for
+    # @param start_coord [bool] if True (default), only those words that start in that
+    # coordinate will be returned; otherwise, all intersecting words are returned
+    # @returns [dict] a dict of found words in the format:
+    #   {'h': Word|None, 'v': Word|None}
+    #   * 'h' = Word object intersecting the coordinate in the Across (horizontal) direction
+    #   (None if not found)
+    #   * 'v' = Word object intersecting the coordinate in the Down (vertical) direction
+    #   (None if not found)
     def find_by_coord(self, coord, start_coord=True):
         found = {'h': None, 'v': None}
         for w in self.words:
@@ -935,33 +998,62 @@ class Wordgrid:
                 found[w.dir] = w
         return found
     
+    ## Gets a word by its start coordinate and direction.
+    # @param coord [2-tuple] the start coordinate of the word looked for
+    # @param direction [str] the word's direction: 'h' = 'horizonal' or 'v' = 'vertical'
+    # @returns [Word|None] the found Word object or None if not found
     def find_by_coord_dir(self, coord, direction):
         for w in self.words:
             if w.start == coord and w.dir == direction:
                 return w
         return None
     
+    ## @brief Gets a word by its text representation.
+    # IMPORTANT! The search will return the FIRST word corresponding 
+    # to the given text. If the crossword contains more than one such word
+    # (which it shouldn't, of course!) - all these other matches will be ignored!
+    # @param str_word [str] the text to search for, e.g. "father"
+    # @returns [Word|None] the found Word object or None if not found
     def find_by_str(self, str_word):
         for w in self.words:
             if self.get_word_str(w) == str_word:
                 return w
         return None
     
+    ## Gets a word by its sequential number and direction.
+    # @param num [int] the word's sequential number as stored in Word::num
+    # @param direction [str] the word's direction: 'h' = 'horizonal' or 'v' = 'vertical'
+    # @returns [Word|None] the found Word object or None if not found
     def find_by_num_dir(self, num, direction):
         #self.sort()
         for w in self.words:
             if w.num == num and w.dir == direction: return w
         return None
     
+    ## @brief Gets a word by its clue text.
+    # IMPORTANT! The search will return the FIRST word corresponding 
+    # to the given clue. If the crossword contains more than one such clues
+    # (which it shouldn't, of course!) - all these other matches will be ignored!
+    # @param clue [str] the clue text to search for, e.g. "US largest state"
+    # @returns [Word|None] the found Word object or None if not found
     def find_by_clue(self, clue):
         for w in self.words:
             if w.clue == clue: return w
         return None
     
+    ## Gets the text character stored in the given grid coordinate.
+    # @param coord [2-tuple] the grid coordinate
+    # @returns [str] the single character contained in that coordinate
+    # @exception CWError coordinate out of range
     def get_char(self, coord):
         self._validate_coord(coord)
         return self.grid[coord[1]][coord[0]]
         
+    ## @brief Puts a character into a given coordinate (replacing the existing one).
+    # The Wordgrid::on_putchar callback is called after putting the character.
+    # @param coord [2-tuple] the grid coordinate to write to
+    # @param char [str] the character to put
+    # @exception CWError invalid character
     def put_char(self, coord, char):
         old_char = self.get_char(coord)
         new_char = char.lower()
@@ -969,20 +1061,25 @@ class Wordgrid:
         self.grid[coord[1]][coord[0]] = new_char
         if self.on_putchar: self.on_putchar(self, coord, old_char, new_char)
 
+    ## @brief Clears all the words in the collection.
+    # This method effectively puts crossword::BLANK into all non-blocked cells
+    # of the grid. The internal text representations of each Word object
+    # are not updated - call update_word_strings() after this operation if required.
+    # The Wordgrid::on_clear callback is called after clearing.
     def clear(self):
-        """
-        Clears all the words in the collection.
-        """
         for y in range(self.height):
             for x in range(self.width):
                 if not self.grid[y][x] in (FILLER, FILLER2):
                     self.grid[y][x] = BLANK
         if self.on_clear: self.on_clear(self)
             
+    ## @brief Replaces the text representation of a given word.
+    # The Wordgrid::on_change callback is called after the replacement.
+    # @param word [Word] the Word object to replace the text for
+    # @param new_word [str] the new text for the word, e.g. "father"
+    # @exception CWError word not found in grid or new text has incorrect length 
+    # (different from the given word's length)
     def change_word(self, word, new_word: str):        
-        """
-        Replaces the given word (word) with another string (new_word).
-        """
         if not word in self.words: 
             raise CWError(_("Word '{}' is absent from grid!").format(str(word)))
         if len(new_word) != len(word):
@@ -993,6 +1090,13 @@ class Wordgrid:
         #self.update_word_strings()
         if self.on_change: self.on_change(self, word, w_old)
             
+    ## @brief Clears the given word making its characters blank.
+    # @param word [Word] the Word object to clear
+    # @param force_clear [bool] if True, ALL the characters in the word
+    # will be replaced by crossword::BLANK, regardless of intersecting words, if any.
+    # Otherwise (if False, which is the default), only the free characters 
+    # will be cleared (that is, those not intersecting with other words).
+    # The Wordgrid::on_clear_word callback is called after clearing.
     def clear_word(self, word, force_clear=False):
         if self.is_word_blank(word): return
         if self.on_clear_word: w_old = self.get_word_str(word)
@@ -1007,19 +1111,36 @@ class Wordgrid:
         #self.update_word_strings()
         if self.on_clear_word: self.on_clear_word(self, word, w_old)
             
+    ## @brief Sorts the words collection by the word coordinates.
+    # The sorting is performed in the assending order: 
+    # first on rows, then on columns. This corresponds to the typical
+    # crossword word numeration.
     def sort(self):
-        """
-        Sorts the words collection (list) by the word coordinates in the 
-        assending order: first on rows, then on columns.
-        """
         if getattr(self, 'words', None):
             self.words.sort(key=lambda word: (word.dir, word.num))
     
+    ## Gets a human-readable representation of a word.
+    # @param w [Word] the Word object
+    # @returns [str] a string formatted like so: '(coord_x, coord_y) dir word_text'
+    # @exception CWError word is not found in grid
     def print_word(self, w):
         if not w in self.words:
             raise CWError(_("Word '{}' is absent from grid!").format(str(w)))
         return f"{repr(w.start)} {w.dir} '{self.get_word_str(w)}'"
 
+    ## Serializes (converts) the grid into a single human-readable string.
+    # @returns [str] the text representation of the crossword grid in a tabular format, e.g.
+    #   Num       Coord       Value
+    #   ----------------------------
+    #   ACROSS:
+    #   ----------------------------
+    #   1         (0, 0)      father
+    #   5         (0, 10)     quit
+    #   9         (0, 15)     storm
+    #   ----------------------------
+    #   DOWN:
+    #   ----------------------------
+    #   ...
     def print_words(self):
         #self.sort()
         s = _("Num{}Coord{}Value\n-------------------------------------------\n").format(LOG_INDENT, (LOG_INDENT * 2))
@@ -1029,19 +1150,37 @@ class Wordgrid:
         s += '\n'.join(f"[{w.num}]{LOG_INDENT}{repr(w.start)}{LOG_INDENT * 2}'{self.get_word_str(w)}'" for w in self.words if w.dir == 'v') 
         return s
            
+    ## Serializes (converts) all clues into a single human-readable string.
+    # @returns [str] the text representation of the clues in the format:
+    #   [word_number]   word_direction      clue text
+    #   [word_number]   word_direction      clue text
+    #   ...
     def print_clues(self):
         return '\n'.join(f"[{w.num}]{LOG_INDENT}{w.dir}{LOG_INDENT * 2}{w.clue}" for w in self.words)
     
+    ## Returns the collection (list) of all words in grid.
+    # @param strings [bool] if True (default) the words' texts are returned, otherwise the Word objects
+    # @returns [list] list of [str] or [Word] objects
     def word_list(self, strings=True):
         return [self.get_word_str(w) if strings else w for w in self.words]
     
+    ## Concatenates Wordgrid::grid into a single newline-delimited string.
+    # @returns [str] the concatenated grid string, e.g.
+    #   father*__it*__
+    #   _*_*_*act_v_ty
+    #   ...
     def tostr(self):
         return '\n'.join([''.join(row) for row in self.grid]) if self.grid else ''
 
+    ## Counts grid cells that satisfy a given condition.
+    # @param condition [callable] callback function - the condition to satisfy. 
+    # The callback's arguments are (in the sequential order):
+    #   * [int] grid row index
+    #   * [int] grid column index
+    # The callback returns True if the condition for the given (y, x) coordinate 
+    # is satisfied and False otherwise. If 'condition' is None, all cells will be counted.
+    # @returns [int] number of cells that meet the given condition
     def _cell_count(self, condition=None):
-        """
-        Return number of blocked cells (FILLER, FILLER2).
-        """
         c = 0
         for y in range(self.height):
             for x in range(self.width):
@@ -1049,6 +1188,12 @@ class Wordgrid:
                     c += 1
         return c
 
+    ## Counts words that satisfy a given condition.
+    # @param condition [callable] callback function - the condition to satisfy. 
+    # The callback takes a single argument - a Word object
+    # and returns True if the condition is satisfied and False otherwise.
+    # If 'condition' is None, all words will be counted.
+    # @returns [int] number of words that meet the given condition
     def _word_count(self, condition=None):
         c = 0
         for w in self.words:
@@ -1056,16 +1201,14 @@ class Wordgrid:
                 c += 1
         return c
     
+    ## Returns an array of word lengths.
+    # @returns [list of int] array of word lengths
     def _word_lengths(self):
-        """
-        Return an array of word lengths.
-        """
         return [len(w) for w in self.words]
 
+    ## Updates Wordgrid::stats dict with current handy statistics.
     def update_stats(self):
-        """
-        Updates self.stats dict with current handy statistics.
-        """
+        ## stats dictionary - various handy stats like grid dimensions, word count etc.
         self.stats = {}
         self.stats['grid_width'] = self.width
         self.stats['grid_height'] = self.height
@@ -1083,24 +1226,21 @@ class Wordgrid:
         self.stats['max_word_length'] = max(wls)
         self.stats['withclues_word_count'] = self._word_count(lambda w: bool(w.clue))       
 
+    ## Saves all words to Wordgrid::old_words to be able to restore() later.
     def save(self):
-        """
-        Saves all words to self.old_words to be able to restore later.
-        """        
         self.update_word_strings()
         self.old_words = self.words[:]
 
+    ## Restores words from Wordgrid::old_words written by save().
     def restore(self):
-        """
-        Restores words from self.old_words.
-        """
         if not self.old_words is None:
             self.from_words(self.old_words)
     
+    ## The 'in' operator overload: checks if words contain a given word.
+    # @param word [Word|str] the Word object or its text representation to find in the grid
+    # @returns [bool] True if found, False otherwise
+    # @exception CWError 'word' argument is incorrect
     def __contains__(self, word):
-        """
-        The 'in' operator overload: checks if words contain a given word.
-        """  
         if isinstance(word, str):            
             word = word.lower() 
         elif not isinstance(word, Word):
@@ -1110,19 +1250,20 @@ class Wordgrid:
                 return True            
         return False
     
+    ## Convenience for is_complete().
+    # @returns [bool] True if grid is complete, False otherwise
     def __bool__(self):
-        """
-        Convenience for is_complete().
-        """
         return self.is_complete()
     
+    ## Python len() overload: returns number of words in grid.
+    # @returns [int] number of words in grid
     def __len__(self):
         return len(self.words)
     
+    ## Python str() convertion overload: represents a pretty output of the grid.
+    # @returns [str] grid as tabular-formatted text
+    # @see print_words(), print_clues(), tostr()
     def __str__(self):
-        """
-        The 'str' convertion overload: represents a pretty output of the grid.
-        """        
         # print horizontal coordinates
         s = ' ' * 5 + ''.join([str(c).rjust(4, ' ') for c in range(self.width)])
         # print top border         
@@ -1140,65 +1281,82 @@ class Wordgrid:
         
 # ******************************************************************************** #
 
+## @brief Implementation of a crossword puzzle with auto generation functionality.
+# This class wraps (incapsulates) crossword::Wordgrid to construct and manipulate
+# the crossword grid on the low level (file I/O, putting and getting individual words
+# and characters, validation etc). It also incorporates a wordsrc::Wordsource object
+# to provide the source (or multiple sources) of words for filling the crossword grid
+# automatically. The filling (generation) is performed by the Crossword::generate()
+# method. Additionally, some useful methods of crossword::Wordgrid are
+# re-implemented to account for used words - see Crossword::used.
 class Crossword:
     
+    ## @brief Initializes Crossword members.
+    # @param data [str|list] crossword grid source data as used by crossword::Wordgrid constructor
+    # @param data_type [str] crossword grid source data type as used by crossword::Wordgrid constructor
+    # @param wordsource [wordsrc::Wordsource|None] source(s) of words to use in generation
+    # @param wordfilter [callable|None] word filtering function used in Crossword::suggest().
+    # The callback prototype is as follows:
+    # ([str] word) -> [bool] True if word can be used, False if it must be rejected
+    # 'wordfilter' may be None if no filtering is required.
+    # @param pos [str|list|tuple|None] word part-of-speech filter:
+    # can be a list/tuple (e.g. ['N', 'V']), a single str, e.g. 'N';
+    # the value of 'ALL' or None means no part-of-speech filter
+    # @param log [str|None] stream or file path to output debugging info (log messages); may be one of:
+    #   * 'stdout' (default): current console stream
+    #   * 'stderr': error console stream
+    #   * file path: path to output (text) file
+    #   * empty string or None: no logging will be made
+    # @param bufferedlog [bool] whether the log should be buffered (or written on disk only on destruction)
+    # or not buffered (default), when log messages will be written immediately
+    # @param kwargs [keyword args] additional args passed to crossword::Wordgrid constructor, like:
+    # info, on_reset, on_clear, on_change, on_clear_word, on_putchar etc.
     def __init__(self, data=None, data_type='grid', wordsource=None, wordfilter=None, 
                  pos='N', log='stdout', bufferedlog=False, **kwargs):
-        """
-        Initializes Crossword members.
-        ARGS:
-            * grid (str | list): CW grid
-            * wordsource (Wordsource): source of words to use in generation (see wordsrc.py)
-            * wordfilter (callable): word filtering function used in suggest() -- may be None if no filtering is required
-            * pos (str | list | tuple): word part-of-speech filter: 
-                can be a list/tuple (e.g. ['N', 'V']), a single str, e.g. 'N';
-                the value of 'ALL' or None means no part-of-speech filter 
-            * log (str): stream or file path to output debugging info (log messages); may be one of:
-                'stdout' (default): current console stream
-                'stderr': error console stream
-                file path: path to output (text) file
-                '' or None: no logging will be made
-            * bufferedlog (bool): whether the log should be buffered (written on disk only on destruction)
-                or not buffered (default), when log messages will be written immediately
-            * kwargs: additional args passed to Wordgrid constructor, like:
-                info, on_reset, on_clear, on_change, on_clear_word, on_putchar etc. 
-        """
+        ## [str|list] crossword grid source data type as used by crossword::Wordgrid constructor
         self.data = DEFAULT_GRID if (data is None and data_type == 'grid') else data
+        ## [str] crossword grid source data type as used by crossword::Wordgrid constructor
         self.data_type = data_type
-        # set of used words (to rule out duplicate words in CW)
+        ## set of used words (to rule out duplicate words in CW)
         self.used = set()
-        # Wordgrid
+        # init Wordgrid
         self.init_data(**kwargs)
+        ## [wordsrc::Wordsource|None] source(s) of words to use in generation
         self.wordsource = wordsource
+        ## [callable|None] word filtering function used in Crossword::suggest()
         self.wordfilter = wordfilter
+        ## [str|list|tuple|None] word part-of-speech filter
         self.pos = pos if (pos and pos != 'ALL') else None
+        ## [bool] whether the log should be buffered (or written on disk only on destruction)
         self.bufferedlog = bufferedlog        
         # initialize log stream (if set)
         self.setlog(log)
         
+    ## Destructor: flushes and closes log file (if present).
     def __del__(self):
-        """
-        Destructor flushes and closes log file (if present).
-        """
         self.closelog()
         
+    ## Initializes the crossword grid data
+    # @param kwargs [keyword args] args passed to crossword::Wordgrid constructor
     def init_data(self, **kwargs):
+        ## [crossword::Wordgrid] internal crossword grid object
         self.words = Wordgrid(data=self.data, data_type=self.data_type, info=CWInfo(), **kwargs)
-        #print(f"CROSSWORD FROM {self.data_type}:{NEWLINE}{str(self.words.info)}{NEWLINE}{NEWLINE}")
         self.reset_used()
+        ## start time - used in generate() to mark elapsed time
         self.time_start = timeit.default_timer()
             
+    ## Initializes Crossword::log to point to the relevant output stream.
+    # @param log [str|None] output stream for debug messages, any of:
+    #   * 'stdout' (default): standard console output
+    #   * 'stderr': error console stream
+    #   * file path: path to output (text) file
+    #   * empty string or None: no logging will be made
+    # @see _log()
     def setlog(self, log=''):
-        """
-        Initializes self.log to point to the relevant output stream as given by 'log' arg:
-            'stdout' (default): current console stream
-            'stderr': error console stream
-            file path: path to output (text) file
-            '' or None: no logging will be made
-        """
         self._slog = log
         self.closelog()
         if log == 'stdout':
+            ## output stream (file) for debug messages
             self.log = sys.stdout
         elif log == 'stderr':
             self.log = sys.stderr
@@ -1207,16 +1365,19 @@ class Crossword:
         else:
             self.log = open(log, 'w', encoding=ENCODING, buffering=-1 if self.bufferedlog else 1)        
             
+    ## Prints debug/log message to Crossword::log with optional line-ending char.
+    # @param what [str] debug/log message to print
+    # @param end [str] optional line-ending
     def _log(self, what, end='\n'):
-        """
-        Prints debug/log message ('what') to self.log with optional line-ending char ('end').
-        """
         try:
             if self.log: print(what, file=self.log, end=end)
         except:
             self.setlog(self._slog)
             if self.log: print(what, file=self.log, end=end)
             
+    ## @brief Replaces the text representation of a given word.
+    # See description of arguments in Wordgrid::change_word().
+    # Reimplemented to remove the old word from Crossword::used.
     def change_word(self, word, new_word):
         if not hasattr(self, 'words'): return
         self.used.discard(self.words.get_word_str(word))
@@ -1226,6 +1387,9 @@ class Crossword:
         self.words.change_word(word, new_word)
         self.used.add(self.words.get_word_str(word))
         
+    ## @brief Clears the given word making its characters blank.
+    # See description of arguments in Wordgrid::clear_word().
+    # Reimplemented to remove the old word from Crossword::used.
     def clear_word(self, word, force_clear=False):
         if not hasattr(self, 'words'): return
         self.used.discard(self.words.get_word_str(word))
@@ -1234,47 +1398,43 @@ class Crossword:
             self.used.discard(self.words.get_word_str(w))
         self.words.clear_word(word, force_clear)
         
+    ## @brief Clears the crossword grid (making all words blank).
+    # See description of arguments in Wordgrid::clear().
+    # Reimplemented to clear Crossword::used.
     def clear(self):
-        """
-        """
         # clear USED list
         self.used.clear()
         # clear cw grid
         self.words.clear()
 
+    ## Prints all words currently contained in Crossword::used list.
     def print_used(self):
-        """
-        Prints all words currently contained in USED list.
-        """
         for wstr in self.used:
             print(wstr)
             
+    ## Flushes and closes Crossword::log if it points to a file.
     def closelog(self):
-        """
-        Flushes and closes self.log (stream) if it points to a file.
-        """
         if getattr(self, 'log', None) and self.log != sys.stdout and self.log != sys.stderr:
             self.log.close()
             
+    ## Updates the Crossword::used list adding the completed (pre-set) words.
     def add_completed(self):
-        """
-        Updates the USED list adding the completed (pre-set) words.
-        """
         for w in self.words.words:
             if self.words.is_word_complete(w):
                 self.used.add(self.words.get_word_str(w))
 
+    ## Resets the Crossword::used list (clears and re-adds all completed words).
     def reset_used(self):
         self.used.clear()
         self.add_completed()
         #self.print_used()
         
+    ## @brief Fetches suggestions for the given word from the datasets (Crossword::wordsource).
+    # The method accounts for the corresponding rules / filters in Crossword::wordfilter
+    # and screens off items found in Crossword::used.
+    # @param word [str] word pattern to look for in the word source (Crossword::wordsource),
+    # e.g. 'f_th__' (will fetch 'father')
     def suggest(self, word):
-        """
-        Fetches suggestions for the given word from the datasets,
-        honoring the corresponding rules / filters and excluding items
-        from the USED list.
-        """
         # define filtering function 
         def filt(sug):
             # check if word is not in USED list
@@ -1285,31 +1445,29 @@ class Crossword:
         # get suggestions (list) from word source
         return self.wordsource.fetch(word, BLANK, self.pos, filt)
     
+    ## @brief Creates a sequential generation path (list of words) forming a connected graph.
+    # All words in path are connected through intersections.
+    # Algorithm starts from first non-complete word (with one or more blanks),
+    # then recursively adds each intersecring word using DFS (depth-first search).
+    # The resulting path contains all the words in the CW if chain_paths == True,
+    # or a single connected graph (list) of words if chain_paths == False.
+    # @param start_word [Word] the initial word from which generation will start;
+    # if None, the first incomplete word will be taken
+    # @param path [list] pointer to the list of words forming the path (will be 
+    # updated by the function)
+    # @param recurse [int] the current recursion depth (position on stack);
+    # this arg must be zero when starting path generation; each recursive call
+    # will increment it and each return will decrement it
+    # @param chain_paths [bool] whether to merge all word graphs together into one path (==True),
+    # or make one connected path starting from start_word (==False).
+    # In essence, setting this arg to False (default) may be useful when
+    # generating CW block-wise, where each graph (block of words)
+    # is not connected with the others by intersections. In this case,
+    # concurrent generation might be used.
+    # @param word_filter [callable] filter function to exclude words from search tree.
+    # Callback prototype is as follows:
+    # ([Word] object) -> [bool] True to exclude, False to include in path
     def make_path(self, start_word=None, path=[], recurse=0, chain_paths=False, word_filter=None):
-        """
-        Function that creates a sequential generation path, 
-        i.e. list of words to fill forming a connected graph (all words in path
-        are connected through intersections).
-        Algorithm starts from first non-complete word (with one or more blanks),
-        then recursively adds each intersecring word using DFS (depth-first search).
-        The resulting path contains all the words in the CW if chain_paths == True,
-        or a single connected graph (list) of words if chain_paths == False.
-        ARGS:
-            * start_word (Word): the initial word from which generation will start;
-              if None, the first incomplete word will be taken
-            * path (list): pointer to the list of words forming the path (will be 
-              updated by the function)
-            * recurse (int): the current recursion depth (position on stack);
-              this arg must be zero when starting path generation; each recursive call
-              will increment it and each return will decrement it
-            * chain_paths (bool): whether to merge all word graphs together into one path (==True),
-              or make one connected path starting from start_word (==False).
-              In essence, setting this arg to False (default) may be useful when
-              generating CW block-wise, where each graph (block of words)
-              is not connected with the others by intersections. In this case,
-              concurrent generation might be used.
-            * word_filter (callable): filter function to exclude words from search tree
-        """
         def filter_out(w):
             return (w in path) or (self.words.get_word_str(w) in self.used) or (word_filter(w) if word_filter else False)
         
@@ -1344,25 +1502,28 @@ class Crossword:
         if chain_paths and rec == 0 and len(path) < (len(self.words) - len(self.used)):
             self.make_path(None, path, rec, chain_paths, word_filter)
             
+    ## Generates crossword using the iterative algorithm.
+    # @param timeout [float] timeout in seconds after which time the generation 
+    # will be interrupted with a CWTimeoutError exception.
+    # None value (default) means no timeout check.
+    # @param stopcheck [callable] callback function that must return True 
+    # to stop the generation and False to continue.
+    # If None is passed, no stop check is performed.
+    # @param on_progress [callable] callback function to monitor currrent generation progress.
+    # Prototype is:
+    # ([Crossword] this object, [int] completed words count, [int] total words count)
+    # @returns [bool] True on success (all words in CW are filled) and False otherwise
     def generate_iter(self, timeout=None, stopcheck=None, on_progress=None):
-        """
-        Generates crossword using the iterative algorithm.
-        RETURNS:
-            True on success (all words in CW are filled) and False otherwise
-            
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        !!! IMPORTANT NOTICE !!!
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        """        
+        !!! IMPORTANT NOTICE !!!        
         Currently the iterative algo does a good job ONLY for fully blank word grids.
         For partically filled grids, it will generate INCORRECT words, since
         the traversal path is generated STATICALLY only once and is not
         amended during word generation. The path exludes all words in USED list,
         so the algo will fit words without checking how they intersect with existing
         (used) words in the grid. While this caveat will be dealt with later,
-        prefer the Recursive algo for word grids with some words filled.
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        """ 
-        
+        prefer the Recursive algo for word grids with some words filled.        
+        """         
         # if CW complete, return True
         if self.words: 
             self._log(_(f"\n\tCompleted CW!"))

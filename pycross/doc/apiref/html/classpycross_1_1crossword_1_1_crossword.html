@@ -81,36 +81,53 @@ $(function() {
 <div class="title">pycross.crossword.Crossword Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implementation of a crossword puzzle with auto generation functionality.  
+ <a href="classpycross_1_1crossword_1_1_crossword.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af13119701b7685dc98436ef3431510b8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#af13119701b7685dc98436ef3431510b8">__init__</a> (self, <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ada1f26c99cbc8c56ce1b7ff0b4ed8fe8">data</a>=None, <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a3ca50f920a5a9d99911155d1fcdab093">data_type</a>='grid', <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a6afd17d17ceedf6839113ba49c26f630">wordsource</a>=None, <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a99455730b0026d2e24e831051d932889">wordfilter</a>=None, <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ae1b051c3e6c7c9638acd4c15d480dcdd">pos</a>='N', <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644">log</a>='stdout', <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a463a3a1c7e4b510b43f5f577846a75b3">bufferedlog</a>=False, **kwargs)</td></tr>
+<tr class="memdesc:af13119701b7685dc98436ef3431510b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes <a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">Crossword</a> members.  <a href="classpycross_1_1crossword_1_1_crossword.html#af13119701b7685dc98436ef3431510b8">More...</a><br /></td></tr>
 <tr class="separator:af13119701b7685dc98436ef3431510b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab52235bb7030e14cf63e1dce427e6b8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#aab52235bb7030e14cf63e1dce427e6b8">__del__</a> (self)</td></tr>
+<tr class="memdesc:aab52235bb7030e14cf63e1dce427e6b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor: flushes and closes log file (if present).  <a href="classpycross_1_1crossword_1_1_crossword.html#aab52235bb7030e14cf63e1dce427e6b8">More...</a><br /></td></tr>
 <tr class="separator:aab52235bb7030e14cf63e1dce427e6b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa836b8b3203892eb9f49bc640b83cf97"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#aa836b8b3203892eb9f49bc640b83cf97">init_data</a> (self, **kwargs)</td></tr>
+<tr class="memdesc:aa836b8b3203892eb9f49bc640b83cf97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the crossword grid data.  <a href="classpycross_1_1crossword_1_1_crossword.html#aa836b8b3203892eb9f49bc640b83cf97">More...</a><br /></td></tr>
 <tr class="separator:aa836b8b3203892eb9f49bc640b83cf97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcfb2d9e1dd6876d1d7e9c2fec7ee59e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#abcfb2d9e1dd6876d1d7e9c2fec7ee59e">setlog</a> (self, <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644">log</a>='')</td></tr>
+<tr class="memdesc:abcfb2d9e1dd6876d1d7e9c2fec7ee59e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644" title="output stream (file) for debug messages">Crossword::log</a> to point to the relevant output stream.  <a href="classpycross_1_1crossword_1_1_crossword.html#abcfb2d9e1dd6876d1d7e9c2fec7ee59e">More...</a><br /></td></tr>
 <tr class="separator:abcfb2d9e1dd6876d1d7e9c2fec7ee59e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eb075b30c061d6cc07ed7c5d85f279e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0eb075b30c061d6cc07ed7c5d85f279e">change_word</a> (self, word, new_word)</td></tr>
+<tr class="memdesc:a0eb075b30c061d6cc07ed7c5d85f279e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the text representation of a given word.  <a href="classpycross_1_1crossword_1_1_crossword.html#a0eb075b30c061d6cc07ed7c5d85f279e">More...</a><br /></td></tr>
 <tr class="separator:a0eb075b30c061d6cc07ed7c5d85f279e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1310eb1bd930780c819ef1e5ed6fc35"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ac1310eb1bd930780c819ef1e5ed6fc35">clear_word</a> (self, word, force_clear=False)</td></tr>
+<tr class="memdesc:ac1310eb1bd930780c819ef1e5ed6fc35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the given word making its characters blank.  <a href="classpycross_1_1crossword_1_1_crossword.html#ac1310eb1bd930780c819ef1e5ed6fc35">More...</a><br /></td></tr>
 <tr class="separator:ac1310eb1bd930780c819ef1e5ed6fc35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0cb022073a853ae3521e656e3d93b10"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#af0cb022073a853ae3521e656e3d93b10">clear</a> (self)</td></tr>
+<tr class="memdesc:af0cb022073a853ae3521e656e3d93b10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the crossword grid (making all words blank).  <a href="classpycross_1_1crossword_1_1_crossword.html#af0cb022073a853ae3521e656e3d93b10">More...</a><br /></td></tr>
 <tr class="separator:af0cb022073a853ae3521e656e3d93b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2596a66060658a8df2e4b75787597332"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a2596a66060658a8df2e4b75787597332">print_used</a> (self)</td></tr>
+<tr class="memdesc:a2596a66060658a8df2e4b75787597332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints all words currently contained in <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a> list.  <a href="classpycross_1_1crossword_1_1_crossword.html#a2596a66060658a8df2e4b75787597332">More...</a><br /></td></tr>
 <tr class="separator:a2596a66060658a8df2e4b75787597332"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a801b8847c8cd9e9ec01f23f97bbe35cc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a801b8847c8cd9e9ec01f23f97bbe35cc">closelog</a> (self)</td></tr>
+<tr class="memdesc:a801b8847c8cd9e9ec01f23f97bbe35cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flushes and closes <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644" title="output stream (file) for debug messages">Crossword::log</a> if it points to a file.  <a href="classpycross_1_1crossword_1_1_crossword.html#a801b8847c8cd9e9ec01f23f97bbe35cc">More...</a><br /></td></tr>
 <tr class="separator:a801b8847c8cd9e9ec01f23f97bbe35cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7784e1b87ca238bd19ad6a0de9b15a3"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ad7784e1b87ca238bd19ad6a0de9b15a3">add_completed</a> (self)</td></tr>
+<tr class="memdesc:ad7784e1b87ca238bd19ad6a0de9b15a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a> list adding the completed (pre-set) words.  <a href="classpycross_1_1crossword_1_1_crossword.html#ad7784e1b87ca238bd19ad6a0de9b15a3">More...</a><br /></td></tr>
 <tr class="separator:ad7784e1b87ca238bd19ad6a0de9b15a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d6a19a10f1715d5aa07b9c7b2b6ba46"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8d6a19a10f1715d5aa07b9c7b2b6ba46">reset_used</a> (self)</td></tr>
+<tr class="memdesc:a8d6a19a10f1715d5aa07b9c7b2b6ba46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a> list (clears and re-adds all completed words).  <a href="classpycross_1_1crossword_1_1_crossword.html#a8d6a19a10f1715d5aa07b9c7b2b6ba46">More...</a><br /></td></tr>
 <tr class="separator:a8d6a19a10f1715d5aa07b9c7b2b6ba46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a231568ef7c81e0f13e4dce622e5564a2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a231568ef7c81e0f13e4dce622e5564a2">suggest</a> (self, word)</td></tr>
+<tr class="memdesc:a231568ef7c81e0f13e4dce622e5564a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches suggestions for the given word from the datasets (<a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a6afd17d17ceedf6839113ba49c26f630" title="[wordsrc::Wordsource|None] source(s) of words to use in generation">Crossword::wordsource</a>).  <a href="classpycross_1_1crossword_1_1_crossword.html#a231568ef7c81e0f13e4dce622e5564a2">More...</a><br /></td></tr>
 <tr class="separator:a231568ef7c81e0f13e4dce622e5564a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa03b4e2024ef1b0feb6c7f8ba2825b58"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#aa03b4e2024ef1b0feb6c7f8ba2825b58">make_path</a> (self, start_word=None, path=[], recurse=0, chain_paths=False, word_filter=None)</td></tr>
+<tr class="memdesc:aa03b4e2024ef1b0feb6c7f8ba2825b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a sequential generation path (list of words) forming a connected graph.  <a href="classpycross_1_1crossword_1_1_crossword.html#aa03b4e2024ef1b0feb6c7f8ba2825b58">More...</a><br /></td></tr>
 <tr class="separator:aa03b4e2024ef1b0feb6c7f8ba2825b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a564e6cb50861b945c9897cb1b279d106"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a564e6cb50861b945c9897cb1b279d106">generate_iter</a> (self, timeout=None, stopcheck=None, on_progress=None)</td></tr>
+<tr class="memdesc:a564e6cb50861b945c9897cb1b279d106"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates crossword using the iterative algorithm.  <a href="classpycross_1_1crossword_1_1_crossword.html#a564e6cb50861b945c9897cb1b279d106">More...</a><br /></td></tr>
 <tr class="separator:a564e6cb50861b945c9897cb1b279d106"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae42597a27a138b62980743675bf2c864"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ae42597a27a138b62980743675bf2c864">generate_recurse</a> (self, start_word=None, recurse_level=0, timeout=None, stopcheck=None, on_progress=None)</td></tr>
 <tr class="separator:ae42597a27a138b62980743675bf2c864"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,29 +148,40 @@ Static Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ada1f26c99cbc8c56ce1b7ff0b4ed8fe8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ada1f26c99cbc8c56ce1b7ff0b4ed8fe8">data</a></td></tr>
+<tr class="memdesc:ada1f26c99cbc8c56ce1b7ff0b4ed8fe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">[str|list] crossword grid source data type as used by <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> constructor  <a href="classpycross_1_1crossword_1_1_crossword.html#ada1f26c99cbc8c56ce1b7ff0b4ed8fe8">More...</a><br /></td></tr>
 <tr class="separator:ada1f26c99cbc8c56ce1b7ff0b4ed8fe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ca50f920a5a9d99911155d1fcdab093"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a3ca50f920a5a9d99911155d1fcdab093">data_type</a></td></tr>
+<tr class="memdesc:a3ca50f920a5a9d99911155d1fcdab093"><td class="mdescLeft">&#160;</td><td class="mdescRight">[str] crossword grid source data type as used by <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> constructor  <a href="classpycross_1_1crossword_1_1_crossword.html#a3ca50f920a5a9d99911155d1fcdab093">More...</a><br /></td></tr>
 <tr class="separator:a3ca50f920a5a9d99911155d1fcdab093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e2bc9df916e39fc799f9b451d06e477"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477">used</a></td></tr>
+<tr class="memdesc:a8e2bc9df916e39fc799f9b451d06e477"><td class="mdescLeft">&#160;</td><td class="mdescRight">set of used words (to rule out duplicate words in CW)  <a href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477">More...</a><br /></td></tr>
 <tr class="separator:a8e2bc9df916e39fc799f9b451d06e477"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6afd17d17ceedf6839113ba49c26f630"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a6afd17d17ceedf6839113ba49c26f630">wordsource</a></td></tr>
+<tr class="memdesc:a6afd17d17ceedf6839113ba49c26f630"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html">wordsrc::Wordsource</a>|None] source(s) of words to use in generation  <a href="classpycross_1_1crossword_1_1_crossword.html#a6afd17d17ceedf6839113ba49c26f630">More...</a><br /></td></tr>
 <tr class="separator:a6afd17d17ceedf6839113ba49c26f630"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99455730b0026d2e24e831051d932889"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a99455730b0026d2e24e831051d932889">wordfilter</a></td></tr>
+<tr class="memdesc:a99455730b0026d2e24e831051d932889"><td class="mdescLeft">&#160;</td><td class="mdescRight">[callable|None] word filtering function used in <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a231568ef7c81e0f13e4dce622e5564a2" title="Fetches suggestions for the given word from the datasets (Crossword::wordsource).">Crossword::suggest()</a>  <a href="classpycross_1_1crossword_1_1_crossword.html#a99455730b0026d2e24e831051d932889">More...</a><br /></td></tr>
 <tr class="separator:a99455730b0026d2e24e831051d932889"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1b051c3e6c7c9638acd4c15d480dcdd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ae1b051c3e6c7c9638acd4c15d480dcdd">pos</a></td></tr>
+<tr class="memdesc:ae1b051c3e6c7c9638acd4c15d480dcdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">[str|list|tuple|None] word part-of-speech filter  <a href="classpycross_1_1crossword_1_1_crossword.html#ae1b051c3e6c7c9638acd4c15d480dcdd">More...</a><br /></td></tr>
 <tr class="separator:ae1b051c3e6c7c9638acd4c15d480dcdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a463a3a1c7e4b510b43f5f577846a75b3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a463a3a1c7e4b510b43f5f577846a75b3">bufferedlog</a></td></tr>
+<tr class="memdesc:a463a3a1c7e4b510b43f5f577846a75b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">[bool] whether the log should be buffered (or written on disk only on destruction)  <a href="classpycross_1_1crossword_1_1_crossword.html#a463a3a1c7e4b510b43f5f577846a75b3">More...</a><br /></td></tr>
 <tr class="separator:a463a3a1c7e4b510b43f5f577846a75b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad66a7d776ecfb47ddaf9b5b71f7d2304"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ad66a7d776ecfb47ddaf9b5b71f7d2304">words</a></td></tr>
+<tr class="memdesc:ad66a7d776ecfb47ddaf9b5b71f7d2304"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a>] internal crossword grid object  <a href="classpycross_1_1crossword_1_1_crossword.html#ad66a7d776ecfb47ddaf9b5b71f7d2304">More...</a><br /></td></tr>
 <tr class="separator:ad66a7d776ecfb47ddaf9b5b71f7d2304"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6027eca86b51e3ada3733f4ecc9775c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ab6027eca86b51e3ada3733f4ecc9775c">time_start</a></td></tr>
+<tr class="memdesc:ab6027eca86b51e3ada3733f4ecc9775c"><td class="mdescLeft">&#160;</td><td class="mdescRight">start time - used in <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ad571ecad9026be8b61f813f4f737c55e">generate()</a> to mark elapsed time  <a href="classpycross_1_1crossword_1_1_crossword.html#ab6027eca86b51e3ada3733f4ecc9775c">More...</a><br /></td></tr>
 <tr class="separator:ab6027eca86b51e3ada3733f4ecc9775c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cd8dea61647d444be1167d37d428644"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644">log</a></td></tr>
+<tr class="memdesc:a0cd8dea61647d444be1167d37d428644"><td class="mdescLeft">&#160;</td><td class="mdescRight">output stream (file) for debug messages  <a href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644">More...</a><br /></td></tr>
 <tr class="separator:a0cd8dea61647d444be1167d37d428644"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a5866675eeae1d68e14d462bef1836f34"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a5866675eeae1d68e14d462bef1836f34">_log</a> (self, what, end='\n')</td></tr>
+<tr class="memdesc:a5866675eeae1d68e14d462bef1836f34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints debug/log message to <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644" title="output stream (file) for debug messages">Crossword::log</a> with optional line-ending char.  <a href="classpycross_1_1crossword_1_1_crossword.html#a5866675eeae1d68e14d462bef1836f34">More...</a><br /></td></tr>
 <tr class="separator:a5866675eeae1d68e14d462bef1836f34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
@@ -161,7 +189,10 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a757e46210048e5c02cc38033b063f1d1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a757e46210048e5c02cc38033b063f1d1">_slog</a></td></tr>
 <tr class="separator:a757e46210048e5c02cc38033b063f1d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implementation of a crossword puzzle with auto generation functionality. </p>
+<p>This class wraps (incapsulates) <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> to construct and manipulate the crossword grid on the low level (file I/O, putting and getting individual words and characters, validation etc). It also incorporates a <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html">wordsrc::Wordsource</a> object to provide the source (or multiple sources) of words for filling the crossword grid automatically. The filling (generation) is performed by the <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ad571ecad9026be8b61f813f4f737c55e">Crossword::generate()</a> method. Additionally, some useful methods of <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> are re-implemented to account for used words - see <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a>. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af13119701b7685dc98436ef3431510b8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af13119701b7685dc98436ef3431510b8">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -229,24 +260,28 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Initializes Crossword members.
-ARGS:
-    * grid (str | list): CW grid
-    * wordsource (Wordsource): source of words to use in generation (see wordsrc.py)
-    * wordfilter (callable): word filtering function used in suggest() -- may be None if no filtering is required
-    * pos (str | list | tuple): word part-of-speech filter: 
-can be a list/tuple (e.g. ['N', 'V']), a single str, e.g. 'N';
-the value of 'ALL' or None means no part-of-speech filter 
-    * log (str): stream or file path to output debugging info (log messages); may be one of:
-'stdout' (default): current console stream
-'stderr': error console stream
-file path: path to output (text) file
-'' or None: no logging will be made
-    * bufferedlog (bool): whether the log should be buffered (written on disk only on destruction)
-or not buffered (default), when log messages will be written immediately
-    * kwargs: additional args passed to Wordgrid constructor, like:
-info, on_reset, on_clear, on_change, on_clear_word, on_putchar etc. 
-</pre> 
+
+<p>Initializes <a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">Crossword</a> members. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>[str|list] crossword grid source data as used by <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> constructor </td></tr>
+    <tr><td class="paramname">data_type</td><td>[str] crossword grid source data type as used by <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> constructor </td></tr>
+    <tr><td class="paramname">wordsource</td><td>[<a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html">wordsrc::Wordsource</a>|None] source(s) of words to use in generation </td></tr>
+    <tr><td class="paramname">wordfilter</td><td>[callable|None] word filtering function used in <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a231568ef7c81e0f13e4dce622e5564a2" title="Fetches suggestions for the given word from the datasets (Crossword::wordsource).">Crossword::suggest()</a>. The callback prototype is as follows: ([str] word) -&gt; [bool] True if word can be used, False if it must be rejected 'wordfilter' may be None if no filtering is required. </td></tr>
+    <tr><td class="paramname">pos</td><td>[str|list|tuple|None] word part-of-speech filter: can be a list/tuple (e.g. ['N', 'V']), a single str, e.g. 'N'; the value of 'ALL' or None means no part-of-speech filter </td></tr>
+    <tr><td class="paramname">log</td><td>[str|None] stream or file path to output debugging info (log messages); may be one of:<ul>
+<li>'stdout' (default): current console stream</li>
+<li>'stderr': error console stream</li>
+<li>file path: path to output (text) file</li>
+<li>empty string or None: no logging will be made </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">bufferedlog</td><td>[bool] whether the log should be buffered (or written on disk only on destruction) or not buffered (default), when log messages will be written immediately </td></tr>
+    <tr><td class="paramname">kwargs</td><td>[keyword args] additional args passed to <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> constructor, like: info, on_reset, on_clear, on_change, on_clear_word, on_putchar etc. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="aab52235bb7030e14cf63e1dce427e6b8"></a>
@@ -264,8 +299,9 @@ info, on_reset, on_clear, on_change, on_clear_word, on_putchar etc.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Destructor flushes and closes log file (if present).
-</pre> 
+
+<p>Destructor: flushes and closes log file (if present). </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -328,8 +364,16 @@ Outputs Crossword object as a crossword grid.
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Prints debug/log message ('what') to self.log with optional line-ending char ('end').
-</pre> 
+
+<p>Prints debug/log message to <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644" title="output stream (file) for debug messages">Crossword::log</a> with optional line-ending char. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">what</td><td>[str] debug/log message to print </td></tr>
+    <tr><td class="paramname">end</td><td>[str] optional line-ending </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ad7784e1b87ca238bd19ad6a0de9b15a3"></a>
@@ -347,8 +391,9 @@ Outputs Crossword object as a crossword grid.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Updates the USED list adding the completed (pre-set) words.
-</pre> 
+
+<p>Updates the <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a> list adding the completed (pre-set) words. </p>
+
 </div>
 </div>
 <a id="aa683379e8a14c3165772262108d71d05"></a>
@@ -436,6 +481,9 @@ base_pattern [int]: basic 2x2 pattern, one of:
       </table>
 </div><div class="memdoc">
 
+<p>Replaces the text representation of a given word. </p>
+<p>See description of arguments in <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a568b86856c75311fb46d751606c5c1e5" title="Replaces the text representation of a given word.">Wordgrid::change_word()</a>. Reimplemented to remove the old word from <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a>. </p>
+
 </div>
 </div>
 <a id="af0cb022073a853ae3521e656e3d93b10"></a>
@@ -453,7 +501,10 @@ base_pattern [int]: basic 2x2 pattern, one of:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment"></pre> 
+
+<p>Clears the crossword grid (making all words blank). </p>
+<p>See description of arguments in <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#ad69c94a1421718e7ceed7d3d4b994e04" title="Clears all the words in the collection.">Wordgrid::clear()</a>. Reimplemented to clear <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a>. </p>
+
 </div>
 </div>
 <a id="ac1310eb1bd930780c819ef1e5ed6fc35"></a>
@@ -488,6 +539,9 @@ base_pattern [int]: basic 2x2 pattern, one of:
       </table>
 </div><div class="memdoc">
 
+<p>Clears the given word making its characters blank. </p>
+<p>See description of arguments in <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a8066b5d704fc3096eaae7013fbcd2d83" title="Clears the given word making its characters blank.">Wordgrid::clear_word()</a>. Reimplemented to remove the old word from <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a>. </p>
+
 </div>
 </div>
 <a id="a801b8847c8cd9e9ec01f23f97bbe35cc"></a>
@@ -505,8 +559,9 @@ base_pattern [int]: basic 2x2 pattern, one of:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Flushes and closes self.log (stream) if it points to a file.
-</pre> 
+
+<p>Flushes and closes <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644" title="output stream (file) for debug messages">Crossword::log</a> if it points to a file. </p>
+
 </div>
 </div>
 <a id="ad571ecad9026be8b61f813f4f737c55e"></a>
@@ -647,22 +702,27 @@ RETURNS:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Generates crossword using the iterative algorithm.
-RETURNS:
-    True on success (all words in CW are filled) and False otherwise
-    
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!!! IMPORTANT NOTICE !!!
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<p>Generates crossword using the iterative algorithm. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeout</td><td>[float] timeout in seconds after which time the generation will be interrupted with a <a class="el" href="classpycross_1_1crossword_1_1_c_w_timeout_error.html" title="Generation timeout exception.">CWTimeoutError</a> exception. None value (default) means no timeout check. </td></tr>
+    <tr><td class="paramname">stopcheck</td><td>[callable] callback function that must return True to stop the generation and False to continue. If None is passed, no stop check is performed. </td></tr>
+    <tr><td class="paramname">on_progress</td><td>[callable] callback function to monitor currrent generation progress. Prototype is: ([<a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">Crossword</a>] this object, [int] completed words count, [int] total words count) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[bool] True on success (all words in CW are filled) and False otherwise <pre class="fragment">!!! IMPORTANT NOTICE !!!        
 Currently the iterative algo does a good job ONLY for fully blank word grids.
 For partically filled grids, it will generate INCORRECT words, since
 the traversal path is generated STATICALLY only once and is not
 amended during word generation. The path exludes all words in USED list,
 so the algo will fit words without checking how they intersect with existing
 (used) words in the grid. While this caveat will be dealt with later,
-prefer the Recursive algo for word grids with some words filled.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-</pre> 
+prefer the Recursive algo for word grids with some words filled.        
+</pre> <br  />
+ </dd></dl>
+
 </div>
 </div>
 <a id="ae42597a27a138b62980743675bf2c864"></a>
@@ -757,6 +817,14 @@ RETURNS:
       </table>
 </div><div class="memdoc">
 
+<p>Initializes the crossword grid data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kwargs</td><td>[keyword args] args passed to <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> constructor </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="aa03b4e2024ef1b0feb6c7f8ba2825b58"></a>
@@ -808,29 +876,19 @@ RETURNS:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Function that creates a sequential generation path, 
-i.e. list of words to fill forming a connected graph (all words in path
-are connected through intersections).
-Algorithm starts from first non-complete word (with one or more blanks),
-then recursively adds each intersecring word using DFS (depth-first search).
-The resulting path contains all the words in the CW if chain_paths == True,
-or a single connected graph (list) of words if chain_paths == False.
-ARGS:
-    * start_word (Word): the initial word from which generation will start;
-      if None, the first incomplete word will be taken
-    * path (list): pointer to the list of words forming the path (will be 
-      updated by the function)
-    * recurse (int): the current recursion depth (position on stack);
-      this arg must be zero when starting path generation; each recursive call
-      will increment it and each return will decrement it
-    * chain_paths (bool): whether to merge all word graphs together into one path (==True),
-      or make one connected path starting from start_word (==False).
-      In essence, setting this arg to False (default) may be useful when
-      generating CW block-wise, where each graph (block of words)
-      is not connected with the others by intersections. In this case,
-      concurrent generation might be used.
-    * word_filter (callable): filter function to exclude words from search tree
-</pre> 
+
+<p>Creates a sequential generation path (list of words) forming a connected graph. </p>
+<p>All words in path are connected through intersections. Algorithm starts from first non-complete word (with one or more blanks), then recursively adds each intersecring word using DFS (depth-first search). The resulting path contains all the words in the CW if chain_paths == True, or a single connected graph (list) of words if chain_paths == False. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start_word</td><td>[<a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a>] the initial word from which generation will start; if None, the first incomplete word will be taken </td></tr>
+    <tr><td class="paramname">path</td><td>[list] pointer to the list of words forming the path (will be updated by the function) </td></tr>
+    <tr><td class="paramname">recurse</td><td>[int] the current recursion depth (position on stack); this arg must be zero when starting path generation; each recursive call will increment it and each return will decrement it </td></tr>
+    <tr><td class="paramname">chain_paths</td><td>[bool] whether to merge all word graphs together into one path (==True), or make one connected path starting from start_word (==False). In essence, setting this arg to False (default) may be useful when generating CW block-wise, where each graph (block of words) is not connected with the others by intersections. In this case, concurrent generation might be used. </td></tr>
+    <tr><td class="paramname">word_filter</td><td>[callable] filter function to exclude words from search tree. Callback prototype is as follows: ([<a class="el" href="classpycross_1_1crossword_1_1_word.html" title="Implementation of a single word in a hypothetical crossword.">Word</a>] object) -&gt; [bool] True to exclude, False to include in path </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a2596a66060658a8df2e4b75787597332"></a>
@@ -848,8 +906,9 @@ ARGS:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Prints all words currently contained in USED list.
-</pre> 
+
+<p>Prints all words currently contained in <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a> list. </p>
+
 </div>
 </div>
 <a id="a8d6a19a10f1715d5aa07b9c7b2b6ba46"></a>
@@ -867,6 +926,8 @@ ARGS:
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Resets the <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a> list (clears and re-adds all completed words). </p>
 
 </div>
 </div>
@@ -895,12 +956,22 @@ ARGS:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Initializes self.log to point to the relevant output stream as given by 'log' arg:
-    'stdout' (default): current console stream
-    'stderr': error console stream
-    file path: path to output (text) file
-    '' or None: no logging will be made
-</pre> 
+
+<p>Initializes <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0cd8dea61647d444be1167d37d428644" title="output stream (file) for debug messages">Crossword::log</a> to point to the relevant output stream. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">log</td><td>[str|None] output stream for debug messages, any of:<ul>
+<li>'stdout' (default): standard console output</li>
+<li>'stderr': error console stream</li>
+<li>file path: path to output (text) file</li>
+<li>empty string or None: no logging will be made </li>
+</ul>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a5866675eeae1d68e14d462bef1836f34" title="Prints debug/log message to Crossword::log with optional line-ending char.">_log()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a231568ef7c81e0f13e4dce622e5564a2"></a>
@@ -928,10 +999,15 @@ ARGS:
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Fetches suggestions for the given word from the datasets,
-honoring the corresponding rules / filters and excluding items
-from the USED list.
-</pre> 
+
+<p>Fetches suggestions for the given word from the datasets (<a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a6afd17d17ceedf6839113ba49c26f630" title="[wordsrc::Wordsource|None] source(s) of words to use in generation">Crossword::wordsource</a>). </p>
+<p>The method accounts for the corresponding rules / filters in <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a99455730b0026d2e24e831051d932889" title="[callable|None] word filtering function used in Crossword::suggest()">Crossword::wordfilter</a> and screens off items found in <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a8e2bc9df916e39fc799f9b451d06e477" title="set of used words (to rule out duplicate words in CW)">Crossword::used</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">word</td><td>[str] word pattern to look for in the word source (<a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a6afd17d17ceedf6839113ba49c26f630" title="[wordsrc::Wordsource|None] source(s) of words to use in generation">Crossword::wordsource</a>), e.g. 'f_th__' (will fetch 'father') </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="afcdfeb62d805c0f4ccc4d9be62238d01"></a>
@@ -1016,6 +1092,8 @@ from the USED list.
       </table>
 </div><div class="memdoc">
 
+<p>[bool] whether the log should be buffered (or written on disk only on destruction) </p>
+
 </div>
 </div>
 <a id="ada1f26c99cbc8c56ce1b7ff0b4ed8fe8"></a>
@@ -1029,6 +1107,8 @@ from the USED list.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>[str|list] crossword grid source data type as used by <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> constructor </p>
 
 </div>
 </div>
@@ -1044,6 +1124,8 @@ from the USED list.
       </table>
 </div><div class="memdoc">
 
+<p>[str] crossword grid source data type as used by <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a> constructor </p>
+
 </div>
 </div>
 <a id="a0cd8dea61647d444be1167d37d428644"></a>
@@ -1057,6 +1139,8 @@ from the USED list.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>output stream (file) for debug messages </p>
 
 </div>
 </div>
@@ -1072,6 +1156,8 @@ from the USED list.
       </table>
 </div><div class="memdoc">
 
+<p>[str|list|tuple|None] word part-of-speech filter </p>
+
 </div>
 </div>
 <a id="ab6027eca86b51e3ada3733f4ecc9775c"></a>
@@ -1085,6 +1171,8 @@ from the USED list.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>start time - used in <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ad571ecad9026be8b61f813f4f737c55e">generate()</a> to mark elapsed time </p>
 
 </div>
 </div>
@@ -1100,6 +1188,8 @@ from the USED list.
       </table>
 </div><div class="memdoc">
 
+<p>set of used words (to rule out duplicate words in CW) </p>
+
 </div>
 </div>
 <a id="a99455730b0026d2e24e831051d932889"></a>
@@ -1113,6 +1203,8 @@ from the USED list.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>[callable|None] word filtering function used in <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a231568ef7c81e0f13e4dce622e5564a2" title="Fetches suggestions for the given word from the datasets (Crossword::wordsource).">Crossword::suggest()</a> </p>
 
 </div>
 </div>
@@ -1128,6 +1220,8 @@ from the USED list.
       </table>
 </div><div class="memdoc">
 
+<p>[<a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html" title="Core crossword implementation - a grid of characters + internal Word objects.">crossword::Wordgrid</a>] internal crossword grid object </p>
+
 </div>
 </div>
 <a id="a6afd17d17ceedf6839113ba49c26f630"></a>
@@ -1141,6 +1235,8 @@ from the USED list.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>[<a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html">wordsrc::Wordsource</a>|None] source(s) of words to use in generation </p>
 
 </div>
 </div>

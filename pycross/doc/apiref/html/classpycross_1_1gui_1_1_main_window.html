@@ -176,13 +176,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2ce99d3d29b14f403937ae75c4185b80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the internal formatting (colors, fonts) of the crossword grid.  <a href="classpycross_1_1gui_1_1_main_window.html#a2ce99d3d29b14f403937ae75c4185b80">More...</a><br /></td></tr>
 <tr class="separator:a2ce99d3d29b14f403937ae75c4185b80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae713c2b23baeea9b5743933c19a2f0b9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae713c2b23baeea9b5743933c19a2f0b9">update_cw_grid</a> (self)</td></tr>
-<tr class="memdesc:ae713c2b23baeea9b5743933c19a2f0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates (fills) the crossword grid from the internal Crossword object (self.cw).  <a href="classpycross_1_1gui_1_1_main_window.html#ae713c2b23baeea9b5743933c19a2f0b9">More...</a><br /></td></tr>
+<tr class="memdesc:ae713c2b23baeea9b5743933c19a2f0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates (fills) the crossword grid from the internal <a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">crossword::Crossword</a> object (self.cw).  <a href="classpycross_1_1gui_1_1_main_window.html#ae713c2b23baeea9b5743933c19a2f0b9">More...</a><br /></td></tr>
 <tr class="separator:ae713c2b23baeea9b5743933c19a2f0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63e92c328dad2543d5f0aef15ad4672d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a63e92c328dad2543d5f0aef15ad4672d">make_cell_item</a> (self, text, icon_text='')</td></tr>
 <tr class="memdesc:a63e92c328dad2543d5f0aef15ad4672d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a crossword cell item (QtWidgets.QTableWidgetItem) with given text and number.  <a href="classpycross_1_1gui_1_1_main_window.html#a63e92c328dad2543d5f0aef15ad4672d">More...</a><br /></td></tr>
 <tr class="separator:a63e92c328dad2543d5f0aef15ad4672d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a011e3589be9b86076ed6732cc72df05f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a011e3589be9b86076ed6732cc72df05f">update_cw_params</a> (self)</td></tr>
-<tr class="memdesc:a011e3589be9b86076ed6732cc72df05f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the core settings of self.cw (internal Crossword instance) from <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">CWSettings::settings</a>.  <a href="classpycross_1_1gui_1_1_main_window.html#a011e3589be9b86076ed6732cc72df05f">More...</a><br /></td></tr>
+<tr class="memdesc:a011e3589be9b86076ed6732cc72df05f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the core settings of <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="[crossword::Crossword] instance">MainWindow::cw</a> (internal <a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">crossword::Crossword</a> instance) from <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">CWSettings::settings</a>.  <a href="classpycross_1_1gui_1_1_main_window.html#a011e3589be9b86076ed6732cc72df05f">More...</a><br /></td></tr>
 <tr class="separator:a011e3589be9b86076ed6732cc72df05f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49f2d2042699a35a52c69dfd28f1b73f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49f2d2042699a35a52c69dfd28f1b73f">update_clues_model</a> (self)</td></tr>
 <tr class="memdesc:a49f2d2042699a35a52c69dfd28f1b73f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates (regenerates) the clues table from the clues contained in the current crossword.  <a href="classpycross_1_1gui_1_1_main_window.html#a49f2d2042699a35a52c69dfd28f1b73f">More...</a><br /></td></tr>
@@ -278,7 +278,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1d94c408ae0e5cd7a9a12c04626963db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies clues header column widths from <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">CWSettings::settings</a>.  <a href="classpycross_1_1gui_1_1_main_window.html#a1d94c408ae0e5cd7a9a12c04626963db">More...</a><br /></td></tr>
 <tr class="separator:a1d94c408ae0e5cd7a9a12c04626963db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada33a3748d29c62a56536fdec79837fb"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ada33a3748d29c62a56536fdec79837fb">on_get_recent</a> (self, new_version)</td></tr>
-<tr class="memdesc:ada33a3748d29c62a56536fdec79837fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="[Updater] instance (used to run app update checks and updates)">MainWindow::updater</a>, fires when a new release is found.  <a href="classpycross_1_1gui_1_1_main_window.html#ada33a3748d29c62a56536fdec79837fb">More...</a><br /></td></tr>
+<tr class="memdesc:ada33a3748d29c62a56536fdec79837fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="[utils::update::Updater] instance (used to run app update checks and updates)">MainWindow::updater</a>, fires when a new release is found.  <a href="classpycross_1_1gui_1_1_main_window.html#ada33a3748d29c62a56536fdec79837fb">More...</a><br /></td></tr>
 <tr class="separator:ada33a3748d29c62a56536fdec79837fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5df865096692aaa28539442c5410992d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a5df865096692aaa28539442c5410992d">stop_all_threads</a> (self)</td></tr>
 <tr class="memdesc:a5df865096692aaa28539442c5410992d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops all running threads.  <a href="classpycross_1_1gui_1_1_main_window.html#a5df865096692aaa28539442c5410992d">More...</a><br /></td></tr>
@@ -436,7 +436,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a53c3fe7e5acc6e3ad49bf6af590eddc4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4">cw</a></td></tr>
-<tr class="memdesc:a53c3fe7e5acc6e3ad49bf6af590eddc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1crossword_1_1_crossword.html">crossword::Crossword</a>] instance  <a href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4">More...</a><br /></td></tr>
+<tr class="memdesc:a53c3fe7e5acc6e3ad49bf6af590eddc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">crossword::Crossword</a>] instance  <a href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4">More...</a><br /></td></tr>
 <tr class="separator:a53c3fe7e5acc6e3ad49bf6af590eddc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7154ba87d4cfa05d88f7bd5f168ef48b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7154ba87d4cfa05d88f7bd5f168ef48b">cw_file</a></td></tr>
 <tr class="memdesc:a7154ba87d4cfa05d88f7bd5f168ef48b"><td class="mdescLeft">&#160;</td><td class="mdescRight">[str] currently opened cw file <br  />
@@ -473,10 +473,10 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a0cb30c7274cf2da6334b3c8dda8995ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">[list] thread list to keep track of all spawned threads  <a href="classpycross_1_1gui_1_1_main_window.html#a0cb30c7274cf2da6334b3c8dda8995ab">More...</a><br /></td></tr>
 <tr class="separator:a0cb30c7274cf2da6334b3c8dda8995ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6544e721b4d03c234bba3b0a7b482233"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">updater</a></td></tr>
-<tr class="memdesc:a6544e721b4d03c234bba3b0a7b482233"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Updater] instance (used to run app update checks and updates)  <a href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">More...</a><br /></td></tr>
+<tr class="memdesc:a6544e721b4d03c234bba3b0a7b482233"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html">utils::update::Updater</a>] instance (used to run app update checks and updates)  <a href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">More...</a><br /></td></tr>
 <tr class="separator:a6544e721b4d03c234bba3b0a7b482233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae961661e14882c046b54c0e432150bb6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae961661e14882c046b54c0e432150bb6">dia_settings</a></td></tr>
-<tr class="memdesc:ae961661e14882c046b54c0e432150bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">[SettingsDialog] instance (settings window)  <a href="classpycross_1_1gui_1_1_main_window.html#ae961661e14882c046b54c0e432150bb6">More...</a><br /></td></tr>
+<tr class="memdesc:ae961661e14882c046b54c0e432150bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">[<a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html">forms::SettingsDialog</a>] instance (settings window)  <a href="classpycross_1_1gui_1_1_main_window.html#ae961661e14882c046b54c0e432150bb6">More...</a><br /></td></tr>
 <tr class="separator:ae961661e14882c046b54c0e432150bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37f1c9925554a3fa949cfcce9ce8f500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a37f1c9925554a3fa949cfcce9ce8f500">act_new</a></td></tr>
 <tr class="memdesc:a37f1c9925554a3fa949cfcce9ce8f500"><td class="mdescLeft">&#160;</td><td class="mdescRight">new crossword action  <a href="classpycross_1_1gui_1_1_main_window.html#a37f1c9925554a3fa949cfcce9ce8f500">More...</a><br /></td></tr>
@@ -1825,7 +1825,7 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#af4876ff8348e1674cd669c843bb13a7d" title="grid clear action">MainWindow::act_clear</a>: clears the current crossword. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#af0cb022073a853ae3521e656e3d93b10">Crossword::clear()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1crossword_1_1_crossword.html#af0cb022073a853ae3521e656e3d93b10" title="Clears the crossword grid (making all words blank).">Crossword::clear()</a> </dd></dl>
 
 </div>
 </div>
@@ -1856,7 +1856,7 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a457229a5fdb7f62c43b675b34f8e6138" title="clear word action">MainWindow::act_clear_wd</a>: clears currently selected word without affecting any crossing words. </p>
-<p>This action effectively clears only the 'free' letters in the selected word. </p><dl class="section see"><dt>See also</dt><dd>Compare with <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a745ded9dccd8b997ba3d98b9362b445c" title="Slot for MainWindow::act_erase_wd: clears currently selected word (all letters).">on_act_erase_wd()</a> that erases all letters in the word. Also see <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ac1310eb1bd930780c819ef1e5ed6fc35">Crossword::clear_word()</a> </dd></dl>
+<p>This action effectively clears only the 'free' letters in the selected word. </p><dl class="section see"><dt>See also</dt><dd>Compare with <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a745ded9dccd8b997ba3d98b9362b445c" title="Slot for MainWindow::act_erase_wd: clears currently selected word (all letters).">on_act_erase_wd()</a> that erases all letters in the word. Also see <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ac1310eb1bd930780c819ef1e5ed6fc35" title="Clears the given word making its characters blank.">Crossword::clear_word()</a> </dd></dl>
 
 </div>
 </div>
@@ -2070,7 +2070,7 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a884e3cb9dc65b7561f98de4c963d43ae" title="erase word action">MainWindow::act_erase_wd</a>: clears currently selected word (all letters). </p>
-<p>Compared to <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3cc84f9ca3c5b06e27941c94b574dbf6" title="Slot for MainWindow::act_clear_wd: clears currently selected word without affecting any crossing word...">on_act_clear_wd()</a>, this action affects crossing words, if any, since it clears ALL the letters in the word, clearing them from the crossing words as well. </p><dl class="section see"><dt>See also</dt><dd>Also see <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ac1310eb1bd930780c819ef1e5ed6fc35">Crossword::clear_word()</a> </dd></dl>
+<p>Compared to <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a3cc84f9ca3c5b06e27941c94b574dbf6" title="Slot for MainWindow::act_clear_wd: clears currently selected word without affecting any crossing word...">on_act_clear_wd()</a>, this action affects crossing words, if any, since it clears ALL the letters in the word, clearing them from the crossing words as well. </p><dl class="section see"><dt>See also</dt><dd>Also see <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ac1310eb1bd930780c819ef1e5ed6fc35" title="Clears the given word making its characters blank.">Crossword::clear_word()</a> </dd></dl>
 
 </div>
 </div>
@@ -2621,7 +2621,7 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Slot for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac046a19b478c1b48b0a602fae2920e8c" title="check for update action">MainWindow::act_update</a>: checks for app updates on the server (github). </p>
-<p>If a new version is available and the user accepts it, the app will close down and update itself, then start up again. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="[Updater] instance (used to run app update checks and updates)">MainWindow::updater</a> </dd></dl>
+<p>If a new version is available and the user accepts it, the app will close down and update itself, then start up again. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="[utils::update::Updater] instance (used to run app update checks and updates)">MainWindow::updater</a> </dd></dl>
 
 </div>
 </div>
@@ -3026,7 +3026,7 @@ Private Member Functions</h2></td></tr>
 <p>Slot fires to show progress of cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="[GenThread] cw generation worker thread">MainWindow::gen_thread</a>). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cw_</td><td>[<a class="el" href="classpycross_1_1crossword_1_1_crossword.html">crossword::Crossword</a>] pointer to the Crossword object that runs the generation </td></tr>
+    <tr><td class="paramname">cw_</td><td>[<a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">crossword::Crossword</a>] pointer to the Crossword object that runs the generation </td></tr>
     <tr><td class="paramname">complete_</td><td>[int] number of completed (filled) words </td></tr>
     <tr><td class="paramname">total_</td><td>[int] total number of words in cw grid </td></tr>
   </table>
@@ -3194,7 +3194,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Callback for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="[Updater] instance (used to run app update checks and updates)">MainWindow::updater</a>, fires when a new release is found. </p>
+<p>Callback for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233" title="[utils::update::Updater] instance (used to run app update checks and updates)">MainWindow::updater</a>, fires when a new release is found. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">new_version</td><td>[str] new version found on the server, e.g. '1.1' </td></tr>
@@ -4570,7 +4570,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates (fills) the crossword grid from the internal Crossword object (self.cw). </p>
+<p>Updates (fills) the crossword grid from the internal <a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">crossword::Crossword</a> object (self.cw). </p>
 <p>This function resizes, fills the grid, updates the cell formatting and updates (fills) the clues table. </p>
 
 </div>
@@ -4591,7 +4591,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates the core settings of self.cw (internal Crossword instance) from <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">CWSettings::settings</a>. </p>
+<p>Updates the core settings of <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a53c3fe7e5acc6e3ad49bf6af590eddc4" title="[crossword::Crossword] instance">MainWindow::cw</a> (internal <a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">crossword::Crossword</a> instance) from <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">CWSettings::settings</a>. </p>
 
 </div>
 </div>
@@ -5204,7 +5204,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>[<a class="el" href="classpycross_1_1crossword_1_1_crossword.html">crossword::Crossword</a>] instance </p>
+<p>[<a class="el" href="classpycross_1_1crossword_1_1_crossword.html" title="Implementation of a crossword puzzle with auto generation functionality.">crossword::Crossword</a>] instance </p>
 
 </div>
 </div>
@@ -5346,7 +5346,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>[SettingsDialog] instance (settings window) </p>
+<p>[<a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html">forms::SettingsDialog</a>] instance (settings window) </p>
 
 </div>
 </div>
@@ -5791,7 +5791,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>[Updater] instance (used to run app update checks and updates) </p>
+<p>[<a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html">utils::update::Updater</a>] instance (used to run app update checks and updates) </p>
 
 </div>
 </div>

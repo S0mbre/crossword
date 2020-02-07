@@ -111,7 +111,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         ## [list] thread list to keep track of all spawned threads
         self.threads = ['gen_thread', 'share_thread']
-        ## [Updater] instance (used to run app update checks and updates)
+        ## [utils::update::Updater] instance (used to run app update checks and updates)
         self.updater = Updater(APP_NAME, APP_VERSION, GIT_REPO, UPDATE_FILE,
             make_abspath(CWSettings.settings['update']['logfile']),
             CWSettings.settings['update']['check_every'], 
@@ -120,7 +120,7 @@ class MainWindow(QtWidgets.QMainWindow):
             on_norecent=self.on_norecent)
         # create window elements
         self.initUI(not kwargs.get('empty', False))
-        ## [SettingsDialog] instance (settings window)
+        ## [forms::SettingsDialog] instance (settings window)
         self.dia_settings = SettingsDialog(self)
         # execute actions for command-line args, if present
         self.execute_cli_args(**kwargs)
@@ -996,7 +996,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.set_cell_formatting(cell_item)
         self.twCw.show()
     
-    ## @brief Updates (fills) the crossword grid from the internal Crossword object (self.cw).
+    ## @brief Updates (fills) the crossword grid from the internal crossword::Crossword object (self.cw).
     # This function resizes, fills the grid, updates the cell formatting and updates (fills) 
     # the clues table.
     def update_cw_grid(self):
@@ -1057,7 +1057,7 @@ class MainWindow(QtWidgets.QMainWindow):
             icon = QtGui.QIcon(pixmap)
         return QtWidgets.QTableWidgetItem(icon, text)
         
-    ## Updates the core settings of self.cw (internal Crossword instance) from CWSettings::settings.
+    ## Updates the core settings of MainWindow::cw (internal crossword::Crossword instance) from CWSettings::settings.
     def update_cw_params(self):
         if not isinstance(self.cw, Crossword): return
         self.cw.closelog()
