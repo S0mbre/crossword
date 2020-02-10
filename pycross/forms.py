@@ -2,7 +2,8 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-## @package pycross
+## @package pycross.forms
+# Classes for all the GUI app's forms but the main window.
 from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport, 
                     QtWebEngineWidgets, QtWebEngineCore, QtWebEngine)
 import os, copy, json
@@ -18,8 +19,22 @@ from guisettings import CWSettings
 # *****          BasicDialog
 # ******************************************************************************** #
 
+## @brief Base class for OK-Cancel type dialogs.
+# Creates the basic layout for controls (leaving the central area free to add controls),
+# and declares the validate() method to validate correctness of user input before accepting.
 class BasicDialog(QtWidgets.QDialog):
     
+    ## Constructor.
+    # @param geometry `4-tuple` window geometry data: `(left, top, width, height)`.
+    # If set to `None` (default), the position will be centered on the parent widget or screen
+    # and the size will be automatically adjusted to fit the internal controls.
+    # @param title `str` window title (`None` for no title)
+    # @param icon `str` window icon file name (relative to utils::globalvars::ICONFOLDER), e.g. 'main.png'.
+    # `None` means no icon.
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
+    # @param sizepolicy `QtWidgets.QSizePolicy` [QWidget size policy](https://doc.qt.io/qt-5/qsizepolicy.html).
+    # Default is fixed size in both directions (non-resizable dialog).
     def __init__(self, geometry=None, title=None, icon=None, parent=None, 
                  flags=QtCore.Qt.WindowFlags(), 
                  sizepolicy=QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)):
@@ -27,26 +42,41 @@ class BasicDialog(QtWidgets.QDialog):
         self.initUI(geometry, title, icon)
         self.setSizePolicy(sizepolicy)
         
+    ## @brief Creates the main (central) layout for controls.
+    # Must be overridden by child classes to change the layout type
+    # (default = `QtWidgets.QFormLayout`) and add controls.
     def addMainLayout(self):
+        ## `QtWidgets.QFormLayout` central layout for controls
         self.layout_controls = QtWidgets.QFormLayout()
         
+    ## Creates the core controls: OK and Cancel buttons and layouts.
+    # @param geometry `4-tuple` window geometry data: `(left, top, width, height)`.
+    # If set to `None` (default), the position will be centered on the parent widget or screen
+    # and the size will be automatically adjusted to fit the internal controls.
+    # @param title `str` window title (`None` for no title)
+    # @param icon `str` window icon file name (relative to utils::globalvars::ICONFOLDER), e.g. 'main.png'.
+    # `None` means no icon.
     def initUI(self, geometry=None, title=None, icon=None):
         
         self.addMainLayout()
         
+        ## `QtWidgets.QPushButton` OK button
         self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('OK'), None)
         self.btn_OK.setMaximumWidth(150)
         self.btn_OK.setDefault(True)
         self.btn_OK.clicked.connect(self.on_btn_OK_clicked)
+        ## `QtWidgets.QPushButton` Cancel button
         self.btn_cancel = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/multiply-1.png"), _('Cancel'), None)
         self.btn_cancel.setMaximumWidth(150)
         self.btn_cancel.clicked.connect(self.on_btn_cancel_clicked)
         
+        ## `QtWidgets.QHBoxLayout` bottom layout for OK and Cancel buttons
         self.layout_bottom = QtWidgets.QHBoxLayout()
         self.layout_bottom.setSpacing(10)
         self.layout_bottom.addWidget(self.btn_OK)
         self.layout_bottom.addWidget(self.btn_cancel)          
         
+        ## `QtWidgets.QVBoxLayout` window layout
         self.layout_main = QtWidgets.QVBoxLayout()
         self.layout_main.addLayout(self.layout_controls)
         self.layout_main.addLayout(self.layout_bottom)
@@ -61,13 +91,20 @@ class BasicDialog(QtWidgets.QDialog):
         if icon:
             self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}"))
         
+    ## Validates user input (reimplemented in child classes).
+    # @returns `bool` `True` if user input is valid, `False` otherwise
+    # @see on_btn_OK_clicked()
     def validate(self):        
         return True
     
+    ## @brief Fires when the OK button is clicked.
+    # Calls validate() to check correctness of input and, if correct, 
+    # accepts and closes window.
     @QtCore.pyqtSlot()
     def on_btn_OK_clicked(self): 
         if self.validate(): self.accept()
         
+    ## Fires when the Cancel button is clicked: rejects input and closes window.
     @QtCore.pyqtSlot()
     def on_btn_cancel_clicked(self): 
         self.reject() 
@@ -76,8 +113,9 @@ class BasicDialog(QtWidgets.QDialog):
 # *****          LoadCwDialog
 # ******************************************************************************** #  
         
+## Crossword creation dialog providing options to populate the crossword grid.
 class LoadCwDialog(BasicDialog):
-    
+        
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(None, _('New crossword'), 'crossword.png', 
               parent, flags)
@@ -85,13 +123,16 @@ class LoadCwDialog(BasicDialog):
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()
         
+        ## `QtWidgets.QRadioButton` 'load from pattern file' option
         self.rb_grid = QtWidgets.QRadioButton(_('Pattern'))
         self.rb_grid.setToolTip(_('Load pattern preset'))
         self.rb_grid.toggle()
         self.rb_grid.toggled.connect(self.rb_toggled)
+        ## `QtWidgets.QRadioButton` 'load from file' option
         self.rb_file = QtWidgets.QRadioButton(_('File'))
         self.rb_file.setToolTip(_('Import crossword from file'))
         self.rb_file.toggled.connect(self.rb_toggled)
+        ## `QtWidgets.QRadioButton` 'empty grid' option
         self.rb_empty = QtWidgets.QRadioButton(_('Empty grid'))
         self.rb_empty.setToolTip(_('Set grid dimensions and edit manually'))
         self.rb_empty.toggled.connect(self.rb_toggled)
@@ -152,6 +193,8 @@ class LoadCwDialog(BasicDialog):
 
         self.setMinimumWidth(300)
         
+    ## Checks that the text / pattern file is valid (if selected) or that the number of 
+    # rows and columns is valid (if creating an empty cw grid).
     def validate(self):
         if self.rb_grid.isChecked() and not os.path.isfile(self.le_pattern.text()):
             MsgBox(_('Pattern file is unavailable, please check!'), self, _('Error'), 'error')
@@ -169,31 +212,25 @@ class LoadCwDialog(BasicDialog):
         
     # ----- Slots ----- #
     
+    ## Show / hide panels under radio buttons.
     @QtCore.pyqtSlot(bool)        
     def rb_toggled(self, toggled):
-        """
-        Show / hide panels under radio buttons.
-        """
         self.gb_pattern.setVisible(self.rb_grid.isChecked())
         self.gb_file.setVisible(self.rb_file.isChecked())
         self.gb_manual.setVisible(self.rb_empty.isChecked())
         self.adjustSize()
     
+    ##  Browse for pattern file.
     @QtCore.pyqtSlot(bool)        
     def on_act_pattern(self, checked):
-        """
-        Browse for pattern file.
-        """
         current_dir = self.le_pattern.text()
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), current_dir or os.getcwd(), _('All files (*.*)'))
         if selected_path[0]:
             self.le_pattern.setText(selected_path[0].replace('/', os.sep))
     
+    ## Browse for cw file.
     @QtCore.pyqtSlot(bool)        
     def on_act_file(self, checked):
-        """
-        Browse for cw file.
-        """
         current_dir = self.le_file.text()
         selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), current_dir or os.getcwd(), _('Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)'))
         if selected_path[0]:
@@ -203,17 +240,51 @@ class LoadCwDialog(BasicDialog):
 # ******************************************************************************** #
 # *****          WordSrcDialog
 # ******************************************************************************** #  
-        
+
+## @brief Word source editor dialog: provides adding and editing word sources.
+# The word sources are then combined in gui::MainWindow::wordsrc in their sequential order
+# (as they are shown in the Settings dialog) to use for crossword generation.
+#
+# Currently 3 types of word sources are supported:
+#   * SQLite database
+#   * text file (with words and their parts of speech occupying one row each)
+#   * in-memory list of words (optionally with part of speech data)
+# 
+# See @ref pycross.wordsrc for implementation of word source objects.
 class WordSrcDialog(BasicDialog):
-    
-    """
-    src = {'active': True|False, 'name': '<name>', 'type': 'db|file|list', 'file': '<path>', 
-    'dbtype': '<sqlite>', 'dblogin': '', 'dbpass': '', 'dbtables': SQL_TABLES, 
-    'haspos': True|False, 'encoding': 'utf-8', 'shuffle': True|False, 
-    'delim': ' ', 'words': []}
-    """
-    
+    ## Constructor.
+    # @param src `dict` serialized word source data in the following format:
+    # @code
+    # src = {'active': True|False, 'name': '<name>', 'type': 'db|file|list', 'file': '<path>', 
+    # 'dbtype': '<sqlite>', 'dblogin': '', 'dbpass': '', 'dbtables': SQL_TABLES, 
+    # 'haspos': True|False, 'encoding': 'utf-8', 'shuffle': True|False, 
+    # 'delim': ' ', 'words': []}
+    # @endcode
+    # Description of keys:
+    #   * 'active' `bool` whether this source will be used in crossword generation
+    #   * 'name' `str` unique name for this source, e.g. 'eng-db' or 'rus-text-1'
+    #   * 'type' `str` any of the three source types:
+    #       - 'db' SQLite database
+    #       - 'file' text file
+    #       - 'list' in-memory list of words
+    #   * 'file' `str` full path to the DB or text file;
+    # if 'type' == 'db', abbreviated paths can be used to point to the preinstalled DB files,
+    # e.g. 'ru' = 'assets/dic/ru.db'
+    #   * 'dbtype' `str` currently must be only 'sqlite' (no other DB types are supported)
+    #   * 'dblogin' `str` optional DB user name
+    #   * 'dbpass' `str` optional DB user password
+    #   * 'dbtables' `dict` SQLite DB table and field names as given in utils::globalvars::SQL_TABLES
+    #   * 'haspos' `bool` `True` to indicate that the text file or word list contains part of speech data
+    # (appended to word strings after a delimiter character)
+    #   * 'encoding' `str` text file encoding (default = 'utf-8')
+    #   * 'shuffle' `bool` whether to shuffle the words in the source randomly when used for word suggestions
+    #   * 'delim' `str` delimiter character used to delimit word strings and part of speech data
+    # (default = whitespace)
+    #   * 'words' `list` list of words (optionally with part of speech data) -- see wordsrc::TextWordsource::words
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, src=None, parent=None, flags=QtCore.Qt.WindowFlags()):
+        ## `dict` serialized word source data (see \_\_init\_\_())
         self.src = src
         super().__init__(None, _('Word Source'), 'database-3.png', 
               parent, flags)
@@ -253,6 +324,7 @@ class WordSrcDialog(BasicDialog):
         self.layout_controls.addWidget(self.gb_type)
         self.layout_controls.addWidget(self.stacked)
         
+    ## Creates tabs for the 3 source types.
     def add_pages(self):
         # 1. DB
         self.page_db = QtWidgets.QWidget()
@@ -316,6 +388,9 @@ class WordSrcDialog(BasicDialog):
         self.page_list.setLayout(self.layout_list)
         self.stacked.addWidget(self.page_list)
                 
+    ## Initializes controls from word source data.
+    # @param src `dict` serialized word source data (see \_\_init\_\_())
+    # @see The reverse method: to_src()
     def from_src(self, src): 
         if not src: return
         
@@ -361,6 +436,9 @@ class WordSrcDialog(BasicDialog):
         # activate page
         self.rb_toggled(True)
     
+    ## Saves current control values to word source data dictionary (WordSrcDialog::src).
+    # @see See word source data format in \_\_init\_\_()
+    # @see The reverse method: from_src()
     def to_src(self):
         if not self.src: self.src = {}
         self.src['active'] = True
@@ -402,6 +480,7 @@ class WordSrcDialog(BasicDialog):
             self.src['words'] = self.te_wlist.toPlainText().strip().split('\n')
             self.src['shuffle'] = self.chb_list_shuffle.isChecked()
     
+    ## Performs various checks of current control values.
     def validate(self):
         if not self.le_name.text().strip():
             MsgBox(_('Source must have a non-empty name!'), _('Error'), self, 'error')
@@ -448,6 +527,8 @@ class WordSrcDialog(BasicDialog):
         self.to_src()
         return True
     
+    ## @brief Fires when WordSrcDialog::rb_type_db is toggled on or off.
+    # Switches to the corresponding tab.
     @QtCore.pyqtSlot(bool)        
     def rb_toggled(self, toggled):
         if self.rb_type_db.isChecked():
@@ -460,17 +541,32 @@ class WordSrcDialog(BasicDialog):
 # ******************************************************************************** #
 # *****          ToolbarCustomizer
 # ******************************************************************************** #  
-        
-class ToolbarCustomizer(QtWidgets.QWidget):
-    
-    # todo: implement Drag And Drop from treeview to list / toolbar 
-    # see https://doc.qt.io/qt-5/qtwidgets-draganddrop-fridgemagnets-example.html
 
+## @brief Toolbar customizer widget (incorporated by SettingsDialog).
+# This widget provides the user with a handy tool to tweak a toolbar (in this app
+# only the main toolbar is customizable) by adding / removing buttons / separators and changing
+# their order.
+# @todo implement Drag And Drop from treeview to list / toolbar --
+# see [example](https://doc.qt.io/qt-5/qtwidgets-draganddrop-fridgemagnets-example.html)
+class ToolbarCustomizer(QtWidgets.QWidget):
+
+    ## Constructor.
+    # @param action_source `QtWidgets.QActionGroup` | `QtWidgets.QMenu` | `QtWidgets.QAction` source for actions
+    # added as toolbar buttons -- either an action group or a menu, or a single action
+    # @param toolbar `QtWidgets.QToolBar` the initial (source) toolbar that must be configured
+    # (each of which may have child actions)
+    # @param parent `QtWidgets.QWidget` parent widget
     def __init__(self, action_source, toolbar, parent=None):
         if not action_source or not toolbar:
             raise Exception(_('Null action source or toolbar pointers passed to ToolbarCustomizer!'))
+        ## @brief `QtWidgets.QActionGroup` | `QtWidgets.QMenu` | `QtWidgets.QAction` source for actions
+        # The source actions will be shown on the left-hand panel (ToolbarCustomizer::tw_actions)
         self.action_source = action_source
-        self.src_toolbar = toolbar        
+        ## @brief `QtWidgets.QToolBar` the initial (source) toolbar that must be configured
+        # All buttons (actions) already present in the toolbar will be shown on the right-hand panel 
+        # (ToolbarCustomizer::lw_added)
+        self.src_toolbar = toolbar
+        ## `list` of source actions
         self.src_actions = []
         super().__init__(parent)
         self.addMainLayout()
@@ -479,11 +575,13 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.update_actions()
         #self.update_added(self.src_toolbar.actions(), False)
         
+    ## Creates the main layout for controls.
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QHBoxLayout()    
         self.splitter1 = QtWidgets.QSplitter()
         self.splitter1.setChildrenCollapsible(False)
 
+        ## `QtWidgets.QTreeWidget` source actions (buttons) that can be added to the toolbar
         self.tw_actions = QtWidgets.QTreeWidget()
         self.tw_actions.setColumnCount(1)
         self.tw_actions.setHeaderHidden(True)
@@ -509,6 +607,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.layout_right.addWidget(self.tb)
         self.layout_preview = QtWidgets.QVBoxLayout()
         self.l_added = QtWidgets.QLabel(_('Added items:'))
+        ## `QtWidgets.QListWidget` target actions (buttons) and separators to be shown in the toolbar
         self.lw_added = QtWidgets.QListWidget()
         self.lw_added.itemSelectionChanged.connect(self.on_tw_actions_selected)
         self.layout_preview.addWidget(self.l_added)
@@ -521,6 +620,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.layout_controls.addWidget(self.splitter1)
         self.setLayout(self.layout_controls)
 
+    ## Enables or disables actions depending on the selection of source and target buttons.
     def update_actions(self):
         cur_treeitem = self.tw_actions.currentItem() 
         cur_lwitem = self.lw_added.currentItem()
@@ -530,10 +630,8 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.act_up.setEnabled((not cur_lwitem is None) and self.lw_added.currentRow() > 0)
         self.act_down.setEnabled((not cur_lwitem is None) and self.lw_added.currentRow() < (self.lw_added.count() - 1))
 
+    ## Disables elements in the source action treeview which are already added to the target list view.
     def update_src_actions(self):
-        """
-        Disable elements in the source action treeview which are already added to the target list view.
-        """
         for src_action in self.src_actions:
             flags = QtCore.Qt.ItemIsEnabled
             if not src_action[0].isSeparator():
@@ -548,6 +646,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
                     break
         self.tw_actions.show() 
 
+    ## Resets (reloads) source and target actions from the source toolbar.
     def reset(self):
         self.src_actions.clear()
         self.tw_actions.clear()
@@ -556,13 +655,17 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.update_src_actions()
         self.update_actions()
 
+    ## Util function: adds a new item to a QListWidget control.
     def _lw_add(self, lw, item, row=-1):
         if row >= 0:
             lw.insertItem(row, item)
         else:
             lw.addItem(item)
 
-    def update_added(self, actions, clear=True, insert_in_current=False):
+    ## Reloads the right-hand actions (list view) from an action source.
+    # @param actions `iterable` collection of source actions (each of type `QtWidgets.QAction`)
+    # @param clear `bool` whether to clear the existing items (actions) before adding new ones
+    def update_added(self, actions, clear=True):
         row = self.lw_added.currentRow()
         if clear:
             self.lw_added.clear()
@@ -579,6 +682,13 @@ class ToolbarCustomizer(QtWidgets.QWidget):
                 #self.lw_added.addAction(act_)      
         self.update_actions()   
 
+    ## @brief Adds a source action to the left-hand treeview.
+    # @param action `QtWidgets.QActionGroup` | `QtWidgets.QMenu` | `QtWidgets.QAction` source for actions
+    # added as toolbar buttons -- either an action group or a menu, or a single action
+    # (each of which may have child actions)
+    # @param tree_item `QtWidgets.QTreeWidgetItem` | `None` tree widget item to add the action(s) to:
+    # if `None`, actions will be added as root nodes, otherwise they will be the children of 'tree_item'
+    # @returns `QtWidgets.QTreeWidgetItem` the added tree widget item
     def add_src_action(self, action, tree_item=None):
         if is_iterable(action):
             item = None
@@ -663,7 +773,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         sel_treeitems = self.tw_actions.selectedItems()
         if len(sel_treeitems) == 0: return
         actions = [item.data(0, QtCore.Qt.UserRole) for item in sel_treeitems]
-        self.update_added(actions, False, True)  
+        self.update_added(actions, False)  
         self.update_src_actions()   
 
     @QtCore.pyqtSlot()

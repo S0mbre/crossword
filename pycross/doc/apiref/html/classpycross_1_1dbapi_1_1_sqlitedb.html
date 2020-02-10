@@ -78,42 +78,62 @@ $(function() {
 <div class="title">pycross.dbapi.Sqlitedb Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>SQLite database driver implementation wrapping the standard Python sqlite3 methods.  
+ <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5c1ec57ca8fd5a9eaca4cef6b51fbc3b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a5c1ec57ca8fd5a9eaca4cef6b51fbc3b">__init__</a> (self, dbname=None)</td></tr>
+<tr class="memdesc:a5c1ec57ca8fd5a9eaca4cef6b51fbc3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor initializes DB driver connection.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a5c1ec57ca8fd5a9eaca4cef6b51fbc3b">More...</a><br /></td></tr>
 <tr class="separator:a5c1ec57ca8fd5a9eaca4cef6b51fbc3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6df24690204004d726b31a2451690245"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a6df24690204004d726b31a2451690245">__del__</a> (self)</td></tr>
+<tr class="memdesc:a6df24690204004d726b31a2451690245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor disconnects from DB.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a6df24690204004d726b31a2451690245">More...</a><br /></td></tr>
 <tr class="separator:a6df24690204004d726b31a2451690245"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29e79ed4bc4e07d42a5912c038a798cd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a29e79ed4bc4e07d42a5912c038a798cd">setpath</a> (self, dbname, fullpath=False, recreate=False, <a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#adc4cee52d457774cbd1ad4359de85f29">connect</a>=True)</td></tr>
+<tr class="memdesc:a29e79ed4bc4e07d42a5912c038a798cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the path to the DB file and establishes a connection if required.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a29e79ed4bc4e07d42a5912c038a798cd">More...</a><br /></td></tr>
 <tr class="separator:a29e79ed4bc4e07d42a5912c038a798cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc4cee52d457774cbd1ad4359de85f29"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#adc4cee52d457774cbd1ad4359de85f29">connect</a> (self)</td></tr>
+<tr class="memdesc:adc4cee52d457774cbd1ad4359de85f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects to the DB file (<a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a0d2409d2d1ce572be308929e7f102322" title="str full path to the DB">Sqlitedb::dbpath</a>).  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#adc4cee52d457774cbd1ad4359de85f29">More...</a><br /></td></tr>
 <tr class="separator:adc4cee52d457774cbd1ad4359de85f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa416b3324b741bc0e6f67530f79a26f4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#aa416b3324b741bc0e6f67530f79a26f4">disconnect</a> (self, commit_trailing=True)</td></tr>
+<tr class="memdesc:aa416b3324b741bc0e6f67530f79a26f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnects from the currently open DB.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#aa416b3324b741bc0e6f67530f79a26f4">More...</a><br /></td></tr>
 <tr class="separator:aa416b3324b741bc0e6f67530f79a26f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84b9062e22029a3f5cef44bf4426fbb2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a84b9062e22029a3f5cef44bf4426fbb2">create_db</a> (self, overwrite=False)</td></tr>
+<tr class="memdesc:a84b9062e22029a3f5cef44bf4426fbb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the DB in <a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a0d2409d2d1ce572be308929e7f102322" title="str full path to the DB">Sqlitedb::dbpath</a>, optionally overwriting the existing file.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a84b9062e22029a3f5cef44bf4426fbb2">More...</a><br /></td></tr>
 <tr class="separator:a84b9062e22029a3f5cef44bf4426fbb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af102df64affbafd6d61529fa48b88b4e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#af102df64affbafd6d61529fa48b88b4e">create_tables</a> (self)</td></tr>
+<tr class="memdesc:af102df64affbafd6d61529fa48b88b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the default table structure in the DB.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#af102df64affbafd6d61529fa48b88b4e">More...</a><br /></td></tr>
 <tr class="separator:af102df64affbafd6d61529fa48b88b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1431977258252fdb4f710f709bda9c9b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a1431977258252fdb4f710f709bda9c9b">get_pos</a> (self)</td></tr>
+<tr class="memdesc:a1431977258252fdb4f710f709bda9c9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the list of parts of speech present in the DB.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a1431977258252fdb4f710f709bda9c9b">More...</a><br /></td></tr>
 <tr class="separator:a1431977258252fdb4f710f709bda9c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6878ef7d21020272ceb59f3793a8d39"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#af6878ef7d21020272ceb59f3793a8d39">standard_posrules</a> (self, lang)</td></tr>
+<tr class="memdesc:af6878ef7d21020272ceb59f3793a8d39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default Hunspell-formatted metadata patterns for the three common parts of speech (noun, verb, adjective).  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#af6878ef7d21020272ceb59f3793a8d39">More...</a><br /></td></tr>
 <tr class="separator:af6878ef7d21020272ceb59f3793a8d39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd222e3be3502716671a9b945791c2ff"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#afd222e3be3502716671a9b945791c2ff">standard_replacements</a> (self, lang)</td></tr>
+<tr class="memdesc:afd222e3be3502716671a9b945791c2ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default replacement rules for a language to use in Hunspell imports.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#afd222e3be3502716671a9b945791c2ff">More...</a><br /></td></tr>
 <tr class="separator:afd222e3be3502716671a9b945791c2ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab83f5fa6dada99b1738398bd17c5195"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#aab83f5fa6dada99b1738398bd17c5195">add_from_hunspell</a> (self, dicfile, posrules, posrules_strict=True, posdelim='/', lcase=True, replacements=None, remove_hyphens=True, filter_out=None, commit_each=1000, on_word=None, on_commit=None)</td></tr>
+<tr class="memdesc:aab83f5fa6dada99b1738398bd17c5195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports a Hunspell-formatted dictionary file into the DB.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#aab83f5fa6dada99b1738398bd17c5195">More...</a><br /></td></tr>
 <tr class="separator:aab83f5fa6dada99b1738398bd17c5195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4945fd444e952d1a864f3751d9caf578"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a4945fd444e952d1a864f3751d9caf578">add_all_from_hunspell</a> (self, languages=None, on_commit=None, on_dict_add=None)</td></tr>
+<tr class="memdesc:a4945fd444e952d1a864f3751d9caf578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports all Hunspell-formatted dictionaries found in 'assets/dic'.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a4945fd444e952d1a864f3751d9caf578">More...</a><br /></td></tr>
 <tr class="separator:a4945fd444e952d1a864f3751d9caf578"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a0d2409d2d1ce572be308929e7f102322"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a0d2409d2d1ce572be308929e7f102322">dbpath</a></td></tr>
+<tr class="memdesc:a0d2409d2d1ce572be308929e7f102322"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> full path to the DB  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a0d2409d2d1ce572be308929e7f102322">More...</a><br /></td></tr>
 <tr class="separator:a0d2409d2d1ce572be308929e7f102322"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86c0c43db52444731db2925327dc58bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a86c0c43db52444731db2925327dc58bc">conn</a></td></tr>
+<tr class="memdesc:a86c0c43db52444731db2925327dc58bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal DB connection object (SQLite driver)  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a86c0c43db52444731db2925327dc58bc">More...</a><br /></td></tr>
 <tr class="separator:a86c0c43db52444731db2925327dc58bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>SQLite database driver implementation wrapping the standard Python sqlite3 methods. </p>
+<p>Some handy methods are added to connect / disconnect to / from the DB, create / recreate the DB with the default set of tables (to use as a word source), and import <a href="https://hunspell.github.io/">Hunspell</a> dictionary data. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5c1ec57ca8fd5a9eaca4cef6b51fbc3b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5c1ec57ca8fd5a9eaca4cef6b51fbc3b">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -140,6 +160,14 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructor initializes DB driver connection. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dbname</td><td><code>str</code> path to database file (*.db) or an abbreviated language name for preinstalled DB files stored in 'assets/dic', e.g. 'en' (='assets/dic/en.db') </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a6df24690204004d726b31a2451690245"></a>
@@ -157,6 +185,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor disconnects from DB. </p>
 
 </div>
 </div>
@@ -198,14 +228,24 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Inserts ALL Hunspell dictionaries found in 'assets/dic'.
-    - languages (iterable): list of languages to import, e.g. ['en', 'fr'] (others found will be skipped)
-Default = None (import all found dicts)
-    - on_commit (callable): callback function to be called when a next portion of records is written to the DB
-Callback type is: (records_committed: int, dic_file: str) -&gt; None
-    - on_dict_add (callable): callback function to be called when a next dictionary has been imported
-Callback type is: (dic_file: str, lang: str, records_from_file: int, total_records: int) -&gt; None
-</pre> 
+
+<p>Imports all Hunspell-formatted dictionaries found in 'assets/dic'. </p>
+<dl class="section warning"><dt>Warning</dt><dd>All imported dictionary files must have the '.dic' extension. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">languages</td><td><code>iterable</code> list of languages to import, e.g. ['en', 'fr'] (others found will be skipped). Default = <code>None</code> (import all found dictionaries) </td></tr>
+    <tr><td class="paramname">on_commit</td><td><code>callable</code> callback function to be called when a next portion of records is written to the DB.<br  />
+ Callback prototype is: <div class="fragment"><div class="line">on_commit(records_committed: int, dic_file: str) -&gt; <span class="keywordtype">None</span></div>
+</div><!-- fragment --> </td></tr>
+    <tr><td class="paramname">on_dict_add</td><td><code>callable</code> callback function to be called when a next dictionary has been imported.<br  />
+ Callback prototype is: <div class="fragment"><div class="line">on_dict_add(dic_file: str, lang: str, records_from_file: int, total_records: int) -&gt; <span class="keywordtype">None</span></div>
+</div><!-- fragment --> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>int</code> number of words imported from the dictionaries (aggregate) </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#aab83f5fa6dada99b1738398bd17c5195" title="Imports a Hunspell-formatted dictionary file into the DB.">add_from_hunspell()</a> </dd></dl>
+
 </div>
 </div>
 <a id="aab83f5fa6dada99b1738398bd17c5195"></a>
@@ -293,35 +333,44 @@ Callback type is: (dic_file: str, lang: str, records_from_file: int, total_recor
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Imports a Hunspell-formatted (*.dic) dictionary file into the DB.
-    - dicfile (str): path to imported dictionary
-    - posrules (dict): part-of-speech parsing rules in the format:
-{'N': 'regex for nouns', 'V': 'regex for verb', ...}
-Possible keys are: 'N' (noun), 'V' (verb), 'ADV' (adverb), 'ADJ' (adjective), 
-'P' (participle), 'PRON' (pronoun), 'I' (interjection), 
-'C' (conjuction), 'PREP' (preposition), 'PROP' (proposition), 
-'MISC' (miscellaneous / other), 'NONE' (no POS)
-    - posrules_strict (bool): if True, only the parts of speech present in posrules dict
-will be imported (all other words will be skipped). If False, such words
-will be imported with 'MISC' and 'NONE' POS markers
-    - posdelim (str): delimiter delimiting the word and its part of speech (default = '/')
-    - lcase (bool): if True, found words will be imported in lower case; otherwise, the
-original case will remain
-    - replacements (dict): character replacement rules in the format:
-{'char_from': 'char_to', ...}
-Default = None (no replacements)
-    - remove_hyphens (bool): if True, all hyphens ('-') will be removed from the words
-    - filter_out (dict): regex-based rules to filter out (exclude) words in the format:
-{'word': ['regex1', 'regex2', ...], 'pos': ['regex1', 'regex2', ...]}
-These words will not be imported. One of the POS rules can be used to screen off
-specific parts of speech. Match rules for words will be applied AFTER replacements and
-in the sequential order of the regex list.
-    - commit_each (int): threshold of insert operations after which the transaction will be committed
-    - on_word (callable): callback function to be called when a word is imported into the DB            
-Callback type is: (word: str, part_of_speech: str, records_committed: int) -&gt; None
-    - on_commit (callable): callback function to be called when a next portion of records is written to the DB
-Callback type is: (records_committed: int, dic_file: str) -&gt; None
-</pre> 
+
+<p>Imports a Hunspell-formatted dictionary file into the DB. </p>
+<p><a href="https://hunspell.github.io/">Hunspell</a> dictionaries can be downloaded from <a href="https://cgit.freedesktop.org/libreoffice/dictionaries/tree/">LibreOffice</a> or <a href="https://github.com/wooorm/dictionaries">Github</a>. Default dictionaries and prebuilt SQLite databases are found in assets/dic. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dicfile</td><td><code>str</code> path to imported dictionary file (*.dic). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>The file must be in <em>plain text</em> format, with each word on a new line, optionally followed by a slash (see 'posdelim' argument) and meta-data (parts of speech etc.) </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">posrules</td><td><code>dict</code> part-of-speech regular expression parsing rules in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;N&#39;</span>: <span class="stringliteral">&#39;regex for nouns&#39;</span>, <span class="stringliteral">&#39;V&#39;</span>: <span class="stringliteral">&#39;regex for verb&#39;</span>, ...} </div>
+</div><!-- fragment --> <pre>
+     Possible keys are: 'N' [noun], 'V' [verb], 'ADV' [adverb], 'ADJ' [adjective], 
+     'P' [participle], 'PRON' [pronoun], 'I' [interjection], 
+     'C' [conjuction], 'PREP' [preposition], 'PROP' [proposition], 
+     'MISC' [miscellaneous / other], 'NONE' [no POS]
+ </pre> </td></tr>
+    <tr><td class="paramname">posrules_strict</td><td><code>bool</code> if <code>True</code> (default), only the parts of speech present in posrules dict will be imported [all other words will be skipped]. If <code>False</code>, such words will be imported with 'MISC' and 'NONE' POS markers. </td></tr>
+    <tr><td class="paramname">posdelim</td><td><code>str</code> delimiter delimiting the word and its part of speech [default = '/'] </td></tr>
+    <tr><td class="paramname">lcase</td><td><code>bool</code> if <code>True</code> (default), found words will be imported in lower case; otherwise, the original case will remain </td></tr>
+    <tr><td class="paramname">replacements</td><td><code>dict</code>: character replacement rules in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;char_from&#39;</span>: <span class="stringliteral">&#39;char_to&#39;</span>, ...}</div>
+</div><!-- fragment --> Default = <code>None</code> (no replacements) </td></tr>
+    <tr><td class="paramname">remove_hyphens</td><td><code>bool</code> if <code>True</code> (default), all hyphens ['-'] will be removed from the words </td></tr>
+    <tr><td class="paramname">filter_out</td><td><code>dict</code> regex-based rules to filter out [exclude] words in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;word&#39;</span>: [<span class="stringliteral">&#39;regex1&#39;</span>, <span class="stringliteral">&#39;regex2&#39;</span>, ...], <span class="stringliteral">&#39;pos&#39;</span>: [<span class="stringliteral">&#39;regex1&#39;</span>, <span class="stringliteral">&#39;regex2&#39;</span>, ...]}</div>
+</div><!-- fragment --> These words will not be imported. One of the POS rules can be used to screen off specific parts of speech. Match rules for words will be applied AFTER replacements and in the sequential order of the regex list. Default = <code>None</code> (no filter rules apply). </td></tr>
+    <tr><td class="paramname">commit_each</td><td><code>int</code> threshold of insert operations after which the transaction will be committed (default = 1000) </td></tr>
+    <tr><td class="paramname">on_word</td><td><code>callable</code> callback function to be called when a word is imported into the DB. <br  />
+ Callback prototype is: <div class="fragment"><div class="line">on_word([word: str, part_of_speech: str, records_committed: int]) -&gt; <span class="keywordtype">None</span></div>
+</div><!-- fragment --> </td></tr>
+    <tr><td class="paramname">on_commit</td><td><code>callable</code>: callback function to be called when a next portion of records is written to the DB. Callback prototype is: <div class="fragment"><div class="line">on_commit(records_committed: int, dic_file: str) -&gt; <span class="keywordtype">None</span></div>
+</div><!-- fragment --> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>int</code> number of words imported from the dictionary </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a4945fd444e952d1a864f3751d9caf578" title="Imports all Hunspell-formatted dictionaries found in &#39;assets/dic&#39;.">add_all_from_hunspell()</a> </dd></dl>
+
 </div>
 </div>
 <a id="adc4cee52d457774cbd1ad4359de85f29"></a>
@@ -339,6 +388,9 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Connects to the DB file (<a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a0d2409d2d1ce572be308929e7f102322" title="str full path to the DB">Sqlitedb::dbpath</a>). </p>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> on success, <code>False</code> on failure </dd></dl>
 
 </div>
 </div>
@@ -368,6 +420,16 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
       </table>
 </div><div class="memdoc">
 
+<p>Creates the DB in <a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a0d2409d2d1ce572be308929e7f102322" title="str full path to the DB">Sqlitedb::dbpath</a>, optionally overwriting the existing file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">overwrite</td><td><code>bool</code> True to overwrite the existing file (default = <code>False</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>If set to <code>True</code>, all data in the DB file (if present) will be lost! </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> on success, <code>False</code> on failure </dd></dl>
+
 </div>
 </div>
 <a id="af102df64affbafd6d61529fa48b88b4e"></a>
@@ -385,6 +447,10 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates the default table structure in the DB. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> on success, <code>False</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a3ec4f07db096e411fc1d1cac08976412">utils::globalvars::SQL_TABLES</a> </dd></dl>
 
 </div>
 </div>
@@ -414,6 +480,14 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
       </table>
 </div><div class="memdoc">
 
+<p>Disconnects from the currently open DB. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">commit_trailing</td><td><code>bool</code> <code>True</code> (default) to commit all pending changes to the DB before disconnecting </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a1431977258252fdb4f710f709bda9c9b"></a>
@@ -431,6 +505,9 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Retrieves the list of parts of speech present in the DB. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> parts of speech in the short form, e.g. ['N', 'V'] </dd></dl>
 
 </div>
 </div>
@@ -478,6 +555,24 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
       </table>
 </div><div class="memdoc">
 
+<p>Initializes the path to the DB file and establishes a connection if required. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dbname</td><td><code>str</code> path to database file (*.db) or an abbreviated language name - see init() </td></tr>
+    <tr><td class="paramname">fullpath</td><td><code>bool</code> <code>True</code> to indicate that the 'dbname' argument is the full file path (default = <code>False</code>) </td></tr>
+    <tr><td class="paramname">recreate</td><td><code>bool</code> <code>True</code> to recreate the database file with the default table structure (default = <code>False</code>). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>If set to <code>True</code>, all data in the DB file (if present) will be lost! </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">connect</td><td><code>bool</code> <code>True</code> (default) to attempt connecting to the DB immediately </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> on success, <code>False</code> on failure </dd></dl>
+
 </div>
 </div>
 <a id="af6878ef7d21020272ceb59f3793a8d39"></a>
@@ -505,6 +600,18 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the default Hunspell-formatted metadata patterns for the three common parts of speech (noun, verb, adjective). </p>
+<p>The returned patterns depend on the language. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lang</td><td><code>str</code> language for which the matching patterns are requested, e.g. 'en' or 'ru' </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> POS to regex pattern matching table in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;N&#39;</span>: <span class="stringliteral">&#39;regex pattern for nouns&#39;</span>, <span class="stringliteral">&#39;V&#39;</span>: <span class="stringliteral">&#39;regex pattern for verbs&#39;</span>, <span class="stringliteral">&#39;ADJ&#39;</span>: <span class="stringliteral">&#39;regex pattern for adjectives&#39;</span>}</div>
+</div><!-- fragment --> If the language is invalid (none of 'en', 'ru', 'fr' or 'de'), <code>None</code> is returned.<br  />
+ Reimplement this method as needed to support other languages / parts of speech formats. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#aab83f5fa6dada99b1738398bd17c5195" title="Imports a Hunspell-formatted dictionary file into the DB.">add_from_hunspell()</a> </dd></dl>
 
 </div>
 </div>
@@ -534,6 +641,18 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
       </table>
 </div><div class="memdoc">
 
+<p>Returns the default replacement rules for a language to use in Hunspell imports. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lang</td><td><code>str</code> language for which the matching patterns are requested, e.g. 'en' or 'ru' </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> default replacements in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;character to replace&#39;</span>: <span class="stringliteral">&#39;replacement character&#39;</span>}</div>
+</div><!-- fragment --> If the language is invalid (currently only 'ru' or 'fr'), <code>None</code> is returned.<br  />
+ Reimplement this method as needed to add other languages / replaced characters. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#aab83f5fa6dada99b1738398bd17c5195" title="Imports a Hunspell-formatted dictionary file into the DB.">add_from_hunspell()</a> </dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -549,6 +668,8 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
       </table>
 </div><div class="memdoc">
 
+<p>internal DB connection object (SQLite driver) </p>
+
 </div>
 </div>
 <a id="a0d2409d2d1ce572be308929e7f102322"></a>
@@ -562,6 +683,8 @@ Callback type is: (records_committed: int, dic_file: str) -&gt; None
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>str</code> full path to the DB </p>
 
 </div>
 </div>

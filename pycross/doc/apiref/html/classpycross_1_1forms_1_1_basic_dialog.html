@@ -78,6 +78,9 @@ $(function() {
 <div class="title">pycross.forms.BasicDialog Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Base class for OK-Cancel type dialogs.  
+ <a href="classpycross_1_1forms_1_1_basic_dialog.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.forms.BasicDialog:</div>
 <div class="dyncontent">
@@ -86,13 +89,13 @@ Inheritance diagram for pycross.forms.BasicDialog:</div>
   <map id="pycross.forms.BasicDialog_map" name="pycross.forms.BasicDialog_map">
 <area href="classpycross_1_1forms_1_1_cw_info_dialog.html" alt="pycross.forms.CwInfoDialog" shape="rect" coords="217,112,424,136"/>
 <area href="classpycross_1_1forms_1_1_def_lookup_dialog.html" alt="pycross.forms.DefLookupDialog" shape="rect" coords="217,168,424,192"/>
-<area href="classpycross_1_1forms_1_1_load_cw_dialog.html" alt="pycross.forms.LoadCwDialog" shape="rect" coords="217,224,424,248"/>
+<area href="classpycross_1_1forms_1_1_load_cw_dialog.html" title="Crossword creation dialog providing options to populate the crossword grid." alt="pycross.forms.LoadCwDialog" shape="rect" coords="217,224,424,248"/>
 <area href="classpycross_1_1forms_1_1_password_dialog.html" alt="pycross.forms.PasswordDialog" shape="rect" coords="217,280,424,304"/>
 <area href="classpycross_1_1forms_1_1_print_preview_dialog.html" alt="pycross.forms.PrintPreviewDialog" shape="rect" coords="217,336,424,360"/>
 <area href="classpycross_1_1forms_1_1_reflect_grid_dialog.html" alt="pycross.forms.ReflectGridDialog" shape="rect" coords="217,392,424,416"/>
 <area href="classpycross_1_1forms_1_1_settings_dialog.html" alt="pycross.forms.SettingsDialog" shape="rect" coords="217,448,424,472"/>
 <area href="classpycross_1_1forms_1_1_share_dialog.html" alt="pycross.forms.ShareDialog" shape="rect" coords="217,504,424,528"/>
-<area href="classpycross_1_1forms_1_1_word_src_dialog.html" alt="pycross.forms.WordSrcDialog" shape="rect" coords="217,560,424,584"/>
+<area href="classpycross_1_1forms_1_1_word_src_dialog.html" title="Word source editor dialog: provides adding and editing word sources." alt="pycross.forms.WordSrcDialog" shape="rect" coords="217,560,424,584"/>
 <area href="classpycross_1_1forms_1_1_word_suggest_dialog.html" alt="pycross.forms.WordSuggestDialog" shape="rect" coords="217,616,424,640"/>
   </map>
 </div></div>
@@ -100,32 +103,46 @@ Inheritance diagram for pycross.forms.BasicDialog:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a384bc887ac5d3798d91e20172c36df65"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a384bc887ac5d3798d91e20172c36df65">__init__</a> (self, geometry=None, title=None, icon=None, parent=None, flags=QtCore.Qt.WindowFlags(), sizepolicy=QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))</td></tr>
+<tr class="memdesc:a384bc887ac5d3798d91e20172c36df65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classpycross_1_1forms_1_1_basic_dialog.html#a384bc887ac5d3798d91e20172c36df65">More...</a><br /></td></tr>
 <tr class="separator:a384bc887ac5d3798d91e20172c36df65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad21c6bc426f7472e8ab0d9aad881f36a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#ad21c6bc426f7472e8ab0d9aad881f36a">addMainLayout</a> (self)</td></tr>
+<tr class="memdesc:ad21c6bc426f7472e8ab0d9aad881f36a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the main (central) layout for controls.  <a href="classpycross_1_1forms_1_1_basic_dialog.html#ad21c6bc426f7472e8ab0d9aad881f36a">More...</a><br /></td></tr>
 <tr class="separator:ad21c6bc426f7472e8ab0d9aad881f36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0ec5e646a5f9d40c252eca3f8a2e47f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#ab0ec5e646a5f9d40c252eca3f8a2e47f">initUI</a> (self, geometry=None, title=None, icon=None)</td></tr>
+<tr class="memdesc:ab0ec5e646a5f9d40c252eca3f8a2e47f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the core controls: OK and Cancel buttons and layouts.  <a href="classpycross_1_1forms_1_1_basic_dialog.html#ab0ec5e646a5f9d40c252eca3f8a2e47f">More...</a><br /></td></tr>
 <tr class="separator:ab0ec5e646a5f9d40c252eca3f8a2e47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad52368132447a407cda1f3cb7b3baf15"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#ad52368132447a407cda1f3cb7b3baf15">validate</a> (self)</td></tr>
+<tr class="memdesc:ad52368132447a407cda1f3cb7b3baf15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates user input (reimplemented in child classes).  <a href="classpycross_1_1forms_1_1_basic_dialog.html#ad52368132447a407cda1f3cb7b3baf15">More...</a><br /></td></tr>
 <tr class="separator:ad52368132447a407cda1f3cb7b3baf15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02bfb91e9ad0443b4afd87584b27bbd0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a02bfb91e9ad0443b4afd87584b27bbd0">on_btn_OK_clicked</a> (self)</td></tr>
+<tr class="memdesc:a02bfb91e9ad0443b4afd87584b27bbd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when the OK button is clicked.  <a href="classpycross_1_1forms_1_1_basic_dialog.html#a02bfb91e9ad0443b4afd87584b27bbd0">More...</a><br /></td></tr>
 <tr class="separator:a02bfb91e9ad0443b4afd87584b27bbd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a405ad9c81c7324a39384aa71781719d1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a405ad9c81c7324a39384aa71781719d1">on_btn_cancel_clicked</a> (self)</td></tr>
+<tr class="memdesc:a405ad9c81c7324a39384aa71781719d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when the Cancel button is clicked: rejects input and closes window.  <a href="classpycross_1_1forms_1_1_basic_dialog.html#a405ad9c81c7324a39384aa71781719d1">More...</a><br /></td></tr>
 <tr class="separator:a405ad9c81c7324a39384aa71781719d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa0a7f953e2f21c8c3b8b76f6b7b1829b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#aa0a7f953e2f21c8c3b8b76f6b7b1829b">layout_controls</a></td></tr>
+<tr class="memdesc:aa0a7f953e2f21c8c3b8b76f6b7b1829b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QFormLayout</code> central layout for controls  <a href="classpycross_1_1forms_1_1_basic_dialog.html#aa0a7f953e2f21c8c3b8b76f6b7b1829b">More...</a><br /></td></tr>
 <tr class="separator:aa0a7f953e2f21c8c3b8b76f6b7b1829b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99b025f80697f03e69fc36f21a07224c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a99b025f80697f03e69fc36f21a07224c">btn_OK</a></td></tr>
+<tr class="memdesc:a99b025f80697f03e69fc36f21a07224c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QPushButton</code> OK button  <a href="classpycross_1_1forms_1_1_basic_dialog.html#a99b025f80697f03e69fc36f21a07224c">More...</a><br /></td></tr>
 <tr class="separator:a99b025f80697f03e69fc36f21a07224c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e2540bb7d30b30319f44d818407a794"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a3e2540bb7d30b30319f44d818407a794">btn_cancel</a></td></tr>
+<tr class="memdesc:a3e2540bb7d30b30319f44d818407a794"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QPushButton</code> Cancel button  <a href="classpycross_1_1forms_1_1_basic_dialog.html#a3e2540bb7d30b30319f44d818407a794">More...</a><br /></td></tr>
 <tr class="separator:a3e2540bb7d30b30319f44d818407a794"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8310f209ffc52b3b7d4da39caa9d0d4d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a8310f209ffc52b3b7d4da39caa9d0d4d">layout_bottom</a></td></tr>
+<tr class="memdesc:a8310f209ffc52b3b7d4da39caa9d0d4d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QHBoxLayout</code> bottom layout for OK and Cancel buttons  <a href="classpycross_1_1forms_1_1_basic_dialog.html#a8310f209ffc52b3b7d4da39caa9d0d4d">More...</a><br /></td></tr>
 <tr class="separator:a8310f209ffc52b3b7d4da39caa9d0d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a619526548042a68a960185a2bf28d71f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a619526548042a68a960185a2bf28d71f">layout_main</a></td></tr>
+<tr class="memdesc:a619526548042a68a960185a2bf28d71f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QVBoxLayout</code> window layout  <a href="classpycross_1_1forms_1_1_basic_dialog.html#a619526548042a68a960185a2bf28d71f">More...</a><br /></td></tr>
 <tr class="separator:a619526548042a68a960185a2bf28d71f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base class for OK-Cancel type dialogs. </p>
+<p>Creates the basic layout for controls (leaving the central area free to add controls), and declares the <a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#ad52368132447a407cda1f3cb7b3baf15" title="Validates user input (reimplemented in child classes).">validate()</a> method to validate correctness of user input before accepting. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a384bc887ac5d3798d91e20172c36df65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a384bc887ac5d3798d91e20172c36df65">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -182,6 +199,19 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">geometry</td><td><code>4-tuple</code> window geometry data: <code>(left, top, width, height)</code>. If set to <code>None</code> (default), the position will be centered on the parent widget or screen and the size will be automatically adjusted to fit the internal controls. </td></tr>
+    <tr><td class="paramname">title</td><td><code>str</code> window title (<code>None</code> for no title) </td></tr>
+    <tr><td class="paramname">icon</td><td><code>str</code> window icon file name (relative to <a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#ae2a352b9ae3d998f98b6b0860328f2a7">utils::globalvars::ICONFOLDER</a>), e.g. 'main.png'. <code>None</code> means no icon. </td></tr>
+    <tr><td class="paramname">parent</td><td><code>QtWidgets.QWidget</code> parent widget (default = <code>None</code>, i.e. no parent) </td></tr>
+    <tr><td class="paramname">flags</td><td><code>QtCore.Qt.WindowFlags</code> <a href="https://doc.qt.io/qt-5/qt.html#WindowType-enum">Qt window flags</a> </td></tr>
+    <tr><td class="paramname">sizepolicy</td><td><code>QtWidgets.QSizePolicy</code> <a href="https://doc.qt.io/qt-5/qsizepolicy.html">QWidget size policy</a>. Default is fixed size in both directions (non-resizable dialog). </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Reimplemented in <a class="el" href="classpycross_1_1forms_1_1_word_suggest_dialog.html#ac859cb83da04ba59360a0c363405bf76">pycross.forms.WordSuggestDialog</a>.</p>
 
 </div>
@@ -202,6 +232,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates the main (central) layout for controls. </p>
+<p>Must be overridden by child classes to change the layout type (default = <code>QtWidgets.QFormLayout</code>) and add controls. </p>
 
 <p>Reimplemented in <a class="el" href="classpycross_1_1forms_1_1_share_dialog.html#ae008627a525e89d6d550137600082574">pycross.forms.ShareDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_password_dialog.html#a90501ae6dbb773de3cab79bd17379aa1">pycross.forms.PasswordDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_reflect_grid_dialog.html#aee3d1df74fe3fa48a198c4dd75b99ede">pycross.forms.ReflectGridDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ac4319aaed391171ed66e649840d25cfe">pycross.forms.DefLookupDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_cw_info_dialog.html#a1eb75e4d1cc5ad3869a6a907551826ec">pycross.forms.CwInfoDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_print_preview_dialog.html#a892b28f1463029720dec7d0c6c8bd4ef">pycross.forms.PrintPreviewDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_suggest_dialog.html#a15dadc5d53711bdda736a3f5611e16be">pycross.forms.WordSuggestDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ac852dfdea56ffa0acc74361391b1e1bc">pycross.forms.SettingsDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_src_dialog.html#aa2f77dbdcc6d330634a4ef4fdc627bc6">pycross.forms.WordSrcDialog</a>, and <a class="el" href="classpycross_1_1forms_1_1_load_cw_dialog.html#ad96306ce9f042c5a798abf14bd52a595">pycross.forms.LoadCwDialog</a>.</p>
 
@@ -245,6 +278,16 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Creates the core controls: OK and Cancel buttons and layouts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">geometry</td><td><code>4-tuple</code> window geometry data: <code>(left, top, width, height)</code>. If set to <code>None</code> (default), the position will be centered on the parent widget or screen and the size will be automatically adjusted to fit the internal controls. </td></tr>
+    <tr><td class="paramname">title</td><td><code>str</code> window title (<code>None</code> for no title) </td></tr>
+    <tr><td class="paramname">icon</td><td><code>str</code> window icon file name (relative to <a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#ae2a352b9ae3d998f98b6b0860328f2a7">utils::globalvars::ICONFOLDER</a>), e.g. 'main.png'. <code>None</code> means no icon. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a405ad9c81c7324a39384aa71781719d1"></a>
@@ -262,6 +305,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Fires when the Cancel button is clicked: rejects input and closes window. </p>
 
 </div>
 </div>
@@ -281,6 +326,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Fires when the OK button is clicked. </p>
+<p>Calls <a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#ad52368132447a407cda1f3cb7b3baf15" title="Validates user input (reimplemented in child classes).">validate()</a> to check correctness of input and, if correct, accepts and closes window. </p>
+
 </div>
 </div>
 <a id="ad52368132447a407cda1f3cb7b3baf15"></a>
@@ -299,6 +347,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Validates user input (reimplemented in child classes). </p>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if user input is valid, <code>False</code> otherwise </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a02bfb91e9ad0443b4afd87584b27bbd0" title="Fires when the OK button is clicked.">on_btn_OK_clicked()</a> </dd></dl>
+
 <p>Reimplemented in <a class="el" href="classpycross_1_1forms_1_1_password_dialog.html#a0b30bbd9fe60b0849c33bb90118e3e00">pycross.forms.PasswordDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_suggest_dialog.html#aa7a0eb02aa30eae84d2c88b63e74b1c1">pycross.forms.WordSuggestDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_src_dialog.html#a7841f1fd0ce72ffa68d8e66177875b44">pycross.forms.WordSrcDialog</a>, and <a class="el" href="classpycross_1_1forms_1_1_load_cw_dialog.html#a365a937527015820bee99342ad11576d">pycross.forms.LoadCwDialog</a>.</p>
 
 </div>
@@ -316,6 +368,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>QtWidgets.QPushButton</code> Cancel button </p>
+
 </div>
 </div>
 <a id="a99b025f80697f03e69fc36f21a07224c"></a>
@@ -329,6 +383,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>QtWidgets.QPushButton</code> OK button </p>
 
 </div>
 </div>
@@ -344,6 +400,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>QtWidgets.QHBoxLayout</code> bottom layout for OK and Cancel buttons </p>
+
 </div>
 </div>
 <a id="aa0a7f953e2f21c8c3b8b76f6b7b1829b"></a>
@@ -358,6 +416,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>QtWidgets.QFormLayout</code> central layout for controls </p>
+
 </div>
 </div>
 <a id="a619526548042a68a960185a2bf28d71f"></a>
@@ -371,6 +431,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>QtWidgets.QVBoxLayout</code> window layout </p>
 
 </div>
 </div>

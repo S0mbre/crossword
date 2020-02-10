@@ -78,50 +78,68 @@ $(function() {
 <div class="title">pycross.wordsrc.Wordsource Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Base class for word source objects.  
+ <a href="classpycross_1_1wordsrc_1_1_wordsource.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.wordsrc.Wordsource:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classpycross_1_1wordsrc_1_1_wordsource.png" usemap="#pycross.wordsrc.Wordsource_map" alt=""/>
   <map id="pycross.wordsrc.Wordsource_map" name="pycross.wordsrc.Wordsource_map">
-<area href="classpycross_1_1wordsrc_1_1_d_b_wordsource.html" alt="pycross.wordsrc.DBWordsource" shape="rect" coords="0,56,220,80"/>
-<area href="classpycross_1_1wordsrc_1_1_multi_wordsource.html" alt="pycross.wordsrc.MultiWordsource" shape="rect" coords="230,56,450,80"/>
-<area href="classpycross_1_1wordsrc_1_1_text_wordsource.html" alt="pycross.wordsrc.TextWordsource" shape="rect" coords="460,56,680,80"/>
-<area href="classpycross_1_1wordsrc_1_1_textfile_wordsource.html" alt="pycross.wordsrc.TextfileWordsource" shape="rect" coords="460,112,680,136"/>
+<area href="classpycross_1_1wordsrc_1_1_d_b_wordsource.html" title="SQLite database word source implementation." alt="pycross.wordsrc.DBWordsource" shape="rect" coords="0,56,220,80"/>
+<area href="classpycross_1_1wordsrc_1_1_multi_wordsource.html" title="Combined word source that stores other Wordsource-derived objects and provides the same interface for..." alt="pycross.wordsrc.MultiWordsource" shape="rect" coords="230,56,450,80"/>
+<area href="classpycross_1_1wordsrc_1_1_text_wordsource.html" title="Word source based on a simple list of strings (stored in memory)." alt="pycross.wordsrc.TextWordsource" shape="rect" coords="460,56,680,80"/>
+<area href="classpycross_1_1wordsrc_1_1_textfile_wordsource.html" title="Word source generated from a text file." alt="pycross.wordsrc.TextfileWordsource" shape="rect" coords="460,112,680,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a887d24b9bb1911d3f566a2e6a67c6a7d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a887d24b9bb1911d3f566a2e6a67c6a7d">__init__</a> (self, <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a0cd096e8fdb3cb9e720fd4b2d387ec84">max_fetch</a>=None, <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#ab102263e7dc9e2ddd15bd0d29a324bb1">shuffle</a>=True)</td></tr>
+<tr class="memdesc:a887d24b9bb1911d3f566a2e6a67c6a7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#a887d24b9bb1911d3f566a2e6a67c6a7d">More...</a><br /></td></tr>
 <tr class="separator:a887d24b9bb1911d3f566a2e6a67c6a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5243902f98570a2fc85de68c7925e2cd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a5243902f98570a2fc85de68c7925e2cd">isvalid</a> (self)</td></tr>
+<tr class="memdesc:a5243902f98570a2fc85de68c7925e2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if it is a valid word source.  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#a5243902f98570a2fc85de68c7925e2cd">More...</a><br /></td></tr>
 <tr class="separator:a5243902f98570a2fc85de68c7925e2cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb5383723f757124915d8cd72311d328"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#aeb5383723f757124915d8cd72311d328">truncate</a> (self, suggestions)</td></tr>
+<tr class="memdesc:aeb5383723f757124915d8cd72311d328"><td class="mdescLeft">&#160;</td><td class="mdescRight">Truncates the results by the threshold number stored in <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a0cd096e8fdb3cb9e720fd4b2d387ec84" title="int maximum number of suggestions returned from the word source">Wordsource::max_fetch</a>.  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#aeb5383723f757124915d8cd72311d328">More...</a><br /></td></tr>
 <tr class="separator:aeb5383723f757124915d8cd72311d328"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab102263e7dc9e2ddd15bd0d29a324bb1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#ab102263e7dc9e2ddd15bd0d29a324bb1">shuffle</a> (self, suggestions)</td></tr>
+<tr class="memdesc:ab102263e7dc9e2ddd15bd0d29a324bb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shuffles the results randomly.  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#ab102263e7dc9e2ddd15bd0d29a324bb1">More...</a><br /></td></tr>
 <tr class="separator:ab102263e7dc9e2ddd15bd0d29a324bb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a10b003486a647627d3b5eefbd5cdc5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a5a10b003486a647627d3b5eefbd5cdc5">fetch</a> (self, word=None, blank=' ', pos=None, filter_func=None, <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#ab102263e7dc9e2ddd15bd0d29a324bb1">shuffle</a>=True, <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#aeb5383723f757124915d8cd72311d328">truncate</a>=True)</td></tr>
+<tr class="memdesc:a5a10b003486a647627d3b5eefbd5cdc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches suggestions (as a <code>list</code> of strings) for a given word pattern (mask).  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#a5a10b003486a647627d3b5eefbd5cdc5">More...</a><br /></td></tr>
 <tr class="separator:a5a10b003486a647627d3b5eefbd5cdc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d064848734da1dd7ba06abaefbf6d8b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a1d064848734da1dd7ba06abaefbf6d8b">check</a> (self, word, pos=None, filter_func=None)</td></tr>
+<tr class="memdesc:a1d064848734da1dd7ba06abaefbf6d8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given word or word pattern is found in the word source.  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#a1d064848734da1dd7ba06abaefbf6d8b">More...</a><br /></td></tr>
 <tr class="separator:a1d064848734da1dd7ba06abaefbf6d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5739b21a8f6694ca99bd13e4740d8e7d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a5739b21a8f6694ca99bd13e4740d8e7d">pop_word</a> (self, suggestions)</td></tr>
+<tr class="memdesc:a5739b21a8f6694ca99bd13e4740d8e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the last suggestion (word) from the list of suggestions, removing that word from the original results.  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#a5739b21a8f6694ca99bd13e4740d8e7d">More...</a><br /></td></tr>
 <tr class="separator:a5739b21a8f6694ca99bd13e4740d8e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbb60bf0153651339ec45061e465e094"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#abbb60bf0153651339ec45061e465e094">__repr__</a> (self)</td></tr>
+<tr class="memdesc:abbb60bf0153651339ec45061e465e094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Python <code>repr()</code> overload.  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#abbb60bf0153651339ec45061e465e094">More...</a><br /></td></tr>
 <tr class="separator:abbb60bf0153651339ec45061e465e094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86593d72ba25984b32008f744ea9109a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a86593d72ba25984b32008f744ea9109a">__bool__</a> (self)</td></tr>
+<tr class="memdesc:a86593d72ba25984b32008f744ea9109a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Python <code>bool()</code> overload.  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#a86593d72ba25984b32008f744ea9109a">More...</a><br /></td></tr>
 <tr class="separator:a86593d72ba25984b32008f744ea9109a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a0cd096e8fdb3cb9e720fd4b2d387ec84"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a0cd096e8fdb3cb9e720fd4b2d387ec84">max_fetch</a></td></tr>
+<tr class="memdesc:a0cd096e8fdb3cb9e720fd4b2d387ec84"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> maximum number of suggestions returned from the word source  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#a0cd096e8fdb3cb9e720fd4b2d387ec84">More...</a><br /></td></tr>
 <tr class="separator:a0cd096e8fdb3cb9e720fd4b2d387ec84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2729d12f9570c25754040d3049de2ba5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a2729d12f9570c25754040d3049de2ba5">shuffle_words</a></td></tr>
+<tr class="memdesc:a2729d12f9570c25754040d3049de2ba5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> if <code>True</code>, fetched words will be shuffled  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#a2729d12f9570c25754040d3049de2ba5">More...</a><br /></td></tr>
 <tr class="separator:a2729d12f9570c25754040d3049de2ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1286f1460a6837afe81008451b3fcbbb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a1286f1460a6837afe81008451b3fcbbb">active</a></td></tr>
+<tr class="memdesc:a1286f1460a6837afe81008451b3fcbbb"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> if <code>True</code>, this word source will be used; otherwise it will be ignored  <a href="classpycross_1_1wordsrc_1_1_wordsource.html#a1286f1460a6837afe81008451b3fcbbb">More...</a><br /></td></tr>
 <tr class="separator:a1286f1460a6837afe81008451b3fcbbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base class for word source objects. </p>
+<p>Provides core methods for fetching, shuffling, truncating the results and other bare-bones stuff. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a887d24b9bb1911d3f566a2e6a67c6a7d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a887d24b9bb1911d3f566a2e6a67c6a7d">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -153,10 +171,16 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">* max_fetch (int): maximum number of suggestions returned from the word source
-    (None means no limit on suggestions, which may be time/resource consuming!)
-* shuffle (bool): if True, fetched words will be shuffled
-</pre> 
+
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">max_fetch</td><td><code>int</code> maximum number of suggestions returned from the word source (None means no limit on suggestions, which may be time/resource consuming!) </td></tr>
+    <tr><td class="paramname">shuffle</td><td><code>bool</code> if <code>True</code>, fetched words will be shuffled </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Reimplemented in <a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html#a0012e4c6732cfaf25269feaebbf6f866">pycross.wordsrc.MultiWordsource</a>.</p>
 
 </div>
@@ -178,7 +202,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html#af1a8a7b493f56a6ab42a6feeac3617f4">pycross.wordsrc.MultiWordsource</a>.</p>
+<p>Python <code>bool()</code> overload. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> the result of <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a5243902f98570a2fc85de68c7925e2cd" title="Checks if it is a valid word source.">isvalid()</a> </dd></dl>
 
 </div>
 </div>
@@ -197,6 +222,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Python <code>repr()</code> overload. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> human-readable representation of <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html" title="Base class for word source objects.">Wordsource</a> object </dd></dl>
 
 </div>
 </div>
@@ -237,6 +265,17 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Checks if a given word or word pattern is found in the word source. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">word</td><td><code>str</code> the word (pattern) to find, e.g. 'f ther' or 'father' </td></tr>
+    <tr><td class="paramname">pos</td><td><code>str</code> | <code>iterable</code> | <code>None</code> part(s) of speech to include in the results - see <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a5a10b003486a647627d3b5eefbd5cdc5" title="Fetches suggestions (as a list of strings) for a given word pattern (mask).">fetch()</a> </td></tr>
+    <tr><td class="paramname">filter_func</td><td><code>callable</code> filtering callback function to exclude words from results - see <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a5a10b003486a647627d3b5eefbd5cdc5" title="Fetches suggestions (as a list of strings) for a given word pattern (mask).">fetch()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if the given word (pattern) can be found in the source, <code>False</code> otherwise </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html#aa2a22f5c79b4bc1543229a3b189d402c">pycross.wordsrc.MultiWordsource</a>.</p>
 
@@ -298,6 +337,26 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Fetches suggestions (as a <code>list</code> of strings) for a given word pattern (mask). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">word</td><td><code>str</code> | <code>None</code> the word pattern to find suggestions for, e.g. 'f th ' </td></tr>
+    <tr><td class="paramname">blank</td><td><code>str</code> placeholder character for unknown (blank) letters (default = whitespace) </td></tr>
+    <tr><td class="paramname">pos</td><td><code>str</code> | <code>iterable</code> | <code>None</code> part(s) of speech to include in the results:<ul>
+<li><code>str</code> a single part of speech, e.g. 'N' (nouns) or 'V' (verbs)</li>
+<li><code>iterable</code> a collection of parts of speech, e.g. ('N', 'V') = nouns AND verbs</li>
+<li><code>None</code> (default) no part-of-speech filter: all words matching the pattern will be included </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">filter_func</td><td><code>callable</code> filtering callback function to exclude words from results. Prototype is: <div class="fragment"><div class="line">filter_func(word: str) -&gt; bool</div>
+</div><!-- fragment --> (returns <code>True</code> to include the word). If <code>None</code> (default), no filtering will be performed. </td></tr>
+    <tr><td class="paramname">shuffle</td><td><code>bool</code> <code>True</code> (default) to shuffle the results randomly </td></tr>
+    <tr><td class="paramname">truncate</td><td><code>bool</code> <code>True</code> (default) to truncate the results by <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a0cd096e8fdb3cb9e720fd4b2d387ec84" title="int maximum number of suggestions returned from the word source">Wordsource::max_fetch</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> list of strings - the words matching the given pattern </dd></dl>
+
 <p>Reimplemented in <a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html#aa76da6cf124df5e50409052a8be537bb">pycross.wordsrc.MultiWordsource</a>, <a class="el" href="classpycross_1_1wordsrc_1_1_text_wordsource.html#a312e17a0ef873ef1838df05d8c0102dc">pycross.wordsrc.TextWordsource</a>, and <a class="el" href="classpycross_1_1wordsrc_1_1_d_b_wordsource.html#aef4a3994db04f4096c9e5e59cea6a32a">pycross.wordsrc.DBWordsource</a>.</p>
 
 </div>
@@ -317,6 +376,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Checks if it is a valid word source. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if valid, <code>False</code> if not valid </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html#a2caa3af5986af8e017ca9083c42f7a30">pycross.wordsrc.MultiWordsource</a>, <a class="el" href="classpycross_1_1wordsrc_1_1_text_wordsource.html#a3bb7773b4edddfcc72236b03a38aeb11">pycross.wordsrc.TextWordsource</a>, and <a class="el" href="classpycross_1_1wordsrc_1_1_d_b_wordsource.html#aa95023a91a3fa4689fc57fe453a6c2a0">pycross.wordsrc.DBWordsource</a>.</p>
 
@@ -348,6 +410,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Retrieves the last suggestion (word) from the list of suggestions, removing that word from the original results. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> last word from the suggestions or None if the suggestions list is empty </dd></dl>
+
 <p>Reimplemented in <a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html#ac12ad330bb89aa6ebb4b5a0fc013df42">pycross.wordsrc.MultiWordsource</a>.</p>
 
 </div>
@@ -378,6 +443,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Shuffles the results randomly. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">suggestions</td><td><code>list</code> list of suggested words <code>str</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> randomly shuffled list of suggested words or the original list if <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a2729d12f9570c25754040d3049de2ba5" title="bool if True, fetched words will be shuffled">Wordsource::shuffle_words</a> == <code>False</code> </dd></dl>
+
 </div>
 </div>
 <a id="aeb5383723f757124915d8cd72311d328"></a>
@@ -406,6 +480,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Truncates the results by the threshold number stored in <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a0cd096e8fdb3cb9e720fd4b2d387ec84" title="int maximum number of suggestions returned from the word source">Wordsource::max_fetch</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">suggestions</td><td><code>list</code> list of suggested words <code>str</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> truncated list of suggested words or the original list if <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a0cd096e8fdb3cb9e720fd4b2d387ec84" title="int maximum number of suggestions returned from the word source">Wordsource::max_fetch</a> is <code>None</code> </dd></dl>
+
 <p>Reimplemented in <a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html#a60e9891572f511fa5d3882e75eb6b9e0">pycross.wordsrc.MultiWordsource</a>.</p>
 
 </div>
@@ -423,6 +506,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>bool</code> if <code>True</code>, this word source will be used; otherwise it will be ignored </p>
+
 </div>
 </div>
 <a id="a0cd096e8fdb3cb9e720fd4b2d387ec84"></a>
@@ -437,6 +522,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>int</code> maximum number of suggestions returned from the word source </p>
+
 </div>
 </div>
 <a id="a2729d12f9570c25754040d3049de2ba5"></a>
@@ -450,6 +537,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>bool</code> if <code>True</code>, fetched words will be shuffled </p>
 
 </div>
 </div>

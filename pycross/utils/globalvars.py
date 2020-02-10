@@ -2,30 +2,30 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-## @package utils
+## @package utils.globalvars
 import os, gettext
 
 def make_abspath(filename, root=''):
-    # default root = pycross\
+    # default root = pycross
     if not root: root = os.path.dirname(os.path.dirname(__file__))
     return os.path.abspath(os.path.join(root, filename))
 
-# debug messages
+## toggle debug messages
 DEBUGGING = True
 
-# version
+## current app version
 APP_VERSION = '0.2'
 
-# name
+## app name
 APP_NAME = 'pyCross'
 
 # git repo
 GIT_REPO = 'https://github.com/S0mbre/crossword.git'
 
-# author
+# app author
 APP_AUTHOR = 'Iskander Shafikov (S0mbre)'
 
-# email
+# author's email
 APP_EMAIL = 's00mbre@gmail.com'
 
 # default encoding
@@ -298,3 +298,4 @@ def switch_lang(lang=''):
         except:
             gettext.translation('base', make_abspath('./locale'), languages=['en']).install()
         LANGAPPLIED = True
+        #print(LANGAPPLIED)

@@ -3,11 +3,10 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # ******************************************************************************** #
-# Implementation uses Qt Simple Browser example: 
-# https://doc.qt.io/qt-5/qtwebengine-webenginewidgets-simplebrowser-example.html
-# ******************************************************************************** #
 
-## @package pycross
+## @package pycross.browser
+# Implementation of Qt web browser based on the 
+# [Qt Simple Browser example](https://doc.qt.io/qt-5/qtwebengine-webenginewidgets-simplebrowser-example.html)
 from PyQt5 import (QtGui, QtCore, QtWidgets, QtNetwork, 
                     QtWebEngineWidgets, QtWebEngineCore)
 

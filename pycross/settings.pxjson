@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			212,
-			59
+			340,
+			213
 		],
 		"win_size": [
-			1561,
-			919
+			1315,
+			719
 		],
 		"toolbar_actions": [
 			"act_new",
@@ -18,17 +18,9 @@
 			"act_share",
 			"SEP",
 			"act_edit",
-			"act_addrow",
-			"act_delrow",
-			"act_addcol",
-			"act_delcol",
-			"SEP",
-			"act_reflect",
 			"SEP",
 			"act_gen",
 			"act_clear",
-			"act_clear_wd",
-			"act_erase_wd",
 			"act_suggest",
 			"act_lookup",
 			"act_editclue",
@@ -132,7 +124,39 @@
 	},
 	"wordsrc": {
 		"maxres": 500,
-		"sources": [],
+		"sources": [
+			{
+				"active": true,
+				"name": "ru",
+				"type": "db",
+				"file": "ru",
+				"dbtype": "SQLite",
+				"dblogin": "",
+				"dbpass": "",
+				"dbtables": {
+					"words": {
+						"table": "twords",
+						"fwords": "word",
+						"fpos": "idpos"
+					},
+					"pos": {
+						"table": "tpos",
+						"fid": "id",
+						"fpos": "pos"
+					}
+				},
+				"shuffle": false
+			},
+			{
+				"active": true,
+				"name": "\u0441\u0432",
+				"type": "file",
+				"file": "c:\\_PROG_\\Projects\\crossword\\pycross\\assets\\src1.txt",
+				"encoding": "utf_8",
+				"delim": " ",
+				"shuffle": true
+			}
+		],
 		"excluded": {
 			"words": [],
 			"regex": false
@@ -186,7 +210,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 436
+				"width": 450
 			}
 		]
 	},
@@ -223,7 +247,7 @@
 			12,
 			20
 		],
-		"layout": "auto",
+		"layout": "\u0430\u0432\u0442\u043e",
 		"font_embed": true,
 		"antialias": true,
 		"print_cw": true,
@@ -283,7 +307,7 @@
 	},
 	"update": {
 		"check_every": 1,
-		"only_major_versions": false,
+		"only_major_versions": true,
 		"auto_update": false,
 		"restart_on_update": true,
 		"logfile": "update.log"
