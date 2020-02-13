@@ -132,6 +132,14 @@ class CWSettings:
             'account': '', 'bearer_token': '', 'use_api_key': False,
             'root_folder': '', 'user': '', 'use_own_browser': True
         },
+    'plugins':
+        {
+            'thirdparty': 
+                {
+                    'dbbrowser': {'active': False, 'exepath': '', 'command': '-t <table> <db>'}
+                },
+            'custom': []
+        },
     'common':
         {
             'temp_dir': '', 'autosave_cw': True, 'lang': '', 

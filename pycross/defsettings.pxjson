@@ -296,6 +296,16 @@
 		"user": "",
 		"use_own_browser": true
 	},
+	"plugins": {
+		"thirdparty": {
+			"dbbrowser": {
+				"active": false,
+				"exepath": "",
+				"command": "-t <table> <db>"
+			}
+		},
+		"custom": []
+	},
 	"common": {
 		"temp_dir": "",
 		"autosave_cw": true,

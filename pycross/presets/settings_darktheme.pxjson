@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			86,
-			20
+			300,
+			300
 		],
 		"win_size": [
-			1561,
-			919
+			800,
+			500
 		],
 		"toolbar_actions": [
 			"act_new",
@@ -53,11 +53,12 @@
 		"scale": 100,
 		"show": true,
 		"line": 1,
+		"header": false,
+		"cell_size": 50.0,
 		"line_color": 4288716964,
 		"line_width": 1,
-		"active_cell_color": 4279509828,
-		"header": false,
-		"cell_size": 50,
+		"active_cell_color": 4294967040,
+		"char_case": "upper",
 		"numbers": {
 			"show": true,
 			"color": 4288716964,
@@ -65,67 +66,66 @@
 			"font_name": "Arial",
 			"font_weight": 50,
 			"font_italic": true
-		},
-		"char_case": "upper"
+		}
 	},
 	"cell_format": {
 		"NORMAL": {
-			"bg_color": 4284308829,
+			"bg_color": 4294967295,
 			"bg_pattern": 1,
-			"fg_color": 4294967295,
+			"fg_color": 4278190080,
 			"fg_pattern": 1,
 			"flags": 33,
-			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 50,
+			"font_size": 14,
+			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
 		},
 		"HILITE": {
-			"bg_color": 4280303713,
+			"bg_color": 4294966721,
 			"bg_pattern": 1,
-			"fg_color": 4294967295,
+			"fg_color": 4278190080,
 			"fg_pattern": 1,
 			"flags": 33,
-			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 50,
+			"font_size": 14,
+			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
 		},
 		"BLANK": {
-			"bg_color": 4284308829,
+			"bg_color": 4294967295,
 			"bg_pattern": 1,
-			"fg_color": 4294967295,
+			"fg_color": 0,
 			"fg_pattern": 1,
 			"flags": 33,
-			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 50,
+			"font_size": 14,
+			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
 		},
 		"FILLER": {
-			"bg_color": 4281611316,
+			"bg_color": 4278190080,
 			"bg_pattern": 1,
 			"fg_color": 0,
 			"fg_pattern": 1,
 			"flags": 0,
-			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 50,
+			"font_size": 14,
+			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
 		},
 		"FILLER2": {
-			"bg_color": 4284308829,
+			"bg_color": 4288716964,
 			"bg_pattern": 1,
 			"fg_color": 0,
 			"fg_pattern": 1,
 			"flags": 0,
-			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 50,
+			"font_size": 14,
+			"font_weight": 63,
 			"font_italic": false,
 			"align": 132
 		}
@@ -140,27 +140,27 @@
 	},
 	"clues": {
 		"NORMAL": {
-			"bg_color": 4284308829,
+			"bg_color": 4294967295,
 			"bg_pattern": 1,
-			"fg_color": 4294967295,
-			"font_size": 9,
+			"fg_color": 4278190080,
 			"font_name": "Arial",
+			"font_size": 9,
 			"font_weight": 50,
 			"font_italic": false,
 			"align": 1
 		},
 		"INCOMPLETE": {
-			"bg_color": 4282058247,
+			"bg_color": 4294957016,
 			"bg_pattern": 1,
-			"fg_color": 4294967295
+			"fg_color": 4278190080
 		},
 		"COMPLETE": {
-			"bg_color": 4284308829,
+			"bg_color": 4292870103,
 			"bg_pattern": 1,
-			"fg_color": 4294967295
+			"fg_color": 4278190080
 		},
 		"SURROUNDING": {
-			"bg_color": 4284308829
+			"bg_color": 4294967295
 		},
 		"columns": [
 			{
@@ -180,7 +180,7 @@
 			},
 			{
 				"name": "Letters",
-				"visible": false,
+				"visible": true,
 				"width": -1
 			},
 			{
@@ -195,23 +195,23 @@
 		"dics": {
 			"show": true,
 			"exact_match": false,
-			"show_pos": true,
 			"bad_pos": "UNKNOWN",
+			"show_pos": true,
 			"mw_apikey": "",
 			"yandex_key": ""
 		},
 		"google": {
 			"show": true,
 			"exact_match": false,
-			"safe_search": false,
 			"file_types": [],
 			"lang": [],
-			"interface_lang": [],
 			"country": [],
+			"interface_lang": [],
 			"link_site": "",
 			"related_site": "",
 			"in_site": "",
 			"nresults": -1,
+			"safe_search": false,
 			"api_key": "",
 			"api_cse": ""
 		}
@@ -231,62 +231,62 @@
 		"clear_cw": true,
 		"print_clue_letters": true,
 		"print_info": true,
-		"color_print": true,
-		"openfile": true,
 		"cw_title": "<t>",
 		"clues_title": "Clues",
 		"header_font": {
-			"font_size": 20,
 			"font_name": "Verdana",
+			"font_size": 20,
+			"color": 4278190335,
 			"font_weight": 75,
-			"font_italic": false,
-			"color": 4278190335
+			"font_italic": false
 		},
 		"info_font": {
-			"font_size": 14,
 			"font_name": "Arial",
+			"font_size": 14,
+			"color": 4278190080,
 			"font_weight": 50,
-			"font_italic": false,
-			"color": 4278190080
+			"font_italic": false
 		},
 		"clue_number_font": {
-			"font_size": 14,
 			"font_name": "Arial",
+			"font_size": 14,
+			"color": 4278190080,
 			"font_weight": 75,
-			"font_italic": false,
-			"color": 4278190080
+			"font_italic": false
 		},
 		"clue_font": {
-			"font_size": 14,
 			"font_name": "Arial",
+			"font_size": 14,
+			"color": 4278190080,
 			"font_weight": 50,
-			"font_italic": false,
-			"color": 4278190080
+			"font_italic": false
 		},
 		"clue_letters_font": {
-			"font_size": 14,
 			"font_name": "Arial",
+			"font_size": 14,
+			"color": 4278190080,
 			"font_weight": 50,
-			"font_italic": true,
-			"color": 4278190080
-		}
+			"font_italic": true
+		},
+		"color_print": true,
+		"openfile": true
 	},
 	"export": {
 		"openfile": true,
-		"clear_cw": true,
 		"img_resolution": 72,
 		"pdf_resolution": 1200,
 		"mm_per_cell": 20,
 		"img_output_quality": 95,
 		"svg_title": "<t>",
-		"svg_description": ""
+		"svg_description": "",
+		"clear_cw": true
 	},
 	"update": {
 		"check_every": 1,
-		"only_major_versions": false,
 		"auto_update": false,
-		"restart_on_update": true,
-		"logfile": "update.log"
+		"only_major_versions": false,
+		"logfile": "update.log",
+		"restart_on_update": true
 	},
 	"sharing": {
 		"account": "",
@@ -296,17 +296,27 @@
 		"user": "",
 		"use_own_browser": true
 	},
+	"plugins": {
+		"thirdparty": {
+			"dbbrowser": {
+				"active": false,
+				"exepath": "",
+				"command": "-t <table> <db>"
+			}
+		},
+		"custom": []
+	},
 	"common": {
 		"temp_dir": "",
 		"autosave_cw": true,
+		"lang": "",
 		"web": {
-			"req_timeout": 5,
 			"proxy": {
 				"use_system": true,
 				"http": "",
 				"https": ""
-			}
-		},
-		"lang": "ru"
+			},
+			"req_timeout": 5
+		}
 	}
 }

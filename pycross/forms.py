@@ -338,12 +338,18 @@ class WordSrcDialog(BasicDialog):
         self.le_dbpass = QtWidgets.QLineEdit('')
         self.le_dbtables = QtWidgets.QLineEdit(json.dumps(SQL_TABLES))
         self.chb_db_shuffle = QtWidgets.QCheckBox()
+        self.chb_db_shuffle.setChecked(True)
+        self.btn_dbedit = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), _('Edit'), None)
+        self.btn_dbedit.setToolTip(_('Edit database in external editor'))
+        self.btn_dbedit.setEnabled(CWSettings.settings['plugins']['thirdparty']['dbbrowser']['active'] and os.path.isfile(CWSettings.settings['plugins']['thirdparty']['dbbrowser']['exepath']))
+        self.btn_dbedit.clicked.connect(self.on_btn_dbedit)
         self.layout_db.addRow(_('Path'), self.le_dbfile)
         self.layout_db.addRow(_('Type'), self.combo_dbtype)
         self.layout_db.addRow(_('User'), self.le_dbuser)
         self.layout_db.addRow(_('Password'), self.le_dbpass)
         self.layout_db.addRow(_('Tables'), self.le_dbtables)
         self.layout_db.addRow(_('Shuffle'), self.chb_db_shuffle)
+        self.layout_db.addRow(self.btn_dbedit)
         self.page_db.setLayout(self.layout_db)
         self.stacked.addWidget(self.page_db)
         
@@ -360,6 +366,7 @@ class WordSrcDialog(BasicDialog):
         self.combo_file_delim.setEditable(True)
         self.combo_file_delim.setCurrentIndex(0)
         self.chb_file_shuffle = QtWidgets.QCheckBox()
+        self.chb_file_shuffle.setChecked(True)
         self.layout_file.addRow(_('Path'), self.le_txtfile)
         self.layout_file.addRow(_('Encoding'), self.combo_fileenc)
         self.layout_file.addRow(_('Delimiter'), self.combo_file_delim)
@@ -381,6 +388,7 @@ class WordSrcDialog(BasicDialog):
         self.te_wlist.setAcceptRichText(False)
         self.te_wlist.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
         self.chb_list_shuffle = QtWidgets.QCheckBox()
+        self.chb_list_shuffle.setChecked(True)
         self.layout_list.addRow(_('Delimiter'), self.combo_list_delim)
         self.layout_list.addRow(_('Has parts of speech'), self.chb_haspos)
         self.layout_list.addRow(_('Words'), self.te_wlist)
@@ -491,9 +499,18 @@ class WordSrcDialog(BasicDialog):
                 return False
             try:
                 d = json.loads(self.le_dbtables.text())
-                if not isinstance(d, dict): raise Exception()
-            except:
-                MsgBox(_('DB tables field has incorrect value!'), _('Error'), self, 'error')
+                if not isinstance(d, dict): 
+                    raise Exception(_('DB tables field has incorrect value!'))
+                # check presence of obligatory keys
+                if not 'words' in d:
+                    raise Exception(_("DB table structure must define the 'words' dictionary!"))
+                if not 'table' in d['words']:
+                    raise Exception(_("DB table 'words' object must define the 'table' key!"))
+                if not 'fwords' in d['words']:
+                    raise Exception(_("DB table 'words' object must define the 'fwords' key!"))
+            except Exception as err:
+                ex = f"Example table structure:{NEWLINE}{str(SQL_TABLES)}"
+                MsgBox(str(err) + '\n' + ex, _('Error'), self, 'error')
                 return False
             
         elif self.rb_type_file.isChecked():
@@ -537,6 +554,99 @@ class WordSrcDialog(BasicDialog):
             self.stacked.setCurrentIndex(1)
         elif self.rb_type_list.isChecked():
             self.stacked.setCurrentIndex(2)
+
+    ## @brief Fired when WordSrcDialog::btn_dbedit is clicked.
+    # Launches the external DB editor 
+    # (if present in guisettings::CWSettings::settings['plugins']['thirdparty']['dbbrowser']['exepath'])
+    @QtCore.pyqtSlot()
+    def on_btn_dbedit(self):
+        settings = CWSettings.settings['plugins']['thirdparty']['dbbrowser']
+        if not settings['active'] or not os.path.isfile(settings['exepath']):
+            return
+        if not self.validate():
+            return
+        cmd = settings['command'].replace('<table>', self.src['dbtables']['words']['table'])
+        cmd = cmd.replace('<db>', os.path.abspath(self.src['file'] if not self.src['file'].lower() in LANG else os.path.join(DICFOLDER, self.src['file'] + '.db')))
+        run_exe(f"{settings['exepath']} {cmd}", False, False, shell=True) 
+
+# ******************************************************************************** #
+# *****          BrowseEdit
+# ******************************************************************************** # 
+
+class BrowseEdit(QtWidgets.QLineEdit):
+
+    def __init__(self, contents='', filefilters=None,
+        btnicon=None, btnposition=None,
+        opendialogtitle=None, opendialogdir=None, parent=None):
+        super().__init__(contents, parent)
+        self.filefilters = filefilters or _('All files (*.*)')
+        self.btnicon = btnicon or 'folder-2.png'
+        self.btnposition = btnposition or QtWidgets.QLineEdit.TrailingPosition
+        self.opendialogtitle = opendialogtitle or _('Select file')
+        self.opendialogdir = opendialogdir or os.getcwd()
+        self.reset_action()
+
+    def _clear_actions(self):
+        for act_ in self.actions():
+            self.removeAction(act_)
+
+    def reset_action(self):
+        self._clear_actions()
+        self.btnaction = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/{self.btnicon}"), '')
+        self.btnaction.triggered.connect(self.on_btnaction)
+        self.addAction(self.btnaction, self.btnposition)
+        #self.show()
+
+    @QtCore.pyqtSlot()
+    def on_btnaction(self):
+        selected_path = QtWidgets.QFileDialog.getOpenFileName(self.window(), self.opendialogtitle, self.opendialogdir, self.filefilters)
+        if not selected_path[0]: return
+        selected_path = selected_path[0].replace('/', os.sep)
+        self.setText(selected_path)
+
+# ******************************************************************************** #
+# *****          BrowseEditDelegate
+# ******************************************************************************** #
+
+class BrowseEditDelegate(QtWidgets.QStyledItemDelegate):
+
+    def __init__(self, model_indices=None, thisparent=None, 
+                **browse_edit_kwargs):
+        super().__init__(thisparent)
+        self.model_indices = model_indices
+        self.editor = BrowseEdit(**browse_edit_kwargs)  
+        self.editor.setFrame(False)      
+
+    def createEditor(self, parent: QtWidgets.QWidget, option: QtWidgets.QStyleOptionViewItem,
+                    index: QtCore.QModelIndex) -> QtWidgets.QWidget:
+        try:
+            if self.model_indices and index in self.model_indices:
+                self.editor.setParent(parent)
+                return self.editor
+            else:
+                return super().createEditor(parent, option, index)
+        except Exception as err:
+            print(err)
+            return None
+
+    def setEditorData(self, editor, index: QtCore.QModelIndex):
+        if not index.isValid(): return
+        if self.model_indices and index in self.model_indices:
+            txt = index.model().data(index, QtCore.Qt.EditRole)
+            if isinstance(txt, str):
+                editor.setText(txt)
+        else:
+            super().setEditorData(editor, index)
+
+    def setModelData(self, editor, model: QtCore.QAbstractItemModel, index: QtCore.QModelIndex):
+        if self.model_indices and index in self.model_indices:
+            model.setData(index, editor.text(), QtCore.Qt.EditRole)
+        else:
+            super().setModelData(editor, model, index)
+
+    def updateEditorGeometry(self, editor, option: QtWidgets.QStyleOptionViewItem,
+        index: QtCore.QModelIndex):
+        editor.setGeometry(option.rect)
 
 # ******************************************************************************** #
 # *****          ToolbarCustomizer
@@ -843,8 +953,8 @@ class SettingsDialog(BasicDialog):
 
     PAGES = [_('Common'), _('Generation'), _('Source management'), _('Search rules'),
              _('Window'), _('Grid'), _('Clues'), _('Toolbar'), _('Definition lookup'), _('Import & Export'),
-             _('Plugins'), _('Printing'), _('Updating'), _('Sharing')]
-    PARENT_PAGES = [_('Sources'), _('User interface')]
+             _('Third-party'), _('Custom'), _('Printing'), _('Updating'), _('Sharing')]
+    PARENT_PAGES = [_('Sources'), _('User interface'), _('Plugins')]
     
     def __init__(self, mainwindow=None, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
@@ -888,7 +998,11 @@ class SettingsDialog(BasicDialog):
         
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Definition lookup')]))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Import & Export')]))
-        self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Plugins')]))
+        item = QtWidgets.QTreeWidgetItem([_('Plugins')])
+        item.setFlags(QtCore.Qt.ItemIsEnabled)
+        item.addChild(QtWidgets.QTreeWidgetItem([_('Third-party')]))
+        item.addChild(QtWidgets.QTreeWidgetItem([_('Custom')]))
+        self.tree.addTopLevelItem(item)
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Printing')]))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Updating')]))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Sharing')]))
@@ -1585,12 +1699,87 @@ class SettingsDialog(BasicDialog):
         self.page_importexport.setLayout(self.layout_importexport)
         self.stacked.addWidget(self.page_importexport)
 
-        # Plugins
-        self.page_plugins = QtWidgets.QWidget()
-        self.layout_plugins = QtWidgets.QFormLayout()
-        self.layout_plugins.setSpacing(10)
-        self.page_plugins.setLayout(self.layout_plugins)
-        self.stacked.addWidget(self.page_plugins)
+        # Plugins > Third-party
+        self.page_plugins_3party = QtWidgets.QWidget()
+        self.layout_plugins_3party = QtWidgets.QVBoxLayout()
+
+        self.tv_plugins_3party = QtWidgets.QTreeView()
+        #self.tv_plugins_3party.doubleClicked.connect(self.on_tv_plugins_3party_dblclicked)
+
+        self.model_plugins_3party = QtGui.QStandardItemModel(0, 2)
+        self.model_plugins_3party.setHorizontalHeaderLabels([_('Plugin'), _('Value')])
+
+        item_git = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/git.png"), 'Git')
+        item_git.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_1 = QtGui.QStandardItem(_('Enabled'))
+        item_1.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2 = QtGui.QStandardItem('')
+        item_2.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2.setCheckable(True)
+        item_2.setUserTristate(False)
+        item_2.setCheckState(QtCore.Qt.Checked)
+        item_git.appendRow([item_1, item_2])
+        item_1 = QtGui.QStandardItem(_('Path'))
+        item_1.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2 = QtGui.QStandardItem('')
+        item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+        item_git.appendRow([item_1, item_2])
+        item_3 = QtGui.QStandardItem()
+        item_3.setFlags(QtCore.Qt.NoItemFlags)
+        self.model_plugins_3party.appendRow([item_git, item_3])
+        
+        item_sqlite = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/sqlite.png"), _('SQLite Editor'))
+        item_sqlite.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_1 = QtGui.QStandardItem(_('Enabled'))
+        item_1.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2 = QtGui.QStandardItem('')
+        item_2.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2.setCheckable(True)
+        item_2.setUserTristate(False)
+        item_2.setCheckState(QtCore.Qt.Checked)
+        item_sqlite.appendRow([item_1, item_2])
+        item_1 = QtGui.QStandardItem(_('Path'))
+        item_1.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2 = QtGui.QStandardItem('')
+        item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+        item_sqlite.appendRow([item_1, item_2])
+        item_1 = QtGui.QStandardItem(_('Commands'))
+        item_1.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2 = QtGui.QStandardItem('<db>')
+        item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+        item_sqlite.appendRow([item_1, item_2])
+        item_3 = QtGui.QStandardItem()
+        item_3.setFlags(QtCore.Qt.NoItemFlags)
+        self.model_plugins_3party.appendRow([item_sqlite, item_3])
+
+        self.tv_plugins_3party.setModel(self.model_plugins_3party)
+        
+        # set item delegates for browsable edit fields
+        """
+        try:
+            indices = []
+            indices.append(self.model_plugins_3party.index(1, 1, 
+                    self.model_plugins_3party.indexFromItem(item_git)))
+            indices.append(self.model_plugins_3party.index(1, 1, 
+                    self.model_plugins_3party.indexFromItem(item_sqlite)))
+            self.tv_plugins_3party.setItemDelegate(BrowseEditDelegate(indices))
+        except:
+            traceback.print_exc(limit=None) 
+        """
+        self.tv_plugins_3party.show()
+        self.tv_plugins_3party.expandAll()
+        self.layout_plugins_3party.addWidget(self.tv_plugins_3party)
+
+        self.page_plugins_3party.setLayout(self.layout_plugins_3party)
+        self.stacked.addWidget(self.page_plugins_3party)
+
+        # Plugins > Third-party
+        self.page_plugins_custom = QtWidgets.QWidget()
+        self.layout_plugins_custom = QtWidgets.QFormLayout()
+        self.layout_plugins_custom.setSpacing(10)
+
+        self.page_plugins_custom.setLayout(self.layout_plugins_custom)
+        self.stacked.addWidget(self.page_plugins_custom)
 
         # Printing
         self.page_printing = QtWidgets.QScrollArea()
@@ -3184,6 +3373,11 @@ class SettingsDialog(BasicDialog):
         self.le_http_proxy.setEnabled(state==QtCore.Qt.Unchecked)
         self.le_https_proxy.setEnabled(state==QtCore.Qt.Unchecked)
 
+    @QtCore.pyqtSlot(QtCore.QModelIndex) 
+    def on_tv_plugins_3party_dblclicked(self, index: QtCore.QModelIndex):
+        if index.column() == 1 and index.siblingAtColumn(0).data() == _('Path'):
+            pass
+
         
 # ******************************************************************************** #
 # *****          CwTable
@@ -3685,7 +3879,7 @@ class PrintPreviewDialog(BasicDialog):
 
     @QtCore.pyqtSlot()
     def on_btn_settings(self):        
-        self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(6))
+        self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(7))
         if not self.mainwindow.dia_settings.exec(): return
         settings = self.mainwindow.dia_settings.to_settings()
         if json.dumps(settings, sort_keys=True) != json.dumps(CWSettings.settings, sort_keys=True):

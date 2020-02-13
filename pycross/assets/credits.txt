@@ -1,1 +1,6 @@
 Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+
+DB Browser for SQLite (DB4S): https://github.com/sqlitebrowser/sqlitebrowser
+Portable App: https://download.sqlitebrowser.org/SQLiteDatabaseBrowserPortable_3.11.2_English.paf.exe
+MPL-2 License (can redistribute but must indicate where to download source code)
+CLI: https://github.com/sqlitebrowser/sqlitebrowser/wiki/Command-Line-Interface 

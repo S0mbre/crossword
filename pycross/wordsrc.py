@@ -154,8 +154,11 @@ class DBWordsource(Wordsource):
                 raise Exception(_('Cannot connect to db!'))
             self.conn = self.db.conn or None
         self.cur = self.conn.cursor()
-        self.cur.execute(sql)
-        return self.cur
+        try:
+            self.cur.execute(sql)
+            return self.cur
+        except:
+            return None
     
     ## Fetches results from the current SQLite DB.
     def fetch(self, word=None, blank=' ', pos=None, filter_func=None, shuffle=True, truncate=True):
@@ -172,9 +175,13 @@ class DBWordsource(Wordsource):
             pos_conj = f"in ({repr(pos)[1:-1]})" if (isinstance(pos, list) or isinstance(pos, tuple)) else f"= {repr(pos)}"
             sql += f"{conj} {self.tables['pos']['table']}.{self.tables['pos']['fpos']} {pos_conj}"
             
-        cur = self._execsql(sql)
-        results = []
+        cur = None
+        try:
+            cur = self._execsql(sql)
+        except:
+            return []
         if not cur: return []
+        results = []
         for row in cur:
             r = row[0]
             if filter_func:
