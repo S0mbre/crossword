@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			449,
-			163
+			235,
+			45
 		],
 		"win_size": [
-			1042,
-			634
+			1579,
+			899
 		],
 		"toolbar_actions": [
 			"act_new",
@@ -18,12 +18,6 @@
 			"act_share",
 			"SEP",
 			"act_edit",
-			"act_addrow",
-			"act_delrow",
-			"act_addcol",
-			"act_delcol",
-			"SEP",
-			"act_reflect",
 			"SEP",
 			"act_gen",
 			"act_clear",
@@ -67,7 +61,7 @@
 		"line": 1,
 		"line_color": 4288716964,
 		"line_width": 1,
-		"active_cell_color": 4294967040,
+		"active_cell_color": 4279580990,
 		"header": false,
 		"cell_size": 50,
 		"numbers": {
@@ -82,62 +76,62 @@
 	},
 	"cell_format": {
 		"NORMAL": {
-			"bg_color": 4294967295,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
-			"fg_color": 4278190080,
+			"fg_color": 4294967295,
 			"fg_pattern": 1,
 			"flags": 33,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		},
 		"HILITE": {
-			"bg_color": 4294966721,
+			"bg_color": 4285624689,
 			"bg_pattern": 1,
-			"fg_color": 4278190080,
+			"fg_color": 4294966721,
 			"fg_pattern": 1,
 			"flags": 33,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		},
 		"BLANK": {
-			"bg_color": 4294967295,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
-			"fg_color": 4278190080,
+			"fg_color": 4294967295,
 			"fg_pattern": 1,
 			"flags": 33,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		},
 		"FILLER": {
-			"bg_color": 4278190080,
+			"bg_color": 4280821800,
 			"bg_pattern": 1,
 			"fg_color": 0,
 			"fg_pattern": 1,
 			"flags": 0,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		},
 		"FILLER2": {
-			"bg_color": 4288716964,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
 			"fg_color": 0,
 			"fg_pattern": 1,
 			"flags": 0,
 			"font_size": 14,
 			"font_name": "Arial",
-			"font_weight": 63,
+			"font_weight": 50,
 			"font_italic": false,
 			"align": 132
 		}
@@ -162,9 +156,9 @@
 	},
 	"clues": {
 		"NORMAL": {
-			"bg_color": 4294967295,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
-			"fg_color": 4278190080,
+			"fg_color": 4294967295,
 			"font_size": 9,
 			"font_name": "Arial",
 			"font_weight": 50,
@@ -172,43 +166,43 @@
 			"align": 1
 		},
 		"INCOMPLETE": {
-			"bg_color": 4294957016,
+			"bg_color": 4280821800,
 			"bg_pattern": 1,
-			"fg_color": 4278190080
+			"fg_color": 4294967295
 		},
 		"COMPLETE": {
-			"bg_color": 4292870103,
+			"bg_color": 4284308829,
 			"bg_pattern": 1,
-			"fg_color": 4278190080
+			"fg_color": 4294967295
 		},
 		"SURROUNDING": {
-			"bg_color": 4294967295
+			"bg_color": 4284308829
 		},
 		"columns": [
 			{
 				"name": "Direction",
 				"visible": true,
-				"width": 100
+				"width": 109
 			},
 			{
 				"name": "No.",
 				"visible": true,
-				"width": 100
+				"width": 41
 			},
 			{
 				"name": "Clue",
 				"visible": true,
-				"width": 100
+				"width": 246
 			},
 			{
 				"name": "Letters",
-				"visible": true,
-				"width": 100
+				"visible": false,
+				"width": 0
 			},
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 100
+				"width": 349
 			}
 		]
 	},

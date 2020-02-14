@@ -3401,10 +3401,10 @@ class SettingsDialog(BasicDialog):
 # ******************************************************************************** # 
 
 class CwTable(QtWidgets.QTableWidget):
-    
+
     def __init__(self, on_key=None, parent: QtWidgets.QWidget=None):
         self.on_key = on_key
-        super().__init__(parent)        
+        super().__init__(parent)
         
     def keyReleaseEvent(self, event: QtGui.QKeyEvent):
         #super().keyReleaseEvent(event)
@@ -3413,12 +3413,7 @@ class CwTable(QtWidgets.QTableWidget):
     def keyboardSearch(self, search: str):
         # override this to disable keyboard search
         return
-    
-    """
-    def wheelEvent(self, event: QtGui.QWheelEvent):
-        # override mouse wheel for zooming
-        event.ignore()
-    """
+
 
 # ******************************************************************************** #
 # *****          ClickableLabel

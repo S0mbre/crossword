@@ -122,6 +122,7 @@ class MainWindow(QtWidgets.QMainWindow):
             on_norecent=self.on_norecent)
         # create window elements
         self.initUI(not kwargs.get('empty', False))
+        self.setAcceptDrops(True) 
         ## `forms::SettingsDialog` instance (settings window)
         self.dia_settings = SettingsDialog(self)
         # execute actions for command-line args, if present
@@ -150,18 +151,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.UI_create_statusbar()
         # context menus
         self.UI_create_context_menus()
-        
-        # update window geometry from settings (last saved pos and size)
-        self.setGeometry(CWSettings.settings['gui']['win_pos'][0], CWSettings.settings['gui']['win_pos'][1], 
-            CWSettings.settings['gui']['win_size'][0], CWSettings.settings['gui']['win_size'][1])
+               
         self.setMinimumSize(500, 300)
         # the default title = 'pyCross'
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/main.png"))
         # apply settings stored in CWSettings.settings
         self.apply_config(autoloadcw=autoloadcw)        
-        # apply settings to clue table (column order and width)
-        self.adjust_clues_header_columns()
         # show window
         self.show()
         # update actions' status (enabled)
@@ -586,6 +582,9 @@ class MainWindow(QtWidgets.QMainWindow):
         # gui
         if CWSettings.settings['gui']['theme'] and CWSettings.settings['gui']['theme'] != QtWidgets.QApplication.instance().style().objectName():
             QtWidgets.QApplication.instance().setStyle(CWSettings.settings['gui']['theme'])
+        # update window geometry from settings (last saved pos and size)
+        self.setGeometry(CWSettings.settings['gui']['win_pos'][0], CWSettings.settings['gui']['win_pos'][1], 
+            CWSettings.settings['gui']['win_size'][0], CWSettings.settings['gui']['win_size'][1])
         tb = CWSettings.settings['gui']['toolbar_pos']
         if tb < 4:
             TOOLBAR_AREAS = {0: QtCore.Qt.TopToolBarArea, 1: QtCore.Qt.BottomToolBarArea, 2: QtCore.Qt.LeftToolBarArea, 3: QtCore.Qt.RightToolBarArea}
@@ -616,6 +615,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # cell_format, numbers, cell size etc...
         self.update_cw(False)
         self.slider_cw_scale.setValue(CWSettings.settings['grid_style']['scale'])
+        # apply settings to clue table (column order and width)
+        self.adjust_clues_header_columns()
 
         # sharer
         if self.sharer: 
@@ -2123,9 +2124,58 @@ class MainWindow(QtWidgets.QMainWindow):
         # close
         event.accept()
 
+    def dragEnterEvent(self, event: QtGui.QDragEnterEvent):
+        mimeData = event.mimeData()
+        if mimeData.hasUrls():
+            filepath = mimeData.urls()[0].toString(QtCore.QUrl.PreferLocalFile).replace('/', os.path.sep)
+            self.statusbar.showMessage(filepath)
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event: QtGui.QDragMoveEvent):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragLeaveEvent(self, event: QtGui.QDragLeaveEvent):
+        self.statusbar.clearMessage()
+        event.accept()
+
+    def dropEvent(self, event: QtGui.QDropEvent):
+        # handle dropped files
+        mimeData = event.mimeData()
+        if not mimeData.hasUrls(): 
+            event.ignore()
+            return
+        # get first file path
+        filepath = mimeData.urls()[0].toString(QtCore.QUrl.PreferLocalFile).replace('/', os.path.sep)
+        ext = os.path.splitext(filepath)[1][1:].lower()
+        try:
+            if ext == 'pxjson':
+                # load settings file
+                if filepath != SETTINGS_FILE:
+                    reply = MsgBox(_('Are you sure to apply new settings from "{}"?').format(filepath), 
+                                    self, _('Confirm Action'), 'ask')
+                    if reply == 'yes':
+                        readSettings(filepath, False)
+                        self.apply_config(False, False)
+            else: 
+                # assume cw file    
+                reply = self.check_save_required()
+                if reply == '' or reply == 'cancel': return
+                self.open_cw(filepath)
+        except Exception as err:
+            MsgBox(str(err), self, _('Error'), 'error')
+        self.statusbar.clearMessage() 
+
+    # ----- SLOTS ----- #
+
     ## Fires when a key is pressed in the crossword grid.
     # @param event `QtGui.QKeyEvent` the handled event
     # @see forms::CwTable
+    @QtCore.pyqtSlot(QtGui.QKeyEvent)
     def on_cw_key(self, event: QtGui.QKeyEvent):
         # get key
         key = event.key()   

@@ -271,7 +271,7 @@ GOOGLE_COUNTRIES_GL = {'af': 'Afghanistan', 'al': 'Albania', 'dz': 'Algeria', 'a
 
 LANGAPPLIED = False    
 
-def readSettings(settings_file=None):
+def readSettings(settings_file=None, write_defaults_on_error=True):
     """
     Checks if 'settings.pxjson' exists in the main directory.
     If not, creates it with the default settings; otherwise, 
@@ -280,7 +280,7 @@ def readSettings(settings_file=None):
     from guisettings import CWSettings
     if not settings_file or not os.path.isfile(settings_file):
         settings_file = SETTINGS_FILE
-    if not CWSettings.validate_file(settings_file):
+    if not CWSettings.validate_file(settings_file) and write_defaults_on_error:
         CWSettings.save_to_file(settings_file)
     else:
         try:
