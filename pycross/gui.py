@@ -1528,7 +1528,7 @@ class MainWindow(QtWidgets.QMainWindow):
                          stopcheck=self.act_stop.isChecked,
                          ontimeout=lambda timeout_: self.gen_thread.sig_timeout.emit(timeout_),
                          onstop=lambda: self.gen_thread.sig_stopped.emit(),
-                         onerror=lambda err_: self.gen_thread.sig_error.emit(err_),
+                         onerror=lambda err_: self.gen_thread.sig_error.emit(self.gen_thread, str(err_)),
                          onvalidate=lambda bad_: self.gen_thread.sig_validate.emit(bad_),
                          on_progress=lambda cw_, complete_, total_: self.gen_thread.sig_progress.emit(cw_, complete_, total_))
 
@@ -2634,7 +2634,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Slot for MainWindow::act_help: opens up the Help documentation.
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
-        MsgBox(_('To be implemented in next release ))'), self, title=_('Show help docs'))
+        MsgBox(_('To be implemented in next release ))'), self, _('Show help docs'))
 
     ## @brief Slot for MainWindow::act_about: shows the About dialog.
     @QtCore.pyqtSlot(bool)        

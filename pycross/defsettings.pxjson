@@ -298,10 +298,19 @@
 	},
 	"plugins": {
 		"thirdparty": {
+			"git": {
+				"active": true,
+				"exepath": ""
+			},
 			"dbbrowser": {
 				"active": false,
 				"exepath": "",
-				"command": "-t <table> <db>"
+				"command": "-t <table> <file>"
+			},
+			"text": {
+				"active": false,
+				"exepath": "",
+				"command": "<file>"
 			}
 		},
 		"custom": []

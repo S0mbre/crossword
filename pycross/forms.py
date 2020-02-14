@@ -16,6 +16,93 @@ from crossword import BLANK, CWInfo
 from guisettings import CWSettings
 
 # ******************************************************************************** #
+# *****          BrowseEdit
+# ******************************************************************************** # 
+
+## @brief Edit field with internal 'Browse' button to file or folder browsing.
+# Inherited from `QtWidgets.QLineEdit`
+class BrowseEdit(QtWidgets.QLineEdit):
+
+    ## Constructor.
+    # @param text `str` initial text in edit field (default = empty)
+    # @param dialogtype `str` path and dialog type: 
+    #   * 'fileopen' = open file browse dialog
+    #   * 'filesave' = save file browse dialog
+    #   * 'folder' = folder browse dialog
+    # `None` = 'fileopen' (default)
+    # @param btnicon `str` icon file name in 'assets/icons'
+    # `None` = 'folder-2.png' (default)
+    # @param btnposition `int` browse button position:
+    #   * 0 (`QtWidgets.QLineEdit.LeadingPosition`) = left-aligned
+    #   * 1 (`QtWidgets.QLineEdit.TrailingPosition`) = right-aligned
+    # `None` = `QtWidgets.QLineEdit.TrailingPosition` (default)
+    # @param opendialogtitle `str` dialog title (`None` will use a default title)
+    # @param filefilters `str` file filters for file browse dialog, e.g.
+    # `"Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml)"`\n
+    # `None` sets the default filter: `"All files (*.*)"`
+    def __init__(self, text='', parent=None,
+                dialogtype=None, btnicon=None, btnposition=None,
+                opendialogtitle=None, filefilters=None, fullpath=True):
+        super().__init__(text, parent)
+        ## `str` path and dialog type ('file' or 'folder')
+        self.dialogtype = dialogtype or 'fileopen'      
+        ## `str` icon file name in 'assets/icons'
+        self.btnicon = btnicon or 'folder-2.png'
+        ## `int` browse button position (0 or 1)
+        self.btnposition = btnposition or QtWidgets.QLineEdit.TrailingPosition
+        ## `str` dialog title
+        self.opendialogtitle = opendialogtitle or \
+            (_('Select file') if self.dialogtype.startswith('file') else _('Select folder'))        
+        ## `str` file filters for file browse dialog
+        self.filefilters = filefilters or _('All files (*.*)')
+        self.fullpath = fullpath
+        self.reset_action()
+
+    ## Gets the start directory for the browse dialog.
+    def _get_dir(self, text=None):
+        if text is None: text = self.text()
+        if text and not (os.path.isfile(text) or os.path.isdir(text)):
+            text = os.path.join(os.getcwd(), text)
+        if os.path.isfile(text) or os.path.isdir(text):
+            return text #os.path.dirname(text)    
+        else: 
+            return os.getcwd()
+
+    ## Clears previous actions from the underlying object.
+    def _clear_actions(self):
+        for act_ in self.actions():
+            self.removeAction(act_)
+
+    ## Resets the browse action (after setting options).
+    def reset_action(self):
+        self._clear_actions()
+        self.btnaction = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/{self.btnicon}"), '')
+        self.btnaction.setToolTip(self.opendialogtitle)
+        self.btnaction.triggered.connect(self.on_btnaction)
+        self.addAction(self.btnaction, self.btnposition)
+        #self.show()
+
+    ## Triggered slot for the browse action: opens dialog and sets the edit text.
+    @QtCore.pyqtSlot()
+    def on_btnaction(self):
+        opendialogdir = self._get_dir()
+        if self.dialogtype == 'fileopen':
+            selected_path = QtWidgets.QFileDialog.getOpenFileName(self.window(), self.opendialogtitle, opendialogdir, self.filefilters)
+            selected_path = selected_path[0]
+        elif self.dialogtype == 'filesave':
+            selected_path = QtWidgets.QFileDialog.getSaveFileName(self.window(), self.opendialogtitle, opendialogdir, self.filefilters)
+            selected_path = selected_path[0]
+        elif self.dialogtype == 'folder':
+            selected_path = QtWidgets.QFileDialog.getExistingDirectory(self.window(), self.opendialogtitle, opendialogdir)
+        else:
+            return
+        if not selected_path: return
+        selected_path = selected_path.replace('/', os.sep)
+        if not self.fullpath:
+            selected_path = os.path.basename(selected_path)
+        self.setText(selected_path)
+
+# ******************************************************************************** #
 # *****          BasicDialog
 # ******************************************************************************** #
 
@@ -138,34 +225,17 @@ class LoadCwDialog(BasicDialog):
         self.rb_empty.toggled.connect(self.rb_toggled)
         
         self.gb_pattern = QtWidgets.QGroupBox(_('Pattern file'))
-        self.le_pattern = QtWidgets.QLineEdit()        
+        self.le_pattern = BrowseEdit()        
         self.le_pattern.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-        self.act_pattern = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), _('Browse'), None)
-        self.act_pattern.setToolTip(_('Browse'))
-        self.act_pattern.triggered.connect(self.on_act_pattern)
-        self.b_pattern = QtWidgets.QToolButton()
-        self.b_pattern.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        self.b_pattern.setDefaultAction(self.act_pattern)        
         self.layout_pattern = QtWidgets.QHBoxLayout()
-        self.layout_pattern.setSpacing(10)
         self.layout_pattern.addWidget(self.le_pattern)
-        self.layout_pattern.addWidget(self.b_pattern)
         self.gb_pattern.setLayout(self.layout_pattern)
-        #self.gb_pattern.setVisible(True)
         
         self.gb_file = QtWidgets.QGroupBox(_('Crossword file'))
-        self.le_file = QtWidgets.QLineEdit()
+        self.le_file = BrowseEdit(filefilters=_('Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)'))
         self.le_file.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-        self.act_file = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), _('Browse'), None)
-        self.act_file.setToolTip(_('Browse'))
-        self.act_file.triggered.connect(self.on_act_file)
-        self.b_file = QtWidgets.QToolButton()
-        self.b_file.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        self.b_file.setDefaultAction(self.act_file)        
         self.layout_file = QtWidgets.QHBoxLayout()
-        self.layout_file.setSpacing(10)
         self.layout_file.addWidget(self.le_file)
-        self.layout_file.addWidget(self.b_file)
         self.gb_file.setLayout(self.layout_file)
         self.gb_file.setVisible(False)
         
@@ -219,23 +289,6 @@ class LoadCwDialog(BasicDialog):
         self.gb_file.setVisible(self.rb_file.isChecked())
         self.gb_manual.setVisible(self.rb_empty.isChecked())
         self.adjustSize()
-    
-    ##  Browse for pattern file.
-    @QtCore.pyqtSlot(bool)        
-    def on_act_pattern(self, checked):
-        current_dir = self.le_pattern.text()
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), current_dir or os.getcwd(), _('All files (*.*)'))
-        if selected_path[0]:
-            self.le_pattern.setText(selected_path[0].replace('/', os.sep))
-    
-    ## Browse for cw file.
-    @QtCore.pyqtSlot(bool)        
-    def on_act_file(self, checked):
-        current_dir = self.le_file.text()
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self, _('Select file'), current_dir or os.getcwd(), _('Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)'))
-        if selected_path[0]:
-            self.le_file.setText(selected_path[0].replace('/', os.sep))
-    
             
 # ******************************************************************************** #
 # *****          WordSrcDialog
@@ -329,7 +382,7 @@ class WordSrcDialog(BasicDialog):
         # 1. DB
         self.page_db = QtWidgets.QWidget()
         self.layout_db = QtWidgets.QFormLayout()
-        self.le_dbfile = QtWidgets.QLineEdit('')
+        self.le_dbfile = BrowseEdit(filefilters=_('SQLite database files (*.db)'))
         self.combo_dbtype = QtWidgets.QComboBox()
         self.combo_dbtype.addItems(['SQLite'])
         self.combo_dbtype.setEditable(False)
@@ -356,7 +409,7 @@ class WordSrcDialog(BasicDialog):
         # 2. File
         self.page_file = QtWidgets.QWidget()
         self.layout_file = QtWidgets.QFormLayout()
-        self.le_txtfile = QtWidgets.QLineEdit('')
+        self.le_txtfile = BrowseEdit()
         self.combo_fileenc = QtWidgets.QComboBox()
         self.combo_fileenc.addItems(ENCODINGS)
         self.combo_fileenc.setEditable(False)
@@ -367,10 +420,15 @@ class WordSrcDialog(BasicDialog):
         self.combo_file_delim.setCurrentIndex(0)
         self.chb_file_shuffle = QtWidgets.QCheckBox()
         self.chb_file_shuffle.setChecked(True)
+        self.btn_fileedit = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), _('Edit'), None)
+        self.btn_fileedit.setToolTip(_('Edit text file in external editor'))
+        self.btn_fileedit.setEnabled(CWSettings.settings['plugins']['thirdparty']['text']['active'] and os.path.isfile(CWSettings.settings['plugins']['thirdparty']['text']['exepath']))
+        self.btn_fileedit.clicked.connect(self.on_btn_fileedit)
         self.layout_file.addRow(_('Path'), self.le_txtfile)
         self.layout_file.addRow(_('Encoding'), self.combo_fileenc)
         self.layout_file.addRow(_('Delimiter'), self.combo_file_delim)
         self.layout_file.addRow(_('Shuffle'), self.chb_file_shuffle)
+        self.layout_file.addRow(self.btn_fileedit)
         self.page_file.setLayout(self.layout_file)
         self.stacked.addWidget(self.page_file)
         
@@ -491,11 +549,11 @@ class WordSrcDialog(BasicDialog):
     ## Performs various checks of current control values.
     def validate(self):
         if not self.le_name.text().strip():
-            MsgBox(_('Source must have a non-empty name!'), _('Error'), self, 'error')
+            MsgBox(_('Source must have a non-empty name!'), self, _('Error'), 'error')
             return False
         if self.rb_type_db.isChecked():
             if not self.le_dbfile.text() or not self.le_dbfile.text() in LANG:
-                MsgBox(_('DB file path must be valid!'), _('Error'), self, 'error')
+                MsgBox(_('DB file path must be valid!'), self, _('Error'), 'error')
                 return False
             try:
                 d = json.loads(self.le_dbtables.text())
@@ -510,35 +568,35 @@ class WordSrcDialog(BasicDialog):
                     raise Exception(_("DB table 'words' object must define the 'fwords' key!"))
             except Exception as err:
                 ex = f"Example table structure:{NEWLINE}{str(SQL_TABLES)}"
-                MsgBox(str(err) + '\n' + ex, _('Error'), self, 'error')
+                MsgBox(str(err) + '\n' + ex, self, _('Error'), 'error')
                 return False
             
         elif self.rb_type_file.isChecked():
             if not self.le_txtfile.text():
-                MsgBox(_('Text file path must be valid!'), _('Error'), self, 'error')
+                MsgBox(_('Text file path must be valid!'), self, _('Error'), 'error')
                 return False
             if not self.combo_fileenc.currentText():
-                MsgBox(_('Text file encoding must not be empty!'), _('Error'), self, 'error')
+                MsgBox(_('Text file encoding must not be empty!'), self, _('Error'), 'error')
                 return False
             delim = self.combo_file_delim.currentText()
             if not delim:
-                MsgBox(_('Text file delimiter must not be empty!'), _('Error'), self, 'error')
+                MsgBox(_('Text file delimiter must not be empty!'), self, _('Error'), 'error')
                 return False
             if not delim in (_('SPACE'), _('TAB')) and len(delim) > 1:
-                MsgBox(_('Text file delimiter must be either "SPACE" or "TAB" or a single character!'), _('Error'), self, 'error')
+                MsgBox(_('Text file delimiter must be either "SPACE" or "TAB" or a single character!'), self, _('Error'), 'error')
                 return False
             
         elif self.rb_type_list.isChecked():
             if self.chb_haspos.isChecked():
                 delim = self.combo_list_delim.currentText()
                 if not delim:
-                    MsgBox(_('Word list delimiter must not be empty if is has parts of speech!'), _('Error'), self, 'error')
+                    MsgBox(_('Word list delimiter must not be empty if is has parts of speech!'), self, _('Error'), 'error')
                     return False
                 if not delim in (_('SPACE'), _('TAB')) and len(delim) > 1:
-                    MsgBox(_('Word list delimiter must be either "SPACE" or "TAB" or a single character!'), _('Error'), self, 'error')
+                    MsgBox(_('Word list delimiter must be either "SPACE" or "TAB" or a single character!'), self, _('Error'), 'error')
                     return False
             if not self.te_wlist.toPlainText().strip():
-                MsgBox(_('Word list is empty or invalid!'), _('Error'), self, 'error')
+                MsgBox(_('Word list is empty or invalid!'), self, _('Error'), 'error')
                 return False
             
         self.to_src()
@@ -566,87 +624,22 @@ class WordSrcDialog(BasicDialog):
         if not self.validate():
             return
         cmd = settings['command'].replace('<table>', self.src['dbtables']['words']['table'])
-        cmd = cmd.replace('<db>', os.path.abspath(self.src['file'] if not self.src['file'].lower() in LANG else os.path.join(DICFOLDER, self.src['file'] + '.db')))
+        cmd = cmd.replace('<file>', os.path.abspath(self.src['file'] if not self.src['file'].lower() in LANG else os.path.join(DICFOLDER, self.src['file'] + '.db')))
         run_exe(f"{settings['exepath']} {cmd}", False, False, shell=True) 
 
-# ******************************************************************************** #
-# *****          BrowseEdit
-# ******************************************************************************** # 
-
-class BrowseEdit(QtWidgets.QLineEdit):
-
-    def __init__(self, contents='', filefilters=None,
-        btnicon=None, btnposition=None,
-        opendialogtitle=None, opendialogdir=None, parent=None):
-        super().__init__(contents, parent)
-        self.filefilters = filefilters or _('All files (*.*)')
-        self.btnicon = btnicon or 'folder-2.png'
-        self.btnposition = btnposition or QtWidgets.QLineEdit.TrailingPosition
-        self.opendialogtitle = opendialogtitle or _('Select file')
-        self.opendialogdir = opendialogdir or os.getcwd()
-        self.reset_action()
-
-    def _clear_actions(self):
-        for act_ in self.actions():
-            self.removeAction(act_)
-
-    def reset_action(self):
-        self._clear_actions()
-        self.btnaction = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/{self.btnicon}"), '')
-        self.btnaction.triggered.connect(self.on_btnaction)
-        self.addAction(self.btnaction, self.btnposition)
-        #self.show()
-
+    ## @brief Fired when WordSrcDialog::btn_fileedit is clicked.
+    # Launches the external text file editor 
+    # (if present in guisettings::CWSettings::settings['plugins']['thirdparty']['text']['exepath'])
     @QtCore.pyqtSlot()
-    def on_btnaction(self):
-        selected_path = QtWidgets.QFileDialog.getOpenFileName(self.window(), self.opendialogtitle, self.opendialogdir, self.filefilters)
-        if not selected_path[0]: return
-        selected_path = selected_path[0].replace('/', os.sep)
-        self.setText(selected_path)
+    def on_btn_fileedit(self):
+        settings = CWSettings.settings['plugins']['thirdparty']['text']
+        if not settings['active'] or not os.path.isfile(settings['exepath']):
+            return
+        if not self.validate():
+            return
+        cmd = settings['command'].replace('<file>', os.path.abspath(self.src['file']))
+        run_exe(f"{settings['exepath']} {cmd}", False, False, shell=True)
 
-# ******************************************************************************** #
-# *****          BrowseEditDelegate
-# ******************************************************************************** #
-
-class BrowseEditDelegate(QtWidgets.QStyledItemDelegate):
-
-    def __init__(self, model_indices=None, thisparent=None, 
-                **browse_edit_kwargs):
-        super().__init__(thisparent)
-        self.model_indices = model_indices
-        self.editor = BrowseEdit(**browse_edit_kwargs)  
-        self.editor.setFrame(False)      
-
-    def createEditor(self, parent: QtWidgets.QWidget, option: QtWidgets.QStyleOptionViewItem,
-                    index: QtCore.QModelIndex) -> QtWidgets.QWidget:
-        try:
-            if self.model_indices and index in self.model_indices:
-                self.editor.setParent(parent)
-                return self.editor
-            else:
-                return super().createEditor(parent, option, index)
-        except Exception as err:
-            print(err)
-            return None
-
-    def setEditorData(self, editor, index: QtCore.QModelIndex):
-        if not index.isValid(): return
-        if self.model_indices and index in self.model_indices:
-            txt = index.model().data(index, QtCore.Qt.EditRole)
-            if isinstance(txt, str):
-                editor.setText(txt)
-        else:
-            super().setEditorData(editor, index)
-
-    def setModelData(self, editor, model: QtCore.QAbstractItemModel, index: QtCore.QModelIndex):
-        if self.model_indices and index in self.model_indices:
-            model.setData(index, editor.text(), QtCore.Qt.EditRole)
-        else:
-            super().setModelData(editor, model, index)
-
-    def updateEditorGeometry(self, editor, option: QtWidgets.QStyleOptionViewItem,
-        index: QtCore.QModelIndex):
-        editor.setGeometry(option.rect)
 
 # ******************************************************************************** #
 # *****          ToolbarCustomizer
@@ -1052,19 +1045,9 @@ class SettingsDialog(BasicDialog):
         self.layout_gb_commonsettings = QtWidgets.QFormLayout()
         self.layout_gb_commonsettings.setSpacing(10)
 
-        self.le_tempdir = QtWidgets.QLineEdit('')
+        self.le_tempdir = BrowseEdit(dialogtype='folder')
         self.le_tempdir.setToolTip(_('Temp directory (leave EMPTY for default)'))
-        self.act_tempdir_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), _('Browse'), None)
-        self.act_tempdir_browse.setToolTip(_('Browse'))
-        self.act_tempdir_browse.triggered.connect(self.on_act_tempdir_browse)
-        self.btn_tempdir_browse = QtWidgets.QToolButton()
-        self.btn_tempdir_browse.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        self.btn_tempdir_browse.setDefaultAction(self.act_tempdir_browse)
         
-        self.layout_tempdir = QtWidgets.QHBoxLayout()
-        self.layout_tempdir.addWidget(self.le_tempdir)
-        self.layout_tempdir.addWidget(self.btn_tempdir_browse)
-
         self.chb_autosave_cw = QtWidgets.QCheckBox('')
         self.chb_autosave_cw.setToolTip(_('Save crosswords on exit and load on startup'))
 
@@ -1076,7 +1059,7 @@ class SettingsDialog(BasicDialog):
         self.btn_register_associations.setDefaultAction(self.act_register_associations)
         self.btn_register_associations.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
 
-        self.layout_gb_commonsettings.addRow(_('Temp directory'), self.layout_tempdir)
+        self.layout_gb_commonsettings.addRow(_('Temp directory'), self.le_tempdir)
         self.layout_gb_commonsettings.addRow(_('Auto save/load crossword'), self.chb_autosave_cw)
         self.layout_gb_commonsettings.addRow(_('Register file associations'), self.btn_register_associations)
         self.gb_commonsettings.setLayout(self.layout_gb_commonsettings)
@@ -1708,6 +1691,7 @@ class SettingsDialog(BasicDialog):
 
         self.model_plugins_3party = QtGui.QStandardItemModel(0, 2)
         self.model_plugins_3party.setHorizontalHeaderLabels([_('Plugin'), _('Value')])
+        self.model_plugins_3party.itemChanged.connect(self.on_model_plugins_3party_changed)
 
         item_git = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/git.png"), 'Git')
         item_git.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -1724,12 +1708,12 @@ class SettingsDialog(BasicDialog):
         item_2 = QtGui.QStandardItem('')
         item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
         item_git.appendRow([item_1, item_2])
-        item_3 = QtGui.QStandardItem()
-        item_3.setFlags(QtCore.Qt.NoItemFlags)
-        self.model_plugins_3party.appendRow([item_git, item_3])
+        item_0 = QtGui.QStandardItem()
+        item_0.setFlags(QtCore.Qt.NoItemFlags)
+        self.model_plugins_3party.appendRow([item_git, item_0])
         
-        item_sqlite = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/sqlite.png"), _('SQLite Editor'))
-        item_sqlite.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_text = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/sqlite.png"), _('SQLite Editor'))
+        item_text.setFlags(QtCore.Qt.ItemIsEnabled)
         item_1 = QtGui.QStandardItem(_('Enabled'))
         item_1.setFlags(QtCore.Qt.ItemIsEnabled)
         item_2 = QtGui.QStandardItem('')
@@ -1737,35 +1721,46 @@ class SettingsDialog(BasicDialog):
         item_2.setCheckable(True)
         item_2.setUserTristate(False)
         item_2.setCheckState(QtCore.Qt.Checked)
-        item_sqlite.appendRow([item_1, item_2])
+        item_text.appendRow([item_1, item_2])
         item_1 = QtGui.QStandardItem(_('Path'))
         item_1.setFlags(QtCore.Qt.ItemIsEnabled)
         item_2 = QtGui.QStandardItem('')
         item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
-        item_sqlite.appendRow([item_1, item_2])
+        item_text.appendRow([item_1, item_2])
         item_1 = QtGui.QStandardItem(_('Commands'))
         item_1.setFlags(QtCore.Qt.ItemIsEnabled)
-        item_2 = QtGui.QStandardItem('<db>')
+        item_2 = QtGui.QStandardItem('<file>')
         item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
-        item_sqlite.appendRow([item_1, item_2])
-        item_3 = QtGui.QStandardItem()
-        item_3.setFlags(QtCore.Qt.NoItemFlags)
-        self.model_plugins_3party.appendRow([item_sqlite, item_3])
+        item_text.appendRow([item_1, item_2])
+        item_0 = QtGui.QStandardItem()
+        item_0.setFlags(QtCore.Qt.NoItemFlags)
+        self.model_plugins_3party.appendRow([item_text, item_0])
+
+        item_text = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/file.png"), _('Text Editor'))
+        item_text.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_1 = QtGui.QStandardItem(_('Enabled'))
+        item_1.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2 = QtGui.QStandardItem('')
+        item_2.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2.setCheckable(True)
+        item_2.setUserTristate(False)
+        item_2.setCheckState(QtCore.Qt.Checked)
+        item_text.appendRow([item_1, item_2])
+        item_1 = QtGui.QStandardItem(_('Path'))
+        item_1.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2 = QtGui.QStandardItem('')
+        item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+        item_text.appendRow([item_1, item_2])
+        item_1 = QtGui.QStandardItem(_('Commands'))
+        item_1.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_2 = QtGui.QStandardItem('<file>')
+        item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+        item_text.appendRow([item_1, item_2])
+        item_0 = QtGui.QStandardItem()
+        item_0.setFlags(QtCore.Qt.NoItemFlags)
+        self.model_plugins_3party.appendRow([item_text, item_0])
 
         self.tv_plugins_3party.setModel(self.model_plugins_3party)
-        
-        # set item delegates for browsable edit fields
-        """
-        try:
-            indices = []
-            indices.append(self.model_plugins_3party.index(1, 1, 
-                    self.model_plugins_3party.indexFromItem(item_git)))
-            indices.append(self.model_plugins_3party.index(1, 1, 
-                    self.model_plugins_3party.indexFromItem(item_sqlite)))
-            self.tv_plugins_3party.setItemDelegate(BrowseEditDelegate(indices))
-        except:
-            traceback.print_exc(limit=None) 
-        """
         self.tv_plugins_3party.show()
         self.tv_plugins_3party.expandAll()
         self.layout_plugins_3party.addWidget(self.tv_plugins_3party)
@@ -1773,7 +1768,7 @@ class SettingsDialog(BasicDialog):
         self.page_plugins_3party.setLayout(self.layout_plugins_3party)
         self.stacked.addWidget(self.page_plugins_3party)
 
-        # Plugins > Third-party
+        # Plugins > Custom
         self.page_plugins_custom = QtWidgets.QWidget()
         self.layout_plugins_custom = QtWidgets.QFormLayout()
         self.layout_plugins_custom.setSpacing(10)
@@ -1922,23 +1917,14 @@ class SettingsDialog(BasicDialog):
         self.chb_update_major_only = QtWidgets.QCheckBox('')
         self.chb_update_restart = QtWidgets.QCheckBox('')       
         
-        self.le_update_logfile = QtWidgets.QLineEdit('')
+        self.le_update_logfile = BrowseEdit(dialogtype='filesave', fullpath=False)
         self.le_update_logfile.setToolTip(_('Log file for update operations'))
-        self.act_update_log_browse = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-2.png"), _('Browse'), None)
-        self.act_update_log_browse.setToolTip(_('Browse'))
-        self.act_update_log_browse.triggered.connect(self.on_act_update_log_browse)
-        self.btn_update_log_browse = QtWidgets.QToolButton()
-        self.btn_update_log_browse.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        self.btn_update_log_browse.setDefaultAction(self.act_update_log_browse)
-        self.layout_update_log = QtWidgets.QHBoxLayout()
-        self.layout_update_log.addWidget(self.le_update_logfile)
-        self.layout_update_log.addWidget(self.btn_update_log_browse)
-
+        
         self.layout_updating.addRow(_('Check for updates every'), self.spin_update_period)
         self.layout_updating.addRow(_('Check / update major releases only'), self.chb_update_major_only)
         self.layout_updating.addRow(_('Auto update'), self.chb_update_auto)
         self.layout_updating.addRow(_('Restart on update'), self.chb_update_restart)
-        self.layout_updating.addRow(_('Log file'), self.layout_update_log)
+        self.layout_updating.addRow(_('Log file'), self.le_update_logfile)
 
         self.page_updating.setLayout(self.layout_updating)
         self.stacked.addWidget(self.page_updating)
@@ -2410,6 +2396,20 @@ class SettingsDialog(BasicDialog):
         settings['export']['img_output_quality'] = self.spin_export_quality.value()
         settings['export']['svg_title'] = self.le_svg_title.text()
         settings['export']['svg_description'] = self.le_svg_description.text()
+
+        # plugins > third-party
+        settings['plugins']['thirdparty'] = {}
+        settings['plugins']['thirdparty']['git'] = {'active': bool(self.model_plugins_3party.item(0).child(0, 1).checkState()),
+            'exepath': self.model_plugins_3party.item(0).child(1, 1).text()}
+        settings['plugins']['thirdparty']['dbbrowser'] = {'active': bool(self.model_plugins_3party.item(1).child(0, 1).checkState()),
+            'exepath': self.model_plugins_3party.item(1).child(1, 1).text(),
+            'command': self.model_plugins_3party.item(1).child(2, 1).text()}
+        settings['plugins']['thirdparty']['text'] = {'active': bool(self.model_plugins_3party.item(2).child(0, 1).checkState()),
+            'exepath': self.model_plugins_3party.item(2).child(1, 1).text(),
+            'command': self.model_plugins_3party.item(2).child(2, 1).text()}
+
+        # plugins > custom
+        settings['plugins']['custom'] = []
 
         # printing
         settings['printing']['margins'] = [self.spin_margin_left.value(), self.spin_margin_right.value(),
@@ -2904,7 +2904,7 @@ class SettingsDialog(BasicDialog):
             self.le_google_apikey.setText(settings['lookup']['google']['api_key'] if settings['lookup']['google']['api_key'] != GOOGLE_KEY else '')
             self.le_google_cseid.setText(settings['lookup']['google']['api_cse'] if settings['lookup']['google']['api_cse'] != GOOGLE_CSE else '')
 
-        # Import & Expo
+        # Import & Export
         if page is None or page == _('Import & Export'):
 
             settings = CWSettings.settings['export']
@@ -2918,10 +2918,41 @@ class SettingsDialog(BasicDialog):
             self.le_svg_title.setText(settings['svg_title'])
             self.le_svg_description.setText(settings['svg_description'])
         
-        # Plugins
-        if page is None or page == _('Plugins'):
-            pass
-        
+        # Plugins > Third-party
+        if page is None or page == _('Third-party'):
+            settings = CWSettings.settings['plugins']['thirdparty']
+            if 'git' in settings:
+                self.model_plugins_3party.item(0).child(0, 1).setCheckState(2 if settings['git'].get('active', False) else 0)
+                self.model_plugins_3party.item(0).child(1, 1).setText(settings['git'].get('exepath', ''))
+            else:
+                self.model_plugins_3party.item(0).child(0, 1).setCheckState(0)
+                self.model_plugins_3party.item(0).child(1, 1).setText('')
+
+            if 'dbbrowser' in settings:
+                self.model_plugins_3party.item(1).child(0, 1).setCheckState(2 if settings['dbbrowser'].get('active', False) else 0)
+                self.model_plugins_3party.item(1).child(1, 1).setText(settings['dbbrowser'].get('exepath', ''))
+                self.model_plugins_3party.item(1).child(2, 1).setText(settings['dbbrowser'].get('command', ''))
+            else:
+                self.model_plugins_3party.item(1).child(0, 1).setCheckState(0)
+                self.model_plugins_3party.item(1).child(1, 1).setText('')
+                self.model_plugins_3party.item(1).child(2, 1).setText('')
+
+            if 'text' in settings:
+                self.model_plugins_3party.item(2).child(0, 1).setCheckState(2 if settings['text'].get('active', False) else 0)
+                self.model_plugins_3party.item(2).child(1, 1).setText(settings['text'].get('exepath', ''))
+                self.model_plugins_3party.item(2).child(2, 1).setText(settings['text'].get('command', ''))
+            else:
+                self.model_plugins_3party.item(2).child(0, 1).setCheckState(0)
+                self.model_plugins_3party.item(2).child(1, 1).setText('')
+                self.model_plugins_3party.item(2).child(2, 1).setText('')
+
+            self.tv_plugins_3party.setModel(self.model_plugins_3party)
+            self.tv_plugins_3party.show()
+
+        # Plugins > Custom
+        if page is None or page == _('Custom'):
+            settings = CWSettings.settings['plugins']['custom']
+                    
         # Printing
         if page is None or page == _('Printing'):
 
@@ -3330,18 +3361,6 @@ class SettingsDialog(BasicDialog):
     def on_btn_export_auto_resolution_pdf(self):
         self.spin_export_resolution_pdf.setValue(1200)
 
-    @QtCore.pyqtSlot(bool)        
-    def on_act_tempdir_browse(self, checked):
-        """
-        Browse for temp dir.
-        """
-        current_dir = self.le_tempdir.text()
-        default_dir = get_tempdir().replace('/', os.sep)
-        selected_path = QtWidgets.QFileDialog.getExistingDirectory(self, _('Select directory'), current_dir or default_dir)
-        selected_path = selected_path.replace('/', os.sep)
-        if selected_path:
-            self.le_tempdir.setText(selected_path if selected_path != default_dir else '')
-
     @QtCore.pyqtSlot(bool)
     def on_act_register_associations(self, checked):
         """
@@ -3356,18 +3375,6 @@ class SettingsDialog(BasicDialog):
         else:
             MsgBox(_('Could not assign file associations!'), self, _('Error'), 'error')
 
-    @QtCore.pyqtSlot(bool)        
-    def on_act_update_log_browse(self, checked):
-        """
-        Browse for log file.
-        """
-        current_file = make_abspath(self.le_update_logfile.text())
-        default_file = os.path.join(os.getcwd(), 'update.log')
-        selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), current_file or default_file, _('All files (*.*)'))
-        if not selected_path[0]: return
-        selected_path =  os.path.relpath(selected_path[0], os.path.dirname(__file__)).replace('/', os.sep)
-        self.le_update_logfile.setText(selected_path)
-
     @QtCore.pyqtSlot(int)        
     def on_chb_system_proxy(self, state):
         self.le_http_proxy.setEnabled(state==QtCore.Qt.Unchecked)
@@ -3378,6 +3385,16 @@ class SettingsDialog(BasicDialog):
         if index.column() == 1 and index.siblingAtColumn(0).data() == _('Path'):
             pass
 
+    @QtCore.pyqtSlot(QtGui.QStandardItem) 
+    def on_model_plugins_3party_changed(self, item: QtGui.QStandardItem):
+        # enable / disable plugins when checked / unchecked 'Enabled'
+        parent = item.parent()
+        if not item.isCheckable() or not parent: return
+        checked = bool(item.checkState())       
+        # iterate children
+        for i in range(parent.rowCount()):
+            if i != item.row():
+                parent.child(i, 1).setEnabled(checked)
         
 # ******************************************************************************** #
 # *****          CwTable

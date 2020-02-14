@@ -233,7 +233,7 @@ class TextWordsource(Wordsource):
             matched = bool(regex_w.fullmatch(w[0])) if regex_w else True
             if filter_func: matched = matched and filter_func(w[0])
             if not matched: continue            
-            if self.bpos and pos:
+            if w[1] and self.bpos and pos:
                 for p in pos:
                     if p in w[1]:
                         matched = True
