@@ -389,7 +389,14 @@ class WordSrcDialog(BasicDialog):
         self.combo_dbtype.setCurrentIndex(0)
         self.le_dbuser = QtWidgets.QLineEdit('')
         self.le_dbpass = QtWidgets.QLineEdit('')
-        self.le_dbtables = QtWidgets.QLineEdit(json.dumps(SQL_TABLES))
+        self.te_dbtables = QtWidgets.QTextEdit('')
+        self.te_dbtables.setFont(make_font('Courier', 10))
+        self.te_dbtables.setMinimumHeight(80)
+        self.te_dbtables.setTabStopDistance(40)
+        self.te_dbtables.setAcceptRichText(False)
+        self.te_dbtables.setPlaceholderText(_('Database table and field names'))
+        self.te_dbtables_hiliter = JsonHiliter(self.te_dbtables.document())
+        self.te_dbtables.setPlainText(json.dumps(SQL_TABLES, indent=4))
         self.chb_db_shuffle = QtWidgets.QCheckBox()
         self.chb_db_shuffle.setChecked(True)
         self.btn_dbedit = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), _('Edit'), None)
@@ -400,7 +407,7 @@ class WordSrcDialog(BasicDialog):
         self.layout_db.addRow(_('Type'), self.combo_dbtype)
         self.layout_db.addRow(_('User'), self.le_dbuser)
         self.layout_db.addRow(_('Password'), self.le_dbpass)
-        self.layout_db.addRow(_('Tables'), self.le_dbtables)
+        self.layout_db.addRow(_('Tables'), self.te_dbtables)
         self.layout_db.addRow(_('Shuffle'), self.chb_db_shuffle)
         self.layout_db.addRow(self.btn_dbedit)
         self.page_db.setLayout(self.layout_db)
@@ -468,7 +475,7 @@ class WordSrcDialog(BasicDialog):
             self.combo_dbtype.setCurrentText(self.src['dbtype'])
             self.le_dbuser.setText(self.src['dblogin'])
             self.le_dbpass.setText(self.src['dbpass'])
-            self.le_dbtables.setText(str(self.src['dbtables']))
+            self.te_dbtables.setPlainText(json.dumps(self.src['dbtables'], indent=4))
             self.chb_db_shuffle.setChecked(self.src['shuffle'])
             
         elif self.src['type'] == 'file':
@@ -515,7 +522,7 @@ class WordSrcDialog(BasicDialog):
             self.src['dbtype'] = self.combo_dbtype.currentText()
             self.src['dblogin'] = self.le_dbuser.text()
             self.src['dbpass'] = self.le_dbpass.text()
-            self.src['dbtables'] = json.loads(self.le_dbtables.text())
+            self.src['dbtables'] = json.loads(self.te_dbtables.toPlainText())
             self.src['shuffle'] = self.chb_db_shuffle.isChecked()
                 
         elif self.rb_type_file.isChecked():
@@ -556,7 +563,7 @@ class WordSrcDialog(BasicDialog):
                 MsgBox(_('DB file path must be valid!'), self, _('Error'), 'error')
                 return False
             try:
-                d = json.loads(self.le_dbtables.text())
+                d = json.loads(self.te_dbtables.toPlainText())
                 if not isinstance(d, dict): 
                     raise Exception(_('DB tables field has incorrect value!'))
                 # check presence of obligatory keys

@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils
-import sys, os, subprocess, traceback, uuid, tempfile, platform
+import sys, os, subprocess, traceback, uuid, tempfile, platform, re, json
 from datetime import datetime, time
 
 from .globalvars import *
@@ -500,3 +500,66 @@ def property_from_stylesheet(propname, style, default=None):
     dic_style = stylesheet_load(style)
     return dic_style.get(propname, default)
 
+# ------------------------------------------------------------------------ #
+
+## @brief Syntax highlighter class for JSON.
+# Used in pycross::forms::WordSrcDialog (DB table definition).
+# @see [QSyntaxHighlighter docs](https://doc.qt.io/qt-5/qsyntaxhighlighter.html)
+class JsonHiliter(QtGui.QSyntaxHighlighter):
+
+    ## @brief Regex-based patterns and their corresponding color values.
+    # Each record has 3 elements:
+    #   1. `Python regex object` compiled regex pattern
+    #   2. `int` group number in regex match results to highlight 
+    #   (0 = whole match, 1 = first expression in parentheses, etc...)
+    #   3. `QtGui.QColor` color to apply to matched text
+    PATTERNS = [
+        # operators (dot, comma, colon)
+        (re.compile(r'([\.,\:])'), 1, QtGui.QColor(QtCore.Qt.red)),
+        # brackets
+        (re.compile(r'([\{\}\[\]\(\)])'), 1, QtGui.QColor(QtCore.Qt.gray)),
+        # numbers
+        (re.compile(r'([\s,\:\{\[\(])([\-\+]?[\d\.]+)([\s,\:\}\]\)]?)'), 2, QtGui.QColor(QtCore.Qt.blue)),
+        (re.compile(r'([\s,\:\{\[\(])([\-\+]?[\d\.]+$)'), 2, QtGui.QColor(QtCore.Qt.blue)),
+        (re.compile(r'(^[\-\+]?[\d\.]+)([\s,\:\}\]\)]?)'), 1, QtGui.QColor(QtCore.Qt.blue)),
+        (re.compile(r'(^[\-\+]?[\d\.]+$)'), 1, QtGui.QColor(QtCore.Qt.blue)),
+        # boolean
+        (re.compile(r'([\s,\:\{\[\(])(true|false)([\s,\:\}\]\)])'), 2, QtGui.QColor(QtCore.Qt.magenta)),
+        (re.compile(r'([\s,\:\{\[\(])(true$|false$)'), 2, QtGui.QColor(QtCore.Qt.magenta)),
+        (re.compile(r'(^true|^false)([\s,\:\}\]\)])'), 1, QtGui.QColor(QtCore.Qt.magenta)),
+        (re.compile(r'(^true$|^false$)'), 1, QtGui.QColor(QtCore.Qt.magenta)),
+        # null values
+        (re.compile(r'([\s,\:\{\[\(])(null)([\s,\:\}\]\)])'), 2, QtGui.QColor(QtCore.Qt.gray)),
+        (re.compile(r'([\s,\:\{\[\(])(null$)'), 2, QtGui.QColor(QtCore.Qt.gray)),
+        (re.compile(r'(^null)([\s,\:\}\]\)])'), 1, QtGui.QColor(QtCore.Qt.gray)),
+        (re.compile(r'(^null$)'), 1, QtGui.QColor(QtCore.Qt.gray)),
+        # string values
+        (re.compile(r'([\s,\:\[\(])(\".*?\")'), 2, QtGui.QColor(QtCore.Qt.darkCyan)),
+        (re.compile(r'(^\".*?\")'), 1, QtGui.QColor(QtCore.Qt.darkCyan)),
+        # key names
+        (re.compile(r'(\".*?\")(\s*\:)'), 1, QtGui.QColor(QtCore.Qt.darkGreen))        
+    ]
+
+    def __init__(self, parent: QtGui.QTextDocument, decode_errors=False):
+        super().__init__(parent)
+        ## `bool` whether JSON decode errors must be highlighted dynamically
+        self.decode_errors = decode_errors
+        self._error_format = QtGui.QTextCharFormat()
+        self._error_format.setBackground(QtGui.QBrush(QtGui.QColor(QtCore.Qt.darkRed)))
+        self._error_format.setForeground(QtGui.QBrush(QtGui.QColor(QtCore.Qt.yellow)))
+
+    def highlightBlock(self, text):
+        # syntax highlighting
+        for pattern in JsonHiliter.PATTERNS:
+            gr = pattern[1]
+            for m in pattern[0].finditer(text):
+                try:
+                    self.setFormat(m.start(gr), m.end(gr) - m.start(gr), pattern[2])
+                except:
+                    pass
+        # error highlighting
+        if not self.decode_errors: return
+        try:
+            json.loads(text)
+        except json.JSONDecodeError as err:
+            self.setFormat(err.pos, 1, self._error_format)

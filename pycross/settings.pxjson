@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			235,
-			45
+			422,
+			65
 		],
 		"win_size": [
-			1579,
-			899
+			1348,
+			745
 		],
 		"toolbar_actions": [
 			"act_new",
@@ -182,17 +182,17 @@
 			{
 				"name": "Direction",
 				"visible": true,
-				"width": 109
+				"width": 100
 			},
 			{
 				"name": "No.",
 				"visible": true,
-				"width": 41
+				"width": 100
 			},
 			{
 				"name": "Clue",
 				"visible": true,
-				"width": 246
+				"width": 100
 			},
 			{
 				"name": "Letters",
@@ -202,7 +202,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 349
+				"width": 459
 			}
 		]
 	},

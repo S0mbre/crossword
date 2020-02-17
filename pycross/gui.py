@@ -583,8 +583,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if CWSettings.settings['gui']['theme'] and CWSettings.settings['gui']['theme'] != QtWidgets.QApplication.instance().style().objectName():
             QtWidgets.QApplication.instance().setStyle(CWSettings.settings['gui']['theme'])
         # update window geometry from settings (last saved pos and size)
-        self.setGeometry(CWSettings.settings['gui']['win_pos'][0], CWSettings.settings['gui']['win_pos'][1], 
-            CWSettings.settings['gui']['win_size'][0], CWSettings.settings['gui']['win_size'][1])
+        self.move(CWSettings.settings['gui']['win_pos'][0], CWSettings.settings['gui']['win_pos'][1])
+        self.resize(CWSettings.settings['gui']['win_size'][0], CWSettings.settings['gui']['win_size'][1])
         tb = CWSettings.settings['gui']['toolbar_pos']
         if tb < 4:
             TOOLBAR_AREAS = {0: QtCore.Qt.TopToolBarArea, 1: QtCore.Qt.BottomToolBarArea, 2: QtCore.Qt.LeftToolBarArea, 3: QtCore.Qt.RightToolBarArea}
@@ -2027,7 +2027,8 @@ class MainWindow(QtWidgets.QMainWindow):
     # (to restore them upon next startup).
     def update_settings_before_quit(self):
         # window size and pos
-        CWSettings.settings['gui']['win_pos'] = (self.pos().x(), self.pos().y())
+        pos = self.pos()
+        CWSettings.settings['gui']['win_pos'] = (pos.x(), pos.y())
         CWSettings.settings['gui']['win_size'] = (self.width(), self.height())
         CWSettings.settings['common']['lang'] = self.combo_lang.currentData()
         # clues column widths

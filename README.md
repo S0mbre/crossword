@@ -93,7 +93,7 @@ Git is not actually required if you opt for the pip installation variant as desc
 ## Usage
 Run `pycross.sh` on Linux/Mac (remember to do `chmod +x pycross.sh` first) or `pycross.bat` on Windows to launch the pyCross UI app.
 
-Alternativaly, you can register the pycross file associations at initial run (go to *Settings* > *Common* > *Register file associations*). After that, you can launch the app by double-clicking crossword files (like *.xpf or *.ipuz) or settings files (*.pxjson)
+Alternativaly, you can register the pycross file associations at initial run (go to *Settings* > *Common* > *Register file associations*). After that, you can launch the app by double-clicking crossword files (like \*.xpf or \*.ipuz) or settings files (\*.pxjson)
 
 See docs for detailed usage guide.
 
