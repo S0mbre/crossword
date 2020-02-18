@@ -113,13 +113,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         ## `list` thread list to keep track of all spawned threads
         self.threads = ['gen_thread', 'share_thread']
-        ## `utils::update::Updater` instance (used to run app update checks and updates)
-        self.updater = Updater(APP_NAME, APP_VERSION, GIT_REPO, UPDATE_FILE,
-            make_abspath(CWSettings.settings['update']['logfile']),
-            CWSettings.settings['update']['check_every'], 
-            CWSettings.settings['update']['only_major_versions'],
-            on_get_recent=self.on_get_recent, on_before_update=self.on_before_update,
-            on_norecent=self.on_norecent)
+        
         # create window elements
         self.initUI(not kwargs.get('empty', False))
         self.setAcceptDrops(True) 
@@ -618,6 +612,18 @@ class MainWindow(QtWidgets.QMainWindow):
         # apply settings to clue table (column order and width)
         self.adjust_clues_header_columns()
 
+        # updater
+        ## `utils::update::Updater` instance (used to run app update checks and updates)
+        self.updater = Updater(APP_NAME, APP_VERSION, GIT_REPO, UPDATE_FILE,
+            make_abspath(CWSettings.settings['update']['logfile']),
+            CWSettings.settings['update']['check_every'], 
+            CWSettings.settings['update']['only_major_versions'],
+            CWSettings.settings['plugins']['thirdparty']['git']['exepath'] \
+                if (CWSettings.settings['plugins']['thirdparty']['git']['active'] and \
+                    CWSettings.settings['plugins']['thirdparty']['git']['exepath']) else None,
+            on_get_recent=self.on_get_recent, on_before_update=self.on_before_update,
+            on_norecent=self.on_norecent)
+
         # sharer
         if self.sharer: 
             self.sharer.cloud.init_settings()
@@ -680,7 +686,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_stats.setEnabled(b_cw and not gen_running and not share_running)
         self.act_print.setEnabled(b_cw and not gen_running and not share_running)
         self.act_config.setEnabled(not gen_running)
-        self.act_update.setEnabled(not gen_running and not share_running and self.updater.git_installed)
+        self.act_update.setEnabled(not gen_running and not share_running)
+        if hasattr(self, 'updater'):
+            self.act_update.setEnabled(self.act_update.isEnabled() and self.updater.git_installed)
         #self.act_help.setEnabled(not gen_running)
         #self.act_about.setEnabled(not gen_running)
         self.twCw.setEnabled(b_cw and not gen_running)
@@ -2694,11 +2702,11 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Slot for MainWindow::act_help: opens up the Help documentation.
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
-        #MsgBox(_('To be implemented in next release ))'), self, _('Show help docs'))
-        try:
-            self.create_cloud(None)
-        except Exception as err:
-            print(str(err))
+        #MsgBox(_('To be implemented in next release ))'), self, _('Show help docs')) 
+        from utils.synteditor import SynEditorWidget       
+        editor = SynEditorWidget(self.parent())        
+        editor.show()
+        editor.editor.setText(open(sys.argv[0]).read())
 
     ## @brief Slot for MainWindow::act_about: shows the About dialog.
     @QtCore.pyqtSlot(bool)        

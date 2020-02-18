@@ -5,6 +5,7 @@ build/
 __pycache__/
 */__pycache__/
 pycross/assets/*.txt
+pycross/settings.pxjson
 */*.log
 */*.json
 */autosaved.xpf

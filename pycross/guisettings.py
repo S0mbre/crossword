@@ -136,7 +136,7 @@ class CWSettings:
         {
             'thirdparty': 
                 {
-                    'git': {'active': True, 'exepath': ''},
+                    'git': {'active': False, 'exepath': ''},
                     'dbbrowser': {'active': False, 'exepath': '', 'command': '-t <table> <file>'},
                     'text': {'active': False, 'exepath': '', 'command': '<file>'}
                 },

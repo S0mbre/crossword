@@ -2,7 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-## @package utils
+## @package utils.update
 from datetime import datetime
 from pathlib import Path, PurePath
 import os, sys, subprocess, json, traceback, platform
@@ -15,7 +15,7 @@ GIT_ERROR = _('You do not appear to have a valid version of git installed!\nPlea
 class Updater:
 
     def __init__(self, app_name, app_version, git_repo, update_file, log_file,
-                 check_every=1, check_major_versions=True,  
+                 check_every=1, check_major_versions=True, git_exe=None,  
                  on_get_recent=None, on_before_update=None, on_norecent=None,
                  print_to=sys.stdout):
 
@@ -34,6 +34,7 @@ class Updater:
         self.update_info = {'last_update': '', 'last_check': '', 
                             'recent_version': {'version': '', 'hash': '', 'branch': '',
                                                'description': '', 'date': ''}}
+        self.git_exe = git_exe or 'git'
         self.git_installed = self._check_git()        
         self._init_update_info()
 
@@ -72,7 +73,7 @@ class Updater:
 
     def _check_git(self):
         try:
-            res = self._run_exe(['git', 'status'])
+            res = self._run_git('--version')
             return res.returncode == 0
         except:
             return False
@@ -114,8 +115,9 @@ class Updater:
         return '='
 
     def _run_git(self, *args, **kwargs):
-        gitargs = ['git'] + list(args)
-        print(_("Running {}...").format((' '.join(gitargs))), file=self.print_to)
+        gitargs = [self.git_exe] + list(args)
+        if DEBUGGING:
+            print(_("Running {}...").format((' '.join(gitargs))), file=self.print_to)
         return self._run_exe(gitargs, **kwargs)
 
     def _get_remote_branches(self, exclude_starting_with=('master',), include_starting_with=('release',)):

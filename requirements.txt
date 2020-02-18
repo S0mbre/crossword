@@ -1,6 +1,7 @@
 pip
 PyQt5>=5.14
 PyQtWebEngine>=5.14
+QScintilla>=2.11
 requests
 numpy
 pandas

@@ -3,8 +3,8 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			244,
-			83
+			267,
+			55
 		],
 		"win_size": [
 			1550,
@@ -311,18 +311,18 @@
 		"logfile": "update.log"
 	},
 	"sharing": {
-		"account": "",
-		"bearer_token": "",
+		"account": "352604900",
+		"bearer_token": "sTM2RQy86RxcqU1FnjYtxwUQTZQT6A",
 		"use_api_key": false,
-		"root_folder": "",
-		"user": "",
+		"root_folder": "pycrossall",
+		"user": "rootuser",
 		"use_own_browser": true
 	},
 	"plugins": {
 		"thirdparty": {
 			"git": {
-				"active": true,
-				"exepath": ""
+				"active": false,
+				"exepath": "c:\\_PROG_\\Git\\bin\\git.exe"
 			},
 			"dbbrowser": {
 				"active": true,

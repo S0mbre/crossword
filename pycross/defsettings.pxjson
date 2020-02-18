@@ -299,7 +299,7 @@
 	"plugins": {
 		"thirdparty": {
 			"git": {
-				"active": true,
+				"active": false,
 				"exepath": ""
 			},
 			"dbbrowser": {

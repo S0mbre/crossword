@@ -2,7 +2,7 @@
 # Copyright: (c) 2019, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-## @package utils
+## @package utils.utils
 import sys, os, subprocess, traceback, uuid, tempfile, platform, re, json
 from datetime import datetime, time
 
@@ -540,15 +540,25 @@ class JsonHiliter(QtGui.QSyntaxHighlighter):
         (re.compile(r'(\".*?\")(\s*\:)'), 1, QtGui.QColor(QtCore.Qt.darkGreen))        
     ]
 
-    def __init__(self, parent: QtGui.QTextDocument, decode_errors=False):
+    sig_parse_error = QtCore.pyqtSignal(QtGui.QSyntaxHighlighter, str, str, int, int, int)
+    sig_parse_success = QtCore.pyqtSignal(QtGui.QSyntaxHighlighter)
+
+    def __init__(self, parent: QtGui.QTextDocument, decode_errors=False, 
+        on_decode_error=None, on_decode_success=None):
         super().__init__(parent)
         ## `bool` whether JSON decode errors must be highlighted dynamically
         self.decode_errors = decode_errors
+        if on_decode_error: self.sig_parse_error.connect(on_decode_error)
+        if on_decode_success: self.sig_parse_success.connect(on_decode_success)
         self._error_format = QtGui.QTextCharFormat()
         self._error_format.setBackground(QtGui.QBrush(QtGui.QColor(QtCore.Qt.darkRed)))
         self._error_format.setForeground(QtGui.QBrush(QtGui.QColor(QtCore.Qt.yellow)))
+        self.decoder = json.JSONDecoder()
 
     def highlightBlock(self, text):
+        # clear format
+        length = self.currentBlock().length()
+        #self.setFormat(0, length, QtGui.QTextCharFormat())
         # syntax highlighting
         for pattern in JsonHiliter.PATTERNS:
             gr = pattern[1]
@@ -559,7 +569,13 @@ class JsonHiliter(QtGui.QSyntaxHighlighter):
                     pass
         # error highlighting
         if not self.decode_errors: return
+        doc = self.document()
+        offset = self.currentBlock().position()        
         try:
-            json.loads(text)
+            self.decoder.decode(doc.toPlainText())            
         except json.JSONDecodeError as err:
-            self.setFormat(err.pos, 1, self._error_format)
+            if err.pos >= offset and err.pos < (offset + length):
+                self.setFormat(err.pos - offset, 1, self._error_format)
+            self.sig_parse_error.emit(self, err.msg, err.doc, err.pos, err.lineno, err.colno)
+        else:
+            self.sig_parse_success.emit(self)

@@ -445,11 +445,26 @@ class WordSrcDialog(BasicDialog):
         font = make_font('Courier', 10)
         font_metrics = QtGui.QFontMetrics(font)
         self.te_dbtables.setFont(font)
+        style = color_to_stylesheet(QtGui.QColor('#f2f2f2'), self.te_dbtables.styleSheet())
+        self.te_dbtables.setStyleSheet(style)
         self.te_dbtables.setMinimumHeight(80)        
         self.te_dbtables.setTabStopDistance(font_metrics.horizontalAdvance('    '))
         self.te_dbtables.setAcceptRichText(False)
         self.te_dbtables.setPlaceholderText(_('Database table and field names'))
-        self.te_dbtables_hiliter = JsonHiliter(self.te_dbtables.document())
+        self.te_dbtables_hiliter = JsonHiliter(self.te_dbtables.document(), True, 
+            self.on_decode_error, self.on_decode_success)
+        self.te_te_dbtables_error = QtWidgets.QPlainTextEdit('')
+        self.te_te_dbtables_error.setMaximumHeight(80)
+        self.te_te_dbtables_error.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        self.te_te_dbtables_error.setFont(font)
+        self.te_te_dbtables_error.setReadOnly(True)
+        style = color_to_stylesheet(QtGui.QColor('#262626'), self.te_te_dbtables_error.styleSheet())
+        style = color_to_stylesheet(QtGui.QColor(QtCore.Qt.yellow), style, 'color')
+        self.te_te_dbtables_error.setStyleSheet(style)
+        self.te_te_dbtables_error.hide()
+        self.layout_dbtables = QtWidgets.QVBoxLayout()
+        self.layout_dbtables.addWidget(self.te_dbtables)
+        self.layout_dbtables.addWidget(self.te_te_dbtables_error)
         self.te_dbtables.setPlainText(json.dumps(SQL_TABLES, indent=4))
         self.chb_db_shuffle = QtWidgets.QCheckBox()
         self.chb_db_shuffle.setChecked(True)
@@ -461,7 +476,7 @@ class WordSrcDialog(BasicDialog):
         self.layout_db.addRow(_('Type'), self.combo_dbtype)
         self.layout_db.addRow(_('User'), self.le_dbuser)
         self.layout_db.addRow(_('Password'), self.le_dbpass)
-        self.layout_db.addRow(_('Tables'), self.te_dbtables)
+        self.layout_db.addRow(_('Tables'), self.layout_dbtables)
         self.layout_db.addRow(_('Shuffle'), self.chb_db_shuffle)
         self.layout_db.addRow(self.btn_dbedit)
         self.page_db.setLayout(self.layout_db)
@@ -496,20 +511,21 @@ class WordSrcDialog(BasicDialog):
         # 3. List
         self.page_list = QtWidgets.QWidget()
         self.layout_list = QtWidgets.QFormLayout()
+        self.chb_haspos = QtWidgets.QCheckBox()
+        self.chb_haspos.setChecked(True)
         self.combo_list_delim = QtWidgets.QComboBox()
         self.combo_list_delim.addItems([_('SPACE'), _('TAB'), ';', ',', ':'])
         self.combo_list_delim.setEditable(True)
-        self.combo_list_delim.setCurrentIndex(0)
-        self.chb_haspos = QtWidgets.QCheckBox()
-        self.chb_haspos.setChecked(True)
+        self.combo_list_delim.setCurrentIndex(0)       
+        self.chb_haspos.toggled.connect(self.combo_list_delim.setEnabled) 
         self.te_wlist = QtWidgets.QTextEdit('')
         self.te_wlist.setStyleSheet('font: 14pt "Courier";color: black')
         self.te_wlist.setAcceptRichText(False)
         self.te_wlist.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
         self.chb_list_shuffle = QtWidgets.QCheckBox()
-        self.chb_list_shuffle.setChecked(True)
-        self.layout_list.addRow(_('Delimiter'), self.combo_list_delim)
+        self.chb_list_shuffle.setChecked(True)        
         self.layout_list.addRow(_('Has parts of speech'), self.chb_haspos)
+        self.layout_list.addRow(_('Delimiter'), self.combo_list_delim)
         self.layout_list.addRow(_('Words'), self.te_wlist)
         self.layout_list.addRow(_('Shuffle'), self.chb_list_shuffle)
         self.page_list.setLayout(self.layout_list)
@@ -700,6 +716,26 @@ class WordSrcDialog(BasicDialog):
             return
         cmd = settings['command'].replace('<file>', os.path.abspath(self.src['file']))
         run_exe(f"{settings['exepath']} {cmd}", False, False, shell=True)
+
+    @QtCore.pyqtSlot(QtGui.QSyntaxHighlighter, str, str, int, int, int)
+    def on_decode_error(self, hiliter, msg, doc, pos, lineno, colno):
+        # report parse error
+        self.te_te_dbtables_error.setPlainText(_('{}\nat line {}, column {}').format(msg, lineno, colno))
+        self.te_te_dbtables_error.show()
+        # set cursor to that position
+        try:
+            cursor = self.te_dbtables.textCursor()
+            cursor.movePosition(QtGui.QTextCursor.Start)
+            cursor.movePosition(QtGui.QTextCursor.Right, QtGui.QTextCursor.MoveAnchor, pos)
+            self.te_dbtables.setTextCursor(cursor)
+            self.te_dbtables.setFocus()
+        except:
+            pass
+
+    @QtCore.pyqtSlot(QtGui.QSyntaxHighlighter)
+    def on_decode_success(self, hiliter):
+        self.te_te_dbtables_error.hide()
+        self.te_te_dbtables_error.clear()
 
 
 # ******************************************************************************** #

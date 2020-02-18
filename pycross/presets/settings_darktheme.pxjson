@@ -315,17 +315,17 @@
 	"plugins": {
 		"thirdparty": {
 			"git": {
-				"active": true,
+				"active": false,
 				"exepath": ""
 			},
 			"dbbrowser": {
 				"active": true,
-				"exepath": "c:\\_PROG_\\SQLiteDatabaseBrowserPortable\\SQLiteDatabaseBrowserPortable.exe",
+				"exepath": "",
 				"command": "-t <table> <file>"
 			},
 			"text": {
 				"active": true,
-				"exepath": "c:\\_PROG_\\Notepad++\\notepad++.exe",
+				"exepath": "",
 				"command": "<file>"
 			}
 		},
