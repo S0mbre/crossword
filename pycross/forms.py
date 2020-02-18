@@ -56,6 +56,7 @@ class BrowseEdit(QtWidgets.QLineEdit):
         ## `str` file filters for file browse dialog
         self.filefilters = filefilters or _('All files (*.*)')
         self.fullpath = fullpath
+        self.delegate = None
         self.reset_action()
 
     ## Gets the start directory for the browse dialog.
@@ -85,6 +86,7 @@ class BrowseEdit(QtWidgets.QLineEdit):
     ## Triggered slot for the browse action: opens dialog and sets the edit text.
     @QtCore.pyqtSlot()
     def on_btnaction(self):
+        if self.delegate: self.delegate.blockSignals(True)
         opendialogdir = self._get_dir()
         if self.dialogtype == 'fileopen':
             selected_path = QtWidgets.QFileDialog.getOpenFileName(self.window(), self.opendialogtitle, opendialogdir, self.filefilters)
@@ -95,12 +97,62 @@ class BrowseEdit(QtWidgets.QLineEdit):
         elif self.dialogtype == 'folder':
             selected_path = QtWidgets.QFileDialog.getExistingDirectory(self.window(), self.opendialogtitle, opendialogdir)
         else:
+            if self.delegate: self.delegate.blockSignals(False)
             return
-        if not selected_path: return
+        if not selected_path: 
+            if self.delegate: self.delegate.blockSignals(False)
+            return
         selected_path = selected_path.replace('/', os.sep)
         if not self.fullpath:
             selected_path = os.path.basename(selected_path)
         self.setText(selected_path)
+        if self.delegate: self.delegate.blockSignals(False)
+
+# ******************************************************************************** #
+# *****          BrowseEditDelegate
+# ******************************************************************************** #        
+
+class BrowseEditDelegate(QtWidgets.QStyledItemDelegate):
+
+    def __init__(self, model_indices=None, thisparent=None, 
+                **browse_edit_kwargs):
+        super().__init__(thisparent)
+        self.model_indices = model_indices
+        self.browse_edit_kwargs = browse_edit_kwargs
+
+    def createEditor(self, parent: QtWidgets.QWidget, option: QtWidgets.QStyleOptionViewItem,
+                    index: QtCore.QModelIndex) -> QtWidgets.QWidget:
+        try:
+            if self.model_indices and index in self.model_indices:
+                self.browse_edit_kwargs['parent'] = parent
+                editor = BrowseEdit(**self.browse_edit_kwargs)
+                editor.setFrame(False)
+                editor.delegate = self
+                return editor
+            else:
+                return super().createEditor(parent, option, index)
+        except Exception as err:
+            print(err)
+            return None
+
+    def setEditorData(self, editor, index: QtCore.QModelIndex):
+        if not index.isValid(): return
+        if self.model_indices and index in self.model_indices:
+            txt = index.model().data(index, QtCore.Qt.EditRole)
+            if isinstance(txt, str):
+                editor.setText(txt)
+        else:
+            super().setEditorData(editor, index)
+
+    def setModelData(self, editor, model: QtCore.QAbstractItemModel, index: QtCore.QModelIndex):
+        if self.model_indices and index in self.model_indices:
+            model.setData(index, editor.text(), QtCore.Qt.EditRole)
+        else:
+            super().setModelData(editor, model, index)
+
+    def updateEditorGeometry(self, editor, option: QtWidgets.QStyleOptionViewItem,
+        index: QtCore.QModelIndex):
+        editor.setGeometry(option.rect)        
 
 # ******************************************************************************** #
 # *****          BasicDialog
@@ -390,9 +442,11 @@ class WordSrcDialog(BasicDialog):
         self.le_dbuser = QtWidgets.QLineEdit('')
         self.le_dbpass = QtWidgets.QLineEdit('')
         self.te_dbtables = QtWidgets.QTextEdit('')
-        self.te_dbtables.setFont(make_font('Courier', 10))
-        self.te_dbtables.setMinimumHeight(80)
-        self.te_dbtables.setTabStopDistance(40)
+        font = make_font('Courier', 10)
+        font_metrics = QtGui.QFontMetrics(font)
+        self.te_dbtables.setFont(font)
+        self.te_dbtables.setMinimumHeight(80)        
+        self.te_dbtables.setTabStopDistance(font_metrics.horizontalAdvance('    '))
         self.te_dbtables.setAcceptRichText(False)
         self.te_dbtables.setPlaceholderText(_('Database table and field names'))
         self.te_dbtables_hiliter = JsonHiliter(self.te_dbtables.document())
@@ -1719,8 +1773,8 @@ class SettingsDialog(BasicDialog):
         item_0.setFlags(QtCore.Qt.NoItemFlags)
         self.model_plugins_3party.appendRow([item_git, item_0])
         
-        item_text = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/sqlite.png"), _('SQLite Editor'))
-        item_text.setFlags(QtCore.Qt.ItemIsEnabled)
+        item_sqlite = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/sqlite.png"), _('SQLite Editor'))
+        item_sqlite.setFlags(QtCore.Qt.ItemIsEnabled)
         item_1 = QtGui.QStandardItem(_('Enabled'))
         item_1.setFlags(QtCore.Qt.ItemIsEnabled)
         item_2 = QtGui.QStandardItem('')
@@ -1728,20 +1782,20 @@ class SettingsDialog(BasicDialog):
         item_2.setCheckable(True)
         item_2.setUserTristate(False)
         item_2.setCheckState(QtCore.Qt.Checked)
-        item_text.appendRow([item_1, item_2])
+        item_sqlite.appendRow([item_1, item_2])
         item_1 = QtGui.QStandardItem(_('Path'))
         item_1.setFlags(QtCore.Qt.ItemIsEnabled)
         item_2 = QtGui.QStandardItem('')
         item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
-        item_text.appendRow([item_1, item_2])
+        item_sqlite.appendRow([item_1, item_2])
         item_1 = QtGui.QStandardItem(_('Commands'))
         item_1.setFlags(QtCore.Qt.ItemIsEnabled)
         item_2 = QtGui.QStandardItem('<file>')
         item_2.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
-        item_text.appendRow([item_1, item_2])
+        item_sqlite.appendRow([item_1, item_2])
         item_0 = QtGui.QStandardItem()
         item_0.setFlags(QtCore.Qt.NoItemFlags)
-        self.model_plugins_3party.appendRow([item_text, item_0])
+        self.model_plugins_3party.appendRow([item_sqlite, item_0])
 
         item_text = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/file.png"), _('Text Editor'))
         item_text.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -1768,6 +1822,16 @@ class SettingsDialog(BasicDialog):
         self.model_plugins_3party.appendRow([item_text, item_0])
 
         self.tv_plugins_3party.setModel(self.model_plugins_3party)
+        
+        indices = []
+        indices.append(self.model_plugins_3party.index(1, 1, 
+                self.model_plugins_3party.indexFromItem(item_git)))
+        indices.append(self.model_plugins_3party.index(1, 1, 
+                self.model_plugins_3party.indexFromItem(item_sqlite)))
+        indices.append(self.model_plugins_3party.index(1, 1, 
+                self.model_plugins_3party.indexFromItem(item_text)))
+        self.tv_plugins_3party.setItemDelegate(BrowseEditDelegate(indices))
+
         self.tv_plugins_3party.show()
         self.tv_plugins_3party.expandAll()
         self.layout_plugins_3party.addWidget(self.tv_plugins_3party)
@@ -4462,6 +4526,31 @@ class AboutDialog(QtWidgets.QDialog):
         self.initUI(None, _('About'), 'main.png')
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
         
+    def initUI(self, geometry=None, title=None, icon=None):
+        
+        self.addMainLayout()
+        
+        self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('OK'), None)
+        self.btn_OK.setMaximumWidth(150)
+        self.btn_OK.setDefault(True)
+        self.btn_OK.clicked.connect(self.accept)
+        self.layout_bottom = QtWidgets.QHBoxLayout()
+        self.layout_bottom.addWidget(self.btn_OK, alignment=QtCore.Qt.AlignHCenter)
+        
+        self.layout_main = QtWidgets.QVBoxLayout()
+        self.layout_main.addLayout(self.layout_controls)
+        self.layout_main.addLayout(self.layout_bottom)
+        
+        self.setLayout(self.layout_main)
+        if geometry:
+            self.setGeometry(*geometry) 
+        if title:
+            self.setWindowTitle(title)      
+        if icon:
+            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}")) 
+
+        self.adjustSize()
+
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QFormLayout()
 
@@ -4487,7 +4576,19 @@ class AboutDialog(QtWidgets.QDialog):
         self.layout_controls.addRow(_('Author:'), self.l_author)
         self.layout_controls.addRow(_('Email:'), self.l_email)
         self.layout_controls.addRow(_('Website:'), self.l_github)
-        
+
+# ******************************************************************************** #
+# *****          KloudlessAuthDialog
+# ******************************************************************************** #
+
+class KloudlessAuthDialog(QtWidgets.QDialog):
+    
+    def __init__(self, on_gettoken, parent=None, flags=QtCore.Qt.WindowFlags()):
+        super().__init__(parent, flags)
+        self.on_gettoken = on_gettoken
+        self.initUI(None, _('Bearer Token required'), 'users.png')
+        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
+
     def initUI(self, geometry=None, title=None, icon=None):
         
         self.addMainLayout()
@@ -4496,8 +4597,19 @@ class AboutDialog(QtWidgets.QDialog):
         self.btn_OK.setMaximumWidth(150)
         self.btn_OK.setDefault(True)
         self.btn_OK.clicked.connect(self.accept)
+
+        self.btn_cancel = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/multiply-1.png"), _('Cancel'), None)
+        self.btn_cancel.setMaximumWidth(150)
+        self.btn_cancel.clicked.connect(self.reject)
+
+        self.btn_gettoken = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/key-1.png"), _('Get token...'), None)
+        self.btn_gettoken.setMaximumWidth(150)
+        self.btn_gettoken.clicked.connect(self.on_gettoken)
+
         self.layout_bottom = QtWidgets.QHBoxLayout()
         self.layout_bottom.addWidget(self.btn_OK, alignment=QtCore.Qt.AlignHCenter)
+        self.layout_bottom.addWidget(self.btn_cancel, alignment=QtCore.Qt.AlignHCenter)
+        self.layout_bottom.addWidget(self.btn_gettoken, alignment=QtCore.Qt.AlignHCenter)
         
         self.layout_main = QtWidgets.QVBoxLayout()
         self.layout_main.addLayout(self.layout_controls)
@@ -4512,6 +4624,13 @@ class AboutDialog(QtWidgets.QDialog):
             self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}")) 
 
         self.adjustSize()
+
+    def addMainLayout(self):
+        self.layout_controls = QtWidgets.QFormLayout()
+        self.le_token = QtWidgets.QLineEdit('')
+        self.le_token.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.layout_controls.addRow(_('Your Bearer Token:'), self.le_token)
+            
 
 # ******************************************************************************** #
 # *****          ShareDialog

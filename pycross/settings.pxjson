@@ -3,12 +3,12 @@
 		"theme": "Fusion",
 		"toolbar_pos": 0,
 		"win_pos": [
-			422,
-			65
+			244,
+			83
 		],
 		"win_size": [
-			1348,
-			745
+			1550,
+			862
 		],
 		"toolbar_actions": [
 			"act_new",
@@ -18,6 +18,12 @@
 			"act_share",
 			"SEP",
 			"act_edit",
+			"act_addrow",
+			"act_delrow",
+			"act_addcol",
+			"act_delcol",
+			"SEP",
+			"act_reflect",
 			"SEP",
 			"act_gen",
 			"act_clear",
@@ -202,7 +208,7 @@
 			{
 				"name": "Reply",
 				"visible": true,
-				"width": 459
+				"width": 445
 			}
 		]
 	},
@@ -320,12 +326,12 @@
 			},
 			"dbbrowser": {
 				"active": true,
-				"exepath": "c:\\_PROG_\\SQLiteDatabaseBrowserPortable\\SQLiteDatabaseBrowserPortable.exe",
+				"exepath": "C:\\_PROG_\\SQLiteDatabaseBrowserPortable\\SQLiteDatabaseBrowserPortable.exe",
 				"command": "-t <table> <file>"
 			},
 			"text": {
 				"active": true,
-				"exepath": "c:\\_PROG_\\Notepad++\\notepad++.exe",
+				"exepath": "C:\\_PROG_\\Notepad++\\notepad++.exe",
 				"command": "<file>"
 			}
 		},

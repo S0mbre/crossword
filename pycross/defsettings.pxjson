@@ -292,7 +292,7 @@
 		"account": "",
 		"bearer_token": "",
 		"use_api_key": false,
-		"root_folder": "",
+		"root_folder": "pycross",
 		"user": "",
 		"use_own_browser": true
 	},

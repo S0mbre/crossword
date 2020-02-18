@@ -8,7 +8,7 @@ import urllib.parse
 from abc import ABC, abstractmethod
 
 from .globalvars import *
-from .utils import MsgBox, UserInput, clipboard_copy                 
+from .utils import MsgBox, UserInput, clipboard_copy, generate_uuid           
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -227,6 +227,8 @@ class Cloudstorage:
     ACCID = 352604900 # dropbox account ID (connected to the pycross app on Kloudless)
     ROOTNAME = 'pycrossall'
     #ROOTID = 'Fn6Cw1UD_PxkjIc8EN8u0uF4LYc2hdbgF8VEy6eS7eyg='
+    APP_ID = 'RXaPpmxluGS7vMYoWfve847PzGuvPVdbunZe2W_vJKQdvxzx'
+    OAUTH_URL = f"https://api.kloudless.com/v1/oauth/?client_id={APP_ID}&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=dropbox&state={{}}"
 
     def __init__(self, settings, auto_create_user=False, 
                  on_user_exist=None, on_update_users=None, on_error=None,
@@ -244,7 +246,11 @@ class Cloudstorage:
         self.init_settings(auto_create_user)        
 
     def init_settings(self, auto_create_user=True):        
-        self._accid = self.settings['sharing']['account'] or Cloudstorage.ACCID
+        # get valid Bearer Token or API key before anything else
+        if not self._authenticate():
+            self._error(_('Failed to authenticate!'), raise_error=True)
+        if not getattr(self, '_accid', None):
+            self._accid = self.settings['sharing']['account'] or Cloudstorage.ACCID
         self._baseurl = f"{Cloudstorage.APIURL}accounts/{self._accid}/storage/"
         self._rootid = ''
         rootname = self.settings['sharing']['root_folder'] \
@@ -261,6 +267,23 @@ class Cloudstorage:
             self._find_or_create_user(self.settings['sharing']['user'], True)
         else:
             self._update_users()
+
+    def _authenticate(self, force_api_key=False):
+        if self.settings['sharing']['use_api_key'] or force_api_key:
+            self._get_apikey()
+            if not self._apikey:
+                self._error(_('No valid API key provided!\nProvide a valid API key or change your "use_api_key" settings\nto use a different authentication method.'), raise_error=True)
+                return None
+            return 'APIKey'
+        else:
+            self._get_bearer()
+            if not self._bearer:
+                self._error(_('No valid Bearer token provided!\nProvide a valid Bearer token or change your "use_api_key" settings\nto use a different authentication method.'), raise_error=True)
+                return None
+            if not self._check_bearer():
+                self._error(_('Bearer token is invalid or expired!'))
+                return None
+            return 'Bearer'
 
     def _error(self, message, code=None, title=_('Error'), msgtype='error', raise_error=False):
         if self.show_errors:
@@ -327,29 +350,42 @@ class Cloudstorage:
 
     def _get_bearer(self):
         self._bearer = self.settings['sharing'].get('bearer_token', None)
-        if not self._bearer:            
-            res = [None, False]
-            if self.on_bearer_required:
-                self.on_bearer_required(res)
-                while res[0] is None: time.sleep(100)
-            else:
-                res = UserInput(label=_('Enter your Bearer token'), textmode='password')            
-            self._bearer = res[0] if res[1] else None
-            self.settings['sharing']['bearer_token'] = self._bearer or ''
+        if self._bearer: 
+            return
+        res = [None, False]
+        if self.on_bearer_required:
+            self.on_bearer_required(res)
+            while res[0] is None: time.sleep(100)
+        else:
+            # TODO: authorize via browser
+            res = UserInput(label=_('Enter your Bearer token'), textmode='password')            
+        self._bearer = res[0] if res[1] else None        
+        
+    def _check_bearer(self, bearer_token=None):
+        self._accid = None
+        if not bearer_token:
+            bearer_token = getattr(self, '_bearer', None)
+        if not bearer_token:
+            return False
+        res = self._request('https://api.kloudless.com/v1/oauth/token', 
+                            headers={'Content-Type': 'application/json', 'Authorization': f"Bearer {bearer_token}"})
+        if res and res.get('client_id', '') == Cloudstorage.APP_ID:
+            self._accid = res.get('account_id', None)
+            if self._accid:
+                self.settings['sharing']['account'] = str(self._accid)
+                self.settings['sharing']['bearer_token'] = bearer_token
+                return True
+            return False
+        return False
 
     def _make_headers(self, content_type='application/json', force_api_key=False):
-        auth = None
-        if self.settings['sharing']['use_api_key'] or force_api_key:
-            self._get_apikey()
-            if not self._apikey:
-                self._error(_('No valid API key provided!\nProvide a valid API key or change your "use_api_key" settings\nto use a different authentication method.'), raise_error=True)
-            auth = f"APIKey {self._apikey}"
+        auth = self._authenticate(force_api_key)
+        if auth == 'APIKey':
+            return {'Content-Type': content_type, 'Authorization': f"APIKey {self._apikey}"}
+        elif auth == 'Bearer':
+            return {'Content-Type': content_type, 'Authorization': f"Bearer {self._bearer}"}
         else:
-            self._get_bearer()
-            if not self._bearer:
-                self._error(_('No valid Bearer token provided!\nProvide a valid Bearer token or change your "use_api_key" settings\nto use a different authentication method.'), raise_error=True)
-            auth = f"Bearer {self._bearer}"
-        return {'Content-Type': content_type, 'Authorization': auth}
+            return None
 
     def _create_account(self):
         """
@@ -357,7 +393,7 @@ class Cloudstorage:
         Retrieved Account ID and Bearer Token will be written to settings.
         TODO: Implement when default Dropbox storage is not enough.
         """
-        return
+        pass
 
     def _get_accounts(self, enabled=None, admin=None, search=None):
         """
