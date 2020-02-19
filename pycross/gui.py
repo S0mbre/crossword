@@ -688,7 +688,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_config.setEnabled(not gen_running)
         self.act_update.setEnabled(not gen_running and not share_running)
         if hasattr(self, 'updater'):
-            self.act_update.setEnabled(self.act_update.isEnabled() and self.updater.git_installed)
+            self.act_update.setEnabled(self.act_update.isEnabled() and (self.updater.git_installed or self.updater.pkg_installed))
         #self.act_help.setEnabled(not gen_running)
         #self.act_about.setEnabled(not gen_running)
         self.twCw.setEnabled(b_cw and not gen_running)
@@ -2132,7 +2132,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # update status bar
         self.statusbar_l1.setText(_("v. {}").format(APP_VERSION))
-        if self.updater.git_installed:
+        if self.updater.git_installed or self.updater.pkg_installed:
             if CWSettings.settings['update']['auto_update']:
                 self.updater.on_norecent = None
                 self.on_act_update(False)
@@ -2708,7 +2708,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @see MainWindow::updater
     @QtCore.pyqtSlot(bool)        
     def on_act_update(self, checked):    
-        if not self.updater.git_installed: return
+        if not self.updater.git_installed and not self.updater.pkg_installed: return
         # run update
         if self.updater.update(True) == False: return
         # close self

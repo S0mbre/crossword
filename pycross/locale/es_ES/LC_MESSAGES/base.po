@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-19 16:28+1100\n"
+"POT-Creation-Date: 2020-02-20 10:06+1100\n"
 "PO-Revision-Date: 2020-01-18 23:54+1100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es_ES\n"
@@ -831,7 +831,7 @@ msgstr ""
 msgid "Word list is empty or invalid!"
 msgstr ""
 
-#: pycross/forms.py:723
+#: pycross/forms.py:723 pycross/utils/update.py:207
 msgid ""
 "{}\n"
 "at line {}, column {}"
@@ -2761,18 +2761,26 @@ msgstr ""
 msgid "Malformed URL or file path!"
 msgstr ""
 
-#: pycross/utils/update.py:13
+#: pycross/utils/update.py:12
 msgid ""
 "You do not appear to have a valid version of git installed!\n"
 "Please install git from https://git-scm.com/"
 msgstr ""
 
-#: pycross/utils/update.py:120
+#: pycross/utils/update.py:13
+msgid "Neither Git nor the python package is installed!"
+msgstr ""
+
+#: pycross/utils/update.py:125 pycross/utils/update.py:188
 msgid "Running {}..."
 msgstr ""
 
-#: pycross/utils/update.py:156
+#: pycross/utils/update.py:170
 msgid "No release branches in repository!"
+msgstr ""
+
+#: pycross/utils/update.py:198
+msgid "{} completed with error!"
 msgstr ""
 
 #: pycross/utils/utils.py:315

@@ -1,3 +1,0 @@
-@echo off
-docker image build -t pycross:0.2 .
-set /p=HIT ENTER...

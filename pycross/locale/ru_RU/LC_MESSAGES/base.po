@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-19 16:28+1100\n"
-"PO-Revision-Date: 2020-02-19 16:28+1100\n"
+"POT-Creation-Date: 2020-02-20 10:06+1100\n"
+"PO-Revision-Date: 2020-02-20 10:08+1100\n"
 "Last-Translator: \n"
 "Language: ru_RU\n"
 "Language-Team: ru_RU <LL@li.org>\n"
@@ -856,7 +856,7 @@ msgstr "Разделитель слов должен быть \"ПРОБЕЛ\", 
 msgid "Word list is empty or invalid!"
 msgstr "Список слов пустой или некорректный!"
 
-#: pycross/forms.py:723
+#: pycross/forms.py:723 pycross/utils/update.py:207
 msgid ""
 "{}\n"
 "at line {}, column {}"
@@ -2836,7 +2836,7 @@ msgstr "Социальная сеть '{}' недоступна!"
 msgid "Malformed URL or file path!"
 msgstr "Неверный формат URL или пути файла!"
 
-#: pycross/utils/update.py:13
+#: pycross/utils/update.py:12
 msgid ""
 "You do not appear to have a valid version of git installed!\n"
 "Please install git from https://git-scm.com/"
@@ -2844,13 +2844,22 @@ msgstr ""
 "Скорее всего, у Вас не установлен git!\n"
 "Пожалуйста, скачайте и установите последнюю версию git с https://git-scm.com/"
 
-#: pycross/utils/update.py:120
+#: pycross/utils/update.py:13
+msgid "Neither Git nor the python package is installed!"
+msgstr ""
+"Приложение установлено ни через Git, ни как пакет python! Обновление невозможно."
+
+#: pycross/utils/update.py:125 pycross/utils/update.py:188
 msgid "Running {}..."
 msgstr "Выполняю {}..."
 
-#: pycross/utils/update.py:156
+#: pycross/utils/update.py:170
 msgid "No release branches in repository!"
 msgstr "В репозитории отсутствуют релизные ветки!"
+
+#: pycross/utils/update.py:198
+msgid "{} completed with error!"
+msgstr "{} завершено с ошибкой!"
 
 #: pycross/utils/utils.py:315
 msgid "Yes"
