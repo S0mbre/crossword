@@ -1,4 +1,4 @@
-PROJECT_NAME           = "pyCross"
+PROJECT_NAME           = "pycrossword"
 PROJECT_NUMBER         = 0.2
 PROJECT_BRIEF          = "Pure-Python implementation of a crossword puzzle generator and editor"
 PROJECT_LOGO           = pycross\assets\icons\main.ico

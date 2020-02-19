@@ -1,6 +1,7 @@
 .git
 **/*.py[cod]
 build
+dist
 **/*.egg-info
 **/__pycache__
 pycross/assets/*.txt

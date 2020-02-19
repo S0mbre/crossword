@@ -19,6 +19,11 @@ class Updater:
                  on_get_recent=None, on_before_update=None, on_norecent=None,
                  print_to=sys.stdout):
 
+        thisfile = os.path.abspath(__file__)
+        if not thisfile.startswith(os.path.abspath(os.getcwd())):
+            cd = os.path.dirname(os.path.dirname(thisfile))
+            os.chdir(cd)
+
         self.app_name = app_name
         self.app_version = app_version
         self.git_repo = git_repo
@@ -35,7 +40,8 @@ class Updater:
                             'recent_version': {'version': '', 'hash': '', 'branch': '',
                                                'description': '', 'date': ''}}
         self.git_exe = git_exe or 'git'
-        self.git_installed = self._check_git()        
+        self.git_installed = self._check_git() and self._check_git_repo()
+        self.pkg_installed = self._check_pkg_installed()
         self._init_update_info()
 
     def _run_exe(self, args, external=False, capture_output=True, stdout=subprocess.PIPE, encoding=ENCODING, 
@@ -77,6 +83,17 @@ class Updater:
             return res.returncode == 0
         except:
             return False
+
+    def _check_git_repo(self):
+        try:
+            res = self._run_git('status')
+            return res.returncode == 0
+        except:
+            return False
+
+    def _check_pkg_installed(self):
+        # TODO: !!!
+        return False
 
     def _init_update_info(self):
         if self.update_file.exists():

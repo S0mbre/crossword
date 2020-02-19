@@ -4691,7 +4691,7 @@ class ShareDialog(BasicDialog):
         self.le_title = QtWidgets.QLineEdit()
         self.le_title.setText(_('My new crossword'))
         self.le_tags = QtWidgets.QLineEdit()
-        self.le_tags.setText(_('pycross,crossword,python'))
+        self.le_tags.setText(_('pycrossword,crossword,python'))
         self.le_source = QtWidgets.QLineEdit()
         self.le_source.setText(f"{APP_NAME} {APP_VERSION}")
         self.te_notes = QtWidgets.QPlainTextEdit()

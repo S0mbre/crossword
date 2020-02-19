@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loadcwdialog_1325',['LoadCwDialog',['../classpycross_1_1forms_1_1_load_cw_dialog.html',1,'pycross::forms']]]
+  ['jsonhiliter_1368',['JsonHiliter',['../classpycross_1_1utils_1_1utils_1_1_json_hiliter.html',1,'pycross::utils::utils']]]
 ];

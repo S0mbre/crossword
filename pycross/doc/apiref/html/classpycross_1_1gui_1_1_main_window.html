@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>pyCross: pycross.gui.MainWindow Class Reference</title>
+<title>pycrossword: pycross.gui.MainWindow Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="main.ico"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">pyCross
+   <div id="projectname">pycrossword
    &#160;<span id="projectnumber">0.2</span>
    </div>
    <div id="projectbrief">Pure-Python implementation of a crossword puzzle generator and editor</div>
@@ -232,6 +232,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a4911aeb59f419fbec5537cc7ad78c6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7a4911aeb59f419fbec5537cc7ad78c6">share_url</a> (self, url, headers={ 'Content-Type':'application/json'}, error_keymap=<a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a5ec90f447994f06cc1e51d5abb77b036">Share.ERRMAP</a>)</td></tr>
 <tr class="memdesc:a7a4911aeb59f419fbec5537cc7ad78c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a share link in inbuilt or external browser (for sharing)  <a href="classpycross_1_1gui_1_1_main_window.html#a7a4911aeb59f419fbec5537cc7ad78c6">More...</a><br /></td></tr>
 <tr class="separator:a7a4911aeb59f419fbec5537cc7ad78c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99dd44d46904dc0aae720602aa1cbbae"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a99dd44d46904dc0aae720602aa1cbbae">create_syneditor</a> (self, source=None, show=True)</td></tr>
+<tr class="memdesc:a99dd44d46904dc0aae720602aa1cbbae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and optionally shows the inbuilt python code editor.  <a href="classpycross_1_1gui_1_1_main_window.html#a99dd44d46904dc0aae720602aa1cbbae">More...</a><br /></td></tr>
+<tr class="separator:a99dd44d46904dc0aae720602aa1cbbae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51408dca2046f7466937b764e2980d1d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a51408dca2046f7466937b764e2980d1d">on_generate_start</a> (self)</td></tr>
 <tr class="memdesc:a51408dca2046f7466937b764e2980d1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the cw generation thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a49e723994a8ac7e863e54d98edd761ca" title="GenThread cw generation worker thread">MainWindow::gen_thread</a>) starts up.  <a href="classpycross_1_1gui_1_1_main_window.html#a51408dca2046f7466937b764e2980d1d">More...</a><br /></td></tr>
 <tr class="separator:a51408dca2046f7466937b764e2980d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -480,9 +483,6 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a0cb30c7274cf2da6334b3c8dda8995ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a0cb30c7274cf2da6334b3c8dda8995ab">threads</a></td></tr>
 <tr class="memdesc:a0cb30c7274cf2da6334b3c8dda8995ab"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>list</code> thread list to keep track of all spawned threads  <a href="classpycross_1_1gui_1_1_main_window.html#a0cb30c7274cf2da6334b3c8dda8995ab">More...</a><br /></td></tr>
 <tr class="separator:a0cb30c7274cf2da6334b3c8dda8995ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6544e721b4d03c234bba3b0a7b482233"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">updater</a></td></tr>
-<tr class="memdesc:a6544e721b4d03c234bba3b0a7b482233"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html">utils::update::Updater</a></code> instance (used to run app update checks and updates)  <a href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">More...</a><br /></td></tr>
-<tr class="separator:a6544e721b4d03c234bba3b0a7b482233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae961661e14882c046b54c0e432150bb6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ae961661e14882c046b54c0e432150bb6">dia_settings</a></td></tr>
 <tr class="memdesc:ae961661e14882c046b54c0e432150bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html">forms::SettingsDialog</a></code> instance (settings window)  <a href="classpycross_1_1gui_1_1_main_window.html#ae961661e14882c046b54c0e432150bb6">More...</a><br /></td></tr>
 <tr class="separator:ae961661e14882c046b54c0e432150bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -644,12 +644,18 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:afd40bcad49be521dbcd567dc1b586374"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#afd40bcad49be521dbcd567dc1b586374">menu_crossword</a></td></tr>
 <tr class="memdesc:afd40bcad49be521dbcd567dc1b586374"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1forms_1_1_crossword_menu.html">forms::CrosswordMenu</a></code> context menu for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a9f0b5b27d7245c067570277705dc5a47" title="forms::CwTable cw grid">MainWindow::twCw</a>  <a href="classpycross_1_1gui_1_1_main_window.html#afd40bcad49be521dbcd567dc1b586374">More...</a><br /></td></tr>
 <tr class="separator:afd40bcad49be521dbcd567dc1b586374"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6544e721b4d03c234bba3b0a7b482233"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">updater</a></td></tr>
+<tr class="memdesc:a6544e721b4d03c234bba3b0a7b482233"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html">utils::update::Updater</a></code> instance (used to run app update checks and updates)  <a href="classpycross_1_1gui_1_1_main_window.html#a6544e721b4d03c234bba3b0a7b482233">More...</a><br /></td></tr>
+<tr class="separator:a6544e721b4d03c234bba3b0a7b482233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad65095fb28fd45923aa74f83c0b016e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad65095fb28fd45923aa74f83c0b016e8">cluesmodel</a></td></tr>
 <tr class="memdesc:ad65095fb28fd45923aa74f83c0b016e8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtGui.QStandardItemModel</code> underlying data model for <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a883e14b7cb682b4a1a56938ce809cbaa" title="QtWidgets.QTreeView clues table">MainWindow::tvClues</a>  <a href="classpycross_1_1gui_1_1_main_window.html#ad65095fb28fd45923aa74f83c0b016e8">More...</a><br /></td></tr>
 <tr class="separator:ad65095fb28fd45923aa74f83c0b016e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f5374babae997a2dae6a7e1173868df"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a1f5374babae997a2dae6a7e1173868df">browser</a></td></tr>
 <tr class="memdesc:a1f5374babae997a2dae6a7e1173868df"><td class="mdescLeft">&#160;</td><td class="mdescRight">inbuilt web browser  <a href="classpycross_1_1gui_1_1_main_window.html#a1f5374babae997a2dae6a7e1173868df">More...</a><br /></td></tr>
 <tr class="separator:a1f5374babae997a2dae6a7e1173868df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad80d733d107af039f88eb17d2ddd99e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#ad80d733d107af039f88eb17d2ddd99e5">syneditor</a></td></tr>
+<tr class="memdesc:ad80d733d107af039f88eb17d2ddd99e5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html">utils::synteditor::SynEditorWidget</a></code> inbuilt python code editor  <a href="classpycross_1_1gui_1_1_main_window.html#ad80d733d107af039f88eb17d2ddd99e5">More...</a><br /></td></tr>
+<tr class="separator:ad80d733d107af039f88eb17d2ddd99e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa04898a39781b5979c72272678d63f9c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa04898a39781b5979c72272678d63f9c">dia_load</a></td></tr>
 <tr class="memdesc:aa04898a39781b5979c72272678d63f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1forms_1_1_load_cw_dialog.html" title="Crossword creation dialog providing options to populate the crossword grid.">forms::LoadCwDialog</a></code> CW load dialog  <a href="classpycross_1_1gui_1_1_main_window.html#aa04898a39781b5979c72272678d63f9c">More...</a><br /></td></tr>
 <tr class="separator:aa04898a39781b5979c72272678d63f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1440,6 +1446,50 @@ Private Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a99dd44d46904dc0aae720602aa1cbbae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99dd44d46904dc0aae720602aa1cbbae">&#9670;&nbsp;</a></span>create_syneditor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.gui.MainWindow.create_syneditor </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>source</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>show</em> = <code>True</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates and optionally shows the inbuilt python code editor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td><code>str</code> | <code>None</code> source code to set in editor (<code>None</code> clears the existing code) </td></tr>
+    <tr><td class="paramname">show</td><td><code>bool</code> whether to show the editor window </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacepycross_1_1utils_1_1synteditor.html">utils::synteditor</a> </dd></dl>
 
 </div>
 </div>
@@ -5881,6 +5931,22 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p><code>QtWidgets.QProgressBar</code> progress bar inside status bar (hidden by default) </p>
+
+</div>
+</div>
+<a id="ad80d733d107af039f88eb17d2ddd99e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad80d733d107af039f88eb17d2ddd99e5">&#9670;&nbsp;</a></span>syneditor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.gui.MainWindow.syneditor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html">utils::synteditor::SynEditorWidget</a></code> inbuilt python code editor </p>
 
 </div>
 </div>

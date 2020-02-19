@@ -15,9 +15,6 @@ echo ">>>>>> Switching to master..."
 git checkout master
 if %ERRORLEVEL% NEQ 0 goto exitbat
 
-echo ">>>>>> Rebuilding wheel distro..."
-python setup.py bdist_wheel > nul
-
 echo ">>>>>> Committing pending changes..."
 git add .
 if "%2" == "fixup" (

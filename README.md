@@ -1,12 +1,16 @@
-# pyCross - the Python Crossword Puzzle Generator and Editor
-*pyCross* is a pure-Python implementation of a crossword puzzle generator and editor.
+# pycrossword - the Python Crossword Puzzle Generator and Editor
+*pycrossword* is a pure-Python implementation of a crossword puzzle generator and editor.
 
+## Download
+*pycrossword* source code and documentation are hosted on [Github](https://github.com/S0mbre/crossword)
+
+The python package is available from [PyPi](https://pypi.org/project/pycrossword/)
 
 ## Features:
 * full-fledged [Qt 5](https://doc.qt.io/qt-5/index.html) based GUI
 * cross-platform implementation
 * multilingual interface (currently only English and Russian, more to come)
-* install using pip (see [dist/](https://github.com/S0mbre/crossword/tree/master/dist)) or clone from Github
+* install from Github or PyPi
 * open, save, restore, export, and import crossword puzzles
 * powerful word sources: SQLite database / CSV (plaintext) / raw python list
 * crossword generation (from word sources)
@@ -27,21 +31,23 @@
 ### Requirements
 You must have the following applications / packages installed in your system:
 
-* Python 3.6+ (the app was written and tested with Python 3.7.4 and 3.8.0)
+* Python 3.7+ (the app was written and tested with Python 3.7.4 and 3.8.0)
 * Python packages: 
 	- PyQt5>=5.14
 	- PyQtWebEngine>=5.14
+	- QScintilla>=2.11
 	- requests
 	- numpy
 	- pandas
 	- altair
 * Git (should be pre-installed on most modern Linux and Mac systems, alternatively install from the [git website](https://git-scm.com/downloads))
 
-Git is not actually required if you opt for the pip installation variant as described below.
+The latter two (packages and Git) are not actually required if you opt for the PyPi (pip) installation variant as described below.
 
 ### Installation options
+Choose one of the two installation options.
 
-*1. Clone repo*
+*1. Clone repo* - copy entire source code with version control history
 
   To get the latest (non-stable) version, run:
   ```bash
@@ -58,7 +64,7 @@ Git is not actually required if you opt for the pip installation variant as desc
   
   This will checkout to the branch pointed at by the *latest* tag which will always be the latest stable release.
   
-*2. Install the required packages*
+#### *Install the required packages*
 
   I recommend (as many do) installing packages into python's virtual environment using *virtualenv* or the inbuilt *venv*:
   
@@ -77,7 +83,7 @@ Git is not actually required if you opt for the pip installation variant as desc
   cd myprojects
   virtualenv pycross
   cd pycross
-  Scripts\activate.bat
+  scripts\activate.bat
   ```
   
   This step is, of course, optional. You can skip it if you don't want to use virtual environments for some reason or other. 
@@ -85,15 +91,22 @@ Git is not actually required if you opt for the pip installation variant as desc
   Then just run:
   ```bash
   cd crossword
-  pip install -r requirements.txt
+  python -m pip install -r requirements.txt
   ```
   
   If you're using a virtual environment, you can deactivate it after closing the app with `deactivate`.
+  
+*2. Install from PyPi*
+
+  Create your virtual environment as described above (which is again optional). Then use *pip* to download and install *pycrossword* (together with the required additional packages):
+  ```
+  pip install --upgrade pycrossword
+  ```
 
 ## Usage
-Run `pycross.sh` on Linux/Mac (remember to do `chmod +x pycross.sh` first) or `pycross.bat` on Windows to launch the pyCross UI app.
+Run `pycross.sh` on Linux/Mac (remember to do `chmod +x pycross.sh` first) or `pycross.bat` on Windows to launch the pycrossword UI app.
 
-Alternativaly, you can register the pycross file associations at initial run (go to *Settings* > *Common* > *Register file associations*). After that, you can launch the app by double-clicking crossword files (like \*.xpf or \*.ipuz) or settings files (\*.pxjson)
+Alternativaly, you can register the pycrossword file associations at initial run (go to *Settings* > *Common* > *Register file associations*). After that, you can launch the app by double-clicking crossword files (like \*.xpf or \*.ipuz) or settings files (\*.pxjson)
 
 See docs for detailed usage guide.
 

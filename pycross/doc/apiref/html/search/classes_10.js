@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yandexdict_1353',['YandexDict',['../classpycross_1_1utils_1_1onlineservices_1_1_yandex_dict.html',1,'pycross::utils::onlineservices']]]
+  ['updater_1391',['Updater',['../classpycross_1_1utils_1_1update_1_1_updater.html',1,'pycross::utils::update']]]
 ];

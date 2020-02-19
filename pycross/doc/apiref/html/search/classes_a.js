@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['qthreadstump_1333',['QThreadStump',['../classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html',1,'pycross::utils::utils']]]
+  ['onlinedictionary_1375',['OnlineDictionary',['../classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html',1,'pycross::utils::onlineservices']]]
 ];

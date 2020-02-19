@@ -17,7 +17,7 @@ DEBUGGING = True
 APP_VERSION = '0.2'
 
 ## app name
-APP_NAME = 'pyCross'
+APP_NAME = 'pycrossword'
 
 # git repo
 GIT_REPO = 'https://github.com/S0mbre/crossword.git'

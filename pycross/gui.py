@@ -147,7 +147,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.UI_create_context_menus()
                
         self.setMinimumSize(500, 300)
-        # the default title = 'pyCross'
+        # the default title = 'pycrossword'
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/main.png"))
         # apply settings stored in CWSettings.settings
@@ -1251,6 +1251,8 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(str, str)
     def on_share_upload(self, filepth, url):
         self.statusbar.showMessage(_("Uploaded '{}' to '{}'").format(filepth, url))
+        # add file to garbage for future collection
+        self.garbage.append(filepth)
 
     ## Slot fires when the sharer has copied the destination URL of the shared file to the clipboard.
     # @param url `str` the destination URL where the file is uploaded
@@ -1475,6 +1477,19 @@ class MainWindow(QtWidgets.QMainWindow):
             self.browser.navigate(url)
         except:
             traceback.print_exc(limit=None) 
+
+    ## @brief Creates and optionally shows the inbuilt python code editor.
+    # @param source `str` | `None` source code to set in editor (`None` clears the existing code)
+    # @param show `bool` whether to show the editor window
+    # @see utils::synteditor
+    def create_syneditor(self, source=None, show=True):
+        from utils.synteditor import SynEditorWidget
+        if not hasattr(self, 'syneditor'):
+            ## `utils::synteditor::SynEditorWidget` inbuilt python code editor
+            self.syneditor = SynEditorWidget(source=source)
+        else:
+            self.syneditor.editor.setText(source or '')
+        if show: self.syneditor.show()
 
     ## Slot fires when the cw generation thread (MainWindow::gen_thread) starts up.
     # Performs preliminary UI element setups.
@@ -2702,11 +2717,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Slot for MainWindow::act_help: opens up the Help documentation.
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
-        #MsgBox(_('To be implemented in next release ))'), self, _('Show help docs')) 
-        from utils.synteditor import SynEditorWidget       
-        editor = SynEditorWidget(self.parent())        
-        editor.show()
-        editor.editor.setText(open(sys.argv[0]).read())
+        MsgBox(_('To be implemented in next release ))'), self, _('Show help docs')) 
 
     ## @brief Slot for MainWindow::act_about: shows the About dialog.
     @QtCore.pyqtSlot(bool)        
@@ -2734,6 +2745,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         def on_chart_save(filename):
             url = os.path.abspath(filename)
+            self.garbage.append(url)
             if not hasattr(self, 'browser'):
                 ## inbuilt web browser
                 self.browser = Browser()

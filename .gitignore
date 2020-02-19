@@ -1,6 +1,7 @@
 *.py[cod]
 *$py.class
 build/
+dist/
 *.egg-info/
 __pycache__/
 */__pycache__/
@@ -11,5 +12,6 @@ pycross/settings.pxjson
 */autosaved.xpf
 /mynotes.txt
 /*.xpf
+/*.bat
 */.vscode/
 */nohup.out
