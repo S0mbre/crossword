@@ -14,7 +14,7 @@ def make_abspath(filename, root=''):
 DEBUGGING = True
 
 ## current app version
-APP_VERSION = '0.2'
+APP_VERSION = '0.2.1'
 
 ## app name
 APP_NAME = 'pycrossword'

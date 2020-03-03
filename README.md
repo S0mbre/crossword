@@ -19,11 +19,14 @@ The python package is available from [PyPi](https://pypi.org/project/pycrossword
 * flexible GUI settings: colors, grid settings, clues table look & feel, etc. (can load and save settings)
 * auto app updating / new release checking from Github
 * lookup word definition in an online dictionary and Google
-* suggest individual words from word sources
+* manual editing of individual words and suggestions from word sources
 * comfortable navigation in GUI (hotkeys, keystrokes, mouse)
 * context menus
-* printing to PDF or printer with customizable page / element layout
+* hi-res printing to PDF or printer with customizable page / element layout
 * export crossword to image (jpg, png, tiff) / PDF / SVG with customizable resolution etc.
+* store crosswords in cloud and share them social networks
+* view user-friendly stats on current crossword in chart
+* inbuilt browser
 * comprehensive Doxygen-generated API reference
 
 ## Installation
@@ -47,7 +50,7 @@ The latter two (packages and Git) are not actually required if you opt for the P
 ### Installation options
 Choose one of the two installation options.
 
-*1. Clone repo* - copy entire source code with version control history
+#### *1. Clone repo* - copy entire source code with version control history
 
   To get the latest (non-stable) version, run:
   ```bash
@@ -64,7 +67,7 @@ Choose one of the two installation options.
   
   This will checkout to the branch pointed at by the *latest* tag which will always be the latest stable release.
   
-#### *Install the required packages*
+#### Install the required packages
 
   I recommend (as many do) installing packages into python's virtual environment using *virtualenv* or the inbuilt *venv*:
   
@@ -96,7 +99,7 @@ Choose one of the two installation options.
   
   If you're using a virtual environment, you can deactivate it after closing the app with `deactivate`.
   
-*2. Install from PyPi*
+#### *2. Install from PyPi*
 
   Create your virtual environment as described above (which is again optional). Then use *pip* to download and install *pycrossword* (together with the required additional packages):
   ```

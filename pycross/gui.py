@@ -298,6 +298,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_help.setToolTip(_('Show help'))
         self.act_help.setShortcuts(QtGui.QKeySequence.HelpContents)
         self.act_help.triggered.connect(self.on_act_help)
+        ## `QtWidgets.QAction` show API reference action
+        self.act_apiref = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/api.png"), _('API reference'))
+        self.act_apiref.setToolTip(_('Show API reference'))
+        self.act_apiref.triggered.connect(self.on_act_apiref)
+        ## `QtWidgets.QAction` contact action
+        self.act_contact = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/megaphone.png"), _('Contact author'))
+        self.act_contact.setToolTip(_('Write to author to leave feedback or report bug'))
+        self.act_contact.triggered.connect(self.on_act_contact)
         ## `QtWidgets.QAction` show About action
         self.act_about = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/main.png"), _('About'))
         self.act_about.setToolTip(_('Show About'))
@@ -411,9 +419,11 @@ class MainWindow(QtWidgets.QMainWindow):
         ## `QtWidgets.QMenu` 'Help' menu
         self.menu_main_help = self.menu_main.addMenu(_('&Help'))
         self.menu_main_help.addAction(self.act_help)
+        self.menu_main_help.addAction(self.act_apiref)
         self.menu_main_help.addSeparator()
         self.menu_main_help.addAction(self.act_update)
         self.menu_main_help.addSeparator()
+        self.menu_main_help.addAction(self.act_contact)
         self.menu_main_help.addAction(self.act_about)
     
     ## Creates the main UI elements: the crossword grid and clues table.
@@ -1299,7 +1309,7 @@ class MainWindow(QtWidgets.QMainWindow):
             req = Cloudstorage.OAUTH_URL.format(secret)
             MsgBox(_('Authorize your app on the webpage and paste the access token here.'))
             webbrowser.open(req, new=2)
-            # TODO: hook on browser and verify secret key in resulting page content
+            ## TODO: hook on browser and verify secret key in resulting page content
         
         dia_gettoken = KloudlessAuthDialog(on_gettoken, self)
         result = dia_gettoken.exec()
@@ -1662,7 +1672,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.current_word = None
         self.reformat_cells()  
        
-        # todo: add settings for size        
+        ## TODO: add settings for size     
         scale_factor = export_settings['img_resolution'] / 25.4 * export_settings['mm_per_cell']
         cw_size = QtCore.QSize(self.twCw.columnCount() * scale_factor, self.twCw.rowCount() * scale_factor)
         
@@ -1936,7 +1946,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 txt = f"{word.clue}   "
                 text_rect2 = painter.drawText(left_offset, top_offset, 
-                    page_rect.width() - left_offset - 500, 
+                    page_rect.width() - left_offset - 700, 
                     page_rect.height() - top_offset - margins.bottom(), 
                     (QtCore.Qt.AlignLeft | QtCore.Qt.TextWordWrap), txt)
                 left_offset += text_rect2.width()
@@ -2718,6 +2728,23 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
         MsgBox(_('To be implemented in next release ))'), self, _('Show help docs')) 
+
+    ## @brief Slot for MainWindow::act_apiref: shows API reference in browser.
+    @QtCore.pyqtSlot(bool)        
+    def on_act_apiref(self, checked):
+        launcher = make_abspath(f"doc/apiref/opendoc.{'bat' if getosname() == 'Windows' else 'sh'}")
+        run_exe(launcher, True, False, shell=True)
+
+    ## @brief Slot for MainWindow::act_contact: shows form to contact author, i.e. me :)).
+    @QtCore.pyqtSlot(bool)        
+    def on_act_contact(self, checked):
+        ## TODO: use [Github REST API](https://developer.github.com/v3/issues/#create-an-issue)
+        ## to report bugs (create issues)
+        reply = MsgBox(_('Would you like to report a bug (YES) or just leave feedback (NO)?'), self, _('Contact'), 'ask')
+        if reply == 'yes':
+            QtGui.QDesktopServices.openUrl(QtCore.QUrl('https://github.com/S0mbre/crossword/issues/new'))
+        elif reply == 'no':
+            QtGui.QDesktopServices.openUrl(QtCore.QUrl(f"mailto:{APP_EMAIL}?subject={APP_NAME}%20feedback"))
 
     ## @brief Slot for MainWindow::act_about: shows the About dialog.
     @QtCore.pyqtSlot(bool)        

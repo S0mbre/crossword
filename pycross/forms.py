@@ -4560,7 +4560,8 @@ class AboutDialog(QtWidgets.QDialog):
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(parent, flags)
         self.initUI(None, _('About'), 'main.png')
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
+        self.layout().setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
+        #self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
         
     def initUI(self, geometry=None, title=None, icon=None):
         
@@ -4578,6 +4579,7 @@ class AboutDialog(QtWidgets.QDialog):
         self.layout_main.addLayout(self.layout_bottom)
         
         self.setLayout(self.layout_main)
+
         if geometry:
             self.setGeometry(*geometry) 
         if title:
@@ -4606,12 +4608,26 @@ class AboutDialog(QtWidgets.QDialog):
         self.l_github.setTextFormat(QtCore.Qt.RichText)
         self.l_github.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
         self.l_github.setOpenExternalLinks(True)
+        self.te_thanks = QtWidgets.QTextBrowser()
+        #self.te_thanks.setReadOnly(True)
+        self.te_thanks.setFixedHeight(50)
+        self.te_thanks.setOpenLinks(False)
+        html = '<html><body><b>Icons</b> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>'
+        html += ' made by: <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>, '
+        html += '<a href="https://www.flaticon.com/authors/srip" title="srip">srip</a>, '
+        html += '<a href="https://www.flaticon.com/authors/google" title="Google">Google</a>, '
+        html += '<a href="https://www.flaticon.com/authors/roundicons" title="Roundicons">Roundicons</a>, '
+        html += '<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a>.</body></html>'
+        self.te_thanks.setHtml(html)
+        self.te_thanks.anchorClicked.connect(QtCore.pyqtSlot(QtCore.QUrl)(lambda url: QtGui.QDesktopServices.openUrl(url)))
+        #self.te_thanks.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction | QtCore.Qt.LinksAccessibleByMouse)
 
         self.layout_controls.addRow(_('App name:'), self.l_appname)
         self.layout_controls.addRow(_('Version:'), self.l_appversion)
         self.layout_controls.addRow(_('Author:'), self.l_author)
         self.layout_controls.addRow(_('Email:'), self.l_email)
         self.layout_controls.addRow(_('Website:'), self.l_github)
+        self.layout_controls.addRow(_('Acknowledgements:'), self.te_thanks)
 
 # ******************************************************************************** #
 # *****          KloudlessAuthDialog

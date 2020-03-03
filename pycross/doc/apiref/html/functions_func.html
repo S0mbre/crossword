@@ -131,7 +131,6 @@ $(function() {
 , <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_yandex_dict.html#a9acdeedbdfbfb8591758df1737ccf64e">pycross.utils.onlineservices.YandexDict</a>
 , <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a6a8c2a9761c6f84e87b24451d86c96a4">pycross.utils.synteditor.SynEditor</a>
 , <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a37fbf3ac4f4143ac8235c446657769f3">pycross.utils.synteditor.SynEditorWidget</a>
-, <a class="el" href="classpycross_1_1utils_1_1undo_1_1_history.html#a2ec3f3f9f4900b94c554422ef64aa915">pycross.utils.undo.History</a>
 , <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a6cff64f366ac6f6ef3ba10d51662e36d">pycross.utils.update.Updater</a>
 , <a class="el" href="classpycross_1_1utils_1_1utils_1_1_json_hiliter.html#aaf296c9bdcb07f999d9d696bf0344aea">pycross.utils.utils.JsonHiliter</a>
 , <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a31e0b662058e938b25d938d18c6b2955">pycross.utils.utils.QThreadStump</a>
@@ -167,9 +166,6 @@ $(function() {
 </li>
 <li>_check_bearer()
 : <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a52436e05acb5dd11c10c0f9f1bde4bb4">pycross.utils.onlineservices.Cloudstorage</a>
-</li>
-<li>_check_git()
-: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ac670e039c21b58228e8154227ee4af3b">pycross.utils.update.Updater</a>
 </li>
 <li>_clear_actions()
 : <a class="el" href="classpycross_1_1forms_1_1_browse_edit.html#a8654ee89bde05963e34a47bf60accc90">pycross.forms.BrowseEdit</a>
@@ -243,11 +239,23 @@ $(function() {
 <li>_get_quota()
 : <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0e5cffc156e0fa70076a83a43559ffc7">pycross.utils.onlineservices.Cloudstorage</a>
 </li>
-<li>_get_recent_version()
-: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a1a6329d81f14c3931babfc131648bdf7">pycross.utils.update.Updater</a>
+<li>_git_check_installed()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a9d3ded8753bdfa05bb302fe30268f9a4">pycross.utils.update.Updater</a>
 </li>
-<li>_get_remote_branches()
-: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a4d9640d0b71109e42ed74dda0946bfc3">pycross.utils.update.Updater</a>
+<li>_git_check_repo()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a1114fd7997eaf06ecb9cea5bd331b5b0">pycross.utils.update.Updater</a>
+</li>
+<li>_git_get_recent_version()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ac586cc242f11c18573cb73e7cf73441e">pycross.utils.update.Updater</a>
+</li>
+<li>_git_get_remote_branches()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ab4892c83bb29cd5db349157260766360">pycross.utils.update.Updater</a>
+</li>
+<li>_git_run()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ac5d427be6129dd29b74d3013ba8c0ae7">pycross.utils.update.Updater</a>
+</li>
+<li>_git_update_from_branch()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#af88f29aca35f41ca046a1bd231385529">pycross.utils.update.Updater</a>
 </li>
 <li>_init_update_info()
 : <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a29952587e0a52c104fb719d8724a2110">pycross.utils.update.Updater</a>
@@ -286,14 +294,26 @@ $(function() {
 <li>_parse_xpf()
 : <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#adeb06fa5ae655071d2bd38399980ad46">pycross.crossword.Wordgrid</a>
 </li>
+<li>_pip_check_pkg_installed()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ad45d72866d32ac6bdaac37d8e1075e5f">pycross.utils.update.Updater</a>
+</li>
+<li>_pip_get_recent_version()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a0524aea02e8d33027554898d9122a50c">pycross.utils.update.Updater</a>
+</li>
+<li>_pip_list_packages()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a24aae2a7edfc9c27cee4eef7092d90bb">pycross.utils.update.Updater</a>
+</li>
+<li>_pip_run()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ad4e546771d8be02ec4d9702a9f3b7496">pycross.utils.update.Updater</a>
+</li>
+<li>_pip_update()
+: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a7ce47a15613edd0cc283f241d644fcb4">pycross.utils.update.Updater</a>
+</li>
 <li>_request()
 : <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0e71cb48afc0a593da3579d6f55fee51">pycross.utils.onlineservices.Cloudstorage</a>
 </li>
 <li>_run_exe()
 : <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a58938244d49f5200dfbe89a0b8f8b0b4">pycross.utils.update.Updater</a>
-</li>
-<li>_run_git()
-: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a12022f98066e1abb56b4dfb4e2bdfdb2">pycross.utils.update.Updater</a>
 </li>
 <li>_save_cw()
 : <a class="el" href="classpycross_1_1gui_1_1_main_window.html#af97f1eb932b47905f4372410351c169b">pycross.gui.MainWindow</a>
@@ -318,9 +338,6 @@ $(function() {
 </li>
 <li>_update_check_required()
 : <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aee692088e672f5503af79178afe78dfc">pycross.utils.update.Updater</a>
-</li>
-<li>_update_from_branch()
-: <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a3c4f66f238be973fe8002ee1d2a2954f">pycross.utils.update.Updater</a>
 </li>
 <li>_update_users()
 : <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a01ce9c2474d9f0d693707424e541b9d8">pycross.utils.onlineservices.Cloudstorage</a>

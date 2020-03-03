@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['jsonhiliter_1368',['JsonHiliter',['../classpycross_1_1utils_1_1utils_1_1_json_hiliter.html',1,'pycross::utils::utils']]]
+  ['kloudlessauthdialog_1375',['KloudlessAuthDialog',['../classpycross_1_1forms_1_1_kloudless_auth_dialog.html',1,'pycross::forms']]]
 ];

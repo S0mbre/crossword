@@ -36,7 +36,7 @@ with open("requirements.txt", "r") as reqs:
     pip_requirements = reqs.readlines()
     
 includes = ['assets/dic/*', 'assets/icons/*', 
-            'utils/*', '*.bat', '*.json', '*.sh'] + \
+            'utils/*', '*.bat', '*.sh'] + \
            [f"../{d}" for d in get_all_files('pycross/doc')] + \
            [f"../{d}" for d in get_all_files('pycross/locale')] + \
            [f"../{d}" for d in get_all_files('pycross/presets')]

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['onlinedictionary_1375',['OnlineDictionary',['../classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html',1,'pycross::utils::onlineservices']]]
+  ['passworddialog_1382',['PasswordDialog',['../classpycross_1_1forms_1_1_password_dialog.html',1,'pycross::forms']]],
+  ['printpreviewdialog_1383',['PrintPreviewDialog',['../classpycross_1_1forms_1_1_print_preview_dialog.html',1,'pycross::forms']]]
 ];
