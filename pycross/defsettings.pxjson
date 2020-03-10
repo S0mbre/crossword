@@ -313,7 +313,12 @@
 				"command": "<file>"
 			}
 		},
-		"custom": []
+		"custom": {
+			"general": [],
+			"gui": [],
+			"generation": [],
+			"sharing": []
+		}
 	},
 	"common": {
 		"temp_dir": "",

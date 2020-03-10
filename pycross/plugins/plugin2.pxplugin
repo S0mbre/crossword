@@ -1,0 +1,8 @@
+[Core]
+Name = Plugin 2
+Module = plugin2
+[Documentation]
+Description = This is plugin 2!!!
+Author = Iskander
+Version = 0.2
+Website =

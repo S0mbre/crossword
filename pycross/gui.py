@@ -13,6 +13,7 @@ from utils.utils import *
 from utils.update import Updater
 from utils.onlineservices import Cloudstorage, Share
 from utils.graphs import make_chart, data_from_dict
+from utils.api import create_plugin_manager
 from guisettings import CWSettings
 from dbapi import Sqlitedb
 from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu, 
@@ -84,7 +85,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__()
         ## `crossword::Crossword` internal crossword generator object
         self.cw = None   
-        ## `str` currently opened cw file                      
+        ## `str` currently opened cw file
         self.cw_file = ''             
         ## `bool` flag showing that current cw has been changed since last save         
         self.cw_modified = True                
@@ -119,6 +120,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setAcceptDrops(True) 
         ## `forms::SettingsDialog` instance (settings window)
         self.dia_settings = SettingsDialog(self)
+        ## `utils::api::PxPluginManager` plugin manager instance to operate user plugins
+        self.plugin_mgr = create_plugin_manager(self)
         # execute actions for command-line args, if present
         self.execute_cli_args(**kwargs)
 
@@ -127,6 +130,11 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param end `str` line ending
     def _log(self, what, end='\n'):
         print(what, end=end)
+
+    ## Util method to get the global settings dictionary.
+    # @returns `guisettings.CWSettings` global settings dictionary 
+    def options(self):
+        return CWSettings.settings
         
     ## Creates all window elements: layouts, panels, toolbars, widgets.
     # @param autoloadcw `bool` whether to load crossword automatically from autosave file (utils::globalvars::SAVEDCW_FILE)
@@ -580,6 +588,9 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ## Applies settings found in CWSettings::settings and updates the settings file.
     def apply_config(self, save_settings=True, autoloadcw=True):
+        # configure plugins
+        self.configure_plugins()
+        
         # autoload saved cw (see CWSettings::settings['common']['autosave_cw'])
         if autoloadcw: self.autoload_cw()
         
@@ -641,6 +652,15 @@ class MainWindow(QtWidgets.QMainWindow):
         # save settings file
         if save_settings:
             CWSettings.save_to_file(SETTINGS_FILE)
+
+    ## Activates or deactivates loaded plugins as given by global settings.
+    def configure_plugins(self):
+        for cat_name in CWSettings.settings['plugins']['custom']:
+            for plugin in CWSettings.settings['plugins']['custom'][cat_name]:                
+                if plugin['active']:
+                    self.plugin_mgr.activatePluginByName(plugin['name'], cat_name)
+                else:
+                    self.plugin_mgr.deactivatePluginByName(plugin['name'], cat_name)
         
     ## Changes the scale of the crossword grid.
     # @param scale_factor `int` the scale factor in percent values
@@ -2728,7 +2748,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)        
     def on_act_help(self, checked):
         MsgBox(_('To be implemented in next release ))'), self, _('Show help docs')) 
-
+        
     ## @brief Slot for MainWindow::act_apiref: shows API reference in browser.
     @QtCore.pyqtSlot(bool)        
     def on_act_apiref(self, checked):

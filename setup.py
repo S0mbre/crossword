@@ -36,7 +36,7 @@ with open("requirements.txt", "r") as reqs:
     pip_requirements = reqs.readlines()
     
 includes = ['assets/dic/*', 'assets/icons/*', 
-            'utils/*', '*.bat', '*.sh'] + \
+            'utils/*', 'plugins/*'. '*.bat', '*.sh'] + \
            [f"../{d}" for d in get_all_files('pycross/doc')] + \
            [f"../{d}" for d in get_all_files('pycross/locale')] + \
            [f"../{d}" for d in get_all_files('pycross/presets')]
@@ -51,11 +51,8 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url=GIT_REPO,
-    packages=['pycross', 'pycross.utils'],
+    packages=['pycross', 'pycross.utils', 'pycross.plugins'],
     package_data={'pycross': includes},
-    #package_data={'pycross': ['assets/*', 'assets/dic/*', 'assets/icons/*', 
-    #                          'utils/*', '*.bat', '*.json', '*.sh', '../.gitignore'] + \
-    #                          [f"../{d}" for d in get_all_files('.git')]},
     install_requires=pip_requirements,
     classifiers=[
         "Programming Language :: Python :: 3",

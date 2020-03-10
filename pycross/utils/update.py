@@ -41,7 +41,7 @@ class Updater:
                                                'description': '', 'date': ''}}
         self.git_exe = git_exe or 'git'
         self.git_installed = self._git_check_installed() and self._git_check_repo()
-        self.pkg_installed = self._pip_check_pkg_installed()
+        self.pkg_installed = self._pip_check_pkg_installed() if not self.git_installed else False
         self._init_update_info()
 
     def update(self, force=False):

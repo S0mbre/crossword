@@ -37,6 +37,7 @@ UPDATE_FILE = make_abspath('update.json')
 SAVEDCW_FILE = make_abspath('autosaved.xpf')
 DICFOLDER = make_abspath('assets/dic')
 ICONFOLDER = make_abspath('assets/icons')
+PLUGINS_FOLDER = make_abspath('plugins')
 LANG = {'en': 'English', 'ru': 'Russian', 'fr': 'French', 'es': 'Spanish', 'de': 'German', 'it': 'Italian'}
 POS = [('N', 'noun'), ('V', 'verb'), ('ADV', 'adverb'), ('ADJ', 'adjective'), ('P', 'participle'), 
        ('PRON', 'pronoun'), ('I', 'interjection'), ('C', 'conjuction'), ('PREP', 'preposition'), 
@@ -48,6 +49,7 @@ SQL_TABLES = {'words': {'table': 'twords', 'fwords': 'word', 'fpos': 'idpos'},
 HTTP_PROXIES = None # or dict, e.g. {'http': 'http://ip:port', 'https': 'http://ip:port'}
 HTTP_TIMEOUT = 5                 # ожидание соединения и ответа (сек.) None = вечно
 MAX_RESULTS = 500
+PLUGIN_EXTENSION = 'pxplugin'
 
 APP_LANGUAGES = [('English (US)', '', '', 'united-states-of-america.png', "The application must be restarted to apply new language settings. Restart now?"), 
                  ('Russian', 'ru', 'Русский', 'russia.png', "Приложение должно быть перезапущено для применения новых настроек языка. Перезапустить сейчас?"), 
