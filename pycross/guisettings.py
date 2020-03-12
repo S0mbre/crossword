@@ -140,7 +140,7 @@ class CWSettings:
                     'dbbrowser': {'active': False, 'exepath': '', 'command': '-t <table> <file>'},
                     'text': {'active': False, 'exepath': '', 'command': '<file>'}
                 },
-            'custom': {'general': [], 'gui': [], 'generation': [], 'sharing': []}
+            'custom': {'general': []}
         },
     'common':
         {

@@ -2516,7 +2516,13 @@ class SettingsDialog(BasicDialog):
             'command': self.model_plugins_3party.item(2).child(2, 1).text()}
 
         # plugins > custom
-        settings['plugins']['custom'] = []
+        settings['plugins']['custom'] = {}
+        settings['plugins']['custom']['general'] = []
+        for plugin in self.mainwindow.plugin_mgr.getPluginsOfCategory('general'):
+            pl = {'name': plugin.name, 'active': plugin.is_activated, 'author': plugin.author, 
+                  'copyright': plugin.copyright, 'description': plugin.description,
+                  'path': plugin.path, 'version': plugin.version, 'website': plugin.website}
+            settings['plugins']['custom']['general'].append(pl)
 
         # printing
         settings['printing']['margins'] = [self.spin_margin_left.value(), self.spin_margin_right.value(),

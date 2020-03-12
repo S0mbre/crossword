@@ -7,10 +7,8 @@
 # @see [example 1](http://yapsy.sourceforge.net/FilteredPluginManager.html), 
 # [example 2](https://stackoverflow.com/questions/5333128/yapsy-minimal-example)
 from yapsy.IPlugin import IPlugin
-from yapsy.PluginManager import PluginManager, PluginManagerSingleton
-from yapsy.AutoInstallPluginManager import AutoInstallPluginManager
-from types import MethodType
-from PyQt5 import QtGui, QtCore, QtWidgets
+from yapsy.PluginManager import PluginManager
+from PyQt5 import QtWidgets
 from .globalvars import *
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -23,9 +21,7 @@ class PxAPI:
     ## Constructor takes a single parameter - the instance of pycross::gui::MainWindow (main window).
     def __init__(self, mainwindow):
         ## `pycross::gui::MainWindow` internal pointer to app main window instance
-        self.__mainwindow = mainwindow
-        ## `crossword::Crossword` direct pointer to the crossword object
-        self.cw = self.__mainwindow.cw        
+        self.__mainwindow = mainwindow        
         # iterate and add 'safe' methods to this wrapper class
         for objname in dir(self.__mainwindow):
             obj = getattr(self.__mainwindow, objname)
@@ -66,14 +62,17 @@ class PxAPI:
         op = value
         if apply: self.__mainwindow.apply_config(save_settings, False)
 
-    ## Gets a global option value.
-    # @param option `str` an option search string delimited by 'option_sep', e.g. 'plugins/thirdparty/git/active'
+    ## Gets a global option value or the whole global settings dictionary.
+    # @param option `str`|`None` an option search string delimited by 'option_sep', 
+    # e.g. 'plugins/thirdparty/git/active'. If `None`, the whole 
+    # guisettings::CWSettings::settings dictionary is returned.
     # @param option_sep `str` the option key string delimiter (default = '/')
     # @returns value of the located option
     # @exception `KeyError` unable to locate option in guisettings::CWSettings::settings
-    def get_option(self, option, option_sep='/'):
-        keys = option.split(option_sep)
+    def get_option(self, option=None, option_sep='/'):       
         op = self.__mainwindow.options()
+        if not option: return op
+        keys = option.split(option_sep)
         for key in keys:
             op = op[key]
         return op
@@ -98,6 +97,7 @@ class PxPluginManager(PluginManager):
     def __init__(self, mainwindow, categories_filter=None, directories_list=None, plugin_info_ext=None, plugin_locator=None):
         super().__init__(categories_filter, directories_list, plugin_info_ext, plugin_locator)
         ## `PxAPI` wrapper instance for app main window
+        #self.__mainwindow = mainwindow
         self.mainwin = PxAPI(mainwindow)
 
     ## Reimplemented method that creates plugin objects passing 'self' in constructor.
@@ -115,9 +115,40 @@ class PxPluginManager(PluginManager):
             raise Exception(_("Unable to locate method '{}' in plugin '{}'!").format(method_name, plugin_name))
         return meth(*args, **kwargs)
 
+    def get_plugins_of_category(self, category, active_only=True):
+        plugins = []
+        settings = self.mainwin.get_option('plugins/custom')
+        for pl in settings[category]:
+            if not active_only or pl['active']:
+                plugin = self.getPluginByName(pl, category)
+                if not plugin is None: 
+                    plugins.append(plugin)
+        return plugins
+
+    def get_plugin_methods(self, category, method_name):
+        methods = []
+        for plugin in self.get_plugins_of_category(category):
+            m = getattr(plugin.plugin_object, method_name, None)
+            if m and callable(m):
+                methods.append(m)
+        return methods
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-## @brief Base class for user plugins (extensions) written in Python.
+def before(func):        
+    func.wraptype = 'before'
+    return func
+
+def after(func):        
+    func.wraptype = 'after'
+    return func
+
+def replace(func):        
+    func.wraptype = 'replace'
+    return func  
+
+## @brief Base class for category-specific user plugins (extensions) written in Python.
+# This class *must not* be subclassed directly; instead, inherit from `PxPluginGeneral` declared below.
 # A plugin must consist of two items in the 'plugins' directory:
 #   1. The plugin info file named 'PLUGIN-NAME.pxplugin' that contains the basic plugin info
 #   used for locating and loading the plugin.
@@ -151,33 +182,11 @@ class PxPluginBase(IPlugin):
     def test(self):
         print(type(self).__name__)
 
-    def before(self, func):
-        def wrapped(*args, **kwargs):
-            original_method = getattr(self.plugin_manager.mainwin, func.__name__, None)
-            if original_method is None: 
-                raise AttributeError(_("PxAPI instance has no '{}' method!").format(func.__name__))
-            original_method = original_method.__wrapped__
-            func(*args, **kwargs)
-            return original_method(*args, **kwargs)
-        return wrapped
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-    def after(self, func):
-        def wrapped(*args, **kwargs):
-            original_method = getattr(self.plugin_manager.mainwin, func.__name__, None)
-            if original_method is None: 
-                raise AttributeError(_("PxAPI instance has no '{}' method!").format(func.__name__))
-            original_method = original_method.__wrapped__
-            original_method(*args, **kwargs)
-            return func(*args, **kwargs)
-        return wrapped
-
-    def replace(self, func):
-        def wrapped(*args, **kwargs):
-            original_method = getattr(self.plugin_manager.mainwin, func.__name__, None)
-            if original_method is None: 
-                raise AttributeError(_("PxAPI instance has no '{}' method!").format(func.__name__))
-            return func(*args, **kwargs)
-        return wrapped    
+## @brief Base class General user plugins (placed in the 'general' category).
+class PxPluginGeneral(PxPluginBase):
+    pass
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -185,6 +194,7 @@ class PxPluginBase(IPlugin):
 # @param mainwindow `pycross::gui::MainWindow` pointer to the app main window
 # @returns `PxPluginManager` instance of created Plugin Manager
 def create_plugin_manager(mainwindow):
-    pm = PxPluginManager(mainwindow, directories_list=[PLUGINS_FOLDER], plugin_info_ext=PLUGIN_EXTENSION)    
+    pm = PxPluginManager(mainwindow, directories_list=[PLUGINS_FOLDER], plugin_info_ext=PLUGIN_EXTENSION) 
+    pm.setCategoriesFilter({'general': PxPluginGeneral})   
     pm.collectPlugins()
     return pm

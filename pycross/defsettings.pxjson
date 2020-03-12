@@ -314,10 +314,7 @@
 			}
 		},
 		"custom": {
-			"general": [],
-			"gui": [],
-			"generation": [],
-			"sharing": []
+			"general": []
 		}
 	},
 	"common": {

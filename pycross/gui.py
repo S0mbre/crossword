@@ -6,6 +6,7 @@
 # The GUI app main window implementation -- see MainWindow class.
 from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport, QtSvg
 from subprocess import Popen
+from functools import wraps
 import os, json, re, threading, math, traceback, webbrowser
 
 from utils.globalvars import *
@@ -77,12 +78,39 @@ class ShareThread(QThreadStump):
 
 # ******************************************************************************** #
 
+## @brief Plugin decorator for custom plugins.
+def pluggable(category):
+    def plugin_general(func):            
+        @wraps(func)
+        def wrapped(*args, **kwargs):
+            plugin_methods = args[0].plugin_mgr.get_plugin_methods(category, func.__name__)
+            cnt = len(plugin_methods)
+            for i in range(cnt):
+                wraptype = getattr(plugin_methods[i], 'wraptype', None)
+                if wraptype == 'before':
+                    plugin_methods[i](*args, **kwargs)
+                    res = func(*args, **kwargs)
+                elif wraptype == 'after':
+                    func(*args, **kwargs)
+                    res = plugin_methods[i](*args, **kwargs)
+                elif wraptype == 'replace':
+                    res = plugin_methods[i](*args, **kwargs)
+                else:
+                    continue
+                if i == (cnt - 1):
+                    return res   
+            return func(*args, **kwargs)             
+        return wrapped
+    return plugin_general
+
 ## The application's main GUI window
 class MainWindow(QtWidgets.QMainWindow):
     
     ## Initializes class members
     def __init__(self, **kwargs):        
         super().__init__()
+        ## `utils::api::PxPluginManager` plugin manager instance to operate user plugins
+        self.plugin_mgr = create_plugin_manager(self)
         ## `crossword::Crossword` internal crossword generator object
         self.cw = None   
         ## `str` currently opened cw file
@@ -114,14 +142,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
         ## `list` thread list to keep track of all spawned threads
         self.threads = ['gen_thread', 'share_thread']
-        
         # create window elements
         self.initUI(not kwargs.get('empty', False))
         self.setAcceptDrops(True) 
         ## `forms::SettingsDialog` instance (settings window)
-        self.dia_settings = SettingsDialog(self)
-        ## `utils::api::PxPluginManager` plugin manager instance to operate user plugins
-        self.plugin_mgr = create_plugin_manager(self)
+        self.dia_settings = SettingsDialog(self)        
         # execute actions for command-line args, if present
         self.execute_cli_args(**kwargs)
 
@@ -138,6 +163,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ## Creates all window elements: layouts, panels, toolbars, widgets.
     # @param autoloadcw `bool` whether to load crossword automatically from autosave file (utils::globalvars::SAVEDCW_FILE)
+    @pluggable('general')
     def initUI(self, autoloadcw=True):
         # actions
         self.create_actions()
@@ -167,6 +193,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Creates the application actions (`QAction` instances) which are
     # then added to the main toolbar, main menu and context menus.
+    @pluggable('general')
     def create_actions(self):
         ## `QtWidgets.QAction` new crossword action
         self.act_new = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/crossword.png"), _('New'))
@@ -331,6 +358,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_exit.triggered.connect(self.on_act_exit)
     
     ## Creates the app's main toolbar (which can also be hidden in settings).
+    @pluggable('general')
     def UI_create_toolbar(self):
         ## `QtWidgets.QToolBar` main toolbar
         self.toolbar_main = QtWidgets.QToolBar()
@@ -341,6 +369,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.addToolBar(self.toolbar_main)
 
     ## Fills main toolbar from app settings (CWSettings::settings).
+    @pluggable('general')
     def toolbar_from_settings(self):
         self.toolbar_main.clear()
         for act_ in CWSettings.settings['gui']['toolbar_actions']:
@@ -354,6 +383,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolbar_main.show()
 
     ## Creates the langugage combo box and fills it with supported languages.
+    @pluggable('general')
     def UI_create_lang_combo(self):
         ## `QtWidgets.QComboBox` UI language combo
         self.combo_lang = QtWidgets.QComboBox()
@@ -366,6 +396,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.combo_lang.currentIndexChanged.connect(self.on_combo_lang)
 
     ## Creates the application's main menu.
+    @pluggable('general')
     def UI_create_menu(self):
         ## `QtWidgets.QMenu` UI main menu
         self.menu_main = self.menuBar()
@@ -435,6 +466,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menu_main_help.addAction(self.act_about)
     
     ## Creates the main UI elements: the crossword grid and clues table.
+    @pluggable('general')
     def UI_create_central_widget(self):
         ## `QtWidgets.QSplitter` central widget
         self.splitter1 = QtWidgets.QSplitter()
@@ -505,6 +537,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.update_cw()
     
     ## Creates the main window's status bar.
+    @pluggable('general')
     def UI_create_statusbar(self):
         ## `QtWidgets.QStatusBar` main status bar
         self.statusbar = QtWidgets.QStatusBar()        
@@ -542,6 +575,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Looks for valid command-line commands (to open a file, etc.) and executes them.
     # @param kwargs `keyword arguments` commands to execute
+    @pluggable('general')
     def execute_cli_args(self, **kwargs):
         # look for 'new' command
         newcw = kwargs.get('new', False)
@@ -561,6 +595,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Clears any temps left by the app's previous launches.
     # @param delete_update_log `bool` whether to delete the 'update.log' file left from previous update
+    @pluggable('general')
     def delete_temp_files(self, delete_update_log=True):
         # update.log
         updatelog = os.path.join(os.path.dirname(__file__), 'update.log')
@@ -587,6 +622,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 continue
         
     ## Applies settings found in CWSettings::settings and updates the settings file.
+    @pluggable('general')
     def apply_config(self, save_settings=True, autoloadcw=True):
         # configure plugins
         self.configure_plugins()
@@ -665,6 +701,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Changes the scale of the crossword grid.
     # @param scale_factor `int` the scale factor in percent values
     # @param update_label `bool` whether to update the caption below the scale slider
+    @pluggable('general')
     def scale_cw(self, scale_factor=100, update_label=True): 
         # write to settings
         CWSettings.settings['grid_style']['scale'] = scale_factor
@@ -683,6 +720,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.twCw.setRowHeight(j, cell_sz)
                     
     ## Updates the `enabled` property of each action depending on which actions are currently available.
+    @pluggable('general')
     def update_actions(self):
         b_cw = not self.cw is None
         gen_running = self.gen_thread.isRunning() if getattr(self, 'gen_thread', None) else False
@@ -725,6 +763,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tvClues.setEnabled(b_cw and not gen_running)
         
     ## Updates MainWindow::wordsrc from the global settings in CWSettings::settings.
+    @pluggable('general')
     def update_wordsrc(self):
         self.wordsrc.clear()
         self.wordsrc.max_fetch = CWSettings.settings['wordsrc']['maxres']
@@ -754,6 +793,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Updates cw data and view.
     # @param rescale `bool` whether rescaling the grid is required
+    @pluggable('general')
     def update_cw(self, rescale=True):
         # update grid
         self.update_cw_grid()
@@ -785,6 +825,7 @@ class MainWindow(QtWidgets.QMainWindow):
         return cwgrid
     
     ## Saves the currently open crossword (MainWindow::cw) to the default autosave file (utils::globalvars::SAVEDCW_FILE).
+    @pluggable('general')
     def autosave_cw(self):
         if not self.cw:
             try:
@@ -797,6 +838,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.cw_modified = False
         
     ## Loads self.cw from the default autosave file (utils::globalvars::SAVEDCW_FILE) if present.
+    @pluggable('general')
     def autoload_cw(self):
         if self.cw or not CWSettings.settings['common']['autosave_cw'] or not os.path.isfile(SAVEDCW_FILE): return
         try:
@@ -816,6 +858,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Loads the crossword (MainWindow::cw) from a given file.
     # @param selected_path `str` the full file path to the file from which the crossword is loaded
+    @pluggable('general')
     def open_cw(self, selected_path):
         ext = os.path.splitext(selected_path)[1][1:]
         if ext in ('xpf', 'ipuz'):
@@ -833,6 +876,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cw_modified = False
 
     ## Closes the currently open crossword (freeing MainWindow::cw).
+    @pluggable('general')
     def close_cw(self):
         self.cw = None
         self.cw_file = ''
@@ -849,6 +893,7 @@ class MainWindow(QtWidgets.QMainWindow):
     #   * 'h' = switch to across word
     #   * 'v' = switch to down word
     #   * 'flip' = toggle current from across to down or vice-versa
+    @pluggable('general')
     def update_current_word(self, on_intersect='current'):
         if not self.cw: return
         sel_item = self.twCw.currentItem()
@@ -885,6 +930,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.update_actions()
 
     ## Updates the settings (CWSettings::settings) with current clue table's column parameters.
+    @pluggable('general')
     def update_clue_column_settings(self):
         model = self.tvClues.model()
         header = self.tvClues.header()
@@ -969,6 +1015,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Updates the reply values in clues table for given grid coordinate. 
     # @param coord `2-tuple` the grid coordinate (see crossword::Coords)
+    @pluggable('general')
     def update_clue_replies(self, coord):
         if not self.cw: return
         datamodel = self.tvClues.model()
@@ -983,6 +1030,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.reformat_clues()
     
     ## Selects (and if necessary scrolls to) the clue item corresponding to the currently selected word.
+    @pluggable('general')
     def select_clue(self):
         if self.tvClues.hasFocus(): return
         sel_model = self.tvClues.selectionModel()
@@ -1014,6 +1062,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 
     ## Updates the internal formatting (colors, fonts) in the crossword grid for a given cell.
     # @param cell_item `QtWidgets.QTableWidgetItem` the cell that must be formatted
+    @pluggable('general')
     def set_cell_formatting(self, cell_item: QtWidgets.QTableWidgetItem):
         
         def format_cell(cell_item, dic_format):   
@@ -1042,6 +1091,7 @@ class MainWindow(QtWidgets.QMainWindow):
             format_cell(cell_item, CWSettings.settings['cell_format'][k])
         
     ## Updates the internal formatting (colors, fonts) of the crossword grid.
+    @pluggable('general')
     def reformat_cells(self):
         rows = self.twCw.rowCount()
         cols = self.twCw.columnCount()
@@ -1055,6 +1105,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Updates (fills) the crossword grid from the internal crossword::Crossword object (self.cw).
     # This function resizes, fills the grid, updates the cell formatting and updates (fills) 
     # the clues table.
+    @pluggable('general')
     def update_cw_grid(self):
         if not isinstance(self.cw, Crossword): return
         try:
@@ -1091,6 +1142,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param text `str` the cell text (1 character)
     # @param icon_text `str` the text of the number caption (default = empty)
     # @returns `QtWidgets.QTableWidgetItem` cell object that can be inserted into MainWindow::twCw
+    @pluggable('general')
     def make_cell_item(self, text, icon_text=''):
         text = text.lower() if CWSettings.settings['grid_style']['char_case'] == 'lower' else text.upper()
         if not icon_text or not CWSettings.settings['grid_style']['numbers']['show']: 
@@ -1114,6 +1166,7 @@ class MainWindow(QtWidgets.QMainWindow):
         return QtWidgets.QTableWidgetItem(icon, text)
         
     ## Updates the core settings of MainWindow::cw (internal crossword::Crossword instance) from CWSettings::settings.
+    @pluggable('general')
     def update_cw_params(self):
         if not isinstance(self.cw, Crossword): return
         self.cw.closelog()
@@ -1129,6 +1182,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.cw.wordfilter = lambda w: not any(w.lower() == pattern.lower() for pattern in CWSettings.settings['wordsrc']['excluded']['words'])
 
     ## Updates (regenerates) the clues table from the clues contained in the current crossword.
+    @pluggable('general')
     def update_clues_model(self):
 
         def _localize_colname(name):
@@ -1210,6 +1264,7 @@ class MainWindow(QtWidgets.QMainWindow):
             delegate.commitData.connect(self.on_clues_editor_commit)
 
     ## Shows or hides columns in the clues table based on current settings.
+    @pluggable('general')
     def clues_show_hide_cols(self):
         header = self.tvClues.header()
         header.setDropIndicatorShown(True)
@@ -1220,6 +1275,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 header.setSectionHidden(index, not col_setting['visible'])
 
     ## Sets formatting in clues table according to word status (filled / empty).
+    @pluggable('general')
     def reformat_clues(self):     
         datamodel = self.tvClues.model()
         if not datamodel: return
@@ -1255,12 +1311,14 @@ class MainWindow(QtWidgets.QMainWindow):
                 
     ## Default word source filter for Crossword constructor.
     # @return `bool` set to `True` (don't use any extra filters)
+    @pluggable('general')
     def on_filter_word(self, word: str):
         return True
 
     ## Slot fires when the share thread (MainWindow::share_thread) starts up.
     # Clears status bar messages and updates actions.
     @QtCore.pyqtSlot()
+    @pluggable('general')
     def on_share_start(self):
         self.statusbar.clearMessage()
         self.update_actions()
@@ -1269,6 +1327,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param percent `int` percent complete
     # @param status `str` status message to show in status bar
     @QtCore.pyqtSlot(int, str)
+    @pluggable('general')
     def on_share_progress(self, percent, status):
         #self.statusbar_pbar.setValue(percent)
         #self.statusbar_pbar.show()
@@ -1279,6 +1338,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param filepth `str` the source file full path
     # @param url `str` the destination URL where the file is uploaded
     @QtCore.pyqtSlot(str, str)
+    @pluggable('general')
     def on_share_upload(self, filepth, url):
         self.statusbar.showMessage(_("Uploaded '{}' to '{}'").format(filepth, url))
         # add file to garbage for future collection
@@ -1287,6 +1347,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Slot fires when the sharer has copied the destination URL of the shared file to the clipboard.
     # @param url `str` the destination URL where the file is uploaded
     @QtCore.pyqtSlot(str)
+    @pluggable('general')
     def on_share_clipboard_write(self, url):
         clipboard_copy(url)
         MsgBox(_("Copied URL '{}' to clipboard").format(url), self)
@@ -1295,12 +1356,14 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param thread `QtCore.QThread` the sharer thread (ShareThread)
     # @param err `str` the error message
     @QtCore.pyqtSlot(QtCore.QThread, str)
+    @pluggable('general')
     def on_share_error(self, thread, err):
         #MsgBox(err, self, 'Error', 'error')
         self._log(err)
 
     ## Slot fires when the sharer (MainWindow::share_thread) has completed its operation.
     @QtCore.pyqtSlot()
+    @pluggable('general')
     def on_share_finish(self):
         #self.statusbar_pbar.hide()
         self.statusbar.clearMessage()
@@ -1311,6 +1374,7 @@ class MainWindow(QtWidgets.QMainWindow):
     #   `res[0]` = API key entered by user `str`
     #   `res[1]` = user dialog result `bool`: `True` = OK, `False` = Cancel
     @QtCore.pyqtSlot('PyQt_PyObject')
+    @pluggable('general')
     def on_share_apikey_required(self, res):
         res1 = UserInput(parent=self, label=_('Enter your API key'), textmode='password')
         res[0] = res1[0]
@@ -1321,6 +1385,7 @@ class MainWindow(QtWidgets.QMainWindow):
     #   `res[0]` = Bearer Token entered by user `str`
     #   `res[1]` = user dialog result `bool`: `True` = OK, `False` = Cancel
     @QtCore.pyqtSlot('PyQt_PyObject')
+    @pluggable('general')
     def on_share_bearer_required(self, res):
         
         @QtCore.pyqtSlot()
@@ -1339,6 +1404,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Slot fires when the sharer has prepared the URL for sharing on a social network.
     # @param url `str` the sharing URL generated by sharer (specific to the selected social network)
     @QtCore.pyqtSlot(str)
+    @pluggable('general')
     def on_share_prepare_url(self, url):
         self.share_thread.lock()
         try:
@@ -1348,6 +1414,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Main worker slot (function) for the sharer thread (MainWindow::share_thread).
     @QtCore.pyqtSlot()
+    @pluggable('general')
     def on_share_run(self):
 
         # 1) cloud (25%) 2) export cw (25%) 3) upload (25%) 4) share (25%)
@@ -1450,6 +1517,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # Uploads exported crosswords (as images, PDF etc) to the Kloudless cloud storage and
     # shares the resulting URL in social networks (via the Shareaholic service).
     # @param thread `QtCore.QThread` the sharer thread (ShareThread)
+    @pluggable('general')
     def create_cloud(self, thread):
         cloud = Cloudstorage(CWSettings.settings, auto_create_user=False,
                 on_user_exist=lambda username: False, on_update_users=None,
@@ -1500,6 +1568,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param headers `dict` HTTP headers passed to the request
     # @param error_keymap `dict` error code-to-message mapping 
     # @see utils::onlineservices::Share
+    @pluggable('general')
     def share_url(self, url, headers={'Content-Type': 'application/json'}, error_keymap=Share.ERRMAP):
         if not hasattr(self, 'browser'):
             self.browser = Browser()
@@ -1512,6 +1581,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param source `str` | `None` source code to set in editor (`None` clears the existing code)
     # @param show `bool` whether to show the editor window
     # @see utils::synteditor
+    @pluggable('general')
     def create_syneditor(self, source=None, show=True):
         from utils.synteditor import SynEditorWidget
         if not hasattr(self, 'syneditor'):
@@ -1524,6 +1594,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Slot fires when the cw generation thread (MainWindow::gen_thread) starts up.
     # Performs preliminary UI element setups.
     @QtCore.pyqtSlot()
+    @pluggable('general')
     def on_generate_start(self):
         self.statusbar_pbar.reset()
         self.statusbar_pbar.setFormat('%p%')
@@ -1532,6 +1603,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Slot fires when the cw generation thread (MainWindow::gen_thread) has completed.
     @QtCore.pyqtSlot() 
+    @pluggable('general')
     def on_generate_finish(self):
         self.statusbar_pbar.hide()
         self.statusbar_pbar.reset()
@@ -1540,11 +1612,13 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Slot fires when the cw generation thread (MainWindow::gen_thread) has timed out.
     # @param timeout_ `float` timeout in (fractions of) seconds
     @QtCore.pyqtSlot(float)
+    @pluggable('general')
     def on_gen_timeout(self, timeout_):
         MsgBox(_("Timeout occurred at {} seconds!").format(timeout_), self, _('Timeout'), 'warn')
 
     ## Slot fires when the cw generation thread (MainWindow::gen_thread) has been stopped.
     @QtCore.pyqtSlot()
+    @pluggable('general')
     def on_gen_stop(self):
         MsgBox("Generation stopped!", self, _('Stopped'), 'warn')
 
@@ -1552,12 +1626,14 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param thread `QtCore.QThread` the generation thread object (GenThread)
     # @param err `str` the error message
     @QtCore.pyqtSlot(QtCore.QThread, str)
+    @pluggable('general')
     def on_gen_error(self, thread, err):
         MsgBox(_("Generation failed with error:{}{}").format(NEWLINE, err), self, _('Error'), 'error')
 
     ## Slot fires when the cw generator has completed and needs to validate the words in the grid.
     # @param bad_ `list` list of words `str` that haven't passed validation (not found in active word sources)
     @QtCore.pyqtSlot('PyQt_PyObject')
+    @pluggable('general')
     def on_gen_validate(self, bad_):
         MsgBox(_("Generation finished!{}{}").format(NEWLINE, (_('Check OK') if not bad_ else _('The following words failed validation: ') + repr(bad_))), 
                 self, _('Generation finished'), 'info' if not bad_ else 'warn')
@@ -1567,6 +1643,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param complete_ `int` number of completed (filled) words
     # @param total_ `int` total number of words in cw grid
     @QtCore.pyqtSlot('PyQt_PyObject', int, int)
+    @pluggable('general')
     def on_gen_progress(self, cw_, complete_, total_):
         perc = complete_ * 100.0 / total_
         self.statusbar_pbar.setValue(perc)
@@ -1574,6 +1651,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Main worker function for the cw generation thread (MainWindow::gen_thread).
     # Generates (fills) the current crossword (MainWindow::cw)
+    @pluggable('general')
     def generate_cw_worker(self):
         method = ''
         timeout = 0.0
@@ -1666,6 +1744,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ## Saves / exports the current crossword (MainWindow::cw) to a given file and file type.
     # @see Description in _save_cw()
+    @pluggable('general')
     def save_cw(self, filepath=None, file_type=None):
         res = self._save_cw(filepath, file_type)
         if not res: return False
@@ -1683,6 +1762,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # The following formats are supported: JPG, PNG, TIFF, BMP (raster), SVG (vector)
     # @param filepath `str` the destination file path
     # @param scale `float` output image scale factor
+    @pluggable('general')
     def export_cw(self, filepath, scale=1.0):
         # settings
         export_settings = CWSettings.settings['export']
@@ -1723,6 +1803,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Prints current crossword (and optionally clues) to file or printer.  
     # @param pdf_file `str` | `None` path to PDF file or `None` to print to a physical printer
     # @param show_preview `bool` `True` to show print preview dialog - see forms::PrintPreviewDialog
+    @pluggable('general')
     def print_cw(self, pdf_file=None, show_preview=True):
         settings = CWSettings.settings['printing']
 
@@ -1807,6 +1888,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # This slot is connected to print preview dialog's paintRequested() signal.
     # @param printer `QtPrintSupport.QPrinter` the printer object
     @QtCore.pyqtSlot(QtPrintSupport.QPrinter)
+    @pluggable('general')
     def on_preview_paint(self, printer):    
         if not printer or self.twCw.rowCount() < 1 or self.twCw.columnCount() < 1: return
         painter = QtGui.QPainter()        
@@ -2087,6 +2169,7 @@ class MainWindow(QtWidgets.QMainWindow):
     
     ## Updates the required GUI settings in the settings file before the application quits
     # (to restore them upon next startup).
+    @pluggable('general')
     def update_settings_before_quit(self):
         # window size and pos
         pos = self.pos()
@@ -2100,6 +2183,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param wordstr `str` the string representation (mask) of the target word
     # (crossword::FILLER, crossword::FILLER2 and crossword::BLANK symbols are used)
     # @returns `str` | `None` selected word in suggest dialog or `None` if nothing was selected (cancelled)
+    @pluggable('general')
     def get_word_suggestion(self, wordstr):        
         self.update_wordsrc()     
         if (self.cw is None) or (not bool(self.wordsrc)) or (self.current_word is None): return None   
@@ -2108,6 +2192,7 @@ class MainWindow(QtWidgets.QMainWindow):
         return dia_suggest.selected or None
 
     ## Applies clues header column widths from CWSettings::settings.
+    @pluggable('general')
     def adjust_clues_header_columns(self):
         header = self.tvClues.header()
         if header and not header.isHidden():
@@ -2119,12 +2204,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Callback for MainWindow::updater, fires when a new release is found.
     # @param new_version `str` new version found on the server, e.g. '1.1'
+    @pluggable('general')
     def on_get_recent(self, new_version):
         if 'version' in new_version:
             self.statusbar_l2.setText(_("Update ready: v. {}").format(new_version['version']))
         return True
 
     ## Stops all running threads.
+    @pluggable('general')
     def stop_all_threads(self):
         for thread in self.threads:
             thread_ = getattr(self, thread, None)
@@ -2139,6 +2226,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Checks if the current crossword has been modified and asks user to save it.
     # @param cancellable `bool` whether the save dialog can be cancelled by user
     # @returns `str` user's reply from the request dialog, e.g. 'yes' or 'no'
+    @pluggable('general')
     def check_save_required(self, cancellable=True):
         if self.cw and self.cw_modified:
             btn = ['yes', 'no']
@@ -2153,6 +2241,7 @@ class MainWindow(QtWidgets.QMainWindow):
     
     ## Fires when the window is about to show.
     # @param event `QtGui.QShowEvent` the handled event
+    @pluggable('general')
     def showEvent(self, event):    
         # show 
         event.accept()
@@ -2171,6 +2260,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ## Fires when the window is about to close.
     # @param event `QtGui.QCloseEvent` the handled event
+    @pluggable('general')
     def closeEvent(self, event):
         # kill threads
         self.stop_all_threads()
@@ -2187,6 +2277,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # close
         event.accept()
 
+    @pluggable('general')
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent):
         mimeData = event.mimeData()
         if mimeData.hasUrls():
@@ -2196,16 +2287,19 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             event.ignore()
 
+    @pluggable('general')
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent):
         if event.mimeData().hasUrls():
             event.accept()
         else:
             event.ignore()
 
+    @pluggable('general')
     def dragLeaveEvent(self, event: QtGui.QDragLeaveEvent):
         self.statusbar.clearMessage()
         event.accept()
 
+    @pluggable('general')
     def dropEvent(self, event: QtGui.QDropEvent):
         # handle dropped files
         mimeData = event.mimeData()
@@ -2239,6 +2333,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param event `QtGui.QKeyEvent` the handled event
     # @see forms::CwTable
     @QtCore.pyqtSlot(QtGui.QKeyEvent)
+    @pluggable('general')
     def on_cw_key(self, event: QtGui.QKeyEvent):
         # get key
         key = event.key()   
@@ -2344,6 +2439,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param old_version `str` the current app version
     # @param new_version `str` the new app version found on the server
     # @returns `bool` `True` if user accepts the update or `False` otherwise
+    @pluggable('general')
     def on_before_update(self, old_version, new_version):
         option = QtWidgets.QMessageBox.question(self, _('Application update'),
                 _("Do you wish to update your current version {} "
@@ -2352,6 +2448,7 @@ class MainWindow(QtWidgets.QMainWindow):
         return option == QtWidgets.QMessageBox.Yes
 
     ## Fires when the updater has found no newer versions on the server.
+    @pluggable('general')
     def on_norecent(self):
         MsgBox(_('No updates are available'), self)
                         
@@ -2359,6 +2456,7 @@ class MainWindow(QtWidgets.QMainWindow):
     
     ## Slot for MainWindow::act_new: creates a new crossword from file, structure or parameters.
     @QtCore.pyqtSlot(bool)        
+    @pluggable('general')
     def on_act_new(self, checked):
 
         reply = self.check_save_required()
@@ -2405,6 +2503,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Slot for MainWindow::act_open: loads crossword from a file (showing an Open File dialog).
     # @see open_cw()
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_open(self, checked):
 
         reply = self.check_save_required()
@@ -2418,6 +2517,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # and resets its modified status to `False`.
     # @see save_cw()
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_save(self, checked):
         if not self.cw or not self.cw_modified: return
         if not self.cw_file:
@@ -2429,6 +2529,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # and resets its modified status to `False`.
     # @see save_cw()
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_saveas(self, checked):
         if not self.cw: return
         
@@ -2444,6 +2545,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Slot for MainWindow::act_reload: reloads current crossword from the original file
     # (user will be asked to save the changes first, if the cw has been modified).
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_reload(self, checked):
         if not self.cw_file: return
         if self.cw and self.cw_modified:
@@ -2465,6 +2567,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Slot for MainWindow::act_close: closes current crossword calling close_cw().
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_close(self, checked):
         reply = self.check_save_required()
         if reply == '' or reply == 'cancel': return
@@ -2473,6 +2576,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Slot for MainWindow::act_share: shares current crossword in social networks.
     # The share dialog MainWindow::dia_share is shown for user to configure the sharing settings.
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_share(self, checked):
         ## share settings dialog    
         self.dia_share = ShareDialog(self, self)
@@ -2488,12 +2592,14 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ## Slot for MainWindow::act_exit: quits the application calling `close()` on the main window.
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_exit(self, checked):
         self.close()
 
     ## @brief Slot for MainWindow::act_addrow: adds a new row after the selected one.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_addrow(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
         if self.twCw.currentRow() >= 0:
@@ -2503,6 +2609,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Slot for MainWindow::act_addcol: adds a new column after the selected one.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_addcol(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
         if self.twCw.currentColumn() >= 0:
@@ -2512,6 +2619,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Slot for MainWindow::act_delrow: deletes the selected row.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_delrow(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
         if self.twCw.currentRow() >= 0:
@@ -2521,6 +2629,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Slot for MainWindow::act_delcol: deletes the selected column.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_delcol(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
         if self.twCw.currentColumn() >= 0:
@@ -2531,6 +2640,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # (all cells) to any position (left, right, up, down).
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_reflect(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
         if not hasattr(self, 'dia_reflect'):
@@ -2564,6 +2674,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @see Compare with on_act_erase_wd() that erases all letters in the word.
     # Also see Crossword::clear_word()
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_clear_wd(self, checked):
         if not self.cw or not self.current_word or self.cw.words.is_word_blank(self.current_word):
             return
@@ -2575,6 +2686,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # it clears ALL the letters in the word, clearing them from the crossing words as well.
     # @see Also see Crossword::clear_word()
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_erase_wd(self, checked):
         if not self.cw or not self.current_word or self.cw.words.is_word_blank(self.current_word):
             return
@@ -2584,7 +2696,8 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Slot for MainWindow::act_gen: generates (fills) the current crossword taking word
     # suggestions from the active word sources.
     # @see Crossword::generate()
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')    
     def on_act_gen(self, checked):
         if not self.cw: return     
         if not hasattr(self, 'gen_thread') or self.gen_thread is None:
@@ -2599,26 +2712,30 @@ class MainWindow(QtWidgets.QMainWindow):
     # These operations can be either cw generation or cw sharing, which run
     # in a separate thread, to avoid blocking the UI.
     # @see stop_all_threads()
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')   
     def on_act_stop(self, checked):
         if checked:
             self.stop_all_threads()
 
     ## @brief On Changed slot for MainWindow::act_stop.
     # Hides or shows the Stop button in the status bar based on the action's visibility.
-    @QtCore.pyqtSlot() 
+    @QtCore.pyqtSlot()
+    @pluggable('general')
     def on_act_stop_changed(self):
         if hasattr(self, 'statusbar_btnstop'):
             self.statusbar_btnstop.setVisible(self.act_stop.isVisible())
     
     ## @brief Slot for MainWindow::act_edit: updates cell formatting in crossword and actions.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')  
     def on_act_edit(self, checked):
         self.reformat_cells()
         self.update_actions()
 
     ## @brief Slot for MainWindow::act_view_showtoolbar: shows or hides the main toolbar.
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_view_showtoolbar(self, checked):
         last_tb_pos = CWSettings.settings['gui']['toolbar_pos']
         if checked:
@@ -2632,7 +2749,8 @@ class MainWindow(QtWidgets.QMainWindow):
             CWSettings.settings['gui']['toolbar_pos'] = 4
 
     ## @brief Slot for MainWindow::act_editclue: activates the editing mode for the current word's clue.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general') 
     def on_act_editclue(self, checked):
         clue = self._clue_items_from_word(self.current_word)
         if not clue: return
@@ -2643,7 +2761,8 @@ class MainWindow(QtWidgets.QMainWindow):
     
     ## @brief Slot for MainWindow::act_clear: clears the current crossword.
     # @see Crossword::clear()
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_clear(self, checked):
         if not self.cw: return
         self.cw.clear()
@@ -2652,7 +2771,8 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Slot for MainWindow::act_suggest: brings up a list of words for the selected one in the grid
     # and lets the user place it into the grid.
     # @see get_word_suggestion()
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_suggest(self, checked):
         if not self.cw: return
         wordstr = self.cw.words.get_word_str(self.current_word)
@@ -2666,6 +2786,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # in a dictionary and/or Google.
     # The looked-up definition may then be used to fill the corresponding clue.
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_lookup(self, checked):
         if not self.cw: return
                     
@@ -2695,7 +2816,8 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ## @brief Slot for MainWindow::act_wsrc: opens the word source settings to let the use
     # choose / add word sources for crossword generation.
-    @QtCore.pyqtSlot(bool) 
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_wsrc(self, checked):
         self.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(2).child(0))
         self.on_act_config(False)
@@ -2703,7 +2825,8 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Slot for MainWindow::act_info: shows the crossword information window
     # where the user can change cw attributes like `title`, `author`, etc.
     # @see CwInfoDialog
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general') 
     def on_act_info(self, checked):
         if not self.cw: return
         if not hasattr(self, 'dia_info'):
@@ -2716,14 +2839,16 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ## @brief Slot for MainWindow::act_print: prints current CW and/or clues to printer or PDF.
     # @see print_cw()
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')  
     def on_act_print(self, checked):
         if not self.cw: return
         self.print_cw()
     
     ## @brief Slot for MainWindow::act_config: shows the application Settings dialog.
     # If the dialog is closed by pressing OK, the new settings are applied with apply_config()
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_config(self, checked):
         if not self.dia_settings.exec(): return
         settings = self.dia_settings.to_settings()
@@ -2736,7 +2861,8 @@ class MainWindow(QtWidgets.QMainWindow):
     # If a new version is available and the user accepts it, the app will close down
     # and update itself, then start up again.
     # @see MainWindow::updater
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_update(self, checked):    
         if not self.updater.git_installed and not self.updater.pkg_installed: return
         # run update
@@ -2745,18 +2871,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.close()
    
     ## @brief Slot for MainWindow::act_help: opens up the Help documentation.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_help(self, checked):
         MsgBox(_('To be implemented in next release ))'), self, _('Show help docs')) 
         
     ## @brief Slot for MainWindow::act_apiref: shows API reference in browser.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_apiref(self, checked):
         launcher = make_abspath(f"doc/apiref/opendoc.{'bat' if getosname() == 'Windows' else 'sh'}")
         run_exe(launcher, True, False, shell=True)
 
     ## @brief Slot for MainWindow::act_contact: shows form to contact author, i.e. me :)).
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_contact(self, checked):
         ## TODO: use [Github REST API](https://developer.github.com/v3/issues/#create-an-issue)
         ## to report bugs (create issues)
@@ -2767,7 +2896,8 @@ class MainWindow(QtWidgets.QMainWindow):
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(f"mailto:{APP_EMAIL}?subject={APP_NAME}%20feedback"))
 
     ## @brief Slot for MainWindow::act_about: shows the About dialog.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_about(self, checked):
         if not hasattr(self, 'dia_about'):
             ## About dialog
@@ -2786,6 +2916,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # </pre>
     # The data is visualized as an HTML chart in the inbuilt or system web browser.
     @QtCore.pyqtSlot(bool)
+    @pluggable('general')
     def on_act_stats(self, checked):
         if not self.cw: return
         self.cw.words.update_stats()
@@ -2822,6 +2953,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # When double-clicked on the app version (if a new version is available), the updater is launched.
     # @see on_act_update()
     @QtCore.pyqtSlot(QtGui.QMouseEvent)
+    @pluggable('general')
     def on_statusbar_l2_dblclicked(self, event):
         if not self.statusbar_l2.text(): return
         self.on_act_update(False)
@@ -2830,6 +2962,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param value `int` the MainWindow::slider_cw_scale value (scale %)
     # @see scale_cw()
     @QtCore.pyqtSlot(int)
+    @pluggable('general')
     def on_slider_cw_scale(self, value):
         self.scale_cw(value)        
         
@@ -2837,6 +2970,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param current `QtWidgets.QTableWidgetItem` the currently focused cell
     # @param previous `QtWidgets.QTableWidgetItem` the previously focused cell
     @QtCore.pyqtSlot(QtWidgets.QTableWidgetItem, QtWidgets.QTableWidgetItem)
+    @pluggable('general')
     def on_cw_current_item_changed(self, current, previous):      
         self.update_current_word('flip' if self.last_pressed_item==current else 'current')            
         self.reformat_cells()
@@ -2845,6 +2979,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Fires when a cw grid cell is clicked (pressed).
     # @param item `QtWidgets.QTableWidgetItem` the pressed cell
     @QtCore.pyqtSlot(QtWidgets.QTableWidgetItem)
+    @pluggable('general')
     def on_cw_item_clicked(self, item):
         if self.twCw.currentItem() == item:
             self.update_current_word('flip' if self.last_pressed_item==item else 'current')            
@@ -2854,6 +2989,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Fires when the custom context meny is requested on the crossword grid.
     # @param point `QtCore.QPoint` the current cursor position (relative to grid coordinates)
     @QtCore.pyqtSlot(QtCore.QPoint)
+    @pluggable('general')
     def on_twCw_contextmenu(self, point):
         if not self.current_word: return
         cell_item = self.twCw.itemAt(point)
@@ -2863,6 +2999,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## @brief Fires when the custom context meny is requested on the main toolbar.
     # @param point `QtCore.QPoint` the current cursor position (relative to toolbar coordinates)
     @QtCore.pyqtSlot(QtCore.QPoint)
+    @pluggable('general')
     def on_toolbar_contextmenu(self, point):
         @QtCore.pyqtSlot() 
         def on_tb_contextmenuaction():
@@ -2876,6 +3013,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param selected `QtCore.QItemSelection` the selected items
     # @param deselected `QtCore.QItemSelection` the deselected items
     @QtCore.pyqtSlot(QtCore.QItemSelection, QtCore.QItemSelection)
+    @pluggable('general')
     def on_tvClues_selected(self, selected, deselected):
         model = self.tvClues.model()
         for idx in selected.indexes():
@@ -2891,6 +3029,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param current `QtCore.QModelIndex` the currently selected items
     # @param previous `QtCore.QModelIndex` the previously selected items
     @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
+    @pluggable('general')
     def on_tvClues_current_changed(self, current, previous):
         if self.twCw.hasFocus(): return
         model = self.tvClues.model()
@@ -2908,6 +3047,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param newVisualIndex `int` the column's new position (as seen in the table)
     # @see update_clue_column_settings()
     @QtCore.pyqtSlot(int, int, int)
+    @pluggable('general')
     def on_tvClues_column_moved(self, logicalIndex, oldVisualIndex, newVisualIndex):
         # save new column order to global settings
         self.update_clue_column_settings()
@@ -2917,6 +3057,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # We implement this slot to validate the entered text, update the CW grid and the clues table.
     # @param editor `QtWidgets.QWidget` the internal widget used for editing the clue item (here = QLineEdit)
     @QtCore.pyqtSlot('QWidget*')
+    @pluggable('general')
     def on_clues_editor_commit(self, editor):      
         model = self.tvClues.model()
         if not model: return
@@ -2962,12 +3103,14 @@ class MainWindow(QtWidgets.QMainWindow):
         # restore focus (update_cw_grid removes focus from tvClues)
         self.tvClues.setFocus()
 
+    @pluggable('general')
     def set_selected_lang(self):
         CWSettings.settings['common']['lang'] = self.combo_lang.currentData()
 
     ## @brief Fires when a new language in the language combo is picked.
     # @param index `int` the selected index in the language combo
     @QtCore.pyqtSlot(int)
+    @pluggable('general')
     def on_combo_lang(self, index):
         lang = self.combo_lang.itemData(index)
         sel_lang = None
