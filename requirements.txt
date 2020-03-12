@@ -2,6 +2,7 @@ pip
 PyQt5>=5.14
 PyQtWebEngine>=5.14
 QScintilla>=2.11
+yapsy>=1.12
 requests
 numpy
 pandas

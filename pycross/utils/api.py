@@ -123,14 +123,16 @@ class PxPluginManager(PluginManager):
                 plugin = self.getPluginByName(pl, category)
                 if not plugin is None: 
                     plugins.append(plugin)
+        print(f"FOUND PLUGINS: {[plugin.name for plugin in plugins]}")
         return plugins
 
     def get_plugin_methods(self, category, method_name):
         methods = []
-        for plugin in self.get_plugins_of_category(category):
+        for plugin in self.get_plugins_of_category(category, False):
             m = getattr(plugin.plugin_object, method_name, None)
             if m and callable(m):
                 methods.append(m)
+        print(f"FOUND METHODS: {methods}")
         return methods
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -166,6 +168,7 @@ class PxPluginBase(IPlugin):
 
     ## Constructor initializes a pointer to the PxPluginManager object.
     def __init__(self, plugin_manager):
+        super().__init__()
         if not isinstance(plugin_manager, PxPluginManager):
             raise TypeError(_("'plugin_manager' agrument must be an instance of PxPluginManager!"))
         self.plugin_manager = plugin_manager

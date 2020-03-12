@@ -87,6 +87,7 @@ def pluggable(category):
             cnt = len(plugin_methods)
             for i in range(cnt):
                 wraptype = getattr(plugin_methods[i], 'wraptype', None)
+                print(f"WRAP TYPE OF FUNC '{func.__name__}' is '{wraptype}'")
                 if wraptype == 'before':
                     plugin_methods[i](*args, **kwargs)
                     res = func(*args, **kwargs)

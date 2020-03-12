@@ -2519,9 +2519,10 @@ class SettingsDialog(BasicDialog):
         settings['plugins']['custom'] = {}
         settings['plugins']['custom']['general'] = []
         for plugin in self.mainwindow.plugin_mgr.getPluginsOfCategory('general'):
+            self.mainwindow.plugin_mgr.activatePluginByName(plugin.name, 'general')
             pl = {'name': plugin.name, 'active': plugin.is_activated, 'author': plugin.author, 
                   'copyright': plugin.copyright, 'description': plugin.description,
-                  'path': plugin.path, 'version': plugin.version, 'website': plugin.website}
+                  'path': plugin.path, 'version': str(plugin.version), 'website': plugin.website}
             settings['plugins']['custom']['general'].append(pl)
 
         # printing
