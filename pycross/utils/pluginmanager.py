@@ -2,11 +2,10 @@
 # Copyright: (c) 2020, Iskander Shafikov <s00mbre@gmail.com>
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-## @package utils.api
+## @package utils.pluginmanager
 # User plugin platform to extend pyCrossword functionality based on [Yapsy](http://yapsy.sourceforge.net/).
 # @see [example 1](http://yapsy.sourceforge.net/FilteredPluginManager.html), 
 # [example 2](https://stackoverflow.com/questions/5333128/yapsy-minimal-example)
-from yapsy.IPlugin import IPlugin
 from yapsy.PluginManager import PluginManager
 from PyQt5 import QtWidgets
 from .globalvars import *
@@ -101,103 +100,143 @@ class PxPluginManager(PluginManager):
         self.mainwin = PxAPI(mainwindow)
 
     ## Reimplemented method that creates plugin objects passing 'self' in constructor.
+    # See params in yapsy docs.
     def instanciateElementWithImportInfo(self, element, element_name, plugin_module_name, candidate_filepath):
         return element(self)
 
-    def call_plugin_method(self, plugin_name, method_name, category='Default', *args, **kwargs):
-        plugin = self.getPluginByName(plugin_name, category)
+    ## Calls a given method from a given plugin by its name.
+    # @param plugin_name `str` name of plugin
+    # @param plugin_category `str` name of plugin category 
+    # @param method_name `str` name of method to call
+    # @param *args `positional args` positional args passed to the method
+    # @param *kwargs `keyword args` keyword args passed to the method
+    # @returns whatever the called method returns
+    # @exception `Exception` failure to locate plugin or plugin inactive or failure to locate method
+    def call_plugin_method(self, plugin_name, plugin_category, method_name, *args, **kwargs):
+        plugin = self.getPluginByName(plugin_name, plugin_category)
         if plugin is None:
-            raise Exception(_("Unable to locate plugin '{}' in category '{}'!").format(plugin_name, category))
+            raise Exception(_("Unable to locate plugin '{}' in category '{}'!").format(plugin_name, plugin_category))
         if not plugin.is_activated:
             raise Exception(_("Plugin '{}' is not active. Cannot call method of inactive plugin!").format(plugin_name))
         meth = getattr(plugin.plugin_object, method_name, None)
-        if meth is None:
+        if meth is None or not callable(meth):
             raise Exception(_("Unable to locate method '{}' in plugin '{}'!").format(method_name, plugin_name))
         return meth(*args, **kwargs)
 
+    ## @brief Makes a dictionary of plugin info given a plugin object.
+    # The resulting dict is formatted in the same way as in the global settings,
+    # corresponding to a custom plugin record in a given category.
+    # @param plugin `yapsy::PluginInfo::PluginInfo` the plugin object
+    # @returns `dict` plugin info record
+    def _plugin_info_to_dic(self, plugin):
+        return {'name': plugin.name, 'active': plugin.is_activated, 'author': plugin.author, 
+                'copyright': plugin.copyright, 'description': plugin.description,
+                'path': plugin.path, 'version': str(plugin.version), 'website': plugin.website}
+
+    ## Returns the plugin object corresponding to a plugin info record in the global settings.
+    # @param settings `dict` pointer to global settings
+    # @param plugin_name `str` name of plugin
+    # @param plugin_category `str` name of plugin category
+    # @returns `yapsy::PluginInfo::PluginInfo` plugin object or `None` on failure
+    def _plugin_from_settings(self, settings, plugin_name, plugin_category):
+        if not plugin_category in settings:
+            return None
+        for plugin_info in settings[plugin_category]:
+            if plugin_info['name'] == plugin_name:
+                return self.getPluginByName(plugin_name, plugin_category)
+        return None
+
+    ## Sets a plugin's active state to True or False.
+    # @param plugin_name `str` name of plugin
+    # @param plugin_category `str` name of plugin category
+    # @param active `bool` active state to set
+    def set_plugin_active(self, plugin_name, plugin_category, active=True):
+        if active:
+            self.activatePluginByName(plugin_name, plugin_category)
+        else:
+            self.deactivatePluginByName(plugin_name, plugin_category)
+
+    ## @brief Updates the custom plugin settings in guisettings::CWSettings::settings.
+    # The function will first look for plugins contained in the current settings
+    # and update their data from the existing plugins collected by the plugin manager.
+    # Plugins that are found in settings but not in the plugin manager will be removed from settings.
+    # Then finally plugins collected by the manager but not contained in the settings
+    # will be appended to the settings, in their respective categories.
+    # @param forced_update `bool` if `True`, all current plugin settings will be cleared
+    # and plugins will be added anew from the plugin manager (default = `False`)
+    def update_global_settings(self, forced_update=False):
+        settings = self.mainwin.get_option('plugins/custom')
+        
+        for category in settings:
+
+            if forced_update: 
+                settings[category].clear()
+
+            # Step 1 - update existing plugins, delete non-existing
+            i = 0
+            # iterate settings plugins in category
+            while i < len(settings[category]):
+                # find actual plugin
+                plugin = self.getPluginByName(settings[category][i]['name'], category)
+                if plugin is None:
+                    # if non-existing, remove from settings
+                    del settings[category][i]
+                else:
+                    # if existing, active / deactivate it based on current settings
+                    self.set_plugin_active(settings[category][i]['name'], category, settings[category][i]['active'])                    
+                    # update plugin info in settings
+                    settings[category][i].update(self._plugin_info_to_dic(plugin))
+                    i += 1
+
+            # Step 2 - add new plugins in deactivated state
+            for pl in self.getPluginsOfCategory(category):
+                # iterate settings plugins in category
+                for plugin_info in settings[category]:
+                    # break from loop if plugin already there
+                    if plugin_info['name'] == pl.name:
+                        break
+                else:
+                    # if not found in settings, append new plugin at the end
+                    settings[category].append(self._plugin_info_to_dic(pl))
+
+        if DEBUGGING: print(settings)
+
+    ## @brief Gets the list of plugins for a given category respecting their order.
+    # This method is added since the inherited `getPluginsOfCategory` method of `PluginManager`
+    # does not respect the order of the plugins (it knows nothing about the order).
+    # The plugin order is taken from the global settings (guisettings::CWSettings::settings).
+    # @param category `str` plugin category name
+    # @param active_only `bool` only list active plugins (default)
+    # @returns `list` list of plugins of type yapsy::PluginInfo::PluginInfo
     def get_plugins_of_category(self, category, active_only=True):
         plugins = []
         settings = self.mainwin.get_option('plugins/custom')
         for pl in settings[category]:
             if not active_only or pl['active']:
-                plugin = self.getPluginByName(pl, category)
+                plugin = self.getPluginByName(pl['name'], category)
                 if not plugin is None: 
                     plugins.append(plugin)
-        print(f"FOUND PLUGINS: {[plugin.name for plugin in plugins]}")
         return plugins
 
+    ## @brief Returns the list of methods with a given name from all active plugins.
+    # The methods are returned from all active plugins in a given category,
+    # while respecting the plugin order in the global settings. That is,
+    # the resulting list of methods will be ordered by the plugin order in the settings.
+    # @param category `str` plugin category name
+    # @param method_name `str` method name to look for
+    # @returns `list` list of methods, each being a callable bound object
     def get_plugin_methods(self, category, method_name):
         methods = []
-        for plugin in self.get_plugins_of_category(category, False):
+        for plugin in self.get_plugins_of_category(category):
             m = getattr(plugin.plugin_object, method_name, None)
             if m and callable(m):
                 methods.append(m)
-        print(f"FOUND METHODS: {methods}")
+        #if DEBUGGING: print(f"FOUND METHODS: {methods}")
         return methods
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-
-def before(func):        
-    func.wraptype = 'before'
-    return func
-
-def after(func):        
-    func.wraptype = 'after'
-    return func
-
-def replace(func):        
-    func.wraptype = 'replace'
-    return func  
-
-## @brief Base class for category-specific user plugins (extensions) written in Python.
-# This class *must not* be subclassed directly; instead, inherit from `PxPluginGeneral` declared below.
-# A plugin must consist of two items in the 'plugins' directory:
-#   1. The plugin info file named 'PLUGIN-NAME.pxplugin' that contains the basic plugin info
-#   used for locating and loading the plugin.
-#   2. The plugin file named 'PLUGIN-NAME.py' (if a single module is enough) or plugin subdirectory
-#   named simply 'PLUGIN-NAME', which contains '__init__.py' and an arbitrary number of source files.
-# A bare-bones plugin source module would look like this:
-# ```python
-# from utils.api import *
-#
-# class MyPlugin(PxPluginBase):
-#    pass # do whatever...
-# ```
-# @see [Yapsy docs](http://yapsy.sourceforge.net/index.html)
-class PxPluginBase(IPlugin):
-
-    ## Constructor initializes a pointer to the PxPluginManager object.
-    def __init__(self, plugin_manager):
-        super().__init__()
-        if not isinstance(plugin_manager, PxPluginManager):
-            raise TypeError(_("'plugin_manager' agrument must be an instance of PxPluginManager!"))
-        self.plugin_manager = plugin_manager
-
-    ## Called at plugin activation.
-    def activate(self):
-        super().activate()
-
-    ## Called the plugin is disabled.
-    def deactivate(self):
-        super().deactivate()
-
-    ## Testing method: prints the plugin's class name by default.
-    def test(self):
-        print(type(self).__name__)
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-
-## @brief Base class General user plugins (placed in the 'general' category).
-class PxPluginGeneral(PxPluginBase):
-    pass
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-
-## Global function: creates and returns an instance of the Plugin Manager.
-# @param mainwindow `pycross::gui::MainWindow` pointer to the app main window
-# @returns `PxPluginManager` instance of created Plugin Manager
-def create_plugin_manager(mainwindow):
-    pm = PxPluginManager(mainwindow, directories_list=[PLUGINS_FOLDER], plugin_info_ext=PLUGIN_EXTENSION) 
-    pm.setCategoriesFilter({'general': PxPluginGeneral})   
-    pm.collectPlugins()
-    return pm
+    ## Activates or deactivates loaded plugins according to the global settings.
+    def configure_plugins(self):
+        settings = self.mainwin.get_option('plugins/custom')
+        for cat_name in settings:
+            for plugin in settings[cat_name]:                
+                self.set_plugin_active(plugin['name'], cat_name, plugin['active'])

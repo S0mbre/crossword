@@ -1,5 +1,7 @@
-from utils.api import *
+from utils.pluginbase import *
 
 class PxPlug2(PxPluginGeneral):
-    def test(self):
-        self.mainwin.trigger_action('act_config', False)
+
+    @after
+    def on_act_help(self, checked):
+        print('hey from plugin 2!')

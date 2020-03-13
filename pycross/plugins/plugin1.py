@@ -1,7 +1,7 @@
-from utils.api import *
+from utils.pluginbase import *
 
 class PxPlug1(PxPluginGeneral):
 
-    @after
+    @replace
     def on_act_help(self, checked):
-        print('hey!')
+        print('hey from plugin 1!')

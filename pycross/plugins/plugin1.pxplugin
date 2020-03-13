@@ -4,5 +4,5 @@ Module = plugin1
 [Documentation]
 Description = This is plugin 1!!!
 Author = Iskander
-Version = 0.1
+Version = 0.0.1
 Website =

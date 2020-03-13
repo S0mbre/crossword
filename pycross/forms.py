@@ -1034,6 +1034,208 @@ class ToolbarCustomizer(QtWidgets.QWidget):
     @QtCore.pyqtSlot()
     def on_tw_actions_selected(self):
         self.update_actions()
+
+# ******************************************************************************** #
+# *****          NewCustomPluginDialog
+# ******************************************************************************** #        
+
+class NewCustomPluginDialog(BasicDialog):
+
+    def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
+        super().__init__(None, _('New plugin'), 'addon.png', parent, flags)
+
+# ******************************************************************************** #
+# *****          CustomPluginManager
+# ******************************************************************************** # 
+
+class CustomPluginManager(QtWidgets.QWidget):
+
+    def __init__(self, mainwindow, parent=None):
+        super().__init__(parent)
+        self.mainwindow = mainwindow
+        self.addMainLayout()
+
+    def addMainLayout(self):
+        self.lo_main = QtWidgets.QVBoxLayout()
+        self.tb_main = QtWidgets.QToolBar()
+        self.lo_main.addWidget(self.tb_main)
+
+        self.act_reload = self.tb_main.addAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Reload'))
+        self.act_reload.setToolTip(_('Reload plugins from plugin folder'))
+        self.act_reload.triggered.connect(self.on_act_reload)
+
+        self.act_add = self.tb_main.addAction(QtGui.QIcon(f"{ICONFOLDER}/plus.png"), _('New'))
+        self.act_add.setToolTip(_('Create new plugin'))
+        self.act_add.triggered.connect(self.on_act_add)
+
+        self.act_remove = self.tb_main.addAction(QtGui.QIcon(f"{ICONFOLDER}/minus.png"), _('Delete'))
+        self.act_remove.setToolTip(_('Delete selected plugins'))
+        self.act_remove.triggered.connect(self.on_act_remove)
+
+        self.act_edit = self.tb_main.addAction(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), _('Edit'))
+        self.act_edit.setToolTip(_('Edit selected plugin'))
+        self.act_edit.triggered.connect(self.on_act_edit)
+
+        self.act_clear = self.tb_main.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), _('Clear'))
+        self.act_clear.setToolTip(_('Delete all plugins'))
+        self.act_clear.triggered.connect(self.on_act_clear)
+
+        self.tb_main.addSeparator()
+
+        self.act_up = self.tb_main.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
+        self.act_up.setToolTip(_('Move plugin down (lower precedence)'))
+        self.act_up.triggered.connect(self.on_act_up)
+
+        self.act_down = self.tb_main.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), _('Down'))
+        self.act_down.setToolTip(_('Move plugin up (raise precendence)'))
+        self.act_down.triggered.connect(self.on_act_down)
+
+        self.tvPlugins = QtWidgets.QTreeView()
+        self.tvPlugins.setSortingEnabled(False)   
+        self.tvPlugins.setSelectionMode(3)      # extended selection (Ctrl, Shift)
+        self.tvPlugins.setSelectionBehavior(1)  # select rows      
+        self.tvPlugins.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.plugin_model = None
+        self.from_settings()
+        self.lo_main.addWidget(self.tvPlugins)
+
+        self.setLayout(self.lo_main)
+
+    def _make_empty_item(self):
+        item = QtGui.QStandardItem()
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        return item
+
+    def _make_padded_row(self, item, empty_count):
+        return ([item] + [self._make_empty_item() for _ in range(empty_count)])
+
+    def update_actions(self):
+        if self.plugin_model is None:
+            self.act_remove.setEnabled(False)
+            self.act_edit.setEnabled(False)
+            self.act_clear.setEnabled(False)
+            self.act_up.setEnabled(False)
+            self.act_down.setEnabled(False)
+        else:
+            first_item = self.plugin_model.item(0)
+            hasitems = first_item.hasChildren() if first_item else False
+            sel_indices = self.tvPlugins.selectionModel().selectedRows(1)
+            selrows = len(sel_indices) if sel_indices else 0
+            sel_index = self.tvPlugins.selectionModel().currentIndex()
+            sel_item = self.plugin_model.itemFromIndex(sel_index)
+            if sel_index.isValid():
+                sel_parent = self.plugin_model.parent(sel_index)
+            else:
+                sel_parent = None
+            self.act_remove.setEnabled(selrows > 0)
+            self.act_edit.setEnabled(selrows == 1)
+            self.act_clear.setEnabled(hasitems)
+            self.act_up.setEnabled((sel_item.row() > 0) if sel_index.isValid() else False)
+            self.act_down.setEnabled((sel_item.row() < (self.plugin_model.rowCount(sel_parent) - 1)) if sel_parent else False)
+
+    def from_settings(self):
+        self.plugin_model = QtGui.QStandardItemModel(0, 7)
+        self.plugin_model.setHorizontalHeaderLabels([_('Name'), _('Description'), 
+                                                    _('Version'), _('Author'), _('Copyright'), 
+                                                    _('Website'), _('Path')])
+        
+        settings = self.mainwindow.options()['plugins']['custom']
+        for category in settings:
+            root_item = QtGui.QStandardItem(category)
+            root_item.setFlags(QtCore.Qt.ItemIsEnabled)
+            for pl in settings[category]:
+                item_name = QtGui.QStandardItem(pl['name'])
+                item_name.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
+                item_name.setCheckable(True)
+                item_name.setUserTristate(False)
+                item_name.setCheckState(QtCore.Qt.Checked if pl['active'] else QtCore.Qt.Unchecked)
+                item_desc = QtGui.QStandardItem(pl['description'])
+                item_desc.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
+                item_vers = QtGui.QStandardItem(pl['version'])
+                item_vers.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
+                item_author = QtGui.QStandardItem(pl['author'])
+                item_author.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
+                item_copyright = QtGui.QStandardItem(pl['copyright'])
+                item_copyright.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
+                item_website = QtGui.QStandardItem(pl['website'])
+                item_website.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
+                item_path = QtGui.QStandardItem(pl['path'])
+                item_path.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+                root_item.appendRow([item_name, item_desc, item_vers, item_author, 
+                                    item_copyright, item_website, item_path])
+            self.plugin_model.appendRow(self._make_padded_row(root_item, 6))
+
+        self.plugin_model.itemChanged.connect(self.on_plugin_model_changed)
+        self.tvPlugins.setModel(self.plugin_model)
+        self.tvPlugins.show()
+        self.update_actions()
+
+    def to_settings(self):
+        # TODO: iterate plugin rows in tree view
+        pass
+
+    @QtCore.pyqtSlot(QtGui.QStandardItem) 
+    def on_plugin_model_changed(self, item: QtGui.QStandardItem):
+        # enable / disable plugins when checked / unchecked 'Enabled'
+        parent = item.parent()
+        if not parent: return
+        row = item.row()
+        item_name = parent.child(row, 0)
+        if not item_name or not item_name.isCheckable(): return
+        checked = bool(item_name.checkState())       
+        # iterate children
+        self.plugin_model.itemChanged.disconnect()
+        for i in range(parent.columnCount()):
+            next_item = parent.child(row, i)
+            if i == 0:
+                flags = QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
+                if checked:
+                    flags |= QtCore.Qt.ItemIsEditable
+                next_item.setFlags(flags)
+                next_item.setCheckable(True)
+            else:
+                next_item.setEnabled(checked)
+        self.plugin_model.itemChanged.connect(self.on_plugin_model_changed)
+        self.tvPlugins.show()
+
+    @QtCore.pyqtSlot()
+    def on_act_reload(self): 
+        reply = MsgBox(_('Reload plugins from folder? Click YES to soft-update currently loaded plugins and add new ones, NO to hard-reload plugins (current plugin config will be lost!).'), 
+                       self, _('Confirm Action'), 'ask', btn=['yes', 'no', 'cancel'])
+        if not reply in ('yes', 'no'): return
+        self.mainwindow.plugin_mgr.collectPlugins()
+        self.mainwindow.plugin_mgr.update_global_settings(reply == 'no')
+        self.from_settings()
+
+    @QtCore.pyqtSlot()
+    def on_act_add(self): 
+        new_plugin_dlg = NewCustomPluginDialog()
+        if not new_plugin_dlg.exec(): return
+        # TODO: add new plugin
+        self.mainwindow.plugin_mgr.collectPlugins()
+        self.mainwindow.plugin_mgr.update_global_settings()
+        self.from_settings()
+        
+    @QtCore.pyqtSlot()
+    def on_act_remove(self): 
+        pass
+        
+    @QtCore.pyqtSlot()
+    def on_act_edit(self): 
+        pass
+        
+    @QtCore.pyqtSlot()
+    def on_act_clear(self): 
+        pass
+        
+    @QtCore.pyqtSlot()
+    def on_act_up(self): 
+        pass
+        
+    @QtCore.pyqtSlot()
+    def on_act_down(self): 
+        pass
+        
             
 # ******************************************************************************** #
 # *****          SettingsDialog
@@ -1876,11 +2078,7 @@ class SettingsDialog(BasicDialog):
         self.stacked.addWidget(self.page_plugins_3party)
 
         # Plugins > Custom
-        self.page_plugins_custom = QtWidgets.QWidget()
-        self.layout_plugins_custom = QtWidgets.QFormLayout()
-        self.layout_plugins_custom.setSpacing(10)
-
-        self.page_plugins_custom.setLayout(self.layout_plugins_custom)
+        self.page_plugins_custom = CustomPluginManager(self.mainwindow)
         self.stacked.addWidget(self.page_plugins_custom)
 
         # Printing
@@ -2518,13 +2716,7 @@ class SettingsDialog(BasicDialog):
         # plugins > custom
         settings['plugins']['custom'] = {}
         settings['plugins']['custom']['general'] = []
-        for plugin in self.mainwindow.plugin_mgr.getPluginsOfCategory('general'):
-            self.mainwindow.plugin_mgr.activatePluginByName(plugin.name, 'general')
-            pl = {'name': plugin.name, 'active': plugin.is_activated, 'author': plugin.author, 
-                  'copyright': plugin.copyright, 'description': plugin.description,
-                  'path': plugin.path, 'version': str(plugin.version), 'website': plugin.website}
-            settings['plugins']['custom']['general'].append(pl)
-
+        
         # printing
         settings['printing']['margins'] = [self.spin_margin_left.value(), self.spin_margin_right.value(),
                                            self.spin_margin_top.value(), self.spin_margin_bottom.value()]

@@ -15,6 +15,7 @@ from PyQt5 import Qsci
 ## @brief Scintilla-based Python editor
 # Adapted from [this example](https://eli.thegreenplace.net/2011/04/01/sample-using-qscintilla-with-pyqt)
 # and [this addition](https://stackoverflow.com/questions/40002373/qscintilla-based-text-editor-in-pyqt5-with-clickable-functions-and-variables)
+# @see [QScintilla docs](https://qscintilla.com/)
 class SynEditor(Qsci.QsciScintilla):
     
     ARROW_MARKER_NUM = 8
@@ -83,21 +84,37 @@ class SynEditor(Qsci.QsciScintilla):
 # *****          SynEditorWidget
 # ******************************************************************************** #            
 
-class SynEditorWidget(QtWidgets.QMainWindow):
+class SynEditorWidget(QtWidgets.QDialog):
 
     def __init__(self, lexer=Qsci.QsciLexerPython(), source=None, minsize=(600, 400),
-        icon='file.png', title=':: Code Editor ::'):
+                 icon='file.png', title=':: Code Editor ::'):
         super().__init__()
-        self.wmain = QtWidgets.QFrame(self)
-        self.wmain.setStyleSheet("QWidget { background-color: #ffeaeaea }")
-        self.wmain.setFrameStyle(QtWidgets.QFrame.NoFrame)
         self.layout_main = QtWidgets.QVBoxLayout()
-        self.editor = SynEditor(self, lexer, source)
-        self.layout_main.addWidget(self.editor)
-        self.wmain.setLayout(self.layout_main)
-        self.setCentralWidget(self.wmain)
+        self.add_elements(lexer, source)     
+        self.setLayout(self.layout_main)
         # set minimum widget size
         if minsize: self.setMinimumSize(*minsize)
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}"))
         self.setWindowTitle(title)
-        #self.show()
+
+    def add_elements(self, lexer, source):
+        self.add_central(lexer, source)
+        self.add_bottom()
+
+    def add_central(self, lexer, source):
+        self.editor = SynEditor(self, lexer, source)
+        self.layout_main.addWidget(self.editor)
+
+    def add_bottom(self):
+        self.layout_bottom = QtWidgets.QHBoxLayout()
+        self.layout_bottom.setSpacing(10)
+        self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('OK'), None)
+        self.btn_OK.setMaximumWidth(150)
+        self.btn_OK.setDefault(True)
+        self.btn_OK.clicked.connect(self.accept)
+        self.btn_cancel = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/multiply-1.png"), _('Cancel'), None)
+        self.btn_cancel.setMaximumWidth(150)
+        self.btn_cancel.clicked.connect(self.reject)
+        self.layout_bottom.addWidget(self.btn_OK)
+        self.layout_bottom.addWidget(self.btn_cancel)
+        self.layout_main.addLayout(self.layout_bottom)
