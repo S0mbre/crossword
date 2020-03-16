@@ -129,16 +129,21 @@ class PxPluginManager(PluginManager):
     # @param plugin `yapsy::PluginInfo::PluginInfo` the plugin object
     # @returns `dict` plugin info record
     def _plugin_info_to_dic(self, plugin):
-        return {'name': plugin.name, 'active': plugin.is_activated, 'author': plugin.author, 
+        d = {'name': plugin.name, 'active': plugin.is_activated, 'author': plugin.author, 
                 'copyright': plugin.copyright, 'description': plugin.description,
-                'path': plugin.path, 'version': str(plugin.version), 'website': plugin.website}
+                'path': plugin.path, 'website': plugin.website}
+        try:
+            d['version'] = str(plugin.version)
+        except:
+            d['version'] = ''
+        return d
 
     ## Returns the plugin object corresponding to a plugin info record in the global settings.
-    # @param settings `dict` pointer to global settings
+    # @param settings `dict` pointer to global settings ['plugins']['custom']
     # @param plugin_name `str` name of plugin
     # @param plugin_category `str` name of plugin category
     # @returns `yapsy::PluginInfo::PluginInfo` plugin object or `None` on failure
-    def _plugin_from_settings(self, settings, plugin_name, plugin_category):
+    def plugin_from_settings(self, settings, plugin_name, plugin_category):
         if not plugin_category in settings:
             return None
         for plugin_info in settings[plugin_category]:
@@ -180,7 +185,7 @@ class PxPluginManager(PluginManager):
                 plugin = self.getPluginByName(settings[category][i]['name'], category)
                 if plugin is None:
                     # if non-existing, remove from settings
-                    del settings[category][i]
+                    settings[category].pop(i)
                 else:
                     # if existing, active / deactivate it based on current settings
                     self.set_plugin_active(settings[category][i]['name'], category, settings[category][i]['active'])                    

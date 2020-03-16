@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.utils
-import sys, os, subprocess, traceback, uuid, tempfile, platform, re, json
+import sys, os, subprocess, traceback, uuid, tempfile, platform, re, json, shutil
 from datetime import datetime, time
 
 from .globalvars import *
@@ -24,6 +24,9 @@ def getosname():
 
 def generate_uuid():
     return uuid.uuid4().hex
+
+def copy_file(path_from, path_to):
+    return shutil.copy(path_from, path_to)
 
 def walk_dir(root_path, abs_path=True, recurse=True, dir_process_function=None,
              file_process_function=None, file_types=None):

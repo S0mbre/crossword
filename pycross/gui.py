@@ -1583,14 +1583,19 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param show `bool` whether to show the editor window
     # @see utils::synteditor
     @pluggable('general')
-    def create_syneditor(self, source=None, show=True):
+    def create_syneditor(self, source=None, show=True, modal=False):
         from utils.synteditor import SynEditorWidget
         if not hasattr(self, 'syneditor'):
             ## `utils::synteditor::SynEditorWidget` inbuilt python code editor
             self.syneditor = SynEditorWidget(source=source)
         else:
             self.syneditor.editor.setText(source or '')
-        if show: self.syneditor.show()
+        if show: 
+            if modal:
+                return self.syneditor.exec()
+            else:
+                return self.syneditor.show()
+        return None
 
     ## Slot fires when the cw generation thread (MainWindow::gen_thread) starts up.
     # Performs preliminary UI element setups.

@@ -29,7 +29,7 @@ class SynEditor(Qsci.QsciScintilla):
         self.setFont(font)
 
         # Indentation
-        self.setIndentationsUseTabs(True)
+        self.setIndentationsUseTabs(False)
         self.setTabWidth(4)
         self.setAutoIndent(True)
 
@@ -118,3 +118,6 @@ class SynEditorWidget(QtWidgets.QDialog):
         self.layout_bottom.addWidget(self.btn_OK)
         self.layout_bottom.addWidget(self.btn_cancel)
         self.layout_main.addLayout(self.layout_bottom)
+
+    def currenttext(self):
+        return self.editor.text()

@@ -50,6 +50,14 @@ HTTP_PROXIES = None # or dict, e.g. {'http': 'http://ip:port', 'https': 'http://
 HTTP_TIMEOUT = 5                 # ожидание соединения и ответа (сек.) None = вечно
 MAX_RESULTS = 500
 PLUGIN_EXTENSION = 'pxplugin'
+PLUGIN_TEMPLATE_GENERAL = """\
+from utils.pluginbase import *
+
+class PxPlugin000(PxPluginGeneral):
+
+    # >>> add code here <<<
+    pass
+"""
 
 APP_LANGUAGES = [('English (US)', '', '', 'united-states-of-america.png', "The application must be restarted to apply new language settings. Restart now?"), 
                  ('Russian', 'ru', 'Русский', 'russia.png', "Приложение должно быть перезапущено для применения новых настроек языка. Перезапустить сейчас?"), 
