@@ -47,34 +47,9 @@ class PxAPI:
             else:
                 raise AttributeError(_("MainWindow has no '{}' action!").format(action_name))
 
-    ## Sets a global option value.
-    # @param option `str` an option search string delimited by 'option_sep', e.g. 'plugins/thirdparty/git/active'
-    # @param value value written to the option
-    # @param option_sep `str` the option key string delimiter (default = '/')
-    # @param apply `bool` if True, the new settings will be applied straightforward
-    # @param save_settings `bool` if True, the settings file will be updated (saved)
-    def set_option(self, option, value, option_sep='/', apply=True, save_settings=True):
-        keys = option.split(option_sep)
-        op = self.__mainwindow.options()
-        for key in keys:
-            op = op[key]
-        op = value
-        if apply: self.__mainwindow.apply_config(save_settings, False)
-
-    ## Gets a global option value or the whole global settings dictionary.
-    # @param option `str`|`None` an option search string delimited by 'option_sep', 
-    # e.g. 'plugins/thirdparty/git/active'. If `None`, the whole 
-    # guisettings::CWSettings::settings dictionary is returned.
-    # @param option_sep `str` the option key string delimiter (default = '/')
-    # @returns value of the located option
-    # @exception `KeyError` unable to locate option in guisettings::CWSettings::settings
-    def get_option(self, option=None, option_sep='/'):       
-        op = self.__mainwindow.options()
-        if not option: return op
-        keys = option.split(option_sep)
-        for key in keys:
-            op = op[key]
-        return op
+    ## Returns a pointer to the global options dict guisettings::CWSettings::settings.
+    def global_options(self, option=None, option_sep='/'):       
+        return self.__mainwindow.options()        
 
     ## Getter method for the main window members by their name.
     # @param propname `str` member name (property or method)
@@ -170,7 +145,7 @@ class PxPluginManager(PluginManager):
     # @param forced_update `bool` if `True`, all current plugin settings will be cleared
     # and plugins will be added anew from the plugin manager (default = `False`)
     def update_global_settings(self, forced_update=False):
-        settings = self.mainwin.get_option('plugins/custom')
+        settings = self.mainwin.global_options()['plugins']['custom']
         
         for category in settings:
 
@@ -204,7 +179,7 @@ class PxPluginManager(PluginManager):
                     # if not found in settings, append new plugin at the end
                     settings[category].append(self._plugin_info_to_dic(pl))
 
-        if DEBUGGING: print(settings)
+        #if DEBUGGING: print(settings)
 
     ## @brief Gets the list of plugins for a given category respecting their order.
     # This method is added since the inherited `getPluginsOfCategory` method of `PluginManager`
@@ -215,12 +190,13 @@ class PxPluginManager(PluginManager):
     # @returns `list` list of plugins of type yapsy::PluginInfo::PluginInfo
     def get_plugins_of_category(self, category, active_only=True):
         plugins = []
-        settings = self.mainwin.get_option('plugins/custom')
+        settings = self.mainwin.global_options()['plugins']['custom']
         for pl in settings[category]:
             if not active_only or pl['active']:
                 plugin = self.getPluginByName(pl['name'], category)
                 if not plugin is None: 
                     plugins.append(plugin)
+        #if DEBUGGING and plugins: print(f"FOUND PLUGINS: {plugins}")
         return plugins
 
     ## @brief Returns the list of methods with a given name from all active plugins.
@@ -236,12 +212,12 @@ class PxPluginManager(PluginManager):
             m = getattr(plugin.plugin_object, method_name, None)
             if m and callable(m):
                 methods.append(m)
-        #if DEBUGGING: print(f"FOUND METHODS: {methods}")
+        #if DEBUGGING and methods: print(f"FOUND METHODS: {methods}")
         return methods
 
     ## Activates or deactivates loaded plugins according to the global settings.
     def configure_plugins(self):
-        settings = self.mainwin.get_option('plugins/custom')
+        settings = self.mainwin.global_options()['plugins']['custom']
         for cat_name in settings:
             for plugin in settings[cat_name]:                
                 self.set_plugin_active(plugin['name'], cat_name, plugin['active'])

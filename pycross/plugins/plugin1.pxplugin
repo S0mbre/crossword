@@ -1,8 +1,8 @@
 [Core]
-Name = Plugin 1
+Name = plugin1
 Module = plugin1
 [Documentation]
-Description = This is plugin 1!!!
-Author = Iskander
-Version = 0.0.1
-Website =
+Author = iskie
+Version = 0.1
+Copyright = Unknown
+Website = None

@@ -86,7 +86,7 @@ def pluggable(category):
             cnt = len(plugin_methods)
             for i in range(cnt):
                 wraptype = getattr(plugin_methods[i], 'wraptype', None)
-                #print(f"WRAP TYPE OF FUNC '{func.__name__}' is '{wraptype}'")
+                #if DEBUGGING: print(f"WRAP TYPE OF FUNC '{func.__name__}' is '{wraptype}'")
                 if wraptype == 'before':
                     plugin_methods[i](*args, **kwargs)
                     res = func(self, *args, **kwargs)
@@ -110,7 +110,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, **kwargs):        
         super().__init__()
         ## create plugin manager instance to operate user plugins
-        self._create_plugin_manager()
+        self.create_plugin_manager()
         ## `crossword::Crossword` internal crossword generator object
         self.cw = None   
         ## `str` currently opened cw file
@@ -163,13 +163,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Сreates and returns an instance of the Plugin Manager.
     # @param mainwindow `MainWindow` pointer to the app main window
+    # @param collect_plugins `bool` whether to collect all plugins on creation (default)
     # @returns `utils::pluginmanager::PxPluginManager` instance of created Plugin Manager
-    def _create_plugin_manager(self):
+    def create_plugin_manager(self, collect_plugins=True):
         ## `utils::pluginmanager::PxPluginManager` plugin manager instance to operate user plugins
         self.plugin_mgr = PxPluginManager(self, directories_list=[PLUGINS_FOLDER], plugin_info_ext=PLUGIN_EXTENSION) 
-        self.plugin_mgr.setCategoriesFilter({'general': PxPluginGeneral})   
-        self.plugin_mgr.collectPlugins()
-        self.plugin_mgr.update_global_settings()
+        self.plugin_mgr.setCategoriesFilter({'general': PxPluginGeneral}) 
+        if collect_plugins:
+            self.plugin_mgr.collectPlugins()
+            self.plugin_mgr.update_global_settings()
         
     ## Creates all window elements: layouts, panels, toolbars, widgets.
     # @param autoloadcw `bool` whether to load crossword automatically from autosave file (utils::globalvars::SAVEDCW_FILE)

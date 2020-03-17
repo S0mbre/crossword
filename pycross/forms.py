@@ -1042,29 +1042,36 @@ class ToolbarCustomizer(QtWidgets.QWidget):
 
 class NewCustomPluginDialog(BasicDialog):
 
-    def __init__(self, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
+    def __init__(self, mainwindow, plugin_category='', plugin_name='', plugin_desc='',
+            plugin_vers='', plugin_auth='', plugin_copyright='', plugin_website='', plugin_path='',
+            parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
+        self.presets = {'plugin_category': plugin_category, 'plugin_name': plugin_name,
+                        'plugin_desc': plugin_desc, 'plugin_vers': plugin_vers,
+                        'plugin_auth': plugin_auth, 'plugin_copyright': plugin_copyright,
+                        'plugin_website': plugin_website, 'plugin_path': plugin_path}
         super().__init__(None, _('New plugin'), 'addon.png', parent, flags)
 
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QFormLayout()
 
-        self.le_name = QtWidgets.QLineEdit('My plugin')
+        self.le_name = QtWidgets.QLineEdit(self.presets['plugin_name'])
         self.combo_category = QtWidgets.QComboBox()
         self.combo_category.setEditable(False)
         self.combo_category.addItems([k for k in self.mainwindow.options()['plugins']['custom']])
-        self.combo_category.setCurrentIndex(0)
-        self.le_author = QtWidgets.QLineEdit('')
-        self.le_version = QtWidgets.QLineEdit('')
-        self.le_copyright = QtWidgets.QLineEdit('')
-        self.te_description = QtWidgets.QPlainTextEdit('')
-        self.le_website = QtWidgets.QLineEdit('')
+        index = self.combo_category.findText(self.presets['plugin_category'])
+        self.combo_category.setCurrentIndex(index if index >= 0 else 0)
+        self.le_author = QtWidgets.QLineEdit(self.presets['plugin_auth'])
+        self.le_version = QtWidgets.QLineEdit(self.presets['plugin_vers'])
+        self.le_copyright = QtWidgets.QLineEdit(self.presets['plugin_copyright'])
+        self.te_description = QtWidgets.QPlainTextEdit(self.presets['plugin_desc'])
+        self.le_website = QtWidgets.QLineEdit(self.presets['plugin_website'])
         self.combo_source = QtWidgets.QComboBox()
         self.combo_source.setEditable(False)
-        self.combo_source.addItems([_('From file'), _('Edit in Editor')])
-        self.combo_source.setCurrentIndex(0)
-        self.le_sourcepath = BrowseEdit(filefilters=_('Python source files (*.py)'))
+        self.combo_source.addItems([_('From file'), _('Edit in Editor')])        
+        self.le_sourcepath = BrowseEdit(self.presets['plugin_path'], filefilters=_('Python source files (*.py)'))
         self.combo_source.currentIndexChanged.connect(self.on_combo_source)
+        self.combo_source.setCurrentIndex(0)
 
         self.layout_controls.addRow(_('Category'), self.combo_category)
         self.layout_controls.addRow(_('Name'), self.le_name)
@@ -1085,10 +1092,11 @@ class NewCustomPluginDialog(BasicDialog):
         if not plname:
             MsgBox(_('Plugin name cannot be empty!'), title=_('Invalid input'), msgtype='error')
             return False
-        for pl in self.mainwindow.plugin_mgr.getPluginsOfCategory(catname):
-            if pl.name == plname:
-                MsgBox(_('Plugin name "{}" is already occupied! Please choose another.').format(catname), title=_('Invalid input'), msgtype='error')
-                return False
+        if not self.presets['plugin_name']:
+            for pl in self.mainwindow.plugin_mgr.getPluginsOfCategory(catname):
+                if pl.name == plname:
+                    MsgBox(_('Plugin name "{}" is already occupied! Please choose another.').format(plname), title=_('Invalid input'), msgtype='error')
+                    return False
         vers = self.le_version.text().strip()
         if vers:
             try:
@@ -1157,7 +1165,8 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.tvPlugins.setSortingEnabled(False)   
         self.tvPlugins.setSelectionMode(3)      # extended selection (Ctrl, Shift)
         self.tvPlugins.setSelectionBehavior(1)  # select rows      
-        self.tvPlugins.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)        
+        self.tvPlugins.setContextMenuPolicy(QtCore.Qt.CustomContextMenu) 
+        self.tvPlugins.doubleClicked.connect(QtCore.pyqtSlot(QtCore.QModelIndex)(lambda _: self.on_act_edit()))   
         self.plugin_model = None
         self.from_settings()
         self.lo_main.addWidget(self.tvPlugins)
@@ -1193,7 +1202,7 @@ class CustomPluginManager(QtWidgets.QWidget):
             self.act_remove.setEnabled(selrows > 0)
             self.act_edit.setEnabled(selrows == 1)
             self.act_clear.setEnabled(hasitems)
-            self.act_up.setEnabled((sel_item.row() > 0) if sel_index.isValid() else False)
+            self.act_up.setEnabled((sel_item.row() > 0) if sel_parent else False)
             self.act_down.setEnabled((sel_item.row() < (self.plugin_model.rowCount(sel_parent) - 1)) if sel_parent else False)
 
     def from_settings(self):
@@ -1205,19 +1214,18 @@ class CustomPluginManager(QtWidgets.QWidget):
         
         settings = self.mainwindow.options()['plugins']['custom']
         for category in settings:
+            if not settings[category]: continue
             root_item = QtGui.QStandardItem(category)
             root_item.setFlags(QtCore.Qt.ItemIsEnabled)
             for pl in settings[category]:
                 checked = pl['active']
                 item_name = QtGui.QStandardItem(pl['name'])
-                flags = QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
-                if checked: flags |= QtCore.Qt.ItemIsEditable
-                item_name.setFlags(flags)
+                item_name.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
                 item_name.setCheckable(True)
                 item_name.setUserTristate(False)
                 item_name.setCheckState(QtCore.Qt.Checked if checked else QtCore.Qt.Unchecked)
                 flags = QtCore.Qt.ItemIsSelectable
-                if checked: flags |= QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsEnabled
+                if checked: flags |= QtCore.Qt.ItemIsEnabled
                 item_desc = QtGui.QStandardItem(pl['description'])
                 item_desc.setFlags(flags)
                 item_vers = QtGui.QStandardItem(pl['version'])
@@ -1240,6 +1248,7 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.tvPlugins.setModel(self.plugin_model)
         self.tvPlugins.selectionModel().selectionChanged.connect(self.on_tvPlugins_selected)
         self.tvPlugins.show()
+        self.tvPlugins.expandAll()
         self.update_actions()
 
     def update_active_states(self):
@@ -1257,10 +1266,128 @@ class CustomPluginManager(QtWidgets.QWidget):
                         break
 
     def reload_plugins(self, forced_update=False):
+        self.mainwindow.create_plugin_manager(False)
         self.mainwindow.plugin_mgr.collectPlugins()
         self.update_active_states()
         self.mainwindow.plugin_mgr.update_global_settings(forced_update)
         self.from_settings()
+
+    def select_plugin(self, plcat, plname):
+        self.tvPlugins.clearSelection()
+        found = self.plugin_model.findItems(plcat)
+        if found:
+            found = found[0]
+            for i in range(found.rowCount()):
+                item = found.child(i)
+                if item.text() == plname:                    
+                    selmodel = self.tvPlugins.selectionModel()
+                    selmodel.select(item.index(), QtCore.QItemSelectionModel.Rows)
+                    self.tvPlugins.setSelectionModel(selmodel)
+                    return item
+        return None
+
+    def add_or_edit_plugin(self, plugin_item=None):
+        category = ''
+        old_name = ''
+        old_desc = ''
+        old_vers = ''
+        old_auth = ''
+        old_copyright = ''
+        old_website = ''
+        old_path = ''
+        plugin_active = plugin_item is None
+        if plugin_item:          
+            row = plugin_item.row()  
+            parent_item = plugin_item.parent()
+            if not parent_item: return
+            category = parent_item.text()
+            old_name = parent_item.child(row, 0).text()
+            old_desc = parent_item.child(row, 1).text()
+            old_vers = parent_item.child(row, 2).text()
+            old_auth = parent_item.child(row, 3).text()
+            old_copyright = parent_item.child(row, 4).text()
+            old_website = parent_item.child(row, 5).text()
+            old_path = parent_item.child(row, 6).text()
+            plugin_active = bool(parent_item.child(row, 0).checkState())
+
+        new_plugin_dlg = NewCustomPluginDialog(self.mainwindow, category, old_name, old_desc,
+            old_vers, old_auth, old_copyright, old_website, old_path + '.py' if old_path else '')
+        if not new_plugin_dlg.exec(): return
+        
+        plname = new_plugin_dlg.le_name.text().strip()
+        plcat = new_plugin_dlg.combo_category.currentText()
+        plauthor = new_plugin_dlg.le_author.text().strip()
+        plversion = new_plugin_dlg.le_version.text().strip()
+        plwebsite = new_plugin_dlg.le_website.text().strip()
+        plcopyright = new_plugin_dlg.le_copyright.text().strip()
+        pldesc = new_plugin_dlg.te_description.toPlainText().strip()
+        plmodule = plname.replace(' ', '_').replace('-', '_')
+        plfile = os.path.join(PLUGINS_FOLDER, plmodule + '.py')
+
+        # make plugin source file
+        if new_plugin_dlg.combo_source.currentIndex() == 0:
+            # from file path
+            fpath = new_plugin_dlg.le_sourcepath.text()
+            fdir = os.path.dirname(fpath)
+            if fpath != plfile:
+                if os.path.samefile(fdir, PLUGINS_FOLDER):
+                    os.rename(fpath, plfile)
+                else:
+                    copy_file(fpath, plfile)
+        
+        # edit source
+        if os.path.isfile(plfile):
+            with open(plfile, 'r', encoding=ENCODING) as srcfile:
+                srctext = srcfile.read()
+        else:
+            srctext = PLUGIN_TEMPLATE_GENERAL
+
+        if self.mainwindow.create_syneditor(srctext, modal=True):            
+            with open(plfile, 'w', encoding=ENCODING) as srcfile:
+                srcfile.write(self.mainwindow.syneditor.currenttext().replace('\r\n', '\n'))
+
+        if plugin_item:
+            # delete old plugin files
+            try:
+                if not os.path.samefile(plfile, old_path + '.py'):
+                    os.remove(old_path + '.py')
+            except:
+                pass            
+
+        # make plugin info file
+        plinfofile = os.path.join(PLUGINS_FOLDER, plmodule + '.' + PLUGIN_EXTENSION)
+
+        plinfo = ['[Core]', f'Name = {plname}', f'Module = {plmodule}', '[Documentation]']
+        if plauthor:
+            plinfo.append(f'Author = {plauthor}')
+        if plversion:
+            plinfo.append(f'Version = {plversion}')
+        if pldesc:
+            plinfo.append(f'Description = {pldesc}')
+        if plcopyright:
+            plinfo.append(f'Copyright = {plcopyright}')
+        if plwebsite:
+            plinfo.append(f'Website = {plwebsite}')
+        with open(plinfofile, 'w', encoding=ENCODING) as infofile:
+            infofile.write('\n'.join(plinfo))
+
+        if plugin_item:
+            # delete old plugin files            
+            try:
+                if not os.path.samefile(plinfofile, old_path + '.' + PLUGIN_EXTENSION):
+                    os.remove(old_path + '.' + PLUGIN_EXTENSION)
+            except:
+                pass
+
+        # re-collect plugins and update settings
+        self.reload_plugins()
+
+        # select added item
+        self.tvPlugins.clearSelection()
+        found = self.select_plugin(plcat, plname)
+        if found:
+            found.setCheckState(QtCore.Qt.Checked if plugin_active else QtCore.Qt.Unchecked)
+        self.update_actions()
 
     @QtCore.pyqtSlot(QtGui.QStandardItem) 
     def on_plugin_model_changed(self, item: QtGui.QStandardItem):
@@ -1276,10 +1403,7 @@ class CustomPluginManager(QtWidgets.QWidget):
         for i in range(parent.columnCount()):
             next_item = parent.child(row, i)
             if i == 0:
-                flags = QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
-                if checked:
-                    flags |= QtCore.Qt.ItemIsEditable
-                next_item.setFlags(flags)
+                next_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
                 next_item.setCheckable(True)
             else:
                 next_item.setEnabled(checked)
@@ -1299,63 +1423,7 @@ class CustomPluginManager(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot()
     def on_act_add(self): 
-        new_plugin_dlg = NewCustomPluginDialog(self.mainwindow)
-        if not new_plugin_dlg.exec(): return
-        
-        plname = new_plugin_dlg.le_name.text().strip()
-        plcat = new_plugin_dlg.combo_category.currentText()
-        plauthor = new_plugin_dlg.le_author.text().strip()
-        plversion = new_plugin_dlg.le_version.text().strip()
-        plwebsite = new_plugin_dlg.le_website.text().strip()
-        plcopyright = new_plugin_dlg.le_copyright.text().strip()
-        pldesc = new_plugin_dlg.te_description.toPlainText().strip()
-        plmodule = plname.replace(' ', '_').replace('-', '_')
-        plfile = os.path.join(PLUGINS_FOLDER, plmodule + '.py')
-
-        # make plugin source file
-        if new_plugin_dlg.combo_source.currentIndex() == 0:
-            # from file path
-            fpath = new_plugin_dlg.le_sourcepath.text()
-            fdir = os.path.dirname(fpath)
-            if os.path.samefile(fdir, PLUGINS_FOLDER):
-                os.rename(fpath, plfile)
-            else:
-                copy_file(fpath, plfile)
-        else:
-            # edit source
-            if not self.mainwindow.create_syneditor(PLUGIN_TEMPLATE_GENERAL, modal=True):
-                return
-            with open(plfile, 'w', encoding=ENCODING) as srcfile:
-                srcfile.write(self.mainwindow.syneditor.currenttext())
-
-        # make plugin info file
-        plinfofile = os.path.join(PLUGINS_FOLDER, plmodule + '.' + PLUGIN_EXTENSION)
-
-        plinfo = ['[Core]', f'Name = {plname}', f'Module = {plmodule}', '[Documentation]']
-        if plauthor:
-            plinfo.append(f'Author = {plauthor}')
-        if plversion:
-            plinfo.append(f'Version = {plversion}')
-        if pldesc:
-            plinfo.append(f'Description = {pldesc}')
-        if plcopyright:
-            plinfo.append(f'Copyright = {plcopyright}')
-        if plwebsite:
-            plinfo.append(f'Website = {plwebsite}')
-        with open(plinfofile, 'w', encoding=ENCODING) as infofile:
-            infofile.write('\n'.join(plinfo))
-
-        # re-collect plugins and update settings
-        self.reload_plugins()
-
-        # select added item
-        self.tvPlugins.clearSelection()
-        found = self.plugin_model.findItems(plname)
-        if found:
-            selmodel = self.tvPlugins.selectionModel()
-            selmodel.select(found[0], QtCore.QItemSelectionModel.Rows)
-            self.tvPlugins.setSelectionModel(selmodel)
-        self.update_actions()
+        self.add_or_edit_plugin()
         
     @QtCore.pyqtSlot()
     def on_act_remove(self): 
@@ -1363,19 +1431,19 @@ class CustomPluginManager(QtWidgets.QWidget):
                        self, _('Confirm Action'), 'ask')
         if reply != 'yes': return
         settings = self.mainwindow.options()['plugins']['custom']
-        for sel_index in self.tvPlugins.selectionModel().selectedRows():
-            parent_index = sel_index.parent()
-            if not parent_index.isValid(): continue
-            plugin = self.mainwindow.plugin_mgr.plugin_from_settings(settings, 
-                self.plugin_model.itemFromIndex(sel_index).text(), 
-                self.plugin_model.itemFromIndex(parent_index).text())
-            if plugin is None: continue
+        for sel_index in self.tvPlugins.selectionModel().selectedRows(0):
+            item = self.plugin_model.itemFromIndex(sel_index)
+            parent = item.parent()
+            if not parent: continue
+            plpath = parent.child(item.row(), 6).text()
             try:
-                os.remove(plugin.path + '.py')
-                os.remove(plugin.path + '.' + PLUGIN_EXTENSION)
-            except Exception as err:
-                if DEBUGGING: print(err)
-                continue
+                os.remove(plpath + '.py')
+            except:
+                pass
+            try:
+                os.remove(plpath + '.' + PLUGIN_EXTENSION)
+            except:
+                pass
         self.reload_plugins()
         self.tvPlugins.clearSelection()
         self.update_actions()
@@ -1385,27 +1453,7 @@ class CustomPluginManager(QtWidgets.QWidget):
         sel_index = self.tvPlugins.selectionModel().currentIndex() 
         if len(self.tvPlugins.selectionModel().selectedRows()) != 1 or \
             not sel_index.isValid() or not sel_index.parent().isValid(): return
-        parent = self.plugin_model.itemFromIndex(sel_index.parent())
-        plname = parent.child(sel_index.row(), 0).text()
-        plugin = self.mainwindow.plugin_mgr.plugin_from_settings(self.mainwindow.options()['plugins']['custom'], 
-            plname, parent.text())
-        if plugin is None: return
-        srcpath = plugin.path + '.py'
-        with open(srcpath, 'r', encoding=ENCODING) as filein:
-            srctext = filein.read().strip()
-        if not self.mainwindow.create_syneditor(srctext, modal=True): return
-        with open(srcpath, 'w', encoding=ENCODING) as fileout:
-            fileout.write(self.mainwindow.syneditor.currenttext())
-        self.reload_plugins()
-
-        # select added item
-        self.tvPlugins.clearSelection()
-        found = self.plugin_model.findItems(plname)
-        if found:
-            selmodel = self.tvPlugins.selectionModel()
-            selmodel.select(found[0], QtCore.QItemSelectionModel.Rows)
-            self.tvPlugins.setSelectionModel(selmodel)
-        self.update_actions()
+        self.add_or_edit_plugin(self.plugin_model.itemFromIndex(sel_index))
         
     @QtCore.pyqtSlot()
     def on_act_clear(self): 
@@ -1418,11 +1466,37 @@ class CustomPluginManager(QtWidgets.QWidget):
         
     @QtCore.pyqtSlot()
     def on_act_up(self): 
-        pass
+        sel_index = self.tvPlugins.selectionModel().currentIndex()
+        if not sel_index.isValid(): return
+        sel_item = self.plugin_model.itemFromIndex(sel_index)
+        sel_parent = sel_item.parent()
+        if not sel_parent or (sel_item.row() == 0): return
+        plname = sel_item.text()
+        plcat = sel_parent.text()
+        settings = self.mainwindow.options()['plugins']['custom'][plcat]
+        for i, pl in enumerate(settings):
+            if pl['name'] == sel_item.text():
+                settings.insert(i - 1, settings.pop(i))
+                break
+        self.reload_plugins()
+        self.select_plugin(plcat, plname)
         
     @QtCore.pyqtSlot()
     def on_act_down(self): 
-        pass
+        sel_index = self.tvPlugins.selectionModel().currentIndex()
+        if not sel_index.isValid(): return
+        sel_item = self.plugin_model.itemFromIndex(sel_index)
+        sel_parent = sel_item.parent()
+        if not sel_parent or (sel_item.row() >= (sel_parent.rowCount() - 1)): return
+        plname = sel_item.text()
+        plcat = sel_parent.text()
+        settings = self.mainwindow.options()['plugins']['custom'][plcat]
+        for i, pl in enumerate(settings):
+            if pl['name'] == sel_item.text():
+                settings.insert(i + 1, settings.pop(i))
+                break
+        self.reload_plugins()
+        self.select_plugin(plcat, plname)
         
             
 # ******************************************************************************** #
@@ -2903,7 +2977,7 @@ class SettingsDialog(BasicDialog):
 
         # plugins > custom
         settings['plugins']['custom'] = {}
-        settings['plugins']['custom']['general'] = []
+        settings['plugins']['custom'].update(CWSettings.settings['plugins']['custom'])
         self.page_plugins_custom.reload_plugins()
         
         # printing
