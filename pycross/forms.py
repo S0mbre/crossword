@@ -1042,7 +1042,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
 
 class NewCustomPluginDialog(BasicDialog):
 
-    def __init__(self, mainwindow, plugin_category='', plugin_name='', plugin_desc='',
+    def __init__(self, mainwindow, title, plugin_category='', plugin_name='', plugin_desc='',
             plugin_vers='', plugin_auth='', plugin_copyright='', plugin_website='', plugin_path='',
             parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
@@ -1050,7 +1050,7 @@ class NewCustomPluginDialog(BasicDialog):
                         'plugin_desc': plugin_desc, 'plugin_vers': plugin_vers,
                         'plugin_auth': plugin_auth, 'plugin_copyright': plugin_copyright,
                         'plugin_website': plugin_website, 'plugin_path': plugin_path}
-        super().__init__(None, _('New plugin'), 'addon.png', parent, flags)
+        super().__init__(None, title, 'addon.png', parent, flags)
 
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QFormLayout()
@@ -1279,10 +1279,10 @@ class CustomPluginManager(QtWidgets.QWidget):
             found = found[0]
             for i in range(found.rowCount()):
                 item = found.child(i)
-                if item.text() == plname:                    
-                    selmodel = self.tvPlugins.selectionModel()
-                    selmodel.select(item.index(), QtCore.QItemSelectionModel.Rows)
-                    self.tvPlugins.setSelectionModel(selmodel)
+                if item.text() == plname:
+                    print(plname)                  
+                    self.tvPlugins.selectionModel().setCurrentIndex(item.index(), 
+                        QtCore.QItemSelectionModel.Select | QtCore.QItemSelectionModel.Rows)
                     return item
         return None
 
@@ -1310,8 +1310,10 @@ class CustomPluginManager(QtWidgets.QWidget):
             old_path = parent_item.child(row, 6).text()
             plugin_active = bool(parent_item.child(row, 0).checkState())
 
-        new_plugin_dlg = NewCustomPluginDialog(self.mainwindow, category, old_name, old_desc,
-            old_vers, old_auth, old_copyright, old_website, old_path + '.py' if old_path else '')
+        new_plugin_dlg = NewCustomPluginDialog(self.mainwindow, 
+            _('New plugin') if not plugin_item else _('Editing: {}').format(old_name),
+            category, old_name, old_desc, old_vers, old_auth,
+            old_copyright, old_website, old_path + '.py' if old_path else '')
         if not new_plugin_dlg.exec(): return
         
         plname = new_plugin_dlg.le_name.text().strip()
@@ -1427,7 +1429,7 @@ class CustomPluginManager(QtWidgets.QWidget):
         
     @QtCore.pyqtSlot()
     def on_act_remove(self): 
-        reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete the selected plugins?'), 
+        reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete the selected plugins?\nYou can deactivate a plugin by unchecking it.'), 
                        self, _('Confirm Action'), 'ask')
         if reply != 'yes': return
         settings = self.mainwindow.options()['plugins']['custom']
@@ -1457,7 +1459,7 @@ class CustomPluginManager(QtWidgets.QWidget):
         
     @QtCore.pyqtSlot()
     def on_act_clear(self): 
-        reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete ALL plugins?'), 
+        reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete ALL plugins?\nYou can deactivate plugins by unchecking them.'), 
                        self, _('Confirm Action'), 'ask')
         if reply != 'yes': return
         walk_dir(PLUGINS_FOLDER, recurse=False, file_process_function=os.remove, file_types=('py', PLUGIN_EXTENSION))
