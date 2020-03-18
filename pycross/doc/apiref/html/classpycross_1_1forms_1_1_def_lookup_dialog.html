@@ -78,6 +78,9 @@ $(function() {
 <div class="title">pycross.forms.DefLookupDialog Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Word definition lookup dialog to look up a word in a dictionary and/or Google.  
+ <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.forms.DefLookupDialog:</div>
 <div class="dyncontent">
@@ -91,53 +94,76 @@ Inheritance diagram for pycross.forms.DefLookupDialog:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a07ed56e225bb3f3277cc778ead586eb4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a07ed56e225bb3f3277cc778ead586eb4">__init__</a> (self, <a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#af3e0f60a527c1e0c567d5418ffc5ca80">word</a>='', <a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a9bfc66dd28662cb9fa3b7f0ab9a11fbb">word_editable</a>=False, <a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#aadb156f68d7967842df745c5e23e0fc7">lang</a>='', parent=None, flags=QtCore.Qt.WindowFlags())</td></tr>
+<tr class="memdesc:a07ed56e225bb3f3277cc778ead586eb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a07ed56e225bb3f3277cc778ead586eb4">More...</a><br /></td></tr>
 <tr class="separator:a07ed56e225bb3f3277cc778ead586eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04dc3a3fc8d11a4820db18cd5653fae0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a04dc3a3fc8d11a4820db18cd5653fae0">closeEvent</a> (self, event)</td></tr>
+<tr class="memdesc:a04dc3a3fc8d11a4820db18cd5653fae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Before the dialog quits, need to stop all running background threads.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a04dc3a3fc8d11a4820db18cd5653fae0">More...</a><br /></td></tr>
 <tr class="separator:a04dc3a3fc8d11a4820db18cd5653fae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb5072f7f93e16f680aa8a318376b244"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#acb5072f7f93e16f680aa8a318376b244">showEvent</a> (self, event)</td></tr>
+<tr class="memdesc:acb5072f7f93e16f680aa8a318376b244"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve results when the dialog shows.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#acb5072f7f93e16f680aa8a318376b244">More...</a><br /></td></tr>
 <tr class="separator:acb5072f7f93e16f680aa8a318376b244"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c74e74e25d9450ff6f88b8dd1d8fbf9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a3c74e74e25d9450ff6f88b8dd1d8fbf9">kill_threads</a> (self, dics=True, google=True)</td></tr>
+<tr class="memdesc:a3c74e74e25d9450ff6f88b8dd1d8fbf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops any or both worker threads.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a3c74e74e25d9450ff6f88b8dd1d8fbf9">More...</a><br /></td></tr>
 <tr class="separator:a3c74e74e25d9450ff6f88b8dd1d8fbf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4319aaed391171ed66e649840d25cfe"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ac4319aaed391171ed66e649840d25cfe">addMainLayout</a> (self)</td></tr>
 <tr class="memdesc:ac4319aaed391171ed66e649840d25cfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the main (central) layout for controls.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ac4319aaed391171ed66e649840d25cfe">More...</a><br /></td></tr>
 <tr class="separator:ac4319aaed391171ed66e649840d25cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37389fdac3412878562f00cf770f1d9b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a37389fdac3412878562f00cf770f1d9b">setlang</a> (self, <a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#aadb156f68d7967842df745c5e23e0fc7">lang</a>='')</td></tr>
+<tr class="memdesc:a37389fdac3412878562f00cf770f1d9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the language to search in the online services.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a37389fdac3412878562f00cf770f1d9b">More...</a><br /></td></tr>
 <tr class="separator:a37389fdac3412878562f00cf770f1d9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73d899216e5cb67bc98d300afcd90446"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a73d899216e5cb67bc98d300afcd90446">init</a> (self)</td></tr>
+<tr class="memdesc:a73d899216e5cb67bc98d300afcd90446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes controls.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a73d899216e5cb67bc98d300afcd90446">More...</a><br /></td></tr>
 <tr class="separator:a73d899216e5cb67bc98d300afcd90446"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5b9659967fda9116d873fd9e329e41e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#aa5b9659967fda9116d873fd9e329e41e">update_language</a> (self)</td></tr>
+<tr class="memdesc:aa5b9659967fda9116d873fd9e329e41e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the selected language.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#aa5b9659967fda9116d873fd9e329e41e">More...</a><br /></td></tr>
 <tr class="separator:aa5b9659967fda9116d873fd9e329e41e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a160899107648e5a9fe6c434bebeb341b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a160899107648e5a9fe6c434bebeb341b">update_dict_engine</a> (self)</td></tr>
+<tr class="memdesc:a160899107648e5a9fe6c434bebeb341b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the online dictionary engine depending on the selected language.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a160899107648e5a9fe6c434bebeb341b">More...</a><br /></td></tr>
 <tr class="separator:a160899107648e5a9fe6c434bebeb341b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a434ff24a18c282882d6b6edc37ce35e6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a434ff24a18c282882d6b6edc37ce35e6">update_google_engine</a> (self)</td></tr>
+<tr class="memdesc:a434ff24a18c282882d6b6edc37ce35e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures the Google search engine depending on the selected language.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a434ff24a18c282882d6b6edc37ce35e6">More...</a><br /></td></tr>
 <tr class="separator:a434ff24a18c282882d6b6edc37ce35e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6104f09bacfd256016fc1f1ba2f5c9d5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a6104f09bacfd256016fc1f1ba2f5c9d5">add_pages</a> (self)</td></tr>
+<tr class="memdesc:a6104f09bacfd256016fc1f1ba2f5c9d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the Dictionary and Google pages to the tab widget.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a6104f09bacfd256016fc1f1ba2f5c9d5">More...</a><br /></td></tr>
 <tr class="separator:a6104f09bacfd256016fc1f1ba2f5c9d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a6a49a333397cd59273901490c639c8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a8a6a49a333397cd59273901490c639c8">on_thread_error</a> (self, thread, err)</td></tr>
+<tr class="memdesc:a8a6a49a333397cd59273901490c639c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Worker thread error handler.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a8a6a49a333397cd59273901490c639c8">More...</a><br /></td></tr>
 <tr class="separator:a8a6a49a333397cd59273901490c639c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a783f47b7b01751441cfb4886f0c31595"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a783f47b7b01751441cfb4886f0c31595">on_dics_load_start</a> (self)</td></tr>
+<tr class="memdesc:a783f47b7b01751441cfb4886f0c31595"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires before the dictionary results are retrieved.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a783f47b7b01751441cfb4886f0c31595">More...</a><br /></td></tr>
 <tr class="separator:a783f47b7b01751441cfb4886f0c31595"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7e103a68a964297023ba1b7d00b2e4c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ad7e103a68a964297023ba1b7d00b2e4c">on_dics_load_run</a> (self)</td></tr>
+<tr class="memdesc:ad7e103a68a964297023ba1b7d00b2e4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictionary thread run event handler: retrieve dictionary results.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ad7e103a68a964297023ba1b7d00b2e4c">More...</a><br /></td></tr>
 <tr class="separator:ad7e103a68a964297023ba1b7d00b2e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1087d6ae1c9128ef683e5e1a11071ec"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ab1087d6ae1c9128ef683e5e1a11071ec">on_dics_load_finish</a> (self)</td></tr>
+<tr class="memdesc:ab1087d6ae1c9128ef683e5e1a11071ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires after the dictionary results are retrieved.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ab1087d6ae1c9128ef683e5e1a11071ec">More...</a><br /></td></tr>
 <tr class="separator:ab1087d6ae1c9128ef683e5e1a11071ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d3dd7d6a7e98159c1c3e2ecdc48fd7a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a1d3dd7d6a7e98159c1c3e2ecdc48fd7a">on_google_load_start</a> (self)</td></tr>
+<tr class="memdesc:a1d3dd7d6a7e98159c1c3e2ecdc48fd7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires before the Google results are retrieved.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a1d3dd7d6a7e98159c1c3e2ecdc48fd7a">More...</a><br /></td></tr>
 <tr class="separator:a1d3dd7d6a7e98159c1c3e2ecdc48fd7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5230b0dd08ef5a0e2673c47146f56398"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a5230b0dd08ef5a0e2673c47146f56398">on_google_load_run</a> (self)</td></tr>
+<tr class="memdesc:a5230b0dd08ef5a0e2673c47146f56398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Google thread run event handler: retrieve Google search results.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a5230b0dd08ef5a0e2673c47146f56398">More...</a><br /></td></tr>
 <tr class="separator:a5230b0dd08ef5a0e2673c47146f56398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae91ffa4e0ee162d6b86bcb548511646e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ae91ffa4e0ee162d6b86bcb548511646e">on_google_load_finish</a> (self)</td></tr>
+<tr class="memdesc:ae91ffa4e0ee162d6b86bcb548511646e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires after the Google results are retrieved.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ae91ffa4e0ee162d6b86bcb548511646e">More...</a><br /></td></tr>
 <tr class="separator:ae91ffa4e0ee162d6b86bcb548511646e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a837a2c541a93f479288b107ef4622ab5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a837a2c541a93f479288b107ef4622ab5">update_content</a> (self, dictionary=True, google=True)</td></tr>
+<tr class="memdesc:a837a2c541a93f479288b107ef4622ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the search results into the corresponding list and combo boxes.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a837a2c541a93f479288b107ef4622ab5">More...</a><br /></td></tr>
 <tr class="separator:a837a2c541a93f479288b107ef4622ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9b9544f907ca4a806da94e2357ef030"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#af9b9544f907ca4a806da94e2357ef030">rb_source_toggled</a> (self, toggled)</td></tr>
+<tr class="memdesc:af9b9544f907ca4a806da94e2357ef030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows the specified page when a radio button is toggled.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#af9b9544f907ca4a806da94e2357ef030">More...</a><br /></td></tr>
 <tr class="separator:af9b9544f907ca4a806da94e2357ef030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88638ae7c5c6b86873db126c610994b5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a88638ae7c5c6b86873db126c610994b5">on_le_word_changed</a> (self, text)</td></tr>
+<tr class="memdesc:a88638ae7c5c6b86873db126c610994b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a new search word and restarts the search.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a88638ae7c5c6b86873db126c610994b5">More...</a><br /></td></tr>
 <tr class="separator:a88638ae7c5c6b86873db126c610994b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd7ef94acd378a5d66ba7d0cc33b5c15"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#abd7ef94acd378a5d66ba7d0cc33b5c15">on_combo_lang</a> (self, index)</td></tr>
+<tr class="memdesc:abd7ef94acd378a5d66ba7d0cc33b5c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">When a language combo item is selected.  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#abd7ef94acd378a5d66ba7d0cc33b5c15">More...</a><br /></td></tr>
 <tr class="separator:abd7ef94acd378a5d66ba7d0cc33b5c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c959baf5483890417c2df46a91b9b67"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a2c959baf5483890417c2df46a91b9b67">on_combo_dict_homs</a> (self, index)</td></tr>
+<tr class="memdesc:a2c959baf5483890417c2df46a91b9b67"><td class="mdescLeft">&#160;</td><td class="mdescRight">When a word homonym is selected in the combo (Dictionary page).  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a2c959baf5483890417c2df46a91b9b67">More...</a><br /></td></tr>
 <tr class="separator:a2c959baf5483890417c2df46a91b9b67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7744544b518fc4af9e295681b6b3f524"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a7744544b518fc4af9e295681b6b3f524">on_combo_google</a> (self, index)</td></tr>
+<tr class="memdesc:a7744544b518fc4af9e295681b6b3f524"><td class="mdescLeft">&#160;</td><td class="mdescRight">When a Google result is selected in the combo (Google page).  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a7744544b518fc4af9e295681b6b3f524">More...</a><br /></td></tr>
 <tr class="separator:a7744544b518fc4af9e295681b6b3f524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpycross_1_1forms_1_1_basic_dialog"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpycross_1_1forms_1_1_basic_dialog')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html">pycross.forms.BasicDialog</a></td></tr>
 <tr class="memitem:a384bc887ac5d3798d91e20172c36df65 inherit pub_methods_classpycross_1_1forms_1_1_basic_dialog"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a384bc887ac5d3798d91e20172c36df65">__init__</a> (self, geometry=None, title=None, icon=None, parent=None, flags=QtCore.Qt.WindowFlags(), sizepolicy=QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))</td></tr>
@@ -171,6 +197,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a13cb76908a02a2765fa6f51386d393af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a13cb76908a02a2765fa6f51386d393af">google_engine</a></td></tr>
 <tr class="separator:a13cb76908a02a2765fa6f51386d393af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f955cff1fd84459b9ffff147fe731f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a3f955cff1fd84459b9ffff147fe731f0">load_threads</a></td></tr>
+<tr class="memdesc:a3f955cff1fd84459b9ffff147fe731f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">worker threads to retrieve word definitions from the internet  <a href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a3f955cff1fd84459b9ffff147fe731f0">More...</a><br /></td></tr>
 <tr class="separator:a3f955cff1fd84459b9ffff147fe731f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9f4f0604bdfb990dfd5b0263d888a02"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ae9f4f0604bdfb990dfd5b0263d888a02">layout_controls</a></td></tr>
 <tr class="separator:ae9f4f0604bdfb990dfd5b0263d888a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,7 +262,9 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a619526548042a68a960185a2bf28d71f inherit pub_attribs_classpycross_1_1forms_1_1_basic_dialog"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QVBoxLayout</code> window layout  <a href="classpycross_1_1forms_1_1_basic_dialog.html#a619526548042a68a960185a2bf28d71f">More...</a><br /></td></tr>
 <tr class="separator:a619526548042a68a960185a2bf28d71f inherit pub_attribs_classpycross_1_1forms_1_1_basic_dialog"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Word definition lookup dialog to look up a word in a dictionary and/or Google. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a07ed56e225bb3f3277cc778ead586eb4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07ed56e225bb3f3277cc778ead586eb4">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -285,14 +314,19 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Params:
-- word [str]: the word string to look up (def='')
-- word_editable [bool]: whether the word string can be edited in the dialog (def=False)
-- lang [str]: the short name of the langugage used to look up the word (def='').
-    Can be one of: 'en' (English), 'ru' (Russian), 'fr' (French), 'es' (Spanish), 'de' (German), 'it' (Italian)
-    (see LANG global). If the value is an empty string (default), the setting from
-    CWSettings.settings['lookup']['default_lang']
-</pre> 
+
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">word</td><td><code>str</code> the word string to look up </td></tr>
+    <tr><td class="paramname">word_editable</td><td><code>bool</code> whether the word string can be edited in the dialog (default = <code>False</code>) </td></tr>
+    <tr><td class="paramname">lang</td><td><code>str</code> short name of the langugage used to look up the word. Can be one of: 'en' (English), 'ru' (Russian), 'fr' (French), 'es' (Spanish), 'de' (German), 'it' (Italian) (see globalvars::LANG). If the value is an empty string (default), the setting from <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">guisettings::CWSettings::settings</a>['lookup']['default_lang'] is taken. </td></tr>
+    <tr><td class="paramname">parent</td><td><code>QtWidgets.QWidget</code> parent widget (default = <code>None</code>, i.e. no parent) </td></tr>
+    <tr><td class="paramname">flags</td><td><code>QtCore.Qt.WindowFlags</code> <a href="https://doc.qt.io/qt-5/qt.html#WindowType-enum">Qt window flags</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -311,6 +345,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Adds the Dictionary and Google pages to the tab widget. </p>
 
 </div>
 </div>
@@ -362,8 +398,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Need to stop running background threads.
-</pre> 
+
+<p>Before the dialog quits, need to stop all running background threads. </p>
+
 </div>
 </div>
 <a id="a73d899216e5cb67bc98d300afcd90446"></a>
@@ -381,6 +418,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initializes controls. </p>
 
 </div>
 </div>
@@ -416,6 +455,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Stops any or both worker threads. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dics</td><td><code>bool</code> stop the dictionary thread (default = <code>True</code>) </td></tr>
+    <tr><td class="paramname">google</td><td><code>bool</code> stop the google thread (default = <code>True</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a2c959baf5483890417c2df46a91b9b67"></a>
@@ -443,6 +491,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>When a word homonym is selected in the combo (Dictionary page). </p>
 
 </div>
 </div>
@@ -472,6 +522,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>When a Google result is selected in the combo (Google page). </p>
+
 </div>
 </div>
 <a id="abd7ef94acd378a5d66ba7d0cc33b5c15"></a>
@@ -499,8 +551,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">When a language combo item is selected.
-</pre> 
+
+<p>When a language combo item is selected. </p>
+
 </div>
 </div>
 <a id="ab1087d6ae1c9128ef683e5e1a11071ec"></a>
@@ -518,6 +571,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Fires after the dictionary results are retrieved. </p>
 
 </div>
 </div>
@@ -537,6 +592,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Dictionary thread run event handler: retrieve dictionary results. </p>
+
 </div>
 </div>
 <a id="a783f47b7b01751441cfb4886f0c31595"></a>
@@ -554,6 +611,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Fires before the dictionary results are retrieved. </p>
 
 </div>
 </div>
@@ -573,6 +632,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Fires after the Google results are retrieved. </p>
+
 </div>
 </div>
 <a id="a5230b0dd08ef5a0e2673c47146f56398"></a>
@@ -591,6 +652,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Google thread run event handler: retrieve Google search results. </p>
+
 </div>
 </div>
 <a id="a1d3dd7d6a7e98159c1c3e2ecdc48fd7a"></a>
@@ -608,6 +671,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Fires before the Google results are retrieved. </p>
 
 </div>
 </div>
@@ -636,6 +701,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets a new search word and restarts the search. </p>
 
 </div>
 </div>
@@ -671,6 +738,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Worker thread error handler. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">thread</td><td><code>utils::QThreadStump</code> worker thread instance </td></tr>
+    <tr><td class="paramname">err</td><td><code>str</code> error message </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="af9b9544f907ca4a806da94e2357ef030"></a>
@@ -698,8 +774,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Show specified source page.
-</pre> 
+
+<p>Shows the specified page when a radio button is toggled. </p>
+
 </div>
 </div>
 <a id="a37389fdac3412878562f00cf770f1d9b"></a>
@@ -728,6 +805,14 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Sets the language to search in the online services. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lang</td><td><code>str</code> search result language (see constructor for details of options) </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="acb5072f7f93e16f680aa8a318376b244"></a>
@@ -755,6 +840,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Retrieve results when the dialog shows. </p>
 
 </div>
 </div>
@@ -790,6 +877,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Fills the search results into the corresponding list and combo boxes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dictionary</td><td><code>bool</code> whether to update the dictionary results </td></tr>
+    <tr><td class="paramname">google</td><td><code>bool</code> whether to update the Google results </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a160899107648e5a9fe6c434bebeb341b"></a>
@@ -807,6 +903,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the online dictionary engine depending on the selected language. </p>
+<p>If the language is English ('en'), the Merriam-Webster dictionary will be used; otherwise, the Yandex dictionary will be used. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_m_w_dict.html">utils::onlineservices::MWDict</a>, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_yandex_dict.html">utils::onlineservices::YandexDict</a> </dd></dl>
 
 </div>
 </div>
@@ -826,6 +925,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Configures the Google search engine depending on the selected language. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_google_search.html">utils::onlineservices::GoogleSearch</a> </dd></dl>
+
 </div>
 </div>
 <a id="aa5b9659967fda9116d873fd9e329e41e"></a>
@@ -843,6 +945,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the selected language. </p>
 
 </div>
 </div>
@@ -1124,6 +1228,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>worker threads to retrieve word definitions from the internet </p>
 
 </div>
 </div>

@@ -87,16 +87,17 @@ Inheritance diagram for pycross.forms.BasicDialog:</div>
  <div class="center">
   <img src="classpycross_1_1forms_1_1_basic_dialog.png" usemap="#pycross.forms.BasicDialog_map" alt=""/>
   <map id="pycross.forms.BasicDialog_map" name="pycross.forms.BasicDialog_map">
-<area href="classpycross_1_1forms_1_1_cw_info_dialog.html" alt="pycross.forms.CwInfoDialog" shape="rect" coords="217,112,424,136"/>
-<area href="classpycross_1_1forms_1_1_def_lookup_dialog.html" alt="pycross.forms.DefLookupDialog" shape="rect" coords="217,168,424,192"/>
-<area href="classpycross_1_1forms_1_1_load_cw_dialog.html" title="Crossword creation dialog providing options to populate the crossword grid." alt="pycross.forms.LoadCwDialog" shape="rect" coords="217,224,424,248"/>
-<area href="classpycross_1_1forms_1_1_password_dialog.html" alt="pycross.forms.PasswordDialog" shape="rect" coords="217,280,424,304"/>
-<area href="classpycross_1_1forms_1_1_print_preview_dialog.html" alt="pycross.forms.PrintPreviewDialog" shape="rect" coords="217,336,424,360"/>
-<area href="classpycross_1_1forms_1_1_reflect_grid_dialog.html" alt="pycross.forms.ReflectGridDialog" shape="rect" coords="217,392,424,416"/>
-<area href="classpycross_1_1forms_1_1_settings_dialog.html" alt="pycross.forms.SettingsDialog" shape="rect" coords="217,448,424,472"/>
-<area href="classpycross_1_1forms_1_1_share_dialog.html" alt="pycross.forms.ShareDialog" shape="rect" coords="217,504,424,528"/>
-<area href="classpycross_1_1forms_1_1_word_src_dialog.html" title="Word source editor dialog: provides adding and editing word sources." alt="pycross.forms.WordSrcDialog" shape="rect" coords="217,560,424,584"/>
-<area href="classpycross_1_1forms_1_1_word_suggest_dialog.html" alt="pycross.forms.WordSuggestDialog" shape="rect" coords="217,616,424,640"/>
+<area href="classpycross_1_1forms_1_1_custom_plugin_dialog.html" title="Dialog to add or edit custom plugins." alt="pycross.forms.CustomPluginDialog" shape="rect" coords="218,112,426,136"/>
+<area href="classpycross_1_1forms_1_1_cw_info_dialog.html" title="Crossword information editor window." alt="pycross.forms.CwInfoDialog" shape="rect" coords="218,168,426,192"/>
+<area href="classpycross_1_1forms_1_1_def_lookup_dialog.html" title="Word definition lookup dialog to look up a word in a dictionary and/or Google." alt="pycross.forms.DefLookupDialog" shape="rect" coords="218,224,426,248"/>
+<area href="classpycross_1_1forms_1_1_load_cw_dialog.html" title="Crossword creation dialog providing options to populate the crossword grid." alt="pycross.forms.LoadCwDialog" shape="rect" coords="218,280,426,304"/>
+<area href="classpycross_1_1forms_1_1_password_dialog.html" alt="pycross.forms.PasswordDialog" shape="rect" coords="218,336,426,360"/>
+<area href="classpycross_1_1forms_1_1_print_preview_dialog.html" title="Print preview window to preview crossword / clues and configure printing." alt="pycross.forms.PrintPreviewDialog" shape="rect" coords="218,392,426,416"/>
+<area href="classpycross_1_1forms_1_1_reflect_grid_dialog.html" title="@bried Dialog to reflect / duplicate crossword grid cells." alt="pycross.forms.ReflectGridDialog" shape="rect" coords="218,448,426,472"/>
+<area href="classpycross_1_1forms_1_1_settings_dialog.html" title="Global app settings configuration window." alt="pycross.forms.SettingsDialog" shape="rect" coords="218,504,426,528"/>
+<area href="classpycross_1_1forms_1_1_share_dialog.html" alt="pycross.forms.ShareDialog" shape="rect" coords="218,560,426,584"/>
+<area href="classpycross_1_1forms_1_1_word_src_dialog.html" title="Word source editor dialog: provides adding and editing word sources." alt="pycross.forms.WordSrcDialog" shape="rect" coords="218,616,426,640"/>
+<area href="classpycross_1_1forms_1_1_word_suggest_dialog.html" title="Small dialog window to look for words matching a given pattern among the word sources." alt="pycross.forms.WordSuggestDialog" shape="rect" coords="218,672,426,696"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -236,7 +237,7 @@ Public Attributes</h2></td></tr>
 <p>Creates the main (central) layout for controls. </p>
 <p>Must be overridden by child classes to change the layout type (default = <code>QtWidgets.QFormLayout</code>) and add controls. </p>
 
-<p>Reimplemented in <a class="el" href="classpycross_1_1forms_1_1_share_dialog.html#ae008627a525e89d6d550137600082574">pycross.forms.ShareDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_password_dialog.html#a90501ae6dbb773de3cab79bd17379aa1">pycross.forms.PasswordDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_reflect_grid_dialog.html#aee3d1df74fe3fa48a198c4dd75b99ede">pycross.forms.ReflectGridDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ac4319aaed391171ed66e649840d25cfe">pycross.forms.DefLookupDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_cw_info_dialog.html#a1eb75e4d1cc5ad3869a6a907551826ec">pycross.forms.CwInfoDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_print_preview_dialog.html#a892b28f1463029720dec7d0c6c8bd4ef">pycross.forms.PrintPreviewDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_suggest_dialog.html#a15dadc5d53711bdda736a3f5611e16be">pycross.forms.WordSuggestDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ac852dfdea56ffa0acc74361391b1e1bc">pycross.forms.SettingsDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_src_dialog.html#aa2f77dbdcc6d330634a4ef4fdc627bc6">pycross.forms.WordSrcDialog</a>, and <a class="el" href="classpycross_1_1forms_1_1_load_cw_dialog.html#ad96306ce9f042c5a798abf14bd52a595">pycross.forms.LoadCwDialog</a>.</p>
+<p>Reimplemented in <a class="el" href="classpycross_1_1forms_1_1_share_dialog.html#ae008627a525e89d6d550137600082574">pycross.forms.ShareDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_password_dialog.html#a90501ae6dbb773de3cab79bd17379aa1">pycross.forms.PasswordDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_reflect_grid_dialog.html#aee3d1df74fe3fa48a198c4dd75b99ede">pycross.forms.ReflectGridDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#ac4319aaed391171ed66e649840d25cfe">pycross.forms.DefLookupDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_cw_info_dialog.html#a1eb75e4d1cc5ad3869a6a907551826ec">pycross.forms.CwInfoDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_print_preview_dialog.html#a892b28f1463029720dec7d0c6c8bd4ef">pycross.forms.PrintPreviewDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_suggest_dialog.html#a15dadc5d53711bdda736a3f5611e16be">pycross.forms.WordSuggestDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ac852dfdea56ffa0acc74361391b1e1bc">pycross.forms.SettingsDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_custom_plugin_dialog.html#a4bb5c9f602c0744e1fc7661c67232c32">pycross.forms.CustomPluginDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_src_dialog.html#aa2f77dbdcc6d330634a4ef4fdc627bc6">pycross.forms.WordSrcDialog</a>, and <a class="el" href="classpycross_1_1forms_1_1_load_cw_dialog.html#ad96306ce9f042c5a798abf14bd52a595">pycross.forms.LoadCwDialog</a>.</p>
 
 </div>
 </div>
@@ -351,7 +352,7 @@ Public Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if user input is valid, <code>False</code> otherwise </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a02bfb91e9ad0443b4afd87584b27bbd0" title="Fires when the OK button is clicked.">on_btn_OK_clicked()</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classpycross_1_1forms_1_1_password_dialog.html#a0b30bbd9fe60b0849c33bb90118e3e00">pycross.forms.PasswordDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_suggest_dialog.html#aa7a0eb02aa30eae84d2c88b63e74b1c1">pycross.forms.WordSuggestDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_src_dialog.html#a7841f1fd0ce72ffa68d8e66177875b44">pycross.forms.WordSrcDialog</a>, and <a class="el" href="classpycross_1_1forms_1_1_load_cw_dialog.html#a365a937527015820bee99342ad11576d">pycross.forms.LoadCwDialog</a>.</p>
+<p>Reimplemented in <a class="el" href="classpycross_1_1forms_1_1_password_dialog.html#a0b30bbd9fe60b0849c33bb90118e3e00">pycross.forms.PasswordDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_suggest_dialog.html#aa7a0eb02aa30eae84d2c88b63e74b1c1">pycross.forms.WordSuggestDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_custom_plugin_dialog.html#affdc1b61540c65e77872cb0bb439d61a">pycross.forms.CustomPluginDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_word_src_dialog.html#a7841f1fd0ce72ffa68d8e66177875b44">pycross.forms.WordSrcDialog</a>, and <a class="el" href="classpycross_1_1forms_1_1_load_cw_dialog.html#a365a937527015820bee99342ad11576d">pycross.forms.LoadCwDialog</a>.</p>
 
 </div>
 </div>

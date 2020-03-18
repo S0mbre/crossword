@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['keyboardsearch_1659',['keyboardSearch',['../classpycross_1_1forms_1_1_cw_table.html#a3952f3a9597a907762578adc03d33c7f',1,'pycross::forms::CwTable']]],
-  ['keyreleaseevent_1660',['keyReleaseEvent',['../classpycross_1_1forms_1_1_cw_table.html#aa2d2805221951d06dfd5b68b22fe31ac',1,'pycross::forms::CwTable']]],
-  ['kill_5fthreads_1661',['kill_threads',['../classpycross_1_1forms_1_1_def_lookup_dialog.html#a3c74e74e25d9450ff6f88b8dd1d8fbf9',1,'pycross::forms::DefLookupDialog']]]
+  ['keypressevent_1782',['keyPressEvent',['../classpycross_1_1gui_1_1_main_window.html#a2194d344aea7cbfa784943e5405233b8',1,'pycross::gui::MainWindow']]],
+  ['keyreleaseevent_1783',['keyReleaseEvent',['../classpycross_1_1forms_1_1_cw_table.html#aa2d2805221951d06dfd5b68b22fe31ac',1,'pycross.forms.CwTable.keyReleaseEvent()'],['../classpycross_1_1gui_1_1_main_window.html#a8a72b642865bc1c6d3c608c85b2a5b6e',1,'pycross.gui.MainWindow.keyReleaseEvent()']]],
+  ['kill_5fthreads_1784',['kill_threads',['../classpycross_1_1forms_1_1_def_lookup_dialog.html#a3c74e74e25d9450ff6f88b8dd1d8fbf9',1,'pycross::forms::DefLookupDialog']]]
 ];

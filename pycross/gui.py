@@ -109,7 +109,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Initializes class members
     def __init__(self, **kwargs):        
         super().__init__()
-        ## create plugin manager instance to operate user plugins
+        # create plugin manager instance to operate user plugins
         self.create_plugin_manager()
         ## `crossword::Crossword` internal crossword generator object
         self.cw = None   
@@ -2285,6 +2285,9 @@ class MainWindow(QtWidgets.QMainWindow):
         # close
         event.accept()
 
+    ## @brief Fires when something is being dragged into the window.
+    # Here we accept drags only for file-like objects, showing the file path in the status bar.
+    # @param event `QtGui.QDragEnterEvent` the handled event
     @pluggable('general')
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent):
         mimeData = event.mimeData()
@@ -2295,6 +2298,9 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             event.ignore()
 
+    ## @brief Fires when something is being dragged and moved within the window.
+    # For this implementation, only dragged files are accepted.
+    # @param event `QtGui.QDragMoveEvent` the handled event
     @pluggable('general')
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent):
         if event.mimeData().hasUrls():
@@ -2302,11 +2308,17 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             event.ignore()
 
+    ## @brief Fires when a dragged object leaves the window.
+    # Clears the status bar and accepts the event.
+    # @param event `QtGui.QDragLeaveEvent` the handled event
     @pluggable('general')
     def dragLeaveEvent(self, event: QtGui.QDragLeaveEvent):
         self.statusbar.clearMessage()
         event.accept()
 
+    ## @brief Fires when a dragged object is dropped into the window.
+    # This event handler is implemented to load crossword and configuration files.
+    # @param event `QtGui.QDropEvent` the handled event
     @pluggable('general')
     def dropEvent(self, event: QtGui.QDropEvent):
         # handle dropped files
@@ -2335,90 +2347,164 @@ class MainWindow(QtWidgets.QMainWindow):
             MsgBox(str(err), self, _('Error'), 'error')
         self.statusbar.clearMessage() 
 
+    ## @brief Generic event handler.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtCore.QEvent` the handled event
     @pluggable('general')
     def event(self, event: QtCore.QEvent):
         return super().event(event)
 
+    ## @brief Context menu event handler.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QContextMenuEvent` the handled event
     @pluggable('general')
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent):
         super().contextMenuEvent(event)
 
+    ## @brief Action event handler: fires on a QAction event.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QActionEvent` the handled event
     @pluggable('general')
     def actionEvent(self, event: QtGui.QActionEvent):
         super().actionEvent(event)
 
+    ## @brief Fires when the main window GUI (style, font, title etc) changes.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtCore.QEvent` the handled event
     @pluggable('general')
     def changeEvent(self, event: QtCore.QEvent):
         super().changeEvent(event)
 
+    ## @brief Fires when the mouse enters the main window.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtCore.QEvent` the handled event
     @pluggable('general')
     def enterEvent(self, event: QtCore.QEvent):
         super().enterEvent(event)
 
+    ## @brief Fires when the mouse leaves the main window.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtCore.QEvent` the handled event
     @pluggable('general')
     def leaveEvent(self, event: QtCore.QEvent):
         super().leaveEvent(event)
 
+    ## @brief Fires when the window gets focus.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QFocusEvent` the handled event
     @pluggable('general')
     def focusInEvent(self, event: QtGui.QFocusEvent):
         super().focusInEvent(event)
 
+    ## @brief Fires when the window loses focus.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QFocusEvent` the handled event
     @pluggable('general')
     def focusOutEvent(self, event: QtGui.QFocusEvent):
         super().focusOutEvent(event)
 
+    ## @brief Fires when the window is hidden (not closed).
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QHideEvent` the handled event
     @pluggable('general')
     def hideEvent(self, event: QtGui.QHideEvent):
         super().hideEvent(event)
     
+    ## @brief Fires when the input method for the window changes.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QInputMethodEvent` the handled event
     @pluggable('general')
     def inputMethodEvent(self, event: QtGui.QInputMethodEvent):
         super().inputMethodEvent(event)
 
+    ## @brief Fires when a key is pressed on the focused window.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QKeyEvent` the handled event
     @pluggable('general')
     def keyPressEvent(self, event: QtGui.QKeyEvent):
         super().keyPressEvent(event)
 
+    ## @brief Fires when a key is released on the focused window.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QKeyEvent` the handled event
     @pluggable('general')
     def keyReleaseEvent(self, event: QtGui.QKeyEvent):
         super().keyReleaseEvent(event)
 
+    ## @brief Fires when the window receives a mouse double click.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QMouseEvent` the handled event
     @pluggable('general')
     def mouseDoubleClickEvent(self, event: QtGui.QMouseEvent):
         super().mouseDoubleClickEvent(event)
 
+    ## @brief Fires when the mouse is moved within the window.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QMouseEvent` the handled event
     @pluggable('general')
     def mouseMoveEvent(self, event: QtGui.QMouseEvent):
         super().mouseMoveEvent(event)
 
+    ## @brief Fires when a mouse button is pressed on the window.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QMouseEvent` the handled event
     @pluggable('general')
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         super().mousePressEvent(event)
 
+    ## @brief Fires when a mouse button is released on the window.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QMouseEvent` the handled event
     @pluggable('general')
     def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
         super().mouseReleaseEvent(event)
 
+    ## @brief Fires when the window has been moved (changes position).
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QMoveEvent` the handled event
     @pluggable('general')
     def moveEvent(self, event: QtGui.QMoveEvent):
         super().moveEvent(event)
 
+    ## @brief Generic NATIVE event handler.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param eventType `QtCore.QByteArray` | `bytes` type of handled event:
+    #   * for Windows: 'windows_generic_MSG'
+    #   * for macOS: 'NSEvent'
+    #   * for XCB: 'xcb_generic_event_t'
+    # @param message `voidptr` message received
+    # @returns `tuple` 2-tuple (`bool`, `int`), where the first element indicates if 
+    # message handling must be stopped (`True`) or passed on to Qt (`False`),
+    # and the second element is the result returned by the handler (only for Windows OS)
+    # @see [Qt docs](https://doc.qt.io/qt-5/qwidget.html#nativeEvent)
     @pluggable('general')
     def nativeEvent(self, eventType, message):
         return super().nativeEvent(eventType, message)
 
+    ## @brief Fires on window repaint request.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QPaintEvent` the handled event
     @pluggable('general')
     def paintEvent(self, event: QtGui.QPaintEvent):
         super().paintEvent(event)
 
+    ## @brief Fires when the window has been resized.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QResizeEvent` the handled event
     @pluggable('general')
     def resizeEvent(self, event: QtGui.QResizeEvent):
         super().resizeEvent(event)
 
+    ## @brief Tablet PC / smartphone event handler (such as XY-axis position, pressure, rotation etc).
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QTabletEvent` the handled event
     @pluggable('general')
     def tabletEvent(self, event: QtGui.QTabletEvent):
         event.ignore()
 
+    ## @brief Fires when the mouse wheel is scrolled on the focused window.
+    # Default implementation here as a placeholder for possible overrides in custom plugins.
+    # @param event `QtGui.QWheelEvent` the handled event
     @pluggable('general')
     def wheelEvent(self, event: QtGui.QWheelEvent):
         event.ignore()

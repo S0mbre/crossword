@@ -113,14 +113,23 @@ class BrowseEdit(QtWidgets.QLineEdit):
 # *****          BrowseEditDelegate
 # ******************************************************************************** #        
 
+## Delegate class for table and tree-like widgets implementing an edit field with the browse button.
+# @see BrowseEdit
 class BrowseEditDelegate(QtWidgets.QStyledItemDelegate):
 
+    ## Constructor.
+    # @param model_indices `list` list of indices in underlying model that must contain the 
+    # BrowseEdit fields
+    # @param thisparent `QtWidgets.QWidget` parent widget for this instance
+    # @param browse_edit_kwargs `keyword arguments` keyword arguments passed to BrowseEdit constructor
     def __init__(self, model_indices=None, thisparent=None, 
                 **browse_edit_kwargs):
         super().__init__(thisparent)
         self.model_indices = model_indices
         self.browse_edit_kwargs = browse_edit_kwargs
 
+    ## Overridden method of QtWidgets.QStyledItemDelegate:
+    # creates the underlying delegate (editor widget).
     def createEditor(self, parent: QtWidgets.QWidget, option: QtWidgets.QStyleOptionViewItem,
                     index: QtCore.QModelIndex) -> QtWidgets.QWidget:
         try:
@@ -136,6 +145,8 @@ class BrowseEditDelegate(QtWidgets.QStyledItemDelegate):
             print(err)
             return None
 
+    ## Overridden method of QtWidgets.QStyledItemDelegate:
+    # updates the editor data (text) from the underlying model.
     def setEditorData(self, editor, index: QtCore.QModelIndex):
         if not index.isValid(): return
         if self.model_indices and index in self.model_indices:
@@ -145,12 +156,16 @@ class BrowseEditDelegate(QtWidgets.QStyledItemDelegate):
         else:
             super().setEditorData(editor, index)
 
+    ## Overridden method of QtWidgets.QStyledItemDelegate:
+    # updates the underlying model from the editor data (text).
     def setModelData(self, editor, model: QtCore.QAbstractItemModel, index: QtCore.QModelIndex):
         if self.model_indices and index in self.model_indices:
             model.setData(index, editor.text(), QtCore.Qt.EditRole)
         else:
             super().setModelData(editor, model, index)
 
+    ## Overridden method of QtWidgets.QStyledItemDelegate:
+    # updates the editor position and size for a given model index.
     def updateEditorGeometry(self, editor, option: QtWidgets.QStyleOptionViewItem,
         index: QtCore.QModelIndex):
         editor.setGeometry(option.rect)        
@@ -256,6 +271,9 @@ class BasicDialog(QtWidgets.QDialog):
 ## Crossword creation dialog providing options to populate the crossword grid.
 class LoadCwDialog(BasicDialog):
         
+    ## Constructor.
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(None, _('New crossword'), 'crossword.png', 
               parent, flags)
@@ -922,21 +940,10 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.src_actions.append((action, item))        
         return item
 
-    def update_src_toolbar(self):
-        self.src_toolbar.clear()
-        for i in range(self.lw_added.count()):
-            item = self.lw_added.item(i)
-            if item.text() == '———':
-                self.src_toolbar.addSeparator()
-            else:
-                act_ = item.data(QtCore.Qt.UserRole)
-                if isinstance(act_, QtWidgets.QAction):
-                    self.src_toolbar.addAction(act_)
-
+    ## Initializes added actions from a list of action names as in CWSettings['gui']['toolbar_actions'].
+    # @param act_list `iterable` collection (e.g. list) of actions and 'SEP' (separators)
+    # @see ToolbarCustomizer::to_list()
     def from_list(self, act_list):
-        """
-        Initializes added actions from list of action names, as in CWSettings['gui']['toolbar_actions']
-        """
         mainwin = self.src_toolbar.window()
         actions = []
         for act_ in act_list:
@@ -950,6 +957,9 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.update_added(actions)
         self.update_src_actions()
 
+    ## Serializes the added actions into a flat list of actions and 'SEP' (separators).
+    # @returns `list` list of actions and 'SEP' (separators)
+    # @see ToolbarCustomizer::from_list()
     def to_list(self):
         mainwin = self.src_toolbar.window()
         lst = []
@@ -966,51 +976,41 @@ class ToolbarCustomizer(QtWidgets.QWidget):
                             break
         return lst
 
+    ## Adds selected action(s) to the target list.
     @QtCore.pyqtSlot()
     def on_act_add(self):
-        """
-        Add selected action(s) to toolbar.
-        """
         sel_treeitems = self.tw_actions.selectedItems()
         if len(sel_treeitems) == 0: return
         actions = [item.data(0, QtCore.Qt.UserRole) for item in sel_treeitems]
         self.update_added(actions, False)  
         self.update_src_actions()   
 
+    ## Adds a separator after the selected action.
     @QtCore.pyqtSlot()
     def on_act_addsep(self):
-        """
-        Add separator after last action.
-        """
         sepitem = '———'
         self._lw_add(self.lw_added, sepitem, self.lw_added.currentRow())
         self.update_actions()
 
+    ## Removes the selected action from the target list.
     @QtCore.pyqtSlot()
     def on_act_remove(self):
-        """
-        Remove selected action.
-        """
         cur = self.lw_added.currentRow()
         if cur >= 0:
             self.lw_added.takeItem(cur)
         self.update_actions()
         self.update_src_actions()
 
+    ## Clears all added actions.
     @QtCore.pyqtSlot()
     def on_act_clear(self):
-        """
-        Clear all added actions.
-        """
         self.lw_added.clear()
         self.update_actions()
         self.update_src_actions()
 
+    ## Moves selected action up.
     @QtCore.pyqtSlot()
     def on_act_up(self):
-        """
-        Move action up.
-        """
         item = self.lw_added.currentItem()
         if not item: return
         row = self.lw_added.row(item)
@@ -1019,11 +1019,9 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.lw_added.setCurrentRow(row - 1)
         self.update_actions()
 
+    ## Moves selected action down.
     @QtCore.pyqtSlot()
     def on_act_down(self):
-        """
-        Move action down.
-        """
         item = self.lw_added.currentItem()
         if not item: return
         row = self.lw_added.row(item)
@@ -1032,16 +1030,31 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.lw_added.setCurrentRow(row + 1)
         self.update_actions()
 
+    ## Updates available actions when the selection changes.
     @QtCore.pyqtSlot()
     def on_tw_actions_selected(self):
         self.update_actions()
 
 # ******************************************************************************** #
-# *****          NewCustomPluginDialog
+# *****          CustomPluginDialog
 # ******************************************************************************** #        
 
-class NewCustomPluginDialog(BasicDialog):
+## Dialog to add or edit custom plugins.
+class CustomPluginDialog(BasicDialog):
 
+    ## Constructor.
+    # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
+    # @param title `str` dialog title
+    # @param plugin_category `str` plugin category name (default = empty, user will choose)
+    # @param plugin_name `str` plugin name (default = empty)
+    # @param plugin_desc `str` plugin description (default = empty)
+    # @param plugin_vers `str` plugin version (default = empty)
+    # @param plugin_auth `str` plugin author (default = empty)
+    # @param plugin_copyright `str` plugin copyright (default = empty)
+    # @param plugin_website `str` plugin website (default = empty)
+    # @param plugin_path `str` plugin module path (default = empty)
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, mainwindow, title, plugin_category='', plugin_name='', plugin_desc='',
             plugin_vers='', plugin_auth='', plugin_copyright='', plugin_website='', plugin_path='',
             parent=None, flags=QtCore.Qt.WindowFlags()):
@@ -1109,6 +1122,7 @@ class NewCustomPluginDialog(BasicDialog):
             return False
         return True
 
+    ## Fires when an item in the 'Plugin source' combobox is selected.
     @QtCore.pyqtSlot(int)
     def on_combo_source(self, index):
         self.le_sourcepath.setVisible(index == 0)
@@ -1119,8 +1133,14 @@ class NewCustomPluginDialog(BasicDialog):
 # *****          CustomPluginManager
 # ******************************************************************************** # 
 
+## @brief Custom plugin manager widget to add, delete, (de)activate and move around plugins.
+# This is basically a tree-like table with a toolbar for manipulating plugins. Each plugin
+# is a single row in the table. Parent nodes in the tree represent plugin categories.
 class CustomPluginManager(QtWidgets.QWidget):
 
+    ## Constructor.
+    # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     def __init__(self, mainwindow, parent=None):
         super().__init__(parent)
         self.mainwindow = mainwindow
@@ -1173,14 +1193,23 @@ class CustomPluginManager(QtWidgets.QWidget):
 
         self.setLayout(self.lo_main)
 
+    ## Shortcut method to create a non-editable, disabled QStandardItem.
     def _make_empty_item(self):
         item = QtGui.QStandardItem()
         item.setFlags(QtCore.Qt.NoItemFlags)
         return item
 
+    ## Shortcut method to create a row of QStandardItem elements 
+    # where the first element is given by 'item'
+    # and the rest are dummy items created by CustomPluginManager::_make_empty_item().
+    # @param item `QtGui.QStandardItem` first item in the row
+    # @param empty_count `int` number of dummies that follow 'item'
+    # @returns `list` list of `QtGui.QStandardItem` elements
     def _make_padded_row(self, item, empty_count):
         return ([item] + [self._make_empty_item() for _ in range(empty_count)])
 
+    ## Updates the Enabled property of each action based on the current selection
+    # in the plugin table.
     def update_actions(self):
         if self.plugin_model is None:
             self.act_remove.setEnabled(False)
@@ -1205,6 +1234,7 @@ class CustomPluginManager(QtWidgets.QWidget):
             self.act_up.setEnabled((sel_item.row() > 0) if sel_parent else False)
             self.act_down.setEnabled((sel_item.row() < (self.plugin_model.rowCount(sel_parent) - 1)) if sel_parent else False)
 
+    ## @brief Updates the plugin table (tree view) from the global settings.
     def from_settings(self):
         self.tvPlugins.setModel(None)
         self.plugin_model = QtGui.QStandardItemModel(0, 7)
@@ -1251,6 +1281,8 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.tvPlugins.expandAll()
         self.update_actions()
 
+    ## Sets the 'active' property of custom plugins in the global settings
+    # based on the state of the checkboxes in the plugin table.
     def update_active_states(self):
         settings = self.mainwindow.options()['plugins']['custom']
         for i in range(self.plugin_model.rowCount()):
@@ -1265,6 +1297,11 @@ class CustomPluginManager(QtWidgets.QWidget):
                         pl['active'] =  bool(item.checkState())
                         break
 
+    ## Re-creates the plugin manager instance (gui::MainWindow::plugin_mgr)
+    # and updates the plugins in the manager and the global settings.
+    # @param forced_update `bool` if `True`, all current plugin settings will be cleared
+    # and plugins will be added anew from the plugin folder (default = `False`)
+    ## @see utils::pluginmanager::PxPluginManager::update_global_settings()
     def reload_plugins(self, forced_update=False):
         self.mainwindow.create_plugin_manager(False)
         self.mainwindow.plugin_mgr.collectPlugins()
@@ -1272,6 +1309,10 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.mainwindow.plugin_mgr.update_global_settings(forced_update)
         self.from_settings()
 
+    ## Locates a plugin in the table by category and name and selects it.
+    # @param plcat `str` plugin category name
+    # @param plname `str` plugin name
+    # @returns `QtGui.QStandardItem` found and selected plugin item or `None` on failure to locate
     def select_plugin(self, plcat, plname):
         self.tvPlugins.clearSelection()
         found = self.plugin_model.findItems(plcat)
@@ -1286,6 +1327,9 @@ class CustomPluginManager(QtWidgets.QWidget):
                     return item
         return None
 
+    ## Adds a new plugin or edits the given plugin.
+    # @param plugin_item `QtGui.QStandardItem` the plugin item to edit; if `None` (default),
+    # a new plugin will be added
     def add_or_edit_plugin(self, plugin_item=None):
         category = ''
         old_name = ''
@@ -1310,7 +1354,7 @@ class CustomPluginManager(QtWidgets.QWidget):
             old_path = parent_item.child(row, 6).text()
             plugin_active = bool(parent_item.child(row, 0).checkState())
 
-        new_plugin_dlg = NewCustomPluginDialog(self.mainwindow, 
+        new_plugin_dlg = CustomPluginDialog(self.mainwindow, 
             _('New plugin') if not plugin_item else _('Editing: {}').format(old_name),
             category, old_name, old_desc, old_vers, old_auth,
             old_copyright, old_website, old_path + '.py' if old_path else '')
@@ -1344,9 +1388,11 @@ class CustomPluginManager(QtWidgets.QWidget):
         else:
             srctext = PLUGIN_TEMPLATE_GENERAL
 
-        if self.mainwindow.create_syneditor(srctext, modal=True):            
+        if self.mainwindow.create_syneditor(srctext, modal=True):
             with open(plfile, 'w', encoding=ENCODING) as srcfile:
                 srcfile.write(self.mainwindow.syneditor.currenttext().replace('\r\n', '\n'))
+        elif (not plugin_item) and (new_plugin_dlg.combo_source.currentIndex() == 1):
+            return
 
         if plugin_item:
             # delete old plugin files
@@ -1391,6 +1437,8 @@ class CustomPluginManager(QtWidgets.QWidget):
             found.setCheckState(QtCore.Qt.Checked if plugin_active else QtCore.Qt.Unchecked)
         self.update_actions()
 
+    ## @brief Fires when a plugin is checked or unchecked in the plugin table.
+    # When checked, the corresponding plugin is enabled in the table, and vice-versa.
     @QtCore.pyqtSlot(QtGui.QStandardItem) 
     def on_plugin_model_changed(self, item: QtGui.QStandardItem):
         # enable / disable plugins when checked / unchecked 'Enabled'
@@ -1412,10 +1460,13 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.plugin_model.itemChanged.connect(self.on_plugin_model_changed)
         self.tvPlugins.show()
 
+    ## Fires when an item (plugin) is selected in the table.
     @QtCore.pyqtSlot(QtCore.QItemSelection, QtCore.QItemSelection)
     def on_tvPlugins_selected(self, selected, deselected):
         self.update_actions()
 
+    ## The Reload action handler: reloads plugins from the plugin manager.
+    # @see CustomPluginManager::reload_plugins()
     @QtCore.pyqtSlot()
     def on_act_reload(self): 
         reply = MsgBox(_('Reload plugins from folder? Click YES to soft-update currently loaded plugins and add new ones, NO to hard-reload plugins (current plugin config will be lost!).'), 
@@ -1423,10 +1474,14 @@ class CustomPluginManager(QtWidgets.QWidget):
         if not reply in ('yes', 'no'): return
         self.reload_plugins(reply == 'no')
 
+    ## The Add action handler: adds a new plugin.
+    # @see CustomPluginManager::add_or_edit_plugin()
     @QtCore.pyqtSlot()
     def on_act_add(self): 
         self.add_or_edit_plugin()
         
+    ## The Delete action handler: deletes the selected plugins (>=1 plugins must be selected).
+    # @warning This action will permanently delete the plugin files in 'plugins' directory!
     @QtCore.pyqtSlot()
     def on_act_remove(self): 
         reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete the selected plugins?\nYou can deactivate a plugin by unchecking it.'), 
@@ -1450,6 +1505,7 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.tvPlugins.clearSelection()
         self.update_actions()
         
+    ## The Edit action handler: edits the selected plugin (only one must be selected).
     @QtCore.pyqtSlot()
     def on_act_edit(self): 
         sel_index = self.tvPlugins.selectionModel().currentIndex() 
@@ -1457,6 +1513,8 @@ class CustomPluginManager(QtWidgets.QWidget):
             not sel_index.isValid() or not sel_index.parent().isValid(): return
         self.add_or_edit_plugin(self.plugin_model.itemFromIndex(sel_index))
         
+    ## The Clear action handler: clears (deletes) all plugins.
+    # @warning This action will permanently delete the plugin files in 'plugins' directory!
     @QtCore.pyqtSlot()
     def on_act_clear(self): 
         reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete ALL plugins?\nYou can deactivate plugins by unchecking them.'), 
@@ -1466,6 +1524,9 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.tvPlugins.clearSelection()
         self.reload_plugins()
         
+    ## @brief The Up actions handler: moves the selected plugin upwards.
+    # This ultimately raises the priority (precedence) of the plugin within the category
+    # since it will be handled _before_ the other ones which come after it in the table. 
     @QtCore.pyqtSlot()
     def on_act_up(self): 
         sel_index = self.tvPlugins.selectionModel().currentIndex()
@@ -1483,6 +1544,9 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.reload_plugins()
         self.select_plugin(plcat, plname)
         
+    ## @brief The Down actions handler: moves the selected plugin downwards.
+    # This ultimately lowers the priority (precedence) of the plugin within the category
+    # since it will be handled _after_ the other ones which come before it in the table. 
     @QtCore.pyqtSlot()
     def on_act_down(self): 
         sel_index = self.tvPlugins.selectionModel().currentIndex()
@@ -1504,24 +1568,30 @@ class CustomPluginManager(QtWidgets.QWidget):
 # ******************************************************************************** #
 # *****          SettingsDialog
 # ******************************************************************************** #  
-        
+
+## Global app settings configuration window.        
 class SettingsDialog(BasicDialog):
 
+    ## list of stacked pages corresponding to config categories
     PAGES = [_('Common'), _('Generation'), _('Source management'), _('Search rules'),
              _('Window'), _('Grid'), _('Clues'), _('Toolbar'), _('Definition lookup'), _('Import & Export'),
              _('Third-party'), _('Custom'), _('Printing'), _('Updating'), _('Sharing')]
+    ## list of parent nodes that hold several pages
     PARENT_PAGES = [_('Sources'), _('User interface'), _('Plugins')]
     
+    ## Constructor.
+    # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, mainwindow=None, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
         self.default_settings = self.load_default_settings()
         super().__init__(None, _('Settings'), 'settings-5.png', 
               parent, flags)
         
+    ## Gets the default settings from 'defsettings.pxjson'.
+    # @returns `dict` dictionary of settings loaded from the default settings file ('defsettings.pxjson').
     def load_default_settings(self):
-        """
-        Loads the default settings from 'defsettings.pxjson'.
-        """
         defsettings = CWSettings.validate_file(DEFAULT_SETTINGS_FILE)
         if defsettings: return defsettings
         CWSettings.save_to_file(DEFAULT_SETTINGS_FILE) 
@@ -1530,6 +1600,7 @@ class SettingsDialog(BasicDialog):
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QHBoxLayout()   
 
+        ## `QtWidgets.QTreeWidget` config categories tree
         self.tree = QtWidgets.QTreeWidget()         
         self.tree.setColumnCount(1)
         self.tree.setHeaderHidden(True)
@@ -1566,6 +1637,7 @@ class SettingsDialog(BasicDialog):
         
         self.central_widget = QtWidgets.QWidget()
         self.layout_central = QtWidgets.QVBoxLayout()
+        ## `QtWidgets.QStackedWidget` container for config pages for each category
         self.stacked = QtWidgets.QStackedWidget() 
         self.add_pages()
         self.btn_defaults = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/cloud-computing.png"), _('Restore defaults'))
@@ -1596,10 +1668,8 @@ class SettingsDialog(BasicDialog):
         if not self.tree.currentItem():
             self.tree.setCurrentItem(self.tree.topLevelItem(0))
         
+    ## Creates config pages in SettingsDialog::stacked.
     def add_pages(self):
-        """
-        Adds pages to self.stacked.
-        """
         # Common
         self.page_common = QtWidgets.QWidget()
         self.layout_common = QtWidgets.QVBoxLayout()
@@ -1692,8 +1762,6 @@ class SettingsDialog(BasicDialog):
         self.layout_gb_src = QtWidgets.QHBoxLayout()
         self.lw_sources = QtWidgets.QListWidget()
         self.lw_sources.setToolTip(_('Higher sources in this list take higher precedence (use UP and DOWN buttons to move items)'))
-        #self.lw_sources.addItems([str(i) for i in range(10)])
-        self.lw_sources.itemSelectionChanged.connect(self.on_lw_sources_select)
         self.lw_sources.itemDoubleClicked.connect(self.on_lw_sources_dblclick)
         self.layout_gb_src.addWidget(self.lw_sources)
         
@@ -2250,7 +2318,6 @@ class SettingsDialog(BasicDialog):
         self.layout_plugins_3party = QtWidgets.QVBoxLayout()
 
         self.tv_plugins_3party = QtWidgets.QTreeView()
-        #self.tv_plugins_3party.doubleClicked.connect(self.on_tv_plugins_3party_dblclicked)
 
         self.model_plugins_3party = QtGui.QStandardItemModel(0, 2)
         self.model_plugins_3party.setHorizontalHeaderLabels([_('Plugin'), _('Value')])
@@ -2526,6 +2593,7 @@ class SettingsDialog(BasicDialog):
         self.page_sharing.setLayout(self.layout_sharing)
         self.stacked.addWidget(self.page_sharing)
 
+    ## Shortcut method to update the list of Clues column names.
     def _fill_clue_cols(self):
         self.lw_clues_cols.clear()
         for col in CWSettings.settings['clues']['columns']:
@@ -2538,11 +2606,10 @@ class SettingsDialog(BasicDialog):
             lwitem.setCheckState(QtCore.Qt.Checked if col['visible'] else QtCore.Qt.Unchecked)
             self.lw_clues_cols.addItem(lwitem)
 
+    ## Outputs collected settings in CWSettings.settings format and returns the resulting dictionary.
+    # @warning The method doesn't update guisettings::CWSettings::settings automatically!
+    # @returns `dict` dictionary with global settings collected from the dialog
     def to_settings(self):
-        """
-        Saves settings in CWSettings.settings format.
-        It doesn't update CWSettings.settings automatically!
-        """        
         settings = {key: {} for key in CWSettings.settings}
 
         # common
@@ -3060,6 +3127,7 @@ class SettingsDialog(BasicDialog):
         
         return settings
 
+    ## Shortcut method to set the value of a QtWidgets.QSpinBox control with min/max threshold checks.
     def _set_spin_value_safe(self, spin, val):
         if val < spin.minimum():
             val = spin.minimum()
@@ -3067,13 +3135,12 @@ class SettingsDialog(BasicDialog):
             val = spin.maximum()
         spin.setValue(val)
     
+    ## @brief Updates the GUI controls from a dict of global settings.
+    # @param settings `dict` global setting dictionary in guisettings::CWSettings::settings format. 
+    # If `None` (default), guisettings::CWSettings::settings is used (the app global settings).
+    # @param page `str` name of page to update. GUI controls are updated only on this page. 
+    # If `None` (default), GUI controls will be updated on all pages.
     def from_settings(self, settings=None, page=None):
-        """
-        Updates GUI controls from 'settings' dict.
-        If 'settings' is None, CWSettings.settings is used.
-        GUI controls are updated only on page given by 'page' (name),
-        or on all pages in 'page' == None.
-        """
         
         if settings is None:
             settings = CWSettings.settings
@@ -3613,12 +3680,12 @@ class SettingsDialog(BasicDialog):
             self.chb_sharing_use_api_key.setChecked(settings['use_api_key'])
             self.chb_sharing_ownbrowser.setChecked(settings['use_own_browser'])
     
+    ## Adds a new word source from 'src' dict or assigns it to an existing item.
+    # @param src `dict` dictionary describing a word source; 
+    # see dict format in WordSrcDialog docs
+    # @param src_item `QtWidgets.QListWidgetItem` source item in SettingsDialog::lw_sources
+    # that must be updated; if `None` (default), a new source is added instead
     def addoredit_wordsrc(self, src, src_item=None):
-        """
-        Adds a new word source from 'src' dict
-        or assigns it to existing 'src_item' (of type QtWidgets.QListWidgetItem).
-        See dict format in WordSrcDialog docs.
-        """
         item = src_item if src_item else QtWidgets.QListWidgetItem()
         item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
         item.setText(src['name'])
@@ -3634,10 +3701,12 @@ class SettingsDialog(BasicDialog):
             item.setCheckState(QtCore.Qt.Checked if src.get('active', False) else QtCore.Qt.Unchecked)
             self.lw_sources.insertItem(0, item)
     
+    ## Fires when the dialog is shown: updates controls from current settings.
     def showEvent(self, event):        
         # read settings
         self.from_settings()
     
+    ## Fires when a config category is selected in the category tree.
     @QtCore.pyqtSlot()        
     def on_tree_select(self):
         item = self.tree.currentItem()
@@ -3649,11 +3718,9 @@ class SettingsDialog(BasicDialog):
         else:
             self.stacked.setCurrentIndex(SettingsDialog.PAGES.index(txt))       
             
+    ## Default button handler: Restores default settings for current page or all pages.
     @QtCore.pyqtSlot(bool) 
     def on_btn_defaults(self, checked):
-        """
-        Restore default settings for current page or for all pages.
-        """
         msbox = MsgBox(_('Press YES to restore defaults only for current page and YES TO ALL to restore all default settings'), self,
             _('Restore defaults'), 'ask', ['yes', 'yesall', 'cancel'], execnow=False)
         msbox.exec()
@@ -3661,11 +3728,9 @@ class SettingsDialog(BasicDialog):
         if clk and (clk.text() in (MSGBOX_BUTTONS['yes'][0], MSGBOX_BUTTONS['yesall'][0])):
             self.from_settings(self.default_settings, self.tree.currentItem().text(0) if clk.text() == MSGBOX_BUTTONS['yes'][0] else None)
 
+    ## Load button handler: Loads settings from a file for current page or all pages.
     @QtCore.pyqtSlot(bool) 
     def on_btn_load(self, checked):
-        """
-        Loads settings from file for current page or for all pages.
-        """
         msbox = MsgBox(_('Press YES to load settings only for current page and YES TO ALL to load all settings'), self,
             _('Load defaults'), 'ask', ['yes', 'yesall', 'cancel'], execnow=False)
         msbox.exec()
@@ -3681,41 +3746,34 @@ class SettingsDialog(BasicDialog):
             return
         self.from_settings(settings, self.tree.currentItem().text(0) if clk.text() == MSGBOX_BUTTONS['yes'][0] else None)
 
+    ## Save button handler: Saves current settings to a file.
     @QtCore.pyqtSlot(bool) 
     def on_btn_save(self, checked):
-        """
-        Saves current settings to file.
-        """
         selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), 'settings.pxjson'), _('Settings files (*.pxjson)'))
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep)
         CWSettings.settings = self.to_settings()
         CWSettings.save_to_file(selected_path)
 
+    ## When a log combo item is selected.
     @QtCore.pyqtSlot(int)
     def on_combo_log(self, index):
-        """
-        When a log combo item is selected.
-        """
         if index == 2:
             selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.getcwd(), _('All files (*.*)'))
             if selected_path[0]:
                 self.combo_log.setCurrentText(selected_path[0].replace('/', os.sep))
-            
-    @QtCore.pyqtSlot()        
-    def on_lw_sources_select(self):
-        item = self.lw_sources.currentItem()
-        if not item: return
-        #print(item.data(QtCore.Qt.UserRole))
-        
+       
+    ## When a word source is double-clicked, edit it.
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_sources_dblclick(self, item):
         self.on_act_src_edit(False)
             
+    ## When SettingsDialog::chb_maxfetch is checked or unchecked.
     @QtCore.pyqtSlot(int)
     def on_chb_maxfetch_checked(self, state):
         self.spin_maxfetch.setEnabled(bool(state))
         
+    ## Moves selected word source up one position.
     @QtCore.pyqtSlot(bool)        
     def on_act_src_up(self, checked):
         item = self.lw_sources.currentItem()
@@ -3725,6 +3783,7 @@ class SettingsDialog(BasicDialog):
         self.lw_sources.insertItem(row - 1, self.lw_sources.takeItem(row))
         self.lw_sources.setCurrentRow(row - 1)
     
+    ## Moves selected word source down one position.
     @QtCore.pyqtSlot(bool)        
     def on_act_src_down(self, checked):
         item = self.lw_sources.currentItem()
@@ -3734,18 +3793,23 @@ class SettingsDialog(BasicDialog):
         self.lw_sources.insertItem(row + 1, self.lw_sources.takeItem(row))
         self.lw_sources.setCurrentRow(row + 1)
     
+    ## Adds a new word source.
+    # @see WordSrcDialog, SettingsDialog::addoredit_wordsrc()
     @QtCore.pyqtSlot(bool)        
     def on_act_src_add(self, checked):
         dia_src = WordSrcDialog()
         if not dia_src.exec(): return
         self.addoredit_wordsrc(dia_src.src)
     
+    ## Deletes the selected word source.
     @QtCore.pyqtSlot(bool)        
     def on_act_src_remove(self, checked):
         row = self.lw_sources.currentRow()
         if row < 0: return
         self.lw_sources.takeItem(row)
     
+    ## Edits the selected word source.
+    # @see WordSrcDialog, SettingsDialog::addoredit_wordsrc()
     @QtCore.pyqtSlot(bool)        
     def on_act_src_edit(self, checked):
         item = self.lw_sources.currentItem()
@@ -3764,10 +3828,12 @@ class SettingsDialog(BasicDialog):
             print(err)
             return
     
+    ## Clears all current word sources.
     @QtCore.pyqtSlot(bool)        
     def on_act_src_clear(self, checked):
         self.lw_sources.clear()
 
+    ## Moves selected clues column up one position.
     @QtCore.pyqtSlot(bool)        
     def on_act_cluecol_up(self, checked):
         item = self.lw_clues_cols.currentItem()
@@ -3777,7 +3843,8 @@ class SettingsDialog(BasicDialog):
         self.lw_clues_cols.insertItem(row - 1, self.lw_clues_cols.takeItem(row))
         self.lw_clues_cols.setCurrentRow(row - 1)
     
-    @QtCore.pyqtSlot(bool)        
+    ## Moves selected clues column down one position.
+    @QtCore.pyqtSlot(bool)
     def on_act_cluecol_down(self, checked):
         item = self.lw_clues_cols.currentItem()
         if not item: return
@@ -3786,11 +3853,9 @@ class SettingsDialog(BasicDialog):
         self.lw_clues_cols.insertItem(row + 1, self.lw_clues_cols.takeItem(row))
         self.lw_clues_cols.setCurrentRow(row + 1)
         
+    ## Fires when any of the color select buttons is clicked.
     @QtCore.pyqtSlot(bool)        
     def on_color_btn_clicked(self, checked):
-        """
-        Triggers when any of the color select buttons is clicked.
-        """
         btn = self.sender()
         if not btn: return
         # get current color f button
@@ -3821,11 +3886,9 @@ class SettingsDialog(BasicDialog):
             if font_btn:
                 font_btn.setStyleSheet(color_to_stylesheet(dia_colorpicker.selectedColor(), font_btn.styleSheet(), 'color'))
             
+    ## Fires when any of the font select buttons is clicked.
     @QtCore.pyqtSlot(bool)        
     def on_font_btn_clicked(self, checked):
-        """
-        Triggers when any of the font select buttons is clicked.
-        """
         btn = self.sender()
         if not btn: return
         # get btn font
@@ -3837,6 +3900,7 @@ class SettingsDialog(BasicDialog):
         if new_font[1]:
             btn.setStyleSheet(font_to_stylesheet(new_font[0], style))
 
+    ## Checks / unchecks all checkboxes for Google languages.
     @QtCore.pyqtSlot(int)        
     def on_chb_google_lang_all(self, state):
         if state == QtCore.Qt.Checked or state == QtCore.Qt.Unchecked:
@@ -3847,6 +3911,7 @@ class SettingsDialog(BasicDialog):
             self.chb_google_lang_all.stateChanged.connect(self.on_chb_google_lang_all)
             self.lw_google_lang.itemChanged.connect(self.on_lw_google_lang_changed)
 
+    ## Checks / unchecks all checkboxes for Google interface languages.
     @QtCore.pyqtSlot(int)        
     def on_chb_google_interface_lang_all(self, state):
         if state == QtCore.Qt.Checked or state == QtCore.Qt.Unchecked:
@@ -3857,6 +3922,7 @@ class SettingsDialog(BasicDialog):
             self.chb_google_interface_lang_all.stateChanged.connect(self.on_chb_google_interface_lang_all)
             self.lw_google_interface_lang.itemChanged.connect(self.on_lw_google_interface_lang_changed)
 
+    ## Checks / unchecks all checkboxes for Google locations.
     @QtCore.pyqtSlot(int)        
     def on_chb_google_geo_all(self, state):
         if state == QtCore.Qt.Checked or state == QtCore.Qt.Unchecked:
@@ -3867,6 +3933,7 @@ class SettingsDialog(BasicDialog):
             self.chb_google_geo_all.stateChanged.connect(self.on_chb_google_geo_all)
             self.lw_google_geo.itemChanged.connect(self.on_lw_google_geo_changed)
 
+    ## Sets the tristate for the ALL checkbox when a Google language is checked / unchecked.
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)        
     def on_lw_google_lang_changed(self, item):
         self.chb_google_lang_all.stateChanged.disconnect()
@@ -3886,6 +3953,7 @@ class SettingsDialog(BasicDialog):
             self.chb_google_lang_all.setCheckState(QtCore.Qt.PartiallyChecked)
         self.chb_google_lang_all.stateChanged.connect(self.on_chb_google_lang_all)
 
+    ## Sets the tristate for the ALL checkbox when a Google interface language is checked / unchecked.
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)        
     def on_lw_google_interface_lang_changed(self, item):
         self.chb_google_interface_lang_all.stateChanged.disconnect()
@@ -3905,6 +3973,7 @@ class SettingsDialog(BasicDialog):
             self.chb_google_interface_lang_all.setCheckState(QtCore.Qt.PartiallyChecked)
         self.chb_google_interface_lang_all.stateChanged.connect(self.on_chb_google_interface_lang_all)
 
+    ## Sets the tristate for the ALL checkbox when a Google location is checked / unchecked.
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)        
     def on_lw_google_geo_changed(self, item):
         self.chb_google_geo_all.stateChanged.disconnect()
@@ -3924,19 +3993,20 @@ class SettingsDialog(BasicDialog):
             self.chb_google_geo_all.setCheckState(QtCore.Qt.PartiallyChecked)
         self.chb_google_geo_all.stateChanged.connect(self.on_chb_google_geo_all)
 
+    ## Sets the default resolution value ('Export' page).
     @QtCore.pyqtSlot() 
     def on_btn_export_auto_resolution_img(self):
         self.spin_export_resolution_img.setValue(72)
 
+    ## Sets the default PDF resolution value ('Export' page).
     @QtCore.pyqtSlot() 
     def on_btn_export_auto_resolution_pdf(self):
         self.spin_export_resolution_pdf.setValue(1200)
 
+    ## Registers / unregisters file associations.
+    # @see utils::register_file_types()
     @QtCore.pyqtSlot(bool)
     def on_act_register_associations(self, checked):
-        """
-        Register / unregister file associations with pyCross.
-        """
         state = self.act_register_associations.data()
         ok = register_file_types(register=(state==0))
         if ok:
@@ -3946,19 +4016,15 @@ class SettingsDialog(BasicDialog):
         else:
             MsgBox(_('Could not assign file associations!'), self, _('Error'), 'error')
 
+    ## Enables / disables proxy related controls when the checkbox is checked / unchecked.
     @QtCore.pyqtSlot(int)        
     def on_chb_system_proxy(self, state):
         self.le_http_proxy.setEnabled(state==QtCore.Qt.Unchecked)
         self.le_https_proxy.setEnabled(state==QtCore.Qt.Unchecked)
 
-    @QtCore.pyqtSlot(QtCore.QModelIndex) 
-    def on_tv_plugins_3party_dblclicked(self, index: QtCore.QModelIndex):
-        if index.column() == 1 and index.siblingAtColumn(0).data() == _('Path'):
-            pass
-
+    ## Enables / disables a 3d-party plugin when checked / unchecked.
     @QtCore.pyqtSlot(QtGui.QStandardItem) 
     def on_model_plugins_3party_changed(self, item: QtGui.QStandardItem):
-        # enable / disable plugins when checked / unchecked 'Enabled'
         parent = item.parent()
         if not item.isCheckable() or not parent: return
         checked = bool(item.checkState())       
@@ -3971,36 +4037,46 @@ class SettingsDialog(BasicDialog):
 # *****          CwTable
 # ******************************************************************************** # 
 
+## @brief Crossword grid class (based on `QtWidgets.QTableWidget`).
+# Custom implementation handles key events (like Del, Backspace, etc.) 
 class CwTable(QtWidgets.QTableWidget):
 
+    ## Constructor.
+    # @param on_key `callable` callback for key release event
+    # @param parent `QtWidgets.QWidget` parent widget
     def __init__(self, on_key=None, parent: QtWidgets.QWidget=None):
+        ## Stored callback for key release event
         self.on_key = on_key
         super().__init__(parent)
         
+    ## Key release event handler: call the stored callback.
     def keyReleaseEvent(self, event: QtGui.QKeyEvent):
         #super().keyReleaseEvent(event)
         if self.on_key: self.on_key(event)
-        
-    def keyboardSearch(self, search: str):
-        # override this to disable keyboard search
-        return
-
 
 # ******************************************************************************** #
 # *****          ClickableLabel
 # ******************************************************************************** # 
 
+## Label with mouse click event handler. Used in gui::MainWindow::statusbar_l2.
 class ClickableLabel(QtWidgets.QLabel):
 
+    ## single click signal
     clicked = QtCore.pyqtSignal(QtGui.QMouseEvent)
+    ## double click signal
     dblclicked = QtCore.pyqtSignal(QtGui.QMouseEvent)
 
+    ## Constructor.
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, parent: QtWidgets.QWidget=None, flags: QtCore.Qt.WindowFlags=QtCore.Qt.WindowFlags()):
         super().__init__(parent)
 
+    ## Mouse press (click) event handler: emit `clicked` signal.
     def mousePressEvent(self, event):
         self.clicked.emit(event)
 
+    ## Mouse double-click event handler: emit `dblclicked` signal.
     def mouseDoubleClickEvent(self, event):
         self.dblclicked.emit(event)
         
@@ -4008,17 +4084,22 @@ class ClickableLabel(QtWidgets.QLabel):
 # ******************************************************************************** #
 # *****          CrosswordMenu
 # ******************************************************************************** #    
-        
+
+## Context menu for crossword grid: contains core actions for ease of use.        
 class CrosswordMenu(QtWidgets.QMenu):
     
+    ## Constructor.
+    # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
+    # @param on_triggered `callable` callback for the `triggered` signal (when an action is triggered)
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     def __init__(self, mainwindow, on_triggered=None, parent=None):
         self.mainwindow = mainwindow
         super().__init__(parent=parent)
         self.initActions()
         if on_triggered: self.triggered.connect(on_triggered)
         
+    ## Adds actions to context menu.
     def initActions(self):
-        #self.setTitle('')
         self.addAction(self.mainwindow.act_edit)
         self.addSeparator()
         self.addAction(self.mainwindow.act_clear)
@@ -4041,26 +4122,35 @@ class CrosswordMenu(QtWidgets.QMenu):
 # ******************************************************************************** #
 # *****          WordSuggestDialog
 # ******************************************************************************** #  
-        
+    
+## Small dialog window to look for words matching a given pattern among the word sources.
 class WordSuggestDialog(BasicDialog):
     
+    ## Constructor.
+    # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
+    # @param word `str` the word pattern to look up in suggestions, e.g. 'f_th__'
+    # @param word_editable `bool` whether the word string can be edited directly in the dialog
+    # (default = False)
+    # @param getresults `callable` pointer to function that retrieves word suggestions.
+    # This function takes one argument (the word pattern string) and returns suggestions 
+    # as a list of strings.
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, mainwindow, word='', word_editable=False, getresults=None, 
                 parent=None, flags=QtCore.Qt.WindowFlags()):
-        """
-        Params:
-        * mainwindow [QWidget]: the main application window
-        * word [str]: the word string to look up in suggestions
-        * word_editable [bool]: if the word string can be edited directly in the dialog
-        * getresults [callable]: pointer to function that retrieves suggestions;
-            this function takes one argument - the word string, and returns suggestions as a list of strings
-        * parent, flags: see BasicDialog
-        """
+        ## `QtWidgets.QMainWindow` pointer to gui::MainWindow instance 
         self.mainwindow = mainwindow
-        self.sortdir = ''       
+        ## `str` suggestions sort order: 'A' = ascending, 'D' = descending
+        self.sortdir = ''     
+        ## `str` word pattern to find suggestions for  
         self.word = word
+        ## `bool` whether the word string can be edited directly in the dialog
         self.word_editable = word_editable
+        ## `callable` pointer to function that retrieves word suggestions
         self.getresults = getresults 
+        ## `list` list of retrieved suggestions (word strings)
         self.results = []
+        ## `str` the selected word (from the suggested list)
         self.selected = ''
         super().__init__(None, _('Word Lookup'), 'magic-wand.png', 
               parent, flags)
@@ -4105,23 +4195,27 @@ class WordSuggestDialog(BasicDialog):
         self.layout_controls.addLayout(self.layout_lower)
         self.init(self.word, self.word_editable)
 
+    ## Fires when the dialog shows up.
     def showEvent(self, event):     
         self.selected = ''
         self.old_truncate = self.mainwindow.cw.wordsource.max_fetch
         super().showEvent(event) 
 
+    ## Fires when the dialog closes.
     def closeEvent(self, event):
         self.mainwindow.cw.wordsource.max_fetch = self.old_truncate
         super().closeEvent(event)
 
+    ## Creates and initializes members.
     def init(self, word='', word_editable=False):
-        self.selected = ''
+        self.selected = ''        
         self.word = word
         self.word_editable = word_editable
         self.le_word.setText(self.word)
         self.le_word.setEnabled(self.word_editable)
         self.fill_words()
 
+    ## Checks that a suggestion is selected before quitting.
     def validate(self): 
         self.selected = ''
         if self.lw_words.currentItem() is None:
@@ -4130,6 +4224,7 @@ class WordSuggestDialog(BasicDialog):
         self.selected = self.lw_words.currentItem().text()
         return True
 
+    ## Retrieves suggestions and fills them into the list box.
     def fill_words(self):
         self.lw_words.clear()
         cnt = 0
@@ -4142,12 +4237,16 @@ class WordSuggestDialog(BasicDialog):
         self.l_count.setText(_("{} result{}").format(cnt, ('s' if cnt and cnt > 1 else '')))
         self.update_actions()
 
+    ## Enables / disables actions depending on the number of returned suggestions.
     def update_actions(self):
         b_words = bool(self.results)
         self.act_sort.setEnabled(b_words)
         self.act_shuffle.setEnabled(b_words)
         self.act_source_config.setEnabled(not self.mainwindow is None)
 
+    ## Sorts the suggestions in the list box.
+    # @param order `str` sort order: 'A' = ascending, 'D' = descending, 
+    # 'toggle' = toggle order, empty = use WordSuggestDialog::sortdir
     def sort_words(self, order=''):
         if not self.lw_words.count(): return
         if not self.sortdir:
@@ -4161,28 +4260,33 @@ class WordSuggestDialog(BasicDialog):
                 self.lw_words.sortItems(QtCore.Qt.DescendingOrder)
                 self.sortdir = 'D'
 
+    ## When the 'Truncate' checkbox is (un)checked.
     @QtCore.pyqtSlot(bool) 
     def on_ch_truncate(self, checked):
         self.mainwindow.cw.wordsource.max_fetch = CWSettings.settings['wordsrc']['maxres'] if checked else None
         self.fill_words()
 
+    ## When the word pattern is edited: store the new pattern.
     @QtCore.pyqtSlot(str) 
     def on_word_edited(self, text):
         self.word = text  
-        #self.fill_words()  
 
+    ## When a suggestion is double-clicked: select it and quit.
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)         
     def on_word_dblclick(self, item):
         self.on_btn_OK_clicked()
 
+    ## Refresh action handler: update suggestions.
     @QtCore.pyqtSlot(bool)        
     def on_act_refresh(self, checked):
         self.fill_words()
 
+    ## Sort action handler: sort suggestions.
     @QtCore.pyqtSlot(bool)        
     def on_act_sort(self, checked):
         self.sort_words('toggle')
 
+    ## Shuffle action handler: shuffle suggestions randomly.
     @QtCore.pyqtSlot(bool)        
     def on_act_shuffle(self, checked):
         if not self.results: return
@@ -4191,6 +4295,7 @@ class WordSuggestDialog(BasicDialog):
         self.lw_words.clear()
         self.lw_words.addItems(self.results)
 
+    ## Word source settings action: show word source management page in settings dialog.
     @QtCore.pyqtSlot(bool)        
     def on_act_source_config(self, checked):
         self.mainwindow.on_act_wsrc(False)
@@ -4199,26 +4304,42 @@ class WordSuggestDialog(BasicDialog):
 # ******************************************************************************** #
 # *****          PrintPreviewDialog
 # ******************************************************************************** #  
-        
+    
+## Print preview window to preview crossword / clues and configure printing.
 class PrintPreviewDialog(BasicDialog):
     
+    ## Constructor.
+    # @param printer `QtPrintSupport.QPrinter` selected printer
+    # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, printer, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
+        # printer must be valid
         if not printer.isValid():
             raise Exception(_('No valid printer!'))
+        # crossword instance must be valid
         if getattr(mainwindow, 'cw', None) is None:
             raise Exception(_('Crossword not available!'))
+        ## `QtPrintSupport.QPrinter` selected printer
         self.printer = printer
+        ## `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
         self.mainwindow = mainwindow
         super().__init__(None, _("Printing to: {}").format(self.printer.printerName()), 'binoculars.png', 
               parent, flags)
 
+    ## Update preview on dialog show.
     def showEvent(self, event):      
         event.accept()
         self.ppreview.updatePreview()
 
-    def _make_labelled_widgets(self, name, label, widgets):
+    ## Shortcut method to create a 'tab' (layout) with a caption and widgets.
+    ## @param name `str` name of caption label
+    ## @param caption `str` caption string
+    ## @param widgets `iterable` list of widgets to add to layout
+    ## @returns `QtWidgets.QVBoxLayout` layout with widgets and caption label
+    def _make_labelled_widgets(self, name, caption, widgets):
         layout = QtWidgets.QVBoxLayout()
-        self.__dict__[f"l_{name}"] = QtWidgets.QLabel(label)
+        self.__dict__[f"l_{name}"] = QtWidgets.QLabel(caption)
         label = self.__dict__[f"l_{name}"]
         label.setAlignment(QtCore.Qt.AlignHCenter)
         label.setStyleSheet('font-size: 9pt; font-weight: bold')
@@ -4325,12 +4446,10 @@ class PrintPreviewDialog(BasicDialog):
 
         self.update_controls()
 
+    ## Updates the printer settings from guisettings::CWSettings::settings and 
+    # updates the controls in toolbar and preview according to current
+    # printer settings.
     def update_controls(self):
-        """
-        Updates the printer settings from CWSettings and 
-        updates the controls in toolbar and preview according to current
-        printer settings.
-        """
         # page size
         self.update_page_size()
         # view mode
@@ -4355,6 +4474,7 @@ class PrintPreviewDialog(BasicDialog):
         
         self.ppreview.updatePreview()
 
+    ## Updates the page size from the one selected in the page size combo.
     def update_page_size(self):
         old_index = self.combo_page_size.currentIndex()
         pgsize = int(self.printer.pageLayout().pageSize().id())
@@ -4369,6 +4489,7 @@ class PrintPreviewDialog(BasicDialog):
                 self.combo_page_size.setCurrentIndex(0)
         self.combo_page_size.activated.connect(self.on_combo_page_size)
 
+    ## Sets the page margins according to the values in the margin edit fields.
     def update_margins(self):
         # update margin values in fields                                       
         self.le_margin_l.textChanged.disconnect()
@@ -4385,10 +4506,8 @@ class PrintPreviewDialog(BasicDialog):
         self.le_margin_t.textChanged.connect(self.on_margins_changed)
         self.le_margin_b.textChanged.connect(self.on_margins_changed)
 
+    ## Saves the current page config to the global settings.
     def write_settings(self):
-        """
-        Saves current settings to CWSettings.
-        """
         settings = CWSettings.settings['printing']
 
         margins = self.printer.pageLayout().margins(QtGui.QPageLayout.Millimeter)
@@ -4401,6 +4520,7 @@ class PrintPreviewDialog(BasicDialog):
 
         CWSettings.save_to_file()
 
+    ## When a new page size is selected in the combo box.
     @QtCore.pyqtSlot(int)
     def on_combo_page_size(self, index):
         if self.printer.setPageSize(QtGui.QPageSize(QtGui.QPageSize.PageSizeId(self.combo_page_size.itemData(index)))):
@@ -4408,10 +4528,12 @@ class PrintPreviewDialog(BasicDialog):
         else:
             self.update_page_size()
 
+    ## When a view mode is selected in the view combo box.
     @QtCore.pyqtSlot(int)
     def on_combo_view(self, index):
         self.ppreview.setViewMode(QtPrintSupport.QPrintPreviewWidget.ViewMode(index))
 
+    ## When a layout is selected in the layout combo box.
     @QtCore.pyqtSlot(int)
     def on_combo_layout(self, index):
         if index == 0:
@@ -4424,6 +4546,7 @@ class PrintPreviewDialog(BasicDialog):
             # landscape
             self.ppreview.setOrientation(QtPrintSupport.QPrinter.Landscape)
 
+    ## Scale page to width.
     @QtCore.pyqtSlot()
     def on_btn_fit_width(self):
         self.ppreview.setZoomMode(QtPrintSupport.QPrintPreviewWidget.FitToWidth)
@@ -4431,6 +4554,7 @@ class PrintPreviewDialog(BasicDialog):
         self.slider_zoom.setValue(self.ppreview.zoomFactor() * 100.0)
         self.slider_zoom.valueChanged.connect(self.on_zoom_changed)
 
+    ## Scale page to fit in window.
     @QtCore.pyqtSlot()
     def on_btn_fit_all(self):
         self.ppreview.setZoomMode(QtPrintSupport.QPrintPreviewWidget.FitInView)
@@ -4438,17 +4562,21 @@ class PrintPreviewDialog(BasicDialog):
         self.slider_zoom.setValue(self.ppreview.zoomFactor() * 100.0)
         self.slider_zoom.valueChanged.connect(self.on_zoom_changed)
 
+    ## Set print color mode.
     @QtCore.pyqtSlot(int)
     def on_combo_color(self, index):
         self.printer.setColorMode(QtPrintSupport.QPrinter.ColorMode(index))
         self.ppreview.updatePreview()
 
+    ## Set scale factor.
     @QtCore.pyqtSlot(int)
     def on_zoom_changed(self, value):
         if not self.slider_zoom.hasFocus(): return
         self.ppreview.setZoomMode(QtPrintSupport.QPrintPreviewWidget.CustomZoom)
         self.ppreview.setZoomFactor(value / 100.0)
 
+    ## Set page margins.
+    # @see PrintPreviewDialog::update_margins()
     @QtCore.pyqtSlot(str)
     def on_margins_changed(self, text):
         self.printer.setPageMargins(float(self.le_margin_l.text() or 0), 
@@ -4460,6 +4588,7 @@ class PrintPreviewDialog(BasicDialog):
         self.update_margins()
         self.ppreview.updatePreview()
 
+    ## Shows global settings dialog.
     @QtCore.pyqtSlot()
     def on_btn_settings(self):        
         self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(7))
@@ -4474,9 +4603,15 @@ class PrintPreviewDialog(BasicDialog):
 # *****          CwInfoDialog
 # ******************************************************************************** #  
         
+## Crossword information editor window.
 class CwInfoDialog(BasicDialog):
     
+    ## Constructor.
+    # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
+        ## `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
         self.mainwindow = mainwindow
         super().__init__(None, _('Crossword Info'), 'info1.png', 
               parent, flags)
@@ -4505,10 +4640,8 @@ class CwInfoDialog(BasicDialog):
 
         self.init()
 
+    ## Initializes controls from crossword info.
     def init(self):
-        """
-        Initializes control values from mainwindow.cw.
-        """
         cw_info = self.mainwindow.cw.words.info if self.mainwindow.cw else CWInfo()
         self.le_title.setText(cw_info.title)
         self.le_author.setText(cw_info.author)
@@ -4518,6 +4651,8 @@ class CwInfoDialog(BasicDialog):
         date_ = QtCore.QDate.fromString(datetime_to_str(cw_info.date, '%m/%d/%Y'), 'MM/dd/yyyy')
         self.de_date.setDate(date_ if date_.isValid() else QtCore.QDate.currentDate())
 
+    ## Returns crossword information record initialized from the current control values.
+    # @returns `crossword::CWInfo` crossword information record
     def to_info(self):
         return CWInfo(self.le_title.text(), self.le_author.text(), self.le_editor.text(),
                       self.le_publisher.text(), self.le_copyright.text(), 
@@ -4527,20 +4662,21 @@ class CwInfoDialog(BasicDialog):
 # ******************************************************************************** #
 # *****          DefLookupDialog
 # ******************************************************************************** # 
-      
+
+## Word definition lookup dialog to look up a word in a dictionary and/or Google.
 class DefLookupDialog(BasicDialog):
     
+    ## Constructor.
+    # @param word `str` the word string to look up
+    # @param word_editable `bool` whether the word string can be edited in the dialog (default = `False`)
+    # @param lang `str` short name of the langugage used to look up the word.
+    # Can be one of: 'en' (English), 'ru' (Russian), 'fr' (French), 'es' (Spanish), 'de' (German), 'it' (Italian)
+    # (see globalvars::LANG). If the value is an empty string (default), the setting from
+    # guisettings::CWSettings::settings['lookup']['default_lang'] is taken.
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, word='', word_editable=False, lang='', 
                  parent=None, flags=QtCore.Qt.WindowFlags()):
-        """
-        Params:
-        - word [str]: the word string to look up (def='')
-        - word_editable [bool]: whether the word string can be edited in the dialog (def=False)
-        - lang [str]: the short name of the langugage used to look up the word (def='').
-            Can be one of: 'en' (English), 'ru' (Russian), 'fr' (French), 'es' (Spanish), 'de' (German), 'it' (Italian)
-            (see LANG global). If the value is an empty string (default), the setting from
-            CWSettings.settings['lookup']['default_lang']
-        """      
         self.word = word.lower() or ''
         self.word_editable = word_editable
         self.word_def = None
@@ -4551,23 +4687,25 @@ class DefLookupDialog(BasicDialog):
 
         super().__init__(None, _('Word Lookup'), 'worldwide.png', 
               parent, flags)
-        
+        ## worker threads to retrieve word definitions from the internet
         self.load_threads = {'dics': QThreadStump(on_start=self.on_dics_load_start, on_finish=self.on_dics_load_finish, on_run=self.on_dics_load_run, on_error=self.on_thread_error),
                              'google': QThreadStump(on_start=self.on_google_load_start, on_finish=self.on_google_load_finish, on_run=self.on_google_load_run, on_error=self.on_thread_error)}
 
+    ## Before the dialog quits, need to stop all running background threads.
     def closeEvent(self, event):
-        """
-        Need to stop running background threads.
-        """      
         # close running threads
         self.kill_threads()  
         # close
         event.accept()      
 
+    ## Retrieve results when the dialog shows.
     def showEvent(self, event):      
         self.update_content()
         event.accept()
 
+    ## Stops any or both worker threads.
+    # @param dics `bool` stop the dictionary thread (default = `True`)
+    # @param google `bool` stop the google thread (default = `True`)
     def kill_threads(self, dics=True, google=True):
         for thread in self.load_threads:
             if self.load_threads[thread].isRunning() and \
@@ -4611,11 +4749,14 @@ class DefLookupDialog(BasicDialog):
 
         self.init()
 
+    ## Sets the language to search in the online services.
+    # @param lang `str` search result language (see constructor for details of options)
     def setlang(self, lang=''):
         lang = lang or CWSettings.settings['lookup']['default_lang']
         if not lang: lang = 'en'
         self.lang = lang
 
+    ## Initializes controls.
     def init(self):
         # languages combo
         index = self.combo_lang.findText(self.lang)
@@ -4646,9 +4787,14 @@ class DefLookupDialog(BasicDialog):
             else:
                 self.stacked.setCurrentIndex(-1)  
         
+    ## Sets the selected language.
     def update_language(self):
         self.lang = self.combo_lang.currentText()
 
+    ## @brief Sets the online dictionary engine depending on the selected language.
+    # If the language is English ('en'), the Merriam-Webster dictionary will be used;
+    # otherwise, the Yandex dictionary will be used.
+    # @see utils::onlineservices::MWDict, utils::onlineservices::YandexDict
     def update_dict_engine(self):
         self.update_language()
         timeout = CWSettings.settings['common']['web']['req_timeout'] * 1000
@@ -4657,6 +4803,8 @@ class DefLookupDialog(BasicDialog):
         else:
             self.dict_engine = YandexDict(CWSettings.settings, f"{self.lang}-{self.lang}", timeout or None)
 
+    ## @brief Configures the Google search engine depending on the selected language.
+    # @see utils::onlineservices::GoogleSearch
     def update_google_engine(self):
         settings = CWSettings.settings['lookup']['google']
         timeout = CWSettings.settings['common']['web']['req_timeout'] * 1000
@@ -4667,6 +4815,7 @@ class DefLookupDialog(BasicDialog):
             related_site=settings['related_site'], in_site=settings['in_site'],
             nresults=settings['nresults'], safe_search=settings['safe_search'], timeout=timeout or None) 
 
+    ## Adds the Dictionary and Google pages to the tab widget.
     def add_pages(self):
         # 1. Dictionary
         self.page_dict = QtWidgets.QWidget()
@@ -4714,6 +4863,9 @@ class DefLookupDialog(BasicDialog):
         self.page_google.setLayout(self.layout_google)
         self.stacked.addWidget(self.page_google)
 
+    ## Worker thread error handler.
+    # @param thread `utils::QThreadStump` worker thread instance
+    # @param err `str` error message
     @QtCore.pyqtSlot(QtCore.QThread, str)
     def on_thread_error(self, thread, err):
         MsgBox(_("Load failed with error:\n{}").format(err), self, _('Error'), 'error')
@@ -4728,6 +4880,7 @@ class DefLookupDialog(BasicDialog):
             self.google_res = None
             thread.unlock()
 
+    ## Fires before the dictionary results are retrieved.
     def on_dics_load_start(self):
         #print(f"Started DICT thread for '{self.word}'...")
         self.word_def = None
@@ -4743,6 +4896,7 @@ class DefLookupDialog(BasicDialog):
         self.te_dict_defs.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: bold; background-color: #ffd6e2; color: black')
         self.te_dict_defs.setPlainText(_('UPDATING ...'))     
         
+    ## Dictionary thread run event handler: retrieve dictionary results.
     def on_dics_load_run(self):    
         thread = self.load_threads['dics']
 
@@ -4757,6 +4911,7 @@ class DefLookupDialog(BasicDialog):
         self.word_def = word_def
         thread.unlock()
 
+    ## Fires after the dictionary results are retrieved.
     def on_dics_load_finish(self):
         #print('Finished DICT thread')
         self.te_dict_defs.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: normal; background-color: white; color: black')
@@ -4772,6 +4927,7 @@ class DefLookupDialog(BasicDialog):
         self.on_combo_dict_homs(0)
         self.combo_dict_homs.currentIndexChanged.connect(self.on_combo_dict_homs)
     
+    ## Fires before the Google results are retrieved.
     def on_google_load_start(self):
         #print(f"Started GOOGLE thread for '{self.word}'...")
         self.google_res = None
@@ -4787,6 +4943,7 @@ class DefLookupDialog(BasicDialog):
         self.te_google_res.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: bold; background-color: #ffd6e2; color: black')
         self.te_google_res.setPlainText(_('UPDATING ...')) 
 
+    ## Google thread run event handler: retrieve Google search results.
     def on_google_load_run(self):     
         data = self.google_engine.search_lite()
 
@@ -4795,6 +4952,7 @@ class DefLookupDialog(BasicDialog):
         self.google_res = data
         thread.unlock()
 
+    ## Fires after the Google results are retrieved.
     def on_google_load_finish(self):
         #print('Finished GOOGLE thread')
         self.te_google_res.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: normal; background-color: white; color: black')
@@ -4807,6 +4965,9 @@ class DefLookupDialog(BasicDialog):
         self.on_combo_google(0)
         self.combo_google.currentIndexChanged.connect(self.on_combo_google)
 
+    ## Fills the search results into the corresponding list and combo boxes.
+    # @param dictionary `bool` whether to update the dictionary results
+    # @param google `bool` whether to update the Google results
     def update_content(self, dictionary=True, google=True):
         if not self.word: return
         # kill running threads
@@ -4824,16 +4985,15 @@ class DefLookupDialog(BasicDialog):
         if google and CWSettings.settings['lookup']['google']['show']:
             self.load_threads['google'].start()
 
+    ## Shows the specified page when a radio button is toggled.
     @QtCore.pyqtSlot(bool)        
     def rb_source_toggled(self, toggled):
-        """
-        Show specified source page.
-        """
         if self.rb_dict.isChecked():
             self.stacked.setCurrentIndex(0)
         elif self.rb_google.isChecked():
             self.stacked.setCurrentIndex(1)
 
+    ## Sets a new search word and restarts the search.
     @QtCore.pyqtSlot(str)
     def on_le_word_changed(self, text):
         self.word = text.lower()
@@ -4845,14 +5005,13 @@ class DefLookupDialog(BasicDialog):
         self.le_word.textChanged.connect(self.on_le_word_changed)
         self.update_content()
 
+    ## When a language combo item is selected.
     @QtCore.pyqtSlot(int)
     def on_combo_lang(self, index):
-        """
-        When a language combo item is selected.
-        """     
         # update content
         self.update_content()
 
+    ## When a word homonym is selected in the combo (Dictionary page).
     @QtCore.pyqtSlot(int)
     def on_combo_dict_homs(self, index):
         if index < 0 or not self.word_def or index >= len(self.word_def): return
@@ -4866,6 +5025,7 @@ class DefLookupDialog(BasicDialog):
             self.l_link_dict.setEnabled(False)
         self.te_dict_defs.setPlainText('\n'.join(self.word_def[index][2]))
 
+    ## When a Google result is selected in the combo (Google page).
     @QtCore.pyqtSlot(int)
     def on_combo_google(self, index):
         if index < 0 or not self.google_res or index >= len(self.google_res): return
@@ -4883,9 +5043,14 @@ class DefLookupDialog(BasicDialog):
 # ******************************************************************************** #
 # *****          ReflectGridDialog
 # ******************************************************************************** #  
-        
+    
+## @bried Dialog to reflect / duplicate crossword grid cells.
+# @see gui::MainWindow::act_reflect
 class ReflectGridDialog(BasicDialog):
     
+    ## Constructor.
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(None, _('Duplicate Grid'), 'windows-1.png', 
               parent, flags)
@@ -4961,6 +5126,7 @@ class ReflectGridDialog(BasicDialog):
         if not self.ag_dir.checkedAction():
             self.act_down.setChecked(True)
 
+    ## Changes the reflect direction button icons according to the direction.
     def update_dir_icons(self):
         if self.act_down.isChecked() or self.act_up.isChecked():
             self.act_b1.setIcon(QtGui.QIcon(f"{ICONFOLDER}/grid5.png"))
@@ -4973,6 +5139,7 @@ class ReflectGridDialog(BasicDialog):
             self.act_b3.setIcon(QtGui.QIcon(f"{ICONFOLDER}/grid12.png"))
             self.act_b4.setIcon(QtGui.QIcon(f"{ICONFOLDER}/grid13.png"))
 
+    ## Change relfect direction action.
     @QtCore.pyqtSlot(bool)
     def on_actdir(self, checked):
         self.update_dir_icons()

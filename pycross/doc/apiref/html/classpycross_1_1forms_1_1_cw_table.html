@@ -78,6 +78,9 @@ $(function() {
 <div class="title">pycross.forms.CwTable Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Crossword grid class (based on <code>QtWidgets.QTableWidget</code>).  
+ <a href="classpycross_1_1forms_1_1_cw_table.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.forms.CwTable:</div>
 <div class="dyncontent">
@@ -88,18 +91,22 @@ Inheritance diagram for pycross.forms.CwTable:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aafdd4ce6a3fc59400eeadf6d32b82bea"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#aafdd4ce6a3fc59400eeadf6d32b82bea">__init__</a> (self, <a class="el" href="classpycross_1_1forms_1_1_cw_table.html#a8b9aa75534c0634cd44b0e4848af66fd">on_key</a>=None, QtWidgets.QWidget parent=None)</td></tr>
+<tr class="memdesc:aafdd4ce6a3fc59400eeadf6d32b82bea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classpycross_1_1forms_1_1_cw_table.html#aafdd4ce6a3fc59400eeadf6d32b82bea">More...</a><br /></td></tr>
 <tr class="separator:aafdd4ce6a3fc59400eeadf6d32b82bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2d2805221951d06dfd5b68b22fe31ac"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#aa2d2805221951d06dfd5b68b22fe31ac">keyReleaseEvent</a> (self, QtGui.QKeyEvent event)</td></tr>
+<tr class="memdesc:aa2d2805221951d06dfd5b68b22fe31ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key release event handler: call the stored callback.  <a href="classpycross_1_1forms_1_1_cw_table.html#aa2d2805221951d06dfd5b68b22fe31ac">More...</a><br /></td></tr>
 <tr class="separator:aa2d2805221951d06dfd5b68b22fe31ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3952f3a9597a907762578adc03d33c7f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#a3952f3a9597a907762578adc03d33c7f">keyboardSearch</a> (self, str search)</td></tr>
-<tr class="separator:a3952f3a9597a907762578adc03d33c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a8b9aa75534c0634cd44b0e4848af66fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#a8b9aa75534c0634cd44b0e4848af66fd">on_key</a></td></tr>
+<tr class="memdesc:a8b9aa75534c0634cd44b0e4848af66fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stored callback for key release event.  <a href="classpycross_1_1forms_1_1_cw_table.html#a8b9aa75534c0634cd44b0e4848af66fd">More...</a><br /></td></tr>
 <tr class="separator:a8b9aa75534c0634cd44b0e4848af66fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Crossword grid class (based on <code>QtWidgets.QTableWidget</code>). </p>
+<p>Custom implementation handles key events (like Del, Backspace, etc.) </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aafdd4ce6a3fc59400eeadf6d32b82bea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aafdd4ce6a3fc59400eeadf6d32b82bea">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -132,37 +139,18 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">on_key</td><td><code>callable</code> callback for key release event </td></tr>
+    <tr><td class="paramname">parent</td><td><code>QtWidgets.QWidget</code> parent widget </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3952f3a9597a907762578adc03d33c7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3952f3a9597a907762578adc03d33c7f">&#9670;&nbsp;</a></span>keyboardSearch()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def pycross.forms.CwTable.keyboardSearch </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str&#160;</td>
-          <td class="paramname"><em>search</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aa2d2805221951d06dfd5b68b22fe31ac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa2d2805221951d06dfd5b68b22fe31ac">&#9670;&nbsp;</a></span>keyReleaseEvent()</h2>
 
@@ -189,6 +177,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Key release event handler: call the stored callback. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -203,6 +193,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Stored callback for key release event. </p>
 
 </div>
 </div>

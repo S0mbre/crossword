@@ -80,6 +80,9 @@ $(function() {
 <div class="title">pycross.forms.SettingsDialog Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Global app settings configuration window.  
+ <a href="classpycross_1_1forms_1_1_settings_dialog.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.forms.SettingsDialog:</div>
 <div class="dyncontent">
@@ -93,81 +96,112 @@ Inheritance diagram for pycross.forms.SettingsDialog:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab52421b3152fd124d0e61e2922cc9267"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ab52421b3152fd124d0e61e2922cc9267">__init__</a> (self, <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#adbb2d316306362c7b268edd96e41cfa7">mainwindow</a>=None, parent=None, flags=QtCore.Qt.WindowFlags())</td></tr>
+<tr class="memdesc:ab52421b3152fd124d0e61e2922cc9267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#ab52421b3152fd124d0e61e2922cc9267">More...</a><br /></td></tr>
 <tr class="separator:ab52421b3152fd124d0e61e2922cc9267"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a907f4bbf6f881435abcec7783d159898"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a907f4bbf6f881435abcec7783d159898">load_default_settings</a> (self)</td></tr>
+<tr class="memdesc:a907f4bbf6f881435abcec7783d159898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default settings from 'defsettings.pxjson'.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a907f4bbf6f881435abcec7783d159898">More...</a><br /></td></tr>
 <tr class="separator:a907f4bbf6f881435abcec7783d159898"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac852dfdea56ffa0acc74361391b1e1bc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ac852dfdea56ffa0acc74361391b1e1bc">addMainLayout</a> (self)</td></tr>
 <tr class="memdesc:ac852dfdea56ffa0acc74361391b1e1bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the main (central) layout for controls.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#ac852dfdea56ffa0acc74361391b1e1bc">More...</a><br /></td></tr>
 <tr class="separator:ac852dfdea56ffa0acc74361391b1e1bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab551ae052e90f62dbfcb99dc5fc24b17"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ab551ae052e90f62dbfcb99dc5fc24b17">add_pages</a> (self)</td></tr>
+<tr class="memdesc:ab551ae052e90f62dbfcb99dc5fc24b17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates config pages in <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a8b810dfaa0b82dae8035f4e73b8dc5a2" title="QtWidgets.QStackedWidget container for config pages for each category">SettingsDialog::stacked</a>.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#ab551ae052e90f62dbfcb99dc5fc24b17">More...</a><br /></td></tr>
 <tr class="separator:ab551ae052e90f62dbfcb99dc5fc24b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acabda8f66892bbc8ce102ef9acb54b2c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#acabda8f66892bbc8ce102ef9acb54b2c">to_settings</a> (self)</td></tr>
+<tr class="memdesc:acabda8f66892bbc8ce102ef9acb54b2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outputs collected settings in <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">CWSettings.settings</a> format and returns the resulting dictionary.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#acabda8f66892bbc8ce102ef9acb54b2c">More...</a><br /></td></tr>
 <tr class="separator:acabda8f66892bbc8ce102ef9acb54b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29f647a335e1d629ae976f526ef39f91"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a29f647a335e1d629ae976f526ef39f91">from_settings</a> (self, settings=None, page=None)</td></tr>
+<tr class="memdesc:a29f647a335e1d629ae976f526ef39f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the GUI controls from a dict of global settings.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a29f647a335e1d629ae976f526ef39f91">More...</a><br /></td></tr>
 <tr class="separator:a29f647a335e1d629ae976f526ef39f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a906b2cf76beb51faa1625877a4a745"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a6a906b2cf76beb51faa1625877a4a745">addoredit_wordsrc</a> (self, src, src_item=None)</td></tr>
+<tr class="memdesc:a6a906b2cf76beb51faa1625877a4a745"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new word source from 'src' dict or assigns it to an existing item.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a6a906b2cf76beb51faa1625877a4a745">More...</a><br /></td></tr>
 <tr class="separator:a6a906b2cf76beb51faa1625877a4a745"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e2d5f7d1e05a7f7c93dedd59a584118"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a9e2d5f7d1e05a7f7c93dedd59a584118">showEvent</a> (self, event)</td></tr>
+<tr class="memdesc:a9e2d5f7d1e05a7f7c93dedd59a584118"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when the dialog is shown: updates controls from current settings.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a9e2d5f7d1e05a7f7c93dedd59a584118">More...</a><br /></td></tr>
 <tr class="separator:a9e2d5f7d1e05a7f7c93dedd59a584118"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa25b2d17aee3ddc5e3d8c61532f79f67"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#aa25b2d17aee3ddc5e3d8c61532f79f67">on_tree_select</a> (self)</td></tr>
+<tr class="memdesc:aa25b2d17aee3ddc5e3d8c61532f79f67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when a config category is selected in the category tree.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#aa25b2d17aee3ddc5e3d8c61532f79f67">More...</a><br /></td></tr>
 <tr class="separator:aa25b2d17aee3ddc5e3d8c61532f79f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c627bf00a7d4bda8f5017d0191f3d07"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a6c627bf00a7d4bda8f5017d0191f3d07">on_btn_defaults</a> (self, checked)</td></tr>
+<tr class="memdesc:a6c627bf00a7d4bda8f5017d0191f3d07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default button handler: Restores default settings for current page or all pages.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a6c627bf00a7d4bda8f5017d0191f3d07">More...</a><br /></td></tr>
 <tr class="separator:a6c627bf00a7d4bda8f5017d0191f3d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5100397cf4da24a7752cd3a63736f619"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a5100397cf4da24a7752cd3a63736f619">on_btn_load</a> (self, checked)</td></tr>
+<tr class="memdesc:a5100397cf4da24a7752cd3a63736f619"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load button handler: Loads settings from a file for current page or all pages.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a5100397cf4da24a7752cd3a63736f619">More...</a><br /></td></tr>
 <tr class="separator:a5100397cf4da24a7752cd3a63736f619"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef51fbef84bea58bbf6519b50711ae55"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#aef51fbef84bea58bbf6519b50711ae55">on_btn_save</a> (self, checked)</td></tr>
+<tr class="memdesc:aef51fbef84bea58bbf6519b50711ae55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save button handler: Saves current settings to a file.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#aef51fbef84bea58bbf6519b50711ae55">More...</a><br /></td></tr>
 <tr class="separator:aef51fbef84bea58bbf6519b50711ae55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8acd42f5f1cda199b8ccc45956bed9f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#af8acd42f5f1cda199b8ccc45956bed9f">on_combo_log</a> (self, index)</td></tr>
+<tr class="memdesc:af8acd42f5f1cda199b8ccc45956bed9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">When a log combo item is selected.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#af8acd42f5f1cda199b8ccc45956bed9f">More...</a><br /></td></tr>
 <tr class="separator:af8acd42f5f1cda199b8ccc45956bed9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea879ea45ee62318c220471256e33e47"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#aea879ea45ee62318c220471256e33e47">on_lw_sources_select</a> (self)</td></tr>
-<tr class="separator:aea879ea45ee62318c220471256e33e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8317a7db4deedafc7f95bea7488acbb3"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a8317a7db4deedafc7f95bea7488acbb3">on_lw_sources_dblclick</a> (self, item)</td></tr>
+<tr class="memdesc:a8317a7db4deedafc7f95bea7488acbb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">When a word source is double-clicked, edit it.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a8317a7db4deedafc7f95bea7488acbb3">More...</a><br /></td></tr>
 <tr class="separator:a8317a7db4deedafc7f95bea7488acbb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab97d2c84f8ece4a7009b2ac29c6022e0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ab97d2c84f8ece4a7009b2ac29c6022e0">on_chb_maxfetch_checked</a> (self, state)</td></tr>
+<tr class="memdesc:ab97d2c84f8ece4a7009b2ac29c6022e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">When <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ac828197c56ee97749e57a276813d97ab">SettingsDialog::chb_maxfetch</a> is checked or unchecked.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#ab97d2c84f8ece4a7009b2ac29c6022e0">More...</a><br /></td></tr>
 <tr class="separator:ab97d2c84f8ece4a7009b2ac29c6022e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c3904ba1acccd919658f6526ebe0055"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a2c3904ba1acccd919658f6526ebe0055">on_act_src_up</a> (self, checked)</td></tr>
+<tr class="memdesc:a2c3904ba1acccd919658f6526ebe0055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves selected word source up one position.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a2c3904ba1acccd919658f6526ebe0055">More...</a><br /></td></tr>
 <tr class="separator:a2c3904ba1acccd919658f6526ebe0055"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c9392d13c6cfc45f1fe8091b6fa0f9a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a5c9392d13c6cfc45f1fe8091b6fa0f9a">on_act_src_down</a> (self, checked)</td></tr>
+<tr class="memdesc:a5c9392d13c6cfc45f1fe8091b6fa0f9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves selected word source down one position.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a5c9392d13c6cfc45f1fe8091b6fa0f9a">More...</a><br /></td></tr>
 <tr class="separator:a5c9392d13c6cfc45f1fe8091b6fa0f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11ce50d431c6c1ef59bab80406f3764b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a11ce50d431c6c1ef59bab80406f3764b">on_act_src_add</a> (self, checked)</td></tr>
+<tr class="memdesc:a11ce50d431c6c1ef59bab80406f3764b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new word source.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a11ce50d431c6c1ef59bab80406f3764b">More...</a><br /></td></tr>
 <tr class="separator:a11ce50d431c6c1ef59bab80406f3764b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4349cd00c8e49d3e34fc12ed02b04d8f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a4349cd00c8e49d3e34fc12ed02b04d8f">on_act_src_remove</a> (self, checked)</td></tr>
+<tr class="memdesc:a4349cd00c8e49d3e34fc12ed02b04d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the selected word source.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a4349cd00c8e49d3e34fc12ed02b04d8f">More...</a><br /></td></tr>
 <tr class="separator:a4349cd00c8e49d3e34fc12ed02b04d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab578bf3d527fdee7d87a12b48b4af65c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ab578bf3d527fdee7d87a12b48b4af65c">on_act_src_edit</a> (self, checked)</td></tr>
+<tr class="memdesc:ab578bf3d527fdee7d87a12b48b4af65c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Edits the selected word source.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#ab578bf3d527fdee7d87a12b48b4af65c">More...</a><br /></td></tr>
 <tr class="separator:ab578bf3d527fdee7d87a12b48b4af65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cb8aabc43546cd0f62791ffeae6efd8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a1cb8aabc43546cd0f62791ffeae6efd8">on_act_src_clear</a> (self, checked)</td></tr>
+<tr class="memdesc:a1cb8aabc43546cd0f62791ffeae6efd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all current word sources.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a1cb8aabc43546cd0f62791ffeae6efd8">More...</a><br /></td></tr>
 <tr class="separator:a1cb8aabc43546cd0f62791ffeae6efd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a994674a8adcb72384a6e80e02855ae2d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a994674a8adcb72384a6e80e02855ae2d">on_act_cluecol_up</a> (self, checked)</td></tr>
+<tr class="memdesc:a994674a8adcb72384a6e80e02855ae2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves selected clues column up one position.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a994674a8adcb72384a6e80e02855ae2d">More...</a><br /></td></tr>
 <tr class="separator:a994674a8adcb72384a6e80e02855ae2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac354f3842131babb39a4b7aca73bbdbc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ac354f3842131babb39a4b7aca73bbdbc">on_act_cluecol_down</a> (self, checked)</td></tr>
+<tr class="memdesc:ac354f3842131babb39a4b7aca73bbdbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves selected clues column down one position.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#ac354f3842131babb39a4b7aca73bbdbc">More...</a><br /></td></tr>
 <tr class="separator:ac354f3842131babb39a4b7aca73bbdbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46f8a33868a59efe56756f891690c2ed"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a46f8a33868a59efe56756f891690c2ed">on_color_btn_clicked</a> (self, checked)</td></tr>
+<tr class="memdesc:a46f8a33868a59efe56756f891690c2ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when any of the color select buttons is clicked.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a46f8a33868a59efe56756f891690c2ed">More...</a><br /></td></tr>
 <tr class="separator:a46f8a33868a59efe56756f891690c2ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7cc9e4be7bed79ef81df543c4fab47e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ad7cc9e4be7bed79ef81df543c4fab47e">on_font_btn_clicked</a> (self, checked)</td></tr>
+<tr class="memdesc:ad7cc9e4be7bed79ef81df543c4fab47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when any of the font select buttons is clicked.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#ad7cc9e4be7bed79ef81df543c4fab47e">More...</a><br /></td></tr>
 <tr class="separator:ad7cc9e4be7bed79ef81df543c4fab47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf9d1a629495ddf87b5b2600d9abe9fe"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#acf9d1a629495ddf87b5b2600d9abe9fe">on_chb_google_lang_all</a> (self, state)</td></tr>
+<tr class="memdesc:acf9d1a629495ddf87b5b2600d9abe9fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks / unchecks all checkboxes for Google languages.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#acf9d1a629495ddf87b5b2600d9abe9fe">More...</a><br /></td></tr>
 <tr class="separator:acf9d1a629495ddf87b5b2600d9abe9fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2f533b1af1c822668d84b981ad18231"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ab2f533b1af1c822668d84b981ad18231">on_chb_google_interface_lang_all</a> (self, state)</td></tr>
+<tr class="memdesc:ab2f533b1af1c822668d84b981ad18231"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks / unchecks all checkboxes for Google interface languages.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#ab2f533b1af1c822668d84b981ad18231">More...</a><br /></td></tr>
 <tr class="separator:ab2f533b1af1c822668d84b981ad18231"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b25331b3f9ab48d34bb8bc92a818663"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a4b25331b3f9ab48d34bb8bc92a818663">on_chb_google_geo_all</a> (self, state)</td></tr>
+<tr class="memdesc:a4b25331b3f9ab48d34bb8bc92a818663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks / unchecks all checkboxes for Google locations.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a4b25331b3f9ab48d34bb8bc92a818663">More...</a><br /></td></tr>
 <tr class="separator:a4b25331b3f9ab48d34bb8bc92a818663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9652703b76f4dce593664803e4a0bec7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a9652703b76f4dce593664803e4a0bec7">on_lw_google_lang_changed</a> (self, item)</td></tr>
+<tr class="memdesc:a9652703b76f4dce593664803e4a0bec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the tristate for the ALL checkbox when a Google language is checked / unchecked.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a9652703b76f4dce593664803e4a0bec7">More...</a><br /></td></tr>
 <tr class="separator:a9652703b76f4dce593664803e4a0bec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b355eaca5163aef9726beace8eada8a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a8b355eaca5163aef9726beace8eada8a">on_lw_google_interface_lang_changed</a> (self, item)</td></tr>
+<tr class="memdesc:a8b355eaca5163aef9726beace8eada8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the tristate for the ALL checkbox when a Google interface language is checked / unchecked.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a8b355eaca5163aef9726beace8eada8a">More...</a><br /></td></tr>
 <tr class="separator:a8b355eaca5163aef9726beace8eada8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9681fe2ff2eabcee4ae63733fcd7a63c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a9681fe2ff2eabcee4ae63733fcd7a63c">on_lw_google_geo_changed</a> (self, item)</td></tr>
+<tr class="memdesc:a9681fe2ff2eabcee4ae63733fcd7a63c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the tristate for the ALL checkbox when a Google location is checked / unchecked.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a9681fe2ff2eabcee4ae63733fcd7a63c">More...</a><br /></td></tr>
 <tr class="separator:a9681fe2ff2eabcee4ae63733fcd7a63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a24c3f7b0be969efb312c04bcf8073a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a0a24c3f7b0be969efb312c04bcf8073a">on_btn_export_auto_resolution_img</a> (self)</td></tr>
+<tr class="memdesc:a0a24c3f7b0be969efb312c04bcf8073a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the default resolution value ('Export' page).  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a0a24c3f7b0be969efb312c04bcf8073a">More...</a><br /></td></tr>
 <tr class="separator:a0a24c3f7b0be969efb312c04bcf8073a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcb495a5edb0a22ffd7bbdabbf12808f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#adcb495a5edb0a22ffd7bbdabbf12808f">on_btn_export_auto_resolution_pdf</a> (self)</td></tr>
+<tr class="memdesc:adcb495a5edb0a22ffd7bbdabbf12808f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the default PDF resolution value ('Export' page).  <a href="classpycross_1_1forms_1_1_settings_dialog.html#adcb495a5edb0a22ffd7bbdabbf12808f">More...</a><br /></td></tr>
 <tr class="separator:adcb495a5edb0a22ffd7bbdabbf12808f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a039be109e5735a1e0753cb4e4af347e7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a039be109e5735a1e0753cb4e4af347e7">on_act_register_associations</a> (self, checked)</td></tr>
+<tr class="memdesc:a039be109e5735a1e0753cb4e4af347e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers / unregisters file associations.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a039be109e5735a1e0753cb4e4af347e7">More...</a><br /></td></tr>
 <tr class="separator:a039be109e5735a1e0753cb4e4af347e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae320bff99fad2161c1e36ac1fec1d736"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ae320bff99fad2161c1e36ac1fec1d736">on_chb_system_proxy</a> (self, state)</td></tr>
+<tr class="memdesc:ae320bff99fad2161c1e36ac1fec1d736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables / disables proxy related controls when the checkbox is checked / unchecked.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#ae320bff99fad2161c1e36ac1fec1d736">More...</a><br /></td></tr>
 <tr class="separator:ae320bff99fad2161c1e36ac1fec1d736"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a630973a1ce0bf7ece882a8c63eeccf44"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a630973a1ce0bf7ece882a8c63eeccf44">on_tv_plugins_3party_dblclicked</a> (self, QtCore.QModelIndex index)</td></tr>
-<tr class="separator:a630973a1ce0bf7ece882a8c63eeccf44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb842abb5d0de3f4665fab1a4be8dd3c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#aeb842abb5d0de3f4665fab1a4be8dd3c">on_model_plugins_3party_changed</a> (self, QtGui.QStandardItem item)</td></tr>
+<tr class="memdesc:aeb842abb5d0de3f4665fab1a4be8dd3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables / disables a 3d-party plugin when checked / unchecked.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#aeb842abb5d0de3f4665fab1a4be8dd3c">More...</a><br /></td></tr>
 <tr class="separator:aeb842abb5d0de3f4665fab1a4be8dd3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpycross_1_1forms_1_1_basic_dialog"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpycross_1_1forms_1_1_basic_dialog')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html">pycross.forms.BasicDialog</a></td></tr>
 <tr class="memitem:a384bc887ac5d3798d91e20172c36df65 inherit pub_methods_classpycross_1_1forms_1_1_basic_dialog"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_basic_dialog.html#a384bc887ac5d3798d91e20172c36df65">__init__</a> (self, geometry=None, title=None, icon=None, parent=None, flags=QtCore.Qt.WindowFlags(), sizepolicy=QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))</td></tr>
@@ -195,12 +229,14 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a4f1ad32087721e4db0e6a9bfbec48015"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a4f1ad32087721e4db0e6a9bfbec48015">layout_controls</a></td></tr>
 <tr class="separator:a4f1ad32087721e4db0e6a9bfbec48015"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9902e324fcbf2bc7ecd54a850005142"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#af9902e324fcbf2bc7ecd54a850005142">tree</a></td></tr>
+<tr class="memdesc:af9902e324fcbf2bc7ecd54a850005142"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QTreeWidget</code> config categories tree  <a href="classpycross_1_1forms_1_1_settings_dialog.html#af9902e324fcbf2bc7ecd54a850005142">More...</a><br /></td></tr>
 <tr class="separator:af9902e324fcbf2bc7ecd54a850005142"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f0e1dba5c9864f681342a68eb71e63d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a2f0e1dba5c9864f681342a68eb71e63d">central_widget</a></td></tr>
 <tr class="separator:a2f0e1dba5c9864f681342a68eb71e63d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b29bfe102b087216e4ec606ba072ba8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a3b29bfe102b087216e4ec606ba072ba8">layout_central</a></td></tr>
 <tr class="separator:a3b29bfe102b087216e4ec606ba072ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b810dfaa0b82dae8035f4e73b8dc5a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a8b810dfaa0b82dae8035f4e73b8dc5a2">stacked</a></td></tr>
+<tr class="memdesc:a8b810dfaa0b82dae8035f4e73b8dc5a2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QStackedWidget</code> container for config pages for each category  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a8b810dfaa0b82dae8035f4e73b8dc5a2">More...</a><br /></td></tr>
 <tr class="separator:a8b810dfaa0b82dae8035f4e73b8dc5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaad426671ed393115a0c520a5b47ec55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#aaad426671ed393115a0c520a5b47ec55">btn_defaults</a></td></tr>
 <tr class="separator:aaad426671ed393115a0c520a5b47ec55"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -542,8 +578,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a270c9c48f06bc0096a362dc14aae5ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15ed389c04b9e04f53a9f370fbe17cfb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a15ed389c04b9e04f53a9f370fbe17cfb">page_plugins_custom</a></td></tr>
 <tr class="separator:a15ed389c04b9e04f53a9f370fbe17cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bb391be4f81085cd7b0454b68964e31"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a7bb391be4f81085cd7b0454b68964e31">layout_plugins_custom</a></td></tr>
-<tr class="separator:a7bb391be4f81085cd7b0454b68964e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7dc956884816ee8d87c6f40c5e3d43a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ae7dc956884816ee8d87c6f40c5e3d43a">page_printing</a></td></tr>
 <tr class="separator:ae7dc956884816ee8d87c6f40c5e3d43a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60a6933678b871ebe43970f5bc039111"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a60a6933678b871ebe43970f5bc039111">layout_printing</a></td></tr>
@@ -662,18 +696,26 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a742d898f0e9d4782796a063e77e369e3"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a742d898f0e9d4782796a063e77e369e3">PAGES</a></td></tr>
+<tr class="memdesc:a742d898f0e9d4782796a063e77e369e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of stacked pages corresponding to config categories  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a742d898f0e9d4782796a063e77e369e3">More...</a><br /></td></tr>
 <tr class="separator:a742d898f0e9d4782796a063e77e369e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ac4c404f023709d7ab2f60787c0c28d"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a5ac4c404f023709d7ab2f60787c0c28d">PARENT_PAGES</a> = [_('Sources'), _('User interface'), _('Plugins')]</td></tr>
+<tr class="memdesc:a5ac4c404f023709d7ab2f60787c0c28d"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of parent nodes that hold several pages  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a5ac4c404f023709d7ab2f60787c0c28d">More...</a><br /></td></tr>
 <tr class="separator:a5ac4c404f023709d7ab2f60787c0c28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:aa7a1c97902661f9e97a32878c56e8003"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#aa7a1c97902661f9e97a32878c56e8003">_fill_clue_cols</a> (self)</td></tr>
+<tr class="memdesc:aa7a1c97902661f9e97a32878c56e8003"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut method to update the list of Clues column names.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#aa7a1c97902661f9e97a32878c56e8003">More...</a><br /></td></tr>
 <tr class="separator:aa7a1c97902661f9e97a32878c56e8003"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a576ae15334f457000749d15e33255289"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a576ae15334f457000749d15e33255289">_set_spin_value_safe</a> (self, spin, val)</td></tr>
+<tr class="memdesc:a576ae15334f457000749d15e33255289"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut method to set the value of a QtWidgets.QSpinBox control with min/max threshold checks.  <a href="classpycross_1_1forms_1_1_settings_dialog.html#a576ae15334f457000749d15e33255289">More...</a><br /></td></tr>
 <tr class="separator:a576ae15334f457000749d15e33255289"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Global app settings configuration window. </p>
+<p><br  />
+ </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab52421b3152fd124d0e61e2922cc9267"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab52421b3152fd124d0e61e2922cc9267">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -712,6 +754,16 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mainwindow</td><td><code>QtWidgets.QMainWindow</code> pointer to <a class="el" href="classpycross_1_1gui_1_1_main_window.html" title="The application&#39;s main GUI window.">gui::MainWindow</a> instance </td></tr>
+    <tr><td class="paramname">parent</td><td><code>QtWidgets.QWidget</code> parent widget (default = <code>None</code>, i.e. no parent) </td></tr>
+    <tr><td class="paramname">flags</td><td><code>QtCore.Qt.WindowFlags</code> <a href="https://doc.qt.io/qt-5/qt.html#WindowType-enum">Qt window flags</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -738,6 +790,8 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Shortcut method to update the list of Clues column names. </p>
 
 </div>
 </div>
@@ -781,6 +835,8 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Shortcut method to set the value of a QtWidgets.QSpinBox control with min/max threshold checks. </p>
+
 </div>
 </div>
 <a id="ab551ae052e90f62dbfcb99dc5fc24b17"></a>
@@ -798,8 +854,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Adds pages to self.stacked.
-</pre> 
+
+<p>Creates config pages in <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a8b810dfaa0b82dae8035f4e73b8dc5a2" title="QtWidgets.QStackedWidget container for config pages for each category">SettingsDialog::stacked</a>. </p>
+
 </div>
 </div>
 <a id="ac852dfdea56ffa0acc74361391b1e1bc"></a>
@@ -856,10 +913,16 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Adds a new word source from 'src' dict
-or assigns it to existing 'src_item' (of type QtWidgets.QListWidgetItem).
-See dict format in WordSrcDialog docs.
-</pre> 
+
+<p>Adds a new word source from 'src' dict or assigns it to an existing item. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td><code>dict</code> dictionary describing a word source; see dict format in <a class="el" href="classpycross_1_1forms_1_1_word_src_dialog.html" title="Word source editor dialog: provides adding and editing word sources.">WordSrcDialog</a> docs </td></tr>
+    <tr><td class="paramname">src_item</td><td><code>QtWidgets.QListWidgetItem</code> source item in <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a5184a4cff9f4c24d820ea81122287fed">SettingsDialog::lw_sources</a> that must be updated; if <code>None</code> (default), a new source is added instead </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a29f647a335e1d629ae976f526ef39f91"></a>
@@ -893,11 +956,16 @@ See dict format in WordSrcDialog docs.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Updates GUI controls from 'settings' dict.
-If 'settings' is None, CWSettings.settings is used.
-GUI controls are updated only on page given by 'page' (name),
-or on all pages in 'page' == None.
-</pre> 
+
+<p>Updates the GUI controls from a dict of global settings. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">settings</td><td><code>dict</code> global setting dictionary in <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">guisettings::CWSettings::settings</a> format. If <code>None</code> (default), <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">guisettings::CWSettings::settings</a> is used (the app global settings). </td></tr>
+    <tr><td class="paramname">page</td><td><code>str</code> name of page to update. GUI controls are updated only on this page. If <code>None</code> (default), GUI controls will be updated on all pages. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a907f4bbf6f881435abcec7783d159898"></a>
@@ -915,8 +983,10 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Loads the default settings from 'defsettings.pxjson'.
-</pre> 
+
+<p>Gets the default settings from 'defsettings.pxjson'. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> dictionary of settings loaded from the default settings file ('defsettings.pxjson'). </dd></dl>
+
 </div>
 </div>
 <a id="ac354f3842131babb39a4b7aca73bbdbc"></a>
@@ -944,6 +1014,8 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Moves selected clues column down one position. </p>
 
 </div>
 </div>
@@ -973,6 +1045,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Moves selected clues column up one position. </p>
+
 </div>
 </div>
 <a id="a039be109e5735a1e0753cb4e4af347e7"></a>
@@ -1000,8 +1074,10 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Register / unregister file associations with pyCross.
-</pre> 
+
+<p>Registers / unregisters file associations. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacepycross_1_1utils_1_1utils.html#acab0ce88d36249bd06f5c7cd9d31263b">utils::register_file_types()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a11ce50d431c6c1ef59bab80406f3764b"></a>
@@ -1029,6 +1105,9 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Adds a new word source. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1forms_1_1_word_src_dialog.html" title="Word source editor dialog: provides adding and editing word sources.">WordSrcDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a6a906b2cf76beb51faa1625877a4a745" title="Adds a new word source from &#39;src&#39; dict or assigns it to an existing item.">SettingsDialog::addoredit_wordsrc()</a> </dd></dl>
 
 </div>
 </div>
@@ -1058,6 +1137,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Clears all current word sources. </p>
+
 </div>
 </div>
 <a id="a5c9392d13c6cfc45f1fe8091b6fa0f9a"></a>
@@ -1085,6 +1166,8 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Moves selected word source down one position. </p>
 
 </div>
 </div>
@@ -1114,6 +1197,9 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Edits the selected word source. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1forms_1_1_word_src_dialog.html" title="Word source editor dialog: provides adding and editing word sources.">WordSrcDialog</a>, <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#a6a906b2cf76beb51faa1625877a4a745" title="Adds a new word source from &#39;src&#39; dict or assigns it to an existing item.">SettingsDialog::addoredit_wordsrc()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a4349cd00c8e49d3e34fc12ed02b04d8f"></a>
@@ -1141,6 +1227,8 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Deletes the selected word source. </p>
 
 </div>
 </div>
@@ -1170,6 +1258,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Moves selected word source up one position. </p>
+
 </div>
 </div>
 <a id="a6c627bf00a7d4bda8f5017d0191f3d07"></a>
@@ -1197,8 +1287,9 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Restore default settings for current page or for all pages.
-</pre> 
+
+<p>Default button handler: Restores default settings for current page or all pages. </p>
+
 </div>
 </div>
 <a id="a0a24c3f7b0be969efb312c04bcf8073a"></a>
@@ -1217,6 +1308,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Sets the default resolution value ('Export' page). </p>
+
 </div>
 </div>
 <a id="adcb495a5edb0a22ffd7bbdabbf12808f"></a>
@@ -1234,6 +1327,8 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the default PDF resolution value ('Export' page). </p>
 
 </div>
 </div>
@@ -1262,8 +1357,9 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Loads settings from file for current page or for all pages.
-</pre> 
+
+<p>Load button handler: Loads settings from a file for current page or all pages. </p>
+
 </div>
 </div>
 <a id="aef51fbef84bea58bbf6519b50711ae55"></a>
@@ -1291,8 +1387,9 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Saves current settings to file.
-</pre> 
+
+<p>Save button handler: Saves current settings to a file. </p>
+
 </div>
 </div>
 <a id="a4b25331b3f9ab48d34bb8bc92a818663"></a>
@@ -1320,6 +1417,8 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Checks / unchecks all checkboxes for Google locations. </p>
 
 </div>
 </div>
@@ -1349,6 +1448,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Checks / unchecks all checkboxes for Google interface languages. </p>
+
 </div>
 </div>
 <a id="acf9d1a629495ddf87b5b2600d9abe9fe"></a>
@@ -1376,6 +1477,8 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Checks / unchecks all checkboxes for Google languages. </p>
 
 </div>
 </div>
@@ -1405,6 +1508,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>When <a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html#ac828197c56ee97749e57a276813d97ab">SettingsDialog::chb_maxfetch</a> is checked or unchecked. </p>
+
 </div>
 </div>
 <a id="ae320bff99fad2161c1e36ac1fec1d736"></a>
@@ -1433,6 +1538,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Enables / disables proxy related controls when the checkbox is checked / unchecked. </p>
+
 </div>
 </div>
 <a id="a46f8a33868a59efe56756f891690c2ed"></a>
@@ -1460,8 +1567,9 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Triggers when any of the color select buttons is clicked.
-</pre> 
+
+<p>Fires when any of the color select buttons is clicked. </p>
+
 </div>
 </div>
 <a id="af8acd42f5f1cda199b8ccc45956bed9f"></a>
@@ -1489,8 +1597,9 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">When a log combo item is selected.
-</pre> 
+
+<p>When a log combo item is selected. </p>
+
 </div>
 </div>
 <a id="ad7cc9e4be7bed79ef81df543c4fab47e"></a>
@@ -1518,8 +1627,9 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Triggers when any of the font select buttons is clicked.
-</pre> 
+
+<p>Fires when any of the font select buttons is clicked. </p>
+
 </div>
 </div>
 <a id="a9681fe2ff2eabcee4ae63733fcd7a63c"></a>
@@ -1547,6 +1657,8 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the tristate for the ALL checkbox when a Google location is checked / unchecked. </p>
 
 </div>
 </div>
@@ -1576,6 +1688,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Sets the tristate for the ALL checkbox when a Google interface language is checked / unchecked. </p>
+
 </div>
 </div>
 <a id="a9652703b76f4dce593664803e4a0bec7"></a>
@@ -1603,6 +1717,8 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the tristate for the ALL checkbox when a Google language is checked / unchecked. </p>
 
 </div>
 </div>
@@ -1632,23 +1748,7 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="aea879ea45ee62318c220471256e33e47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea879ea45ee62318c220471256e33e47">&#9670;&nbsp;</a></span>on_lw_sources_select()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def pycross.forms.SettingsDialog.on_lw_sources_select </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>When a word source is double-clicked, edit it. </p>
 
 </div>
 </div>
@@ -1678,6 +1778,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Enables / disables a 3d-party plugin when checked / unchecked. </p>
+
 </div>
 </div>
 <a id="aa25b2d17aee3ddc5e3d8c61532f79f67"></a>
@@ -1696,33 +1798,7 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a630973a1ce0bf7ece882a8c63eeccf44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a630973a1ce0bf7ece882a8c63eeccf44">&#9670;&nbsp;</a></span>on_tv_plugins_3party_dblclicked()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def pycross.forms.SettingsDialog.on_tv_plugins_3party_dblclicked </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">QtCore.QModelIndex&#160;</td>
-          <td class="paramname"><em>index</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Fires when a config category is selected in the category tree. </p>
 
 </div>
 </div>
@@ -1752,6 +1828,8 @@ or on all pages in 'page' == None.
       </table>
 </div><div class="memdoc">
 
+<p>Fires when the dialog is shown: updates controls from current settings. </p>
+
 </div>
 </div>
 <a id="acabda8f66892bbc8ce102ef9acb54b2c"></a>
@@ -1769,9 +1847,11 @@ or on all pages in 'page' == None.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Saves settings in CWSettings.settings format.
-It doesn't update CWSettings.settings automatically!
-</pre> 
+
+<p>Outputs collected settings in <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">CWSettings.settings</a> format and returns the resulting dictionary. </p>
+<dl class="section warning"><dt>Warning</dt><dd>The method doesn't update <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">guisettings::CWSettings::settings</a> automatically! </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> dictionary with global settings collected from the dialog </dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -3735,20 +3815,6 @@ It doesn't update CWSettings.settings automatically!
 
 </div>
 </div>
-<a id="a7bb391be4f81085cd7b0454b68964e31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7bb391be4f81085cd7b0454b68964e31">&#9670;&nbsp;</a></span>layout_plugins_custom</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">pycross.forms.SettingsDialog.layout_plugins_custom</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a60a6933678b871ebe43970f5bc039111"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60a6933678b871ebe43970f5bc039111">&#9670;&nbsp;</a></span>layout_printing</h2>
 
@@ -4598,6 +4664,8 @@ It doesn't update CWSettings.settings automatically!
 <div class="line">             _(<span class="stringliteral">&#39;Window&#39;</span>), _(<span class="stringliteral">&#39;Grid&#39;</span>), _(<span class="stringliteral">&#39;Clues&#39;</span>), _(<span class="stringliteral">&#39;Toolbar&#39;</span>), _(<span class="stringliteral">&#39;Definition lookup&#39;</span>), _(<span class="stringliteral">&#39;Import &amp; Export&#39;</span>),</div>
 <div class="line">             _(<span class="stringliteral">&#39;Third-party&#39;</span>), _(<span class="stringliteral">&#39;Custom&#39;</span>), _(<span class="stringliteral">&#39;Printing&#39;</span>), _(<span class="stringliteral">&#39;Updating&#39;</span>), _(<span class="stringliteral">&#39;Sharing&#39;</span>)]</div>
 </div><!-- fragment -->
+<p>list of stacked pages corresponding to config categories </p>
+
 </div>
 </div>
 <a id="a5ac4c404f023709d7ab2f60787c0c28d"></a>
@@ -4619,6 +4687,8 @@ It doesn't update CWSettings.settings automatically!
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>list of parent nodes that hold several pages </p>
 
 </div>
 </div>
@@ -4872,6 +4942,8 @@ It doesn't update CWSettings.settings automatically!
       </table>
 </div><div class="memdoc">
 
+<p><code>QtWidgets.QStackedWidget</code> container for config pages for each category </p>
+
 </div>
 </div>
 <a id="ab2696f5032700074c8adaddc6437f6c3"></a>
@@ -4927,6 +4999,8 @@ It doesn't update CWSettings.settings automatically!
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>QtWidgets.QTreeWidget</code> config categories tree </p>
 
 </div>
 </div>

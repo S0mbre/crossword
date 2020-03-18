@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['update_2epy_1440',['update.py',['../update_8py.html',1,'']]],
-  ['utils_2epy_1441',['utils.py',['../utils_8py.html',1,'']]]
+  ['synteditor_2epy_1533',['synteditor.py',['../synteditor_8py.html',1,'']]]
 ];
