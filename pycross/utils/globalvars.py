@@ -11,10 +11,10 @@ def make_abspath(filename, root=''):
     return os.path.abspath(os.path.join(root, filename))
 
 ## toggle debug messages
-DEBUGGING = True
+DEBUGGING = False
 
 ## current app version
-APP_VERSION = '0.2.1'
+APP_VERSION = '0.3'
 
 ## app name
 APP_NAME = 'pycrossword'

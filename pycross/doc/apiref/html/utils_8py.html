@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="main.ico"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">pycrossword
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
    <div id="projectbrief">Pure-Python implementation of a crossword puzzle generator and editor</div>
   </td>
@@ -83,6 +83,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html">pycross.utils.utils.QThreadStump</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Customized thread class (based on QThread) that adds progress, error etc.  <a href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_json_hiliter.html">pycross.utils.utils.JsonHiliter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax highlighter class for JSON.  <a href="classpycross_1_1utils_1_1utils_1_1_json_hiliter.html#details">More...</a><br /></td></tr>
@@ -98,34 +99,49 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a3e2deb67f87c1a3e90772a1d7756b18b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#a3e2deb67f87c1a3e90772a1d7756b18b">pycross.utils.utils.is_iterable</a> (obj)</td></tr>
+<tr class="memdesc:a3e2deb67f87c1a3e90772a1d7756b18b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given object is iterable (i.e.  <a href="namespacepycross_1_1utils_1_1utils.html#a3e2deb67f87c1a3e90772a1d7756b18b">More...</a><br /></td></tr>
 <tr class="separator:a3e2deb67f87c1a3e90772a1d7756b18b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52700afcddfe2487cb2a70062e450f8e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#a52700afcddfe2487cb2a70062e450f8e">pycross.utils.utils.getosname</a> ()</td></tr>
+<tr class="memdesc:a52700afcddfe2487cb2a70062e450f8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current OS (platform) name.  <a href="namespacepycross_1_1utils_1_1utils.html#a52700afcddfe2487cb2a70062e450f8e">More...</a><br /></td></tr>
 <tr class="separator:a52700afcddfe2487cb2a70062e450f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a94f270438c93fe94c8d12789cac3cb"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#a1a94f270438c93fe94c8d12789cac3cb">pycross.utils.utils.generate_uuid</a> ()</td></tr>
+<tr class="memdesc:a1a94f270438c93fe94c8d12789cac3cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random UUID (alphanumeric string).  <a href="namespacepycross_1_1utils_1_1utils.html#a1a94f270438c93fe94c8d12789cac3cb">More...</a><br /></td></tr>
 <tr class="separator:a1a94f270438c93fe94c8d12789cac3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6f0c5a0a0d86e253b42d2144d445191"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#ac6f0c5a0a0d86e253b42d2144d445191">pycross.utils.utils.copy_file</a> (path_from, path_to)</td></tr>
+<tr class="memdesc:ac6f0c5a0a0d86e253b42d2144d445191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies a file into another location.  <a href="namespacepycross_1_1utils_1_1utils.html#ac6f0c5a0a0d86e253b42d2144d445191">More...</a><br /></td></tr>
 <tr class="separator:ac6f0c5a0a0d86e253b42d2144d445191"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af615d8ce16babcc70f885b93e5cf3505"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#af615d8ce16babcc70f885b93e5cf3505">pycross.utils.utils.walk_dir</a> (root_path, abs_path=True, recurse=True, dir_process_function=None, file_process_function=None, file_types=None)</td></tr>
+<tr class="memdesc:af615d8ce16babcc70f885b93e5cf3505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterates the files and folder in a given folder, performing some operations on the found files / folders.  <a href="namespacepycross_1_1utils_1_1utils.html#af615d8ce16babcc70f885b93e5cf3505">More...</a><br /></td></tr>
 <tr class="separator:af615d8ce16babcc70f885b93e5cf3505"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f4496ed66a4da47f66bdf73be5577f1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#a2f4496ed66a4da47f66bdf73be5577f1">pycross.utils.utils.run_exe</a> (args, external=False, capture_output=True, stdout=subprocess.PIPE, encoding=ENCODING, timeout=None, shell=False, **kwargs)</td></tr>
+<tr class="memdesc:a2f4496ed66a4da47f66bdf73be5577f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs an executable and optionally returns the result.  <a href="namespacepycross_1_1utils_1_1utils.html#a2f4496ed66a4da47f66bdf73be5577f1">More...</a><br /></td></tr>
 <tr class="separator:a2f4496ed66a4da47f66bdf73be5577f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d5b6724243e68c626c62b32d67fd95b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#a0d5b6724243e68c626c62b32d67fd95b">pycross.utils.utils.datetime_to_str</a> (dt=None, strformat='%Y-%m-%d %H-%M-%S')</td></tr>
+<tr class="memdesc:a0d5b6724243e68c626c62b32d67fd95b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a Python <code>datetime</code> object to a string.  <a href="namespacepycross_1_1utils_1_1utils.html#a0d5b6724243e68c626c62b32d67fd95b">More...</a><br /></td></tr>
 <tr class="separator:a0d5b6724243e68c626c62b32d67fd95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac266e8884b8df25aef245e4a32042db9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#ac266e8884b8df25aef245e4a32042db9">pycross.utils.utils.timestamp_to_str</a> (ts=None, strformat='%Y-%m-%d %H-%M-%S')</td></tr>
+<tr class="memdesc:ac266e8884b8df25aef245e4a32042db9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a timestamp (Unix time) to a string.  <a href="namespacepycross_1_1utils_1_1utils.html#ac266e8884b8df25aef245e4a32042db9">More...</a><br /></td></tr>
 <tr class="separator:ac266e8884b8df25aef245e4a32042db9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7a4a7e65c62e1b44b5e5d90f5840255"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#ae7a4a7e65c62e1b44b5e5d90f5840255">pycross.utils.utils.str_to_datetime</a> (text, strformat='%Y-%m-%d %H-%M-%S')</td></tr>
+<tr class="memdesc:ae7a4a7e65c62e1b44b5e5d90f5840255"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a string to a Python <code>datetime</code> object.  <a href="namespacepycross_1_1utils_1_1utils.html#ae7a4a7e65c62e1b44b5e5d90f5840255">More...</a><br /></td></tr>
 <tr class="separator:ae7a4a7e65c62e1b44b5e5d90f5840255"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace924e642da823ec5ee67d10769a24c9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#ace924e642da823ec5ee67d10769a24c9">pycross.utils.utils.str_to_timestamp</a> (text, strformat='%Y-%m-%d %H-%M-%S')</td></tr>
+<tr class="memdesc:ace924e642da823ec5ee67d10769a24c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a string to a timestamp (Unix time).  <a href="namespacepycross_1_1utils_1_1utils.html#ace924e642da823ec5ee67d10769a24c9">More...</a><br /></td></tr>
 <tr class="separator:ace924e642da823ec5ee67d10769a24c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1e20652434879d7157300b2bad34753"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#af1e20652434879d7157300b2bad34753">pycross.utils.utils.get_tempdir</a> ()</td></tr>
+<tr class="memdesc:af1e20652434879d7157300b2bad34753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the path to the Temp directory on the system.  <a href="namespacepycross_1_1utils_1_1utils.html#af1e20652434879d7157300b2bad34753">More...</a><br /></td></tr>
 <tr class="separator:af1e20652434879d7157300b2bad34753"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abca5a3644df74849f35feb21223d7d6e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#abca5a3644df74849f35feb21223d7d6e">pycross.utils.utils.bytes_human</a> (value, suffix='B')</td></tr>
+<tr class="memdesc:abca5a3644df74849f35feb21223d7d6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a human-formatted file size as a string, e.g.  <a href="namespacepycross_1_1utils_1_1utils.html#abca5a3644df74849f35feb21223d7d6e">More...</a><br /></td></tr>
 <tr class="separator:abca5a3644df74849f35feb21223d7d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2080ab17c90fb7e4037bda85825eaf0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#ac2080ab17c90fb7e4037bda85825eaf0">pycross.utils.utils.restart_app</a> (closefunction)</td></tr>
+<tr class="memdesc:ac2080ab17c90fb7e4037bda85825eaf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restarts this app.  <a href="namespacepycross_1_1utils_1_1utils.html#ac2080ab17c90fb7e4037bda85825eaf0">More...</a><br /></td></tr>
 <tr class="separator:ac2080ab17c90fb7e4037bda85825eaf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c549497df0df39c09072f137db3e742"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#a0c549497df0df39c09072f137db3e742">pycross.utils.utils.file_types_registered</a> (filetypes=('xpf', 'ipuz', 'pxjson'))</td></tr>
+<tr class="memdesc:a0c549497df0df39c09072f137db3e742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the given file type associations are registered in the OS.  <a href="namespacepycross_1_1utils_1_1utils.html#a0c549497df0df39c09072f137db3e742">More...</a><br /></td></tr>
 <tr class="separator:a0c549497df0df39c09072f137db3e742"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acab0ce88d36249bd06f5c7cd9d31263b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#acab0ce88d36249bd06f5c7cd9d31263b">pycross.utils.utils.register_file_types</a> (filetypes=('xpf', 'ipuz', 'pxjson'), register=True)</td></tr>
+<tr class="memdesc:acab0ce88d36249bd06f5c7cd9d31263b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers file associations in the current OS for the given file types and application.  <a href="namespacepycross_1_1utils_1_1utils.html#acab0ce88d36249bd06f5c7cd9d31263b">More...</a><br /></td></tr>
 <tr class="separator:acab0ce88d36249bd06f5c7cd9d31263b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76408f5c4fa5eb3314e36821689d248d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1utils.html#a76408f5c4fa5eb3314e36821689d248d">pycross.utils.utils.make_font</a> (family, size=-1, weight=-1, italic=False, font_unit='pt')</td></tr>
 <tr class="separator:a76408f5c4fa5eb3314e36821689d248d"><td class="memSeparator" colspan="2">&#160;</td></tr>

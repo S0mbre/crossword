@@ -3,6 +3,9 @@
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.utils
+# This package is a general container for utility functions and classes used
+# across the entire application. The utilities include file operations, OS and system
+# queries, multithreading and some Qt GUI methods.
 import sys, os, subprocess, traceback, uuid, tempfile, platform, re, json, shutil
 from datetime import datetime, time
 
@@ -11,6 +14,9 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 
 # ---------------------------- COMMON ---------------------------- #
 
+## Checks if a given object is iterable (i.e. contains elements like an array).
+# @param obj the object to check
+# @returns `bool` True if the object is iterable (array-like) and False otherwise
 def is_iterable(obj):
     if isinstance(obj, str): return False
     try:
@@ -19,19 +25,39 @@ def is_iterable(obj):
     except:
         return False
 
+## Gets the current OS (platform) name.
+# @returns `str` platform name, e.g. 'Windows' or 'Linux'
 def getosname():
     return platform.system()
 
+## Generates a random UUID (alphanumeric string).
+# @returns `str` UUID compliant to RFC 4122
+# @see [Python docs](https://docs.python.org/3.8/library/uuid.html)
 def generate_uuid():
     return uuid.uuid4().hex
 
+## Copies a file into another location.
+# @param path_from `str` the original file to copy
+# @param path_to `str` the new file path or directory to copy the file to
+# @returns `str` the path to the newly created (copied) file
 def copy_file(path_from, path_to):
     return shutil.copy(path_from, path_to)
 
+## Iterates the files and folder in a given folder, performing some operations
+# on the found files / folders.
+# @param root_path `str` the starting (root) directory path to start searching from
+# @param abs_path `bool` if `True` (default), the given root path will be made absolute 
+# (relative to the current working directory); if `False`, it will be left as it is
+# @param recurse `bool` whether to recurse into the found subdirectories (default = `True`)
+# @param dir_process_function `callable` callback function for found subdirectories.
+# The callback takes a single argument - the full directory path.
+# @param file_process_function `callable` callback function for found files.
+# The callback takes a single argument - the full file path.
+# @param file_types `iterable` collection of file extensions (without the leading dot)
+# that will be respected when a file is found; if `None` (default), no file type
+# filtering will be done.
 def walk_dir(root_path, abs_path=True, recurse=True, dir_process_function=None,
              file_process_function=None, file_types=None):
-    """
-    """
     if abs_path:
         root_path = os.path.abspath(root_path)
     for (d, dirs, files) in os.walk(root_path):
@@ -45,6 +71,21 @@ def walk_dir(root_path, abs_path=True, recurse=True, dir_process_function=None,
                     file_process_function(os.path.join(d, f))
         if not recurse: break
 
+## Runs an executable and optionally returns the result.
+# @param args `list` | `str` arguments passed to the executable (a list of args or a single string)
+# @param external `bool` whether the executable must be called as an external (detached) process;
+# this basically means that the process will be created _asynchronously_, not blocking the
+# main application process to wait for the result; if `False` (default), the executable
+# will be called _synchronously_, waiting for the result and blocking the main process
+# @param capture_output `bool` whether the console output of the executable must be captured
+# @param stdout `file-like` file / stream to channel the STDOUT and STDERR streams to;
+# the default value is subprocess.PIPE, meaning that the output will be returned by the method
+# @param encoding `str` the string encoding to use for the executable's output (default = UTF8)
+# @param timeout `float` number of seconds to wait until timeout 
+# (default = `None`, i.e. wait infinitely)
+# @param shell `bool` whether the executable must be called via the system shell (default = `False`)
+# @param kwargs `keyword arguments` additional keyword arguments passed to subprocess.Popen
+# @returns `subprocess.CompletedProcess` completed process results, see [Python docs](https://docs.python.org/3.8/library/subprocess.html?highlight=subprocess#subprocess.CompletedProcess)
 def run_exe(args, external=False, capture_output=True, stdout=subprocess.PIPE, encoding=ENCODING,
             timeout=None, shell=False, **kwargs):
     try:
@@ -72,35 +113,66 @@ def run_exe(args, external=False, capture_output=True, stdout=subprocess.PIPE, e
         traceback.print_exc(limit=None)
         raise
 
+## Converts a Python `datetime` object to a string.
+# @param dt `datetime` Python datetime object representing a date and/or time;
+# if `None` (default), the current date and time will be taken
+# @param strformat `str` format string compliant to the [Python datetime formatting](https://docs.python.org/3.8/library/datetime.html?highlight=datetime#strftime-strptime-behavior)
+# @returns `str` string representation of the date / time
 def datetime_to_str(dt=None, strformat='%Y-%m-%d %H-%M-%S'):
     if dt is None: dt = datetime.now()
     return dt.strftime(strformat)
 
+## Converts a timestamp (Unix time) to a string.
+# @param ts `float` timestamp, i.e. number of seconds since epoch (Unix time)
+# if `None` (default), the current timestamp will be taken
+# @param strformat `str` format string compliant to the [Python datetime formatting](https://docs.python.org/3.8/library/datetime.html?highlight=datetime#strftime-strptime-behavior)
+# @returns `str` string representation of the timestamp
 def timestamp_to_str(ts=None, strformat='%Y-%m-%d %H-%M-%S'):
     if ts is None: ts = time.time()
     return datetime_to_str(datetime.fromtimestamp(ts), strformat)
 
+## Converts a string to a Python `datetime` object.
+# @param text `str` datetime string to convert
+# @param strformat `str` format string compliant to the [Python datetime formatting](https://docs.python.org/3.8/library/datetime.html?highlight=datetime#strftime-strptime-behavior)
+# @returns `datetime` Python datetime object
 def str_to_datetime(text, strformat='%Y-%m-%d %H-%M-%S'):
     return datetime.strptime(text, strformat)
 
+## Converts a string to a timestamp (Unix time).
+# @param text `str` datetime string to convert
+# @param strformat `str` format string compliant to the [Python datetime formatting](https://docs.python.org/3.8/library/datetime.html?highlight=datetime#strftime-strptime-behavior)
+# @returns `float` timestamp, i.e. number of seconds since epoch (Unix time)
 def str_to_timestamp(text, strformat='%Y-%m-%d %H-%M-%S'):
     return str_to_datetime(text, strformat).timestamp()
 
+## Gets the path to the Temp directory on the system.
+# @returns `str` full path to the system Temp directory
 def get_tempdir():
     return os.path.abspath(tempfile.gettempdir())
 
+## Returns a human-formatted file size as a string, 
+# e.g. "1Mi" (1 megabyte), "15GBi" (15 gigabytes) etc.
+# @param value `float` the file size value to convert
+# @param suffix `str` the size suffix, default = 'B' (bytes)
+# @returns `str` string representation of the file size
 def bytes_human(value, suffix='B'):
-    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
         if abs(value) < 1024.0:
             return f"{value:3.1f}{unit}{suffix}"
         value /= 1024.0
-    return f"{value:.1f}Yi{suffix}"
+    return f"{value:.1f}Y{suffix}"
 
+## Restarts this app.
+# @param closefunction `callable` function to close down the app (e.g. gui::MainWindow::on_act_exit)
 def restart_app(closefunction):
     osname = platform.system()
     run_exe('pythonw cwordg.py' if osname == 'Windows' else 'python3 ./cwordg.py', external=True, capture_output=False, shell=True)
     closefunction()
 
+## Checks if the given file type associations are registered in the OS.
+# @param filetypes `iterable` collection of file extensions to check (without leading dot)
+# @returns `bool` `True` if the file types are associated with this app, `False` otherwise
+# TODO: implement for OSX (Darwin)
 def file_types_registered(filetypes=('xpf', 'ipuz', 'pxjson')):
     osname = platform.system()
     if osname == 'Windows':
@@ -137,6 +209,15 @@ def file_types_registered(filetypes=('xpf', 'ipuz', 'pxjson')):
 
     return False
 
+## @brief Registers file associations in the current OS for the given file types and application.
+# After a call of this method succeeds, files with the indicated extensions can be
+# launched directly with the 'open' verb, that is, by double-clicking or hitting Enter on them
+# in the system file browser. These files will be opened with *pycrossword* thanks to
+# the system-wide permanent file associations. The mechanism uses the System Registry on
+# Windows and MIME types on Linux.
+# @param filetypes `iterable` collection of file extensions to check (without leading dot)
+# @param register `bool` set `True` to register the associations, `False` to unregister
+# TODO: implement for OSX (Darwin)
 def register_file_types(filetypes=('xpf', 'ipuz', 'pxjson'), register=True):
     if not filetypes: return False
     osname = platform.system()
@@ -246,10 +327,31 @@ def register_file_types(filetypes=('xpf', 'ipuz', 'pxjson'), register=True):
 
 # ---------------------------- GUI ---------------------------- #
 
+## Customized thread class (based on QThread) that adds 
+# progress, error etc. signals and mutex locking to avoid thread racing.
 class QThreadStump(QtCore.QThread):
 
+    ## Error signal (args are: instance of this thread and the error message)
     sig_error = QtCore.pyqtSignal(QtCore.QThread, str)
 
+    ## Constructor.
+    # @param default_priority `int` thread default priority (default = normal)
+    # @param on_start `callable` callback function called before the main
+    # operation is executed (callback has no args or returned result)
+    # @param on_finish `callable` callback function called after the main
+    # operation completes (callback has no args or returned result)
+    # @param on_run `callable` callback function for the main
+    # operation (callback has no args or returned result)
+    # @param on_error `callable` callback function to handle exceptions
+    # raised during the thread operation (see QThreadStump::sig_error)
+    # @param start_signal `QtCore.pyqtSignal` signal that can be connected to 
+    # the `start` slot (if not `None`)
+    # @param stop_signal `QtCore.pyqtSignal` signal that can be connected to 
+    # the `terminate` slot (if not `None`)
+    # @param free_on_finish `bool` whether the thread instance will be deleted
+    # from memory after it completes its operation (default = `False`)
+    # @param start_now `bool` whether to start the thread upon creation (default = `False`)
+    # @param can_terminate `bool` whether the thread can be terminated (default = `True`)
     def __init__(self, default_priority=QtCore.QThread.NormalPriority,
                  on_start=None, on_finish=None, on_run=None, on_error=None,
                  start_signal=None, stop_signal=None,
@@ -259,12 +361,14 @@ class QThreadStump(QtCore.QThread):
                   start_signal, stop_signal, free_on_finish, can_terminate)
         if start_now: self.start()
 
+    ## Destructor: waits for the thread to complete.
     def __del__(self):
         try:
             self.wait()
         except:
             pass
 
+    ## Initializes signals binding them to callbacks and other members.
     def init(self, default_priority=QtCore.QThread.NormalPriority,
              on_start=None, on_finish=None, on_run=None, on_error=None,
              start_signal=None, stop_signal=None,

@@ -5148,8 +5148,18 @@ class ReflectGridDialog(BasicDialog):
 # *****          PasswordDialog
 # ******************************************************************************** #
 
+## Tiny login/password authentication dialog used by the inbuilt web browser (see pycross::browser).
 class PasswordDialog(BasicDialog):
     
+    ## Constructor.
+    # @param title `str` dialog title
+    # @param icon `str` dialog icon file
+    # @param user_label `str` user (login) hint
+    # @param password_label `str` password hint
+    # @param allow_empty_user `bool` whether an empty user string is allowed
+    # @param allow_empty_password `bool` dwhether an empty password string is allowed
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, title=_('Authentication'), icon='locked.png',
                  user_label=_('User'), password_label=_('Password'),
                  allow_empty_user=False, allow_empty_password=False,
@@ -5177,6 +5187,8 @@ class PasswordDialog(BasicDialog):
             return False
         return True
 
+    ## Gets the user and password in a single 2-tuple.
+    # @returns `2-tuple` (user, password)
     def get_auth(self):
         if self.validate():
             return (self.le_user.text(), self.le_pass.text())
@@ -5186,16 +5198,18 @@ class PasswordDialog(BasicDialog):
 # *****          AboutDialog
 # ******************************************************************************** #
 
+## Information dialog showing info about this app.
 class AboutDialog(QtWidgets.QDialog):
     
+    ## Constructor.
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(parent, flags)
         self.initUI(None, _('About'), 'main.png')
         self.layout().setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
-        #self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
         
-    def initUI(self, geometry=None, title=None, icon=None):
-        
+    def initUI(self, geometry=None, title=None, icon=None):        
         self.addMainLayout()
         
         self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('OK'), None)
@@ -5264,8 +5278,15 @@ class AboutDialog(QtWidgets.QDialog):
 # *****          KloudlessAuthDialog
 # ******************************************************************************** #
 
+## Authentication dialog for uploading files to the cloud (via Kloudess API).
 class KloudlessAuthDialog(QtWidgets.QDialog):
     
+    ## Constructor.
+    # @param on_gettoken `callable` callback function to get a valid user token 
+    # (callback takes no arguments and implies that the user will authorize online
+    # and paste the token string from the web browser into the dialog) 
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, on_gettoken, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(parent, flags)
         self.on_gettoken = on_gettoken
@@ -5318,9 +5339,14 @@ class KloudlessAuthDialog(QtWidgets.QDialog):
 # ******************************************************************************** #
 # *****          ShareDialog
 # ******************************************************************************** #  
-        
+
+## Dialog for sharing crosswords in social networks.        
 class ShareDialog(BasicDialog):
     
+    ## Constructor.
+    # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
         super().__init__(None, _('Share'), 'share-1.png', 
@@ -5377,11 +5403,13 @@ class ShareDialog(BasicDialog):
         self.gb_export.setLayout(self.layout_gb_export)
         self.layout_controls.addWidget(self.gb_export)
 
+    ## Shows the Sharing page of the global settings dialog.
     @QtCore.pyqtSlot()
     def on_btn_share_settings(self):
         self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(9))
         self.mainwindow.on_act_config(False)
 
+    ## Shows the Export page of the global settings dialog.
     @QtCore.pyqtSlot()
     def on_btn_export_settings(self):
         ind = 7 if self.rb_pdf.isChecked() else 5

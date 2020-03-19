@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="main.ico"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">pycrossword
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
    <div id="projectbrief">Pure-Python implementation of a crossword puzzle generator and editor</div>
   </td>
@@ -79,6 +79,9 @@ $(function() {
 <div class="title">pycross.utils.utils.QThreadStump Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Customized thread class (based on QThread) that adds progress, error etc.  
+ <a href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.utils.utils.QThreadStump:</div>
 <div class="dyncontent">
@@ -93,10 +96,13 @@ Inheritance diagram for pycross.utils.utils.QThreadStump:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a31e0b662058e938b25d938d18c6b2955"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a31e0b662058e938b25d938d18c6b2955">__init__</a> (self, <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#aa7313199f1f937bde078c616a2945ed7">default_priority</a>=QtCore.QThread.NormalPriority, on_start=None, on_finish=None, <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a18ecf99d13099693ff6017bcc640786b">on_run</a>=None, on_error=None, start_signal=None, stop_signal=None, free_on_finish=False, start_now=False, can_terminate=True)</td></tr>
+<tr class="memdesc:a31e0b662058e938b25d938d18c6b2955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a31e0b662058e938b25d938d18c6b2955">More...</a><br /></td></tr>
 <tr class="separator:a31e0b662058e938b25d938d18c6b2955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2590c0f1a6bdfda16a2399e31cf17d85"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a2590c0f1a6bdfda16a2399e31cf17d85">__del__</a> (self)</td></tr>
+<tr class="memdesc:a2590c0f1a6bdfda16a2399e31cf17d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor: waits for the thread to complete.  <a href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a2590c0f1a6bdfda16a2399e31cf17d85">More...</a><br /></td></tr>
 <tr class="separator:a2590c0f1a6bdfda16a2399e31cf17d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31250361bb7bc9e086e53073ebdcaf5a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a31250361bb7bc9e086e53073ebdcaf5a">init</a> (self, <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#aa7313199f1f937bde078c616a2945ed7">default_priority</a>=QtCore.QThread.NormalPriority, on_start=None, on_finish=None, <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a18ecf99d13099693ff6017bcc640786b">on_run</a>=None, on_error=None, start_signal=None, stop_signal=None, free_on_finish=False, can_terminate=True)</td></tr>
+<tr class="memdesc:a31250361bb7bc9e086e53073ebdcaf5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes signals binding them to callbacks and other members.  <a href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a31250361bb7bc9e086e53073ebdcaf5a">More...</a><br /></td></tr>
 <tr class="separator:a31250361bb7bc9e086e53073ebdcaf5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4715759ccbf15c862b8f82422d480bd0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#a4715759ccbf15c862b8f82422d480bd0">lock</a> (self)</td></tr>
 <tr class="separator:a4715759ccbf15c862b8f82422d480bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,9 +123,13 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:af56499a3e3c3c945df4c963f0955f8c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#af56499a3e3c3c945df4c963f0955f8c6">sig_error</a> = QtCore.pyqtSignal(QtCore.QThread, str)</td></tr>
+<tr class="memdesc:af56499a3e3c3c945df4c963f0955f8c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error signal (args are: instance of this thread and the error message)  <a href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#af56499a3e3c3c945df4c963f0955f8c6">More...</a><br /></td></tr>
 <tr class="separator:af56499a3e3c3c945df4c963f0955f8c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Customized thread class (based on QThread) that adds progress, error etc. </p>
+<p>signals and mutex locking to avoid thread racing. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a31e0b662058e938b25d938d18c6b2955"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a31e0b662058e938b25d938d18c6b2955">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -200,6 +210,23 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">default_priority</td><td><code>int</code> thread default priority (default = normal) </td></tr>
+    <tr><td class="paramname">on_start</td><td><code>callable</code> callback function called before the main operation is executed (callback has no args or returned result) </td></tr>
+    <tr><td class="paramname">on_finish</td><td><code>callable</code> callback function called after the main operation completes (callback has no args or returned result) </td></tr>
+    <tr><td class="paramname">on_run</td><td><code>callable</code> callback function for the main operation (callback has no args or returned result) </td></tr>
+    <tr><td class="paramname">on_error</td><td><code>callable</code> callback function to handle exceptions raised during the thread operation (see <a class="el" href="classpycross_1_1utils_1_1utils_1_1_q_thread_stump.html#af56499a3e3c3c945df4c963f0955f8c6" title="Error signal (args are: instance of this thread and the error message)">QThreadStump::sig_error</a>) </td></tr>
+    <tr><td class="paramname">start_signal</td><td><code>QtCore.pyqtSignal</code> signal that can be connected to the <code>start</code> slot (if not <code>None</code>) </td></tr>
+    <tr><td class="paramname">stop_signal</td><td><code>QtCore.pyqtSignal</code> signal that can be connected to the <code>terminate</code> slot (if not <code>None</code>) </td></tr>
+    <tr><td class="paramname">free_on_finish</td><td><code>bool</code> whether the thread instance will be deleted from memory after it completes its operation (default = <code>False</code>) </td></tr>
+    <tr><td class="paramname">start_now</td><td><code>bool</code> whether to start the thread upon creation (default = <code>False</code>) </td></tr>
+    <tr><td class="paramname">can_terminate</td><td><code>bool</code> whether the thread can be terminated (default = <code>True</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Reimplemented in <a class="el" href="classpycross_1_1gui_1_1_share_thread.html#a8feb965d93c179a418228542e3b0153e">pycross.gui.ShareThread</a>.</p>
 
 </div>
@@ -219,6 +246,8 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor: waits for the thread to complete. </p>
 
 </div>
 </div>
@@ -296,6 +325,8 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initializes signals binding them to callbacks and other members. </p>
 
 </div>
 </div>
@@ -415,6 +446,8 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Error signal (args are: instance of this thread and the error message) </p>
 
 </div>
 </div>

@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="main.ico"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">pycrossword
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
    <div id="projectbrief">Pure-Python implementation of a crossword puzzle generator and editor</div>
   </td>
@@ -78,6 +78,9 @@ $(function() {
 <div class="title">pycross.forms.KloudlessAuthDialog Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Authentication dialog for uploading files to the cloud (via Kloudess API).  
+ <a href="classpycross_1_1forms_1_1_kloudless_auth_dialog.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.forms.KloudlessAuthDialog:</div>
 <div class="dyncontent">
@@ -88,6 +91,7 @@ Inheritance diagram for pycross.forms.KloudlessAuthDialog:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac73c448916e27fddd997df7894809e19"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_kloudless_auth_dialog.html#ac73c448916e27fddd997df7894809e19">__init__</a> (self, <a class="el" href="classpycross_1_1forms_1_1_kloudless_auth_dialog.html#aa7cad7a0abae8b2985c0256a5e599db2">on_gettoken</a>, parent=None, flags=QtCore.Qt.WindowFlags())</td></tr>
+<tr class="memdesc:ac73c448916e27fddd997df7894809e19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classpycross_1_1forms_1_1_kloudless_auth_dialog.html#ac73c448916e27fddd997df7894809e19">More...</a><br /></td></tr>
 <tr class="separator:ac73c448916e27fddd997df7894809e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fc0cb46815a97401d82752d35fa5113"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_kloudless_auth_dialog.html#a7fc0cb46815a97401d82752d35fa5113">initUI</a> (self, geometry=None, title=None, icon=None)</td></tr>
 <tr class="separator:a7fc0cb46815a97401d82752d35fa5113"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,7 +117,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ade9420e1cffa96fd0fdece6d1aa4dcac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_kloudless_auth_dialog.html#ade9420e1cffa96fd0fdece6d1aa4dcac">le_token</a></td></tr>
 <tr class="separator:ade9420e1cffa96fd0fdece6d1aa4dcac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Authentication dialog for uploading files to the cloud (via Kloudess API). </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac73c448916e27fddd997df7894809e19"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac73c448916e27fddd997df7894809e19">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -151,6 +157,16 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">on_gettoken</td><td><code>callable</code> callback function to get a valid user token (callback takes no arguments and implies that the user will authorize online and paste the token string from the web browser into the dialog) </td></tr>
+    <tr><td class="paramname">parent</td><td><code>QtWidgets.QWidget</code> parent widget (default = <code>None</code>, i.e. no parent) </td></tr>
+    <tr><td class="paramname">flags</td><td><code>QtCore.Qt.WindowFlags</code> <a href="https://doc.qt.io/qt-5/qt.html#WindowType-enum">Qt window flags</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
