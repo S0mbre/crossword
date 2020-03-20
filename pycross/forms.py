@@ -1102,8 +1102,8 @@ class CustomPluginDialog(BasicDialog):
             MsgBox(_('Plugin category must be assigned!'), title=_('Invalid input'), msgtype='error')
             return False
         plname = self.le_name.text().strip()        
-        if not plname:
-            MsgBox(_('Plugin name cannot be empty!'), title=_('Invalid input'), msgtype='error')
+        if len(plname) < 4:
+            MsgBox(_('Plugin name must contain at least 4 letters!'), title=_('Invalid input'), msgtype='error')
             return False
         if not self.presets['plugin_name']:
             for pl in self.mainwindow.plugin_mgr.getPluginsOfCategory(catname):
@@ -1386,7 +1386,7 @@ class CustomPluginManager(QtWidgets.QWidget):
             with open(plfile, 'r', encoding=ENCODING) as srcfile:
                 srctext = srcfile.read()
         else:
-            srctext = PLUGIN_TEMPLATE_GENERAL
+            srctext = PLUGIN_TEMPLATE_GENERAL.format(plmodule[0].upper() + plmodule[1:])
 
         if self.mainwindow.create_syneditor(srctext, modal=True):
             with open(plfile, 'w', encoding=ENCODING) as srcfile:
@@ -1439,8 +1439,8 @@ class CustomPluginManager(QtWidgets.QWidget):
 
     ## @brief Fires when a plugin is checked or unchecked in the plugin table.
     # When checked, the corresponding plugin is enabled in the table, and vice-versa.
-    @QtCore.pyqtSlot(QtGui.QStandardItem) 
-    def on_plugin_model_changed(self, item: QtGui.QStandardItem):
+    @QtCore.pyqtSlot('QStandardItem*') 
+    def on_plugin_model_changed(self, item):
         # enable / disable plugins when checked / unchecked 'Enabled'
         parent = item.parent()
         if not parent: return
@@ -4023,8 +4023,8 @@ class SettingsDialog(BasicDialog):
         self.le_https_proxy.setEnabled(state==QtCore.Qt.Unchecked)
 
     ## Enables / disables a 3d-party plugin when checked / unchecked.
-    @QtCore.pyqtSlot(QtGui.QStandardItem) 
-    def on_model_plugins_3party_changed(self, item: QtGui.QStandardItem):
+    @QtCore.pyqtSlot('QStandardItem*') 
+    def on_model_plugins_3party_changed(self, item):
         parent = item.parent()
         if not item.isCheckable() or not parent: return
         checked = bool(item.checkState())       

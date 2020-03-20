@@ -6,6 +6,7 @@
 # The GUI app main window implementation -- see MainWindow class.
 from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport, QtSvg
 from subprocess import Popen
+from functools import wraps
 import os, json, re, threading, math, traceback, webbrowser
 
 from utils.globalvars import *
@@ -81,7 +82,8 @@ class ShareThread(QThreadStump):
 ## @brief Plugin decorator for custom plugins.
 def pluggable(category):
     def plugin_general(func):
-        def wrapped(self, *args, **kwargs):
+        @wraps(func)
+        def wrapped(self, *args, **kwargs):            
             plugin_methods = self.plugin_mgr.get_plugin_methods(category, func.__name__)
             cnt = len(plugin_methods)
             for i in range(cnt):
@@ -700,7 +702,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # save settings file
         if save_settings:
             CWSettings.save_to_file(SETTINGS_FILE)
-        
+
     ## Changes the scale of the crossword grid.
     # @param scale_factor `int` the scale factor in percent values
     # @param update_label `bool` whether to update the caption below the scale slider
@@ -3057,6 +3059,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)    
     def on_act_help(self, checked):
         MsgBox(_('To be implemented in next release ))'), self, _('Show help docs')) 
+        collect_pluggables(self)
         
     ## @brief Slot for MainWindow::act_apiref: shows API reference in browser.
     @pluggable('general')

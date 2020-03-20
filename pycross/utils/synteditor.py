@@ -121,3 +121,13 @@ class SynEditorWidget(QtWidgets.QDialog):
 
     def currenttext(self):
         return self.editor.text()
+
+# ******************************************************************************** #
+# *****          PluginSynEditorWidget
+# ******************************************************************************** #            
+
+class PluginSynEditorWidget(SynEditorWidget):
+
+    def add_central(self, lexer, source):
+        self.editor = SynEditor(self, lexer, source)
+        self.layout_main.addWidget(self.editor)

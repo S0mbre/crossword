@@ -53,7 +53,7 @@ PLUGIN_EXTENSION = 'pxplugin'
 PLUGIN_TEMPLATE_GENERAL = """\
 from utils.pluginbase import *
 
-class PxPlugin000(PxPluginGeneral):
+class Px{}(PxPluginGeneral):
 
     # >>> add code here <<<
     pass

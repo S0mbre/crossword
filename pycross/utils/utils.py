@@ -6,7 +6,8 @@
 # This package is a general container for utility functions and classes used
 # across the entire application. The utilities include file operations, OS and system
 # queries, multithreading and some Qt GUI methods.
-import sys, os, subprocess, traceback, uuid, tempfile, platform, re, json, shutil
+import sys, os, subprocess, traceback, uuid
+import tempfile, platform, re, json, shutil, inspect
 from datetime import datetime, time
 
 from .globalvars import *
@@ -324,6 +325,29 @@ def register_file_types(filetypes=('xpf', 'ipuz', 'pxjson'), register=True):
 
     # some oddball os...
     return False
+
+def collect_pluggables(parent_object, indent='    '):
+    methods = []
+    for itemname in dir(parent_object):
+        if itemname.startswith('_'): continue
+        obj = getattr(parent_object, itemname, None)            
+        obj = getattr(obj, '__wrapped__', None)
+        if not obj or not callable(obj): continue
+        m = 'def ' + itemname            
+        try:
+            sig = str(inspect.signature(obj))
+            if sig: m += sig + ':' 
+        except:
+            m += '():'
+        comments = inspect.getcomments(obj)
+        if comments: 
+            for row in [comment.strip().replace('##', '#') for comment in comments.split('\n')]:
+                m += '\n' + indent + row
+        else:
+            m += indent
+        m += 'return None'
+        methods.append(m)
+    methods.sort()
 
 # ---------------------------- GUI ---------------------------- #
 
