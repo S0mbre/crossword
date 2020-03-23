@@ -348,6 +348,7 @@ def collect_pluggables(parent_object, indent='    '):
         m += 'return None'
         methods.append(m)
     methods.sort()
+    return methods
 
 # ---------------------------- GUI ---------------------------- #
 

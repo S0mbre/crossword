@@ -1327,6 +1327,23 @@ class CustomPluginManager(QtWidgets.QWidget):
                     return item
         return None
 
+    def _collect_main_methods(self):
+        return collect_pluggables(self.mainwindow)
+
+    def create_syneditor(self, source=None, show=True, modal=False):
+        from utils.synteditor import PluginSynEditorWidget
+        if not hasattr(self, 'syneditor'):
+            ## `utils::synteditor::PluginSynEditorWidget` inbuilt python code editor
+            self.syneditor = PluginSynEditorWidget(self._collect_main_methods(), source=source)
+        else:
+            self.syneditor.editor.setText(source or '')
+        if show: 
+            if modal:
+                return self.syneditor.exec()
+            else:
+                return self.syneditor.show()
+        return None
+
     ## Adds a new plugin or edits the given plugin.
     # @param plugin_item `QtGui.QStandardItem` the plugin item to edit; if `None` (default),
     # a new plugin will be added
@@ -1388,9 +1405,9 @@ class CustomPluginManager(QtWidgets.QWidget):
         else:
             srctext = PLUGIN_TEMPLATE_GENERAL.format(plmodule[0].upper() + plmodule[1:])
 
-        if self.mainwindow.create_syneditor(srctext, modal=True):
+        if self.create_syneditor(srctext, modal=True):
             with open(plfile, 'w', encoding=ENCODING) as srcfile:
-                srcfile.write(self.mainwindow.syneditor.currenttext().replace('\r\n', '\n'))
+                srcfile.write(self.syneditor.currenttext().replace('\r\n', '\n'))
         elif (not plugin_item) and (new_plugin_dlg.combo_source.currentIndex() == 1):
             return
 

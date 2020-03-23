@@ -148,7 +148,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.initUI(not kwargs.get('empty', False))
         self.setAcceptDrops(True) 
         ## `forms::SettingsDialog` instance (settings window)
-        self.dia_settings = SettingsDialog(self)        
+        self.dia_settings = SettingsDialog(self)       
         # execute actions for command-line args, if present
         self.execute_cli_args(**kwargs)
 
@@ -3059,7 +3059,6 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)    
     def on_act_help(self, checked):
         MsgBox(_('To be implemented in next release ))'), self, _('Show help docs')) 
-        collect_pluggables(self)
         
     ## @brief Slot for MainWindow::act_apiref: shows API reference in browser.
     @pluggable('general')

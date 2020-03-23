@@ -128,6 +128,49 @@ class SynEditorWidget(QtWidgets.QDialog):
 
 class PluginSynEditorWidget(SynEditorWidget):
 
+    def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None, minsize=(600, 400),
+                 icon='file.png', title=':: Code Editor ::'):
+        self.methods = methods
+        super().__init__(lexer, source, minsize, icon, title)
+
     def add_central(self, lexer, source):
         self.editor = SynEditor(self, lexer, source)
-        self.layout_main.addWidget(self.editor)
+
+        self.splitter1 = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
+        self.lw_methods = QtWidgets.QListWidget()
+        self.lw_methods.setSortingEnabled(True)
+        self.lw_methods.setSelectionMode(1)
+        self.lw_methods.currentItemChanged.connect(self.on_lw_methods_select)
+        self.lw_methods.itemChanged.connect(self.on_lw_methods_changed)
+        self.lw_methods.itemDoubleClicked.connect(self.on_lw_methods_dblclicked)
+        self.reset_methods()
+
+        self.splitter1.addWidget(self.lw_methods)
+        self.splitter1.addWidget(self.editor)
+        self.layout_main.addWidget(self.splitter1)
+
+    def reset_methods(self):
+        self.lw_methods.blockSignals(True)
+        self.lw_methods.clear()
+        for meth in self.methods:
+            mlines = meth.split('\n')
+            lwitem = QtWidgets.QListWidgetItem(mlines[0][4:-1])
+            lwitem.setToolTip('\n'.join([l.strip()[2:] for l in mlines[1:-1]]) if len(mlines) > 2 else '')
+            lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+            lwitem.setData(QtCore.Qt.UserRole, meth)
+            lwitem.setCheckState(QtCore.Qt.Unchecked)
+            self.lw_methods.addItem(lwitem)
+        self.lw_methods.blockSignals(False)
+
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem, QtWidgets.QListWidgetItem)
+    def on_lw_methods_select(self, current, previous):
+        pass
+
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
+    def on_lw_methods_changed(self, item):
+        pass
+
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
+    def on_lw_methods_dblclicked(self, item):
+        checked = bool(item.checkState())
+        item.setCheckState(QtCore.Qt.Unchecked if checked else QtCore.Qt.Checked)
