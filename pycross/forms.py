@@ -1321,20 +1321,16 @@ class CustomPluginManager(QtWidgets.QWidget):
             for i in range(found.rowCount()):
                 item = found.child(i)
                 if item.text() == plname:
-                    print(plname)                  
                     self.tvPlugins.selectionModel().setCurrentIndex(item.index(), 
                         QtCore.QItemSelectionModel.Select | QtCore.QItemSelectionModel.Rows)
                     return item
         return None
 
-    def _collect_main_methods(self):
-        return collect_pluggables(self.mainwindow)
-
     def create_syneditor(self, source=None, show=True, modal=False):
         from utils.synteditor import PluginSynEditorWidget
         if not hasattr(self, 'syneditor'):
             ## `utils::synteditor::PluginSynEditorWidget` inbuilt python code editor
-            self.syneditor = PluginSynEditorWidget(self._collect_main_methods(), source=source)
+            self.syneditor = PluginSynEditorWidget(collect_pluggables(self.mainwindow), source=source)
         else:
             self.syneditor.editor.setText(source or '')
         if show: 

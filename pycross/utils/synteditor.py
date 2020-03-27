@@ -4,7 +4,7 @@
 
 ## @package utils.synteditor
 from .globalvars import ICONFOLDER
-from .utils import make_font
+from .utils import make_font, re
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5 import Qsci
 
@@ -15,7 +15,7 @@ from PyQt5 import Qsci
 ## @brief Scintilla-based Python editor
 # Adapted from [this example](https://eli.thegreenplace.net/2011/04/01/sample-using-qscintilla-with-pyqt)
 # and [this addition](https://stackoverflow.com/questions/40002373/qscintilla-based-text-editor-in-pyqt5-with-clickable-functions-and-variables)
-# @see [QScintilla docs](https://qscintilla.com/)
+# @see [QScintilla docs](https://qscintilla.com/), [API reference](https://www.riverbankcomputing.com/static/Docs/QScintilla/classQsciScintilla.html)
 class SynEditor(Qsci.QsciScintilla):
     
     ARROW_MARKER_NUM = 8
@@ -128,10 +128,13 @@ class SynEditorWidget(QtWidgets.QDialog):
 
 class PluginSynEditorWidget(SynEditorWidget):
 
+    RESRCH = re.compile(r'^[ ]{4}[\w"#@]', re.M)
+
     def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None, minsize=(600, 400),
                  icon='file.png', title=':: Code Editor ::'):
         self.methods = methods
         super().__init__(lexer, source, minsize, icon, title)
+        self._update_checked_methods()
 
     def add_central(self, lexer, source):
         self.editor = SynEditor(self, lexer, source)
@@ -149,6 +152,9 @@ class PluginSynEditorWidget(SynEditorWidget):
         self.splitter1.addWidget(self.editor)
         self.layout_main.addWidget(self.splitter1)
 
+    def _config_editor(self):
+        self.editor.textChanged.connect(self.on_editor_text_changed)
+
     def reset_methods(self):
         self.lw_methods.blockSignals(True)
         self.lw_methods.clear()
@@ -162,13 +168,45 @@ class PluginSynEditorWidget(SynEditorWidget):
             self.lw_methods.addItem(lwitem)
         self.lw_methods.blockSignals(False)
 
+    def _update_checked_methods(self):
+        txt = self.editor.text()
+        try:
+            self.lw_methods.itemChanged.disconnect()
+        except:
+            pass
+        for i in range(self.lw_methods.count()):
+            item = self.lw_methods.item(i)
+            item.setCheckState(QtCore.Qt.Checked if f"    def {item.text()}:" in txt else QtCore.Qt.Unchecked)
+        self.lw_methods.itemChanged.connect(self.on_lw_methods_changed)
+
+    @QtCore.pyqtSlot()
+    def on_editor_text_changed(self):
+        self._update_checked_methods()
+
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem, QtWidgets.QListWidgetItem)
     def on_lw_methods_select(self, current, previous):
-        pass
+        self.editor.cancelFind()
+        self.editor.setSelection(0, 0, 0, 0)
+        self.editor.findFirst(f"    def {current.text()}:", False, True, False, False, index=0)
 
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_methods_changed(self, item):
-        pass
+        txt = self.editor.text()
+        func = f"    def {item.text()}:"
+        pos1 = txt.find(func)
+        if pos1 < 0 and item.checkState():
+            # func not found, add it
+            txt += '\n\n    @replace #@before @after\n' + '\n'.join([('    ' + l) for l in item.data(QtCore.Qt.UserRole).split('\n')])
+            self.editor.setText(txt)
+            self._update_checked_methods()
+        elif pos1 >= 0 and not bool(item.checkState()):
+            res = PluginSynEditorWidget.RESRCH.search(txt, pos1 + 1)
+            if not res is None:
+                txt = txt[:pos1] + txt[res.start():]
+            else:
+                txt = txt[:pos1]
+            self.editor.setText(txt)
+            self._update_checked_methods()
 
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_methods_dblclicked(self, item):
