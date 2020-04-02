@@ -15,3 +15,5 @@ pycross/settings.pxjson
 /*.bat
 */.vscode/
 */nohup.out
+pycross/plugins/*
+!pycross/plugins/__init__.py

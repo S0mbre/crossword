@@ -1530,10 +1530,14 @@ class CustomPluginManager(QtWidgets.QWidget):
     # @warning This action will permanently delete the plugin files in 'plugins' directory!
     @QtCore.pyqtSlot()
     def on_act_clear(self): 
+        def remove_func(filepath):
+            if os.path.basename(filepath) != '__init__.py':
+                os.remove(filepath)
+
         reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete ALL plugins?\nYou can deactivate plugins by unchecking them.'), 
                        self, _('Confirm Action'), 'ask')
         if reply != 'yes': return
-        walk_dir(PLUGINS_FOLDER, recurse=False, file_process_function=os.remove, file_types=('py', PLUGIN_EXTENSION))
+        walk_dir(PLUGINS_FOLDER, recurse=False, file_process_function=remove_func, file_types=('py', PLUGIN_EXTENSION))
         self.tvPlugins.clearSelection()
         self.reload_plugins()
         

@@ -128,13 +128,17 @@ class SynEditorWidget(QtWidgets.QDialog):
 
 class PluginSynEditorWidget(SynEditorWidget):
 
-    RESRCH = re.compile(r'^[ ]{4}[\w"#@]', re.M)
+    RESRCH = re.compile(r'^[ ]{4}[\w"#@]', re.M | re.I)
 
     def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None, minsize=(600, 400),
                  icon='file.png', title=':: Code Editor ::'):
         self.methods = methods
         super().__init__(lexer, source, minsize, icon, title)
+        #self._update_checked_methods()
+
+    def showEvent(self, event):
         self._update_checked_methods()
+        event.accept()
 
     def add_central(self, lexer, source):
         self.editor = SynEditor(self, lexer, source)
@@ -192,19 +196,22 @@ class PluginSynEditorWidget(SynEditorWidget):
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_methods_changed(self, item):
         txt = self.editor.text()
-        func = f"    def {item.text()}:"
-        pos1 = txt.find(func)
-        if pos1 < 0 and item.checkState():
+        func = item.text().replace('(', r'\(').replace(')', r'\)').replace(',', r'\,')
+        pattern = f'(^[ ]{{4}}[#"].*)*(^[ ]{{4}}@.+?)*(^[ ]{{4}}def {func}\\:)'
+        res1 = re.search(pattern, txt, re.M | re.S)
+        if res1 is None and item.checkState():
             # func not found, add it
             txt += '\n\n    @replace #@before @after\n' + '\n'.join([('    ' + l) for l in item.data(QtCore.Qt.UserRole).split('\n')])
             self.editor.setText(txt)
             self._update_checked_methods()
-        elif pos1 >= 0 and not bool(item.checkState()):
-            res = PluginSynEditorWidget.RESRCH.search(txt, pos1 + 1)
-            if not res is None:
-                txt = txt[:pos1] + txt[res.start():]
+            self.lw_methods.setCurrentItem(item, QtCore.QItemSelectionModel.Current)
+        elif (not res1 is None) and (not bool(item.checkState())):
+            # func found, delete it
+            res2 = PluginSynEditorWidget.RESRCH.search(txt, res1.end(res1.lastindex))
+            if not res2 is None:
+                txt = txt[:res1.start()] + txt[res2.start():]
             else:
-                txt = txt[:pos1]
+                txt = txt[:res1.start()]
             self.editor.setText(txt)
             self._update_checked_methods()
 

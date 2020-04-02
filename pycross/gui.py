@@ -6,7 +6,6 @@
 # The GUI app main window implementation -- see MainWindow class.
 from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport, QtSvg
 from subprocess import Popen
-from functools import wraps
 import os, json, re, threading, math, traceback, webbrowser
 
 from utils.globalvars import *
@@ -78,32 +77,6 @@ class ShareThread(QThreadStump):
         if on_prepare_url: self.sig_prepare_url.connect(on_prepare_url)
 
 # ******************************************************************************** #
-
-## @brief Plugin decorator for custom plugins.
-def pluggable(category):
-    def plugin_general(func):
-        @wraps(func)
-        def wrapped(self, *args, **kwargs):            
-            plugin_methods = self.plugin_mgr.get_plugin_methods(category, func.__name__)
-            cnt = len(plugin_methods)
-            for i in range(cnt):
-                wraptype = getattr(plugin_methods[i], 'wraptype', None)
-                #if DEBUGGING: print(f"WRAP TYPE OF FUNC '{func.__name__}' is '{wraptype}'")
-                if wraptype == 'before':
-                    plugin_methods[i](*args, **kwargs)
-                    res = func(self, *args, **kwargs)
-                elif wraptype == 'after':
-                    func(self, *args, **kwargs)
-                    res = plugin_methods[i](*args, **kwargs)
-                elif wraptype == 'replace':
-                    res = plugin_methods[i](*args, **kwargs)
-                else:
-                    continue
-                if i == (cnt - 1):
-                    return res
-            return func(self, *args, **kwargs)
-        return wrapped
-    return plugin_general
 
 ## The application's main GUI window
 class MainWindow(QtWidgets.QMainWindow):
@@ -370,6 +343,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_exit.setToolTip(_('Quit application'))
         self.act_exit.setShortcuts(QtGui.QKeySequence.Quit)
         self.act_exit.triggered.connect(self.on_act_exit)
+        ## `QtWidgets.QAction` show toolbar action
+        self.act_view_showtoolbar = QtWidgets.QAction(_('Show toolbar'))
+        self.act_view_showtoolbar.setCheckable(True)
+        self.act_view_showtoolbar.setChecked(True)
+        self.act_view_showtoolbar.setToolTip(_('Show / hide toolbar'))
+        self.act_view_showtoolbar.toggled.connect(self.on_act_view_showtoolbar)
     
     ## Creates the app's main toolbar (which can also be hidden in settings).
     @pluggable('general')
@@ -456,11 +435,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menu_main_edit.addAction(self.act_config)
         ## `QtWidgets.QMenu` 'View' menu
         self.menu_main_view = self.menu_main.addMenu(_('&View'))
-        self.act_view_showtoolbar = self.menu_main_view.addAction(_('Show toolbar'))
-        self.act_view_showtoolbar.setCheckable(True)
-        self.act_view_showtoolbar.setChecked(True)
-        self.act_view_showtoolbar.setToolTip(_('Show / hide toolbar'))
-        self.act_view_showtoolbar.toggled.connect(self.on_act_view_showtoolbar)
+        self.menu_main_view.addAction(self.act_view_showtoolbar)
         self.menu_main_view.addSeparator()
         self.menu_main_view.addAction(self.act_info)
         self.menu_main_view.addAction(self.act_stats)

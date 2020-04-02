@@ -54,8 +54,18 @@ class PxAPI:
     ## Getter method for the main window members by their name.
     # @param propname `str` member name (property or method)
     # @param default the default value if the member wasn't found (default = `None`)
+    # @returns member of the main window instance
     def get_prop(self, propname, default=None):
         return getattr(self.__mainwindow, propname, default)
+
+    # @brief Another handy getter method for the main window members by their name.
+    # Makes possible to get mainwin members by directly referencing them, e.g. <PxAPI obj>.cw.
+    # Unlike PxAPI::get_prop(), raises `AttributeError` on failure to locate the member.
+    # @param attr `str` member name (property or method)
+    # @returns member of the main window instance
+    # @exception `AttributeError` failed to find the member by such name
+    def __getattr__(self, attr):
+        return getattr(self.__mainwindow, attr)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 

@@ -3,6 +3,6 @@ Name = plugin1
 Module = plugin1
 [Documentation]
 Author = iskie
-Version = 0.1
+Version = 0.0
 Copyright = Unknown
 Website = None

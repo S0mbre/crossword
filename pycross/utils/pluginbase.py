@@ -6,6 +6,7 @@
 # User plugin platform to extend pyCrossword functionality based on [Yapsy](http://yapsy.sourceforge.net/).
 # @see [example 1](http://yapsy.sourceforge.net/FilteredPluginManager.html), 
 # [example 2](https://stackoverflow.com/questions/5333128/yapsy-minimal-example)
+import PyQt5
 from yapsy.IPlugin import IPlugin
 from .pluginmanager import PxPluginManager
 
@@ -76,6 +77,10 @@ class PxPluginBase(IPlugin):
     ## Testing method: prints the plugin's class name by default.
     def test(self):
         print(type(self).__name__)
+
+    ## References a member of the main window class.
+    def get_prop(self, propname):
+        return getattr(self.plugin_manager.mainwin, propname)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 

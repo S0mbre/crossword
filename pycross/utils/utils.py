@@ -9,7 +9,7 @@
 import sys, os, subprocess, traceback, uuid
 import tempfile, platform, re, json, shutil, inspect
 from datetime import datetime, time
-
+from functools import wraps
 from .globalvars import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 
@@ -325,6 +325,43 @@ def register_file_types(filetypes=('xpf', 'ipuz', 'pxjson'), register=True):
 
     # some oddball os...
     return False
+
+## @brief Plugin decorator for custom plugins.
+def pluggable(category):
+    def plugin_general(func):
+        @wraps(func)
+        def wrapped(self, *args, **kwargs):            
+            plugin_methods = self.plugin_mgr.get_plugin_methods(category, func.__name__)
+            cnt = len(plugin_methods)
+            for i in range(cnt):
+                wraptype = getattr(plugin_methods[i], 'wraptype', None)
+                #if DEBUGGING: print(f"WRAP TYPE OF FUNC '{func.__name__}' is '{wraptype}'")
+                res = None
+                if wraptype == 'before':
+                    try:
+                        plugin_methods[i](*args, **kwargs)
+                    except:
+                        traceback.print_exc(limit=None)
+                    res = func(self, *args, **kwargs)
+                elif wraptype == 'after':
+                    res = func(self, *args, **kwargs)
+                    try:
+                        res = plugin_methods[i](*args, **kwargs)
+                    except:
+                        traceback.print_exc(limit=None)
+                elif wraptype == 'replace':
+                    try:
+                        plugin_methods[i](*args, **kwargs)
+                    except:
+                        traceback.print_exc(limit=None)
+                        res = None
+                else:
+                    continue
+                if i == (cnt - 1):
+                    return res
+            return func(self, *args, **kwargs)
+        return wrapped
+    return plugin_general
 
 def collect_pluggables(parent_object, indent='    '):
     methods = []

@@ -1,8 +1,10 @@
 from utils.pluginbase import *
 
-class PxPlugin000(PxPluginGeneral):
+class PxPlugin1(PxPluginGeneral):
 
-    # >>> add code here <<<
-    @replace
-    def on_act_help(self, c):
-        print('!!')
+    @before
+    def leaveEvent(self, event: PyQt5.QtCore.QEvent):
+        # @brief Fires when the mouse leaves the main window.
+        # Default implementation here as a placeholder for possible overrides in custom plugins.
+        # @param event `QtCore.QEvent` the handled event
+        print('!')
