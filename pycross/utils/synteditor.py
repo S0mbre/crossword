@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.synteditor
-from .globalvars import ICONFOLDER
+from .globalvars import *
 from .utils import make_font, re
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5 import Qsci
@@ -20,7 +20,7 @@ class SynEditor(Qsci.QsciScintilla):
     
     ARROW_MARKER_NUM = 8
 
-    def __init__(self, parent=None, lexer=Qsci.QsciLexerPython(), source=None):
+    def __init__(self, parent=None, lexer=Qsci.QsciLexerPython(), source=None, autocomplete_source=None):
         super(Qsci.QsciScintilla, self).__init__(parent)
 
         # Set the default font
@@ -69,8 +69,33 @@ class SynEditor(Qsci.QsciScintilla):
         # tab guides
         self.setIndentationGuides(True)
 
+        self.autocomplete_source = autocomplete_source
+        self._config_autocomplete()
+
         # set source
         if source: self.setText(source)
+
+    def _config_autocomplete(self):
+        if not self.autocomplete_source:
+            return
+        self.setAutoCompletionSource(Qsci.QsciScintilla.AcsAPIs)
+        self.setAutoCompletionThreshold(2)
+        self.setAutoCompletionCaseSensitivity(False)
+        self.setAutoCompletionReplaceWord(False)
+        self.setAutoCompletionUseSingle(Qsci.QsciScintilla.AcusNever)
+        #self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsNoContext)
+        #self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsNoAutoCompletionContext)
+        self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsContext)
+        self.setCallTipsVisible(0)
+        self.setCallTipsPosition(Qsci.QsciScintilla.CallTipsBelowText)
+        self.setCallTipsBackgroundColor(QtGui.QColor('#3eb9f2'))
+        self.setCallTipsForegroundColor(QtGui.QColor(QtCore.Qt.black))
+        self.setCallTipsHighlightColor(QtGui.QColor(QtCore.Qt.red))
+
+        self.autocomplete = Qsci.QsciAPIs(self.lexer)
+        for ac in self.autocomplete_source:
+            self.autocomplete.add(ac)
+        self.autocomplete.prepare()
 
     # Toggle marker for the line the margin was clicked on
     @QtCore.pyqtSlot(int, int, QtCore.Qt.KeyboardModifiers)
@@ -86,23 +111,23 @@ class SynEditor(Qsci.QsciScintilla):
 
 class SynEditorWidget(QtWidgets.QDialog):
 
-    def __init__(self, lexer=Qsci.QsciLexerPython(), source=None, minsize=(600, 400),
-                 icon='file.png', title=':: Code Editor ::'):
+    def __init__(self, lexer=Qsci.QsciLexerPython(), source=None, autocomplete_source=None,
+                minsize=(600, 400), icon='file.png', title=':: Code Editor ::'):
         super().__init__()
         self.layout_main = QtWidgets.QVBoxLayout()
-        self.add_elements(lexer, source)     
+        self.add_elements(lexer, source, autocomplete_source)     
         self.setLayout(self.layout_main)
         # set minimum widget size
         if minsize: self.setMinimumSize(*minsize)
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}"))
         self.setWindowTitle(title)
 
-    def add_elements(self, lexer, source):
-        self.add_central(lexer, source)
+    def add_elements(self, lexer, source, autocomplete_source):
+        self.add_central(lexer, source, autocomplete_source)
         self.add_bottom()
 
-    def add_central(self, lexer, source):
-        self.editor = SynEditor(self, lexer, source)
+    def add_central(self, lexer, source, autocomplete_source):
+        self.editor = SynEditor(self, lexer, source, autocomplete_source)
         self.layout_main.addWidget(self.editor)
 
     def add_bottom(self):
@@ -130,20 +155,24 @@ class PluginSynEditorWidget(SynEditorWidget):
 
     RESRCH = re.compile(r'^[ ]{4}[\w"#@]', re.M | re.I)
 
-    def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None, minsize=(600, 400),
-                 icon='file.png', title=':: Code Editor ::'):
+    def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None, 
+                 minsize=(800, 500), icon='file.png', title=_(':: Code Editor ::')):
         self.methods = methods
-        super().__init__(lexer, source, minsize, icon, title)
-        #self._update_checked_methods()
+        super().__init__(lexer, source, self._get_autocomplete_source(), minsize, icon, title)
+        self._config_editor()
 
     def showEvent(self, event):
+        self.actn_filter_regex.setChecked(False)
+        self.le_filter.clear()
         self._update_checked_methods()
         event.accept()
 
-    def add_central(self, lexer, source):
-        self.editor = SynEditor(self, lexer, source)
+    def add_central(self, lexer, source, autocomplete_source):
+        self.editor = SynEditor(self, lexer, source, autocomplete_source)
 
         self.splitter1 = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
+        self.splitter1.setChildrenCollapsible(False)
+        self.lo_methods = QtWidgets.QVBoxLayout()
         self.lw_methods = QtWidgets.QListWidget()
         self.lw_methods.setSortingEnabled(True)
         self.lw_methods.setSelectionMode(1)
@@ -152,13 +181,36 @@ class PluginSynEditorWidget(SynEditorWidget):
         self.lw_methods.itemDoubleClicked.connect(self.on_lw_methods_dblclicked)
         self.reset_methods()
 
-        self.splitter1.addWidget(self.lw_methods)
+        self.actn_clear_filter = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), _('Clear'))        
+        self.actn_filter_regex = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/asterisk1.png"), _('Regex'))   
+        self.actn_filter_regex.setCheckable(True)
+        self.actn_filter_regex.setChecked(False)
+        
+        self.le_filter = QtWidgets.QLineEdit('')
+        self.le_filter.setStyleSheet('background-color: #fffff0;')
+        self.le_filter.setPlaceholderText(_('Filter'))
+        self.le_filter.textChanged.connect(self.on_filter_changed)
+        self.le_filter.addAction(self.actn_filter_regex, 1)
+        self.le_filter.addAction(self.actn_clear_filter, 1)
+        self.actn_clear_filter.triggered.connect(QtCore.pyqtSlot(bool)(lambda _: self.le_filter.clear()))
+        self.actn_filter_regex.toggled.connect(self.on_actn_filter_regex_toggled)
+        
+        self.lo_methods.addWidget(self.le_filter)
+        self.lo_methods.addWidget(self.lw_methods)
+        self.methods_widget = QtWidgets.QWidget()
+        self.methods_widget.setLayout(self.lo_methods)
+
+        self.splitter1.addWidget(self.methods_widget)
         self.splitter1.addWidget(self.editor)
+        self.splitter1.setStretchFactor(0, 0)
         self.layout_main.addWidget(self.splitter1)
 
     def _config_editor(self):
         self.editor.textChanged.connect(self.on_editor_text_changed)
 
+    def _get_autocomplete_source(self):
+        return []
+        
     def reset_methods(self):
         self.lw_methods.blockSignals(True)
         self.lw_methods.clear()
@@ -182,6 +234,40 @@ class PluginSynEditorWidget(SynEditorWidget):
             item = self.lw_methods.item(i)
             item.setCheckState(QtCore.Qt.Checked if f"    def {item.text()}:" in txt else QtCore.Qt.Unchecked)
         self.lw_methods.itemChanged.connect(self.on_lw_methods_changed)
+
+    def _apply_filter(self, text):
+        text = text.lower()
+        try:
+            self.lw_methods.itemChanged.disconnect()
+        except:
+            pass
+        if not text:
+            for i in range(self.lw_methods.count()):
+                self.lw_methods.item(i).setHidden(False)
+        else:
+            regex = self.actn_filter_regex.isChecked()
+            for i in range(self.lw_methods.count()):
+                item = self.lw_methods.item(i)
+                item_txt = item.text().lower()
+                try:
+                    matched = (regex and re.match(text, item_txt)) or (not regex and (text in item_txt))
+                except:
+                    matched = False
+                item.setHidden(not matched)
+        self.lw_methods.itemChanged.connect(self.on_lw_methods_changed)
+
+    @QtCore.pyqtSlot(bool)
+    def on_actn_filter_regex_toggled(self, checked):
+        self.actn_filter_regex.setIcon(QtGui.QIcon(f"{ICONFOLDER}/asterisk{'' if checked else '1'}.png"))
+        self._apply_filter(self.le_filter.text())
+
+    @QtCore.pyqtSlot(str)
+    def on_filter_changed(self, text):
+        if text:
+            self.le_filter.setStyleSheet('background-color: #3eb9f2;')
+        else:
+            self.le_filter.setStyleSheet('background-color: #fffff0;')
+        self._apply_filter(text)
 
     @QtCore.pyqtSlot()
     def on_editor_text_changed(self):

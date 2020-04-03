@@ -387,6 +387,48 @@ def collect_pluggables(parent_object, indent='    '):
     methods.sort()
     return methods
 
+def get_members(parent_object, inspected_object_name, prepend_conext=True, lst=[]):
+    try:
+        inspected_object = getattr(parent_object, inspected_object_name)
+    except:
+        return
+    else:
+        for itemname in dir(inspected_object):
+            try:
+                obj = getattr(inspected_object, itemname)
+                if callable(obj):
+                    sig = '()'
+                    try:
+                        sig = str(inspect.signature(obj))
+                    except:
+                        sig = '()'
+                    lst.append(f"{inspected_object_name}.{itemname}{sig}" if prepend_conext else f"{itemname}{sig}")
+                else:
+                    lst.append(f"{inspected_object_name}.{itemname}" if prepend_conext else itemname)
+                    for subitem in dir(obj):
+                        try:
+                            get_members(getattr(obj, subitem), subitem, prepend_conext, lst)
+                        except:
+                            continue
+            except:
+                continue
+
+def get_module_members(module, prepend_conext=True, lst=[]):
+    if not module: return
+    if not lst:        
+        for builtin_module in sys.builtin_module_names:
+            get_module_members(builtin_module, False, lst)
+    mod_name = ''
+    if isinstance(module, str):        
+        mod_name = module
+        module = sys.modules.get(module, None)
+    elif inspect.ismodule(module):
+        mod_name = module.__name__
+    else:
+        return
+    if module: 
+        get_members(module, mod_name, prepend_conext, lst)
+
 # ---------------------------- GUI ---------------------------- #
 
 ## Customized thread class (based on QThread) that adds 
