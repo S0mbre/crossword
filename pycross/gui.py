@@ -1557,25 +1557,6 @@ class MainWindow(QtWidgets.QMainWindow):
         except:
             traceback.print_exc(limit=None) 
 
-    ## @brief Creates and optionally shows the inbuilt python code editor.
-    # @param source `str` | `None` source code to set in editor (`None` clears the existing code)
-    # @param show `bool` whether to show the editor window
-    # @see utils::synteditor
-    @pluggable('general')
-    def create_syneditor(self, source=None, show=True, modal=False):
-        from utils.synteditor import SynEditorWidget
-        if not hasattr(self, 'syneditor'):
-            ## `utils::synteditor::SynEditorWidget` inbuilt python code editor
-            self.syneditor = SynEditorWidget(source=source)
-        else:
-            self.syneditor.editor.setText(source or '')
-        if show: 
-            if modal:
-                return self.syneditor.exec()
-            else:
-                return self.syneditor.show()
-        return None
-
     ## Slot fires when the cw generation thread (MainWindow::gen_thread) starts up.
     # Performs preliminary UI element setups.
     @pluggable('general')

@@ -1,7 +1,8 @@
 pip
 PyQt5>=5.14
 PyQtWebEngine>=5.14
-QScintilla>=2.11
+qtconsole>=4.5
+jedi>=0.15
 yapsy>=1.12
 requests
 numpy

@@ -1327,12 +1327,13 @@ class CustomPluginManager(QtWidgets.QWidget):
         return None
 
     def create_syneditor(self, source=None, show=True, modal=False):
-        from utils.synteditor import PluginSynEditorWidget
+        from utils.ipythoneditor import PluginSynEditorWidget
         if not hasattr(self, 'syneditor'):
-            ## `utils::synteditor::PluginSynEditorWidget` inbuilt python code editor
+            ## `utils::ipythoneditor::PluginSynEditorWidget` inbuilt python code editor
             self.syneditor = PluginSynEditorWidget(collect_pluggables(self.mainwindow), source=source)
         else:
-            self.syneditor.editor.setText(source or '')
+            pass
+            #self.syneditor.editor.setText(source or '')
         if show: 
             if modal:
                 return self.syneditor.exec()
