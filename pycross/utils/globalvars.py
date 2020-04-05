@@ -8,7 +8,7 @@ import os, gettext
 def make_abspath(filename, root=''):
     # default root = pycross
     if not root: root = os.path.dirname(os.path.dirname(__file__))
-    return os.path.abspath(os.path.join(root, filename))
+    return os.path.abspath(os.path.join(root, filename) if filename else root)
 
 ## toggle debug messages
 DEBUGGING = False

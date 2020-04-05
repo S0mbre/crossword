@@ -4,7 +4,7 @@
 
 ## @package utils.synteditor
 from .globalvars import *
-from .utils import make_font, re
+from .utils import make_font, re, get_script_members
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5 import Qsci
 
@@ -78,7 +78,7 @@ class SynEditor(Qsci.QsciScintilla):
     def _config_autocomplete(self):
         if not self.autocomplete_source:
             return
-        self.setAutoCompletionSource(Qsci.QsciScintilla.AcsAPIs)
+        self.setAutoCompletionSource(Qsci.QsciScintilla.AcsAll)
         self.setAutoCompletionThreshold(2)
         self.setAutoCompletionCaseSensitivity(False)
         self.setAutoCompletionReplaceWord(False)
@@ -93,6 +93,11 @@ class SynEditor(Qsci.QsciScintilla):
         self.setCallTipsHighlightColor(QtGui.QColor(QtCore.Qt.red))
 
         self.autocomplete = Qsci.QsciAPIs(self.lexer)
+        self.reset_autocomplete_source()
+        
+    @QtCore.pyqtSlot()
+    def reset_autocomplete_source(self):
+        self.autocomplete.clear()
         for ac in self.autocomplete_source:
             self.autocomplete.add(ac)
         self.autocomplete.prepare()
@@ -158,7 +163,7 @@ class PluginSynEditorWidget(SynEditorWidget):
     def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None, 
                  minsize=(800, 500), icon='file.png', title=_(':: Code Editor ::')):
         self.methods = methods
-        super().__init__(lexer, source, self._get_autocomplete_source(), minsize, icon, title)
+        super().__init__(lexer, source, self._get_autocomplete_source(source), minsize, icon, title)
         self._config_editor()
 
     def showEvent(self, event):
@@ -208,8 +213,8 @@ class PluginSynEditorWidget(SynEditorWidget):
     def _config_editor(self):
         self.editor.textChanged.connect(self.on_editor_text_changed)
 
-    def _get_autocomplete_source(self):
-        return []
+    def _get_autocomplete_source(self, source):
+        return get_script_members(source)
         
     def reset_methods(self):
         self.lw_methods.blockSignals(True)
@@ -272,6 +277,8 @@ class PluginSynEditorWidget(SynEditorWidget):
     @QtCore.pyqtSlot()
     def on_editor_text_changed(self):
         self._update_checked_methods()
+        self.editor.autocomplete_source = self._get_autocomplete_source(self.editor.text())
+        self.editor.reset_autocomplete_source()
 
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem, QtWidgets.QListWidgetItem)
     def on_lw_methods_select(self, current, previous):
