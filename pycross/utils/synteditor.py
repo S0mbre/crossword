@@ -76,24 +76,32 @@ class SynEditor(Qsci.QsciScintilla):
         if source: self.setText(source)
 
     def _config_autocomplete(self):
-        if not self.autocomplete_source:
-            return
-        self.setAutoCompletionSource(Qsci.QsciScintilla.AcsAll)
-        self.setAutoCompletionThreshold(2)
+        self.setAutoCompletionSource(Qsci.QsciScintilla.AcsAll if self.autocomplete_source else Qsci.QsciScintilla.AcsNone)
+        self.setAutoCompletionThreshold(1)
         self.setAutoCompletionCaseSensitivity(False)
         self.setAutoCompletionReplaceWord(False)
         self.setAutoCompletionUseSingle(Qsci.QsciScintilla.AcusNever)
-        #self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsNoContext)
+        self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsNoContext)
         #self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsNoAutoCompletionContext)
-        self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsContext)
+        #self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsContext)
         self.setCallTipsVisible(0)
         self.setCallTipsPosition(Qsci.QsciScintilla.CallTipsBelowText)
-        self.setCallTipsBackgroundColor(QtGui.QColor('#3eb9f2'))
+        self.setCallTipsBackgroundColor(QtGui.QColor('#fffff0'))
         self.setCallTipsForegroundColor(QtGui.QColor(QtCore.Qt.black))
-        self.setCallTipsHighlightColor(QtGui.QColor(QtCore.Qt.red))
+        self.setCallTipsHighlightColor(QtGui.QColor(QtCore.Qt.blue))
 
         self.autocomplete = Qsci.QsciAPIs(self.lexer)
         self.reset_autocomplete_source()
+
+    def keyPressEvent(self, event):
+        key = event.key()
+        mod = event.modifiers()
+        if mod == QtCore.Qt.ControlModifier:
+            if (key == QtCore.Qt.Key_Space) and self.autocomplete_source:
+                self.autoCompleteFromAll()
+                event.ignore()
+                return
+        super().keyPressEvent(event)
         
     @QtCore.pyqtSlot()
     def reset_autocomplete_source(self):
@@ -158,7 +166,7 @@ class SynEditorWidget(QtWidgets.QDialog):
 
 class PluginSynEditorWidget(SynEditorWidget):
 
-    RESRCH = re.compile(r'^[ ]{4}[\w"#@]', re.M | re.I)
+    RESRCH = re.compile(r'\n[ ]{4}[\w"#@]')
 
     def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None, 
                  minsize=(800, 500), icon='file.png', title=_(':: Code Editor ::')):
@@ -290,8 +298,11 @@ class PluginSynEditorWidget(SynEditorWidget):
     def on_lw_methods_changed(self, item):
         txt = self.editor.text()
         func = item.text().replace('(', r'\(').replace(')', r'\)').replace(',', r'\,')
-        pattern = f'(^[ ]{{4}}[#"].*)*(^[ ]{{4}}@.+?)*(^[ ]{{4}}def {func}\\:)'
-        res1 = re.search(pattern, txt, re.M | re.S)
+        pattern = f'(^[ ]{{4}}[#"].*)*(\n[ ]{{4}}@.+?)*(\n[ ]{{4}}def {func}\\:)'
+        try:
+            res1 = re.search(pattern, txt)
+        except:
+            return
         if res1 is None and item.checkState():
             # func not found, add it
             txt += '\n\n    @replace #@before @after\n' + '\n'.join([('    ' + l) for l in item.data(QtCore.Qt.UserRole).split('\n')])
@@ -302,9 +313,9 @@ class PluginSynEditorWidget(SynEditorWidget):
             # func found, delete it
             res2 = PluginSynEditorWidget.RESRCH.search(txt, res1.end(res1.lastindex))
             if not res2 is None:
-                txt = txt[:res1.start()] + txt[res2.start():]
+                txt = txt[:res1.start() + 1] + txt[res2.start():]
             else:
-                txt = txt[:res1.start()]
+                txt = txt[:res1.start() + 1]
             self.editor.setText(txt)
             self._update_checked_methods()
 

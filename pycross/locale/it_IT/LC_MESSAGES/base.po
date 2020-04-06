@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-04-03 13:06+1100\n"
+"POT-Creation-Date: 2020-04-06 15:59+1100\n"
 "PO-Revision-Date: 2020-01-18 23:53+1100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it_IT\n"
@@ -121,7 +121,7 @@ msgid "Reload &All Tabs"
 msgstr ""
 
 #: pycross/browser.py:516 pycross/forms.py:224 pycross/forms.py:5322
-#: pycross/utils/synteditor.py:115 pycross/utils/utils.py:485
+#: pycross/utils/synteditor.py:153 pycross/utils/utils.py:512
 msgid "Cancel"
 msgstr ""
 
@@ -591,7 +591,7 @@ msgid "All files (*.*)"
 msgstr ""
 
 #: pycross/forms.py:219 pycross/forms.py:5232 pycross/forms.py:5317
-#: pycross/utils/synteditor.py:111 pycross/utils/utils.py:484
+#: pycross/utils/synteditor.py:149 pycross/utils/utils.py:511
 msgid "OK"
 msgstr ""
 
@@ -854,7 +854,7 @@ msgid "Add separator"
 msgstr ""
 
 #: pycross/forms.py:820 pycross/forms.py:1170 pycross/forms.py:1800
-#: pycross/gui.py:264 pycross/utils/synteditor.py:157
+#: pycross/gui.py:264 pycross/utils/synteditor.py:197
 msgid "Clear"
 msgstr ""
 
@@ -2301,7 +2301,7 @@ msgstr ""
 msgid "Create new crossword"
 msgstr ""
 
-#: pycross/gui.py:191 pycross/utils/utils.py:488
+#: pycross/gui.py:191 pycross/utils/utils.py:515
 msgid "Open"
 msgstr ""
 
@@ -2309,7 +2309,7 @@ msgstr ""
 msgid "Open crossword from file"
 msgstr ""
 
-#: pycross/gui.py:196 pycross/utils/utils.py:488
+#: pycross/gui.py:196 pycross/utils/utils.py:515
 msgid "Save"
 msgstr ""
 
@@ -2325,7 +2325,7 @@ msgstr ""
 msgid "Save crossword as new file"
 msgstr ""
 
-#: pycross/gui.py:206 pycross/utils/utils.py:489
+#: pycross/gui.py:206 pycross/utils/utils.py:516
 msgid "Close"
 msgstr ""
 
@@ -2453,7 +2453,7 @@ msgstr ""
 msgid "Check for updates"
 msgstr ""
 
-#: pycross/gui.py:319 pycross/utils/utils.py:490
+#: pycross/gui.py:319 pycross/utils/utils.py:517
 msgid "Help"
 msgstr ""
 
@@ -2939,15 +2939,15 @@ msgstr ""
 msgid "Unable to locate method '{}' in plugin '{}'!"
 msgstr ""
 
-#: pycross/utils/synteditor.py:134
+#: pycross/utils/synteditor.py:172
 msgid ":: Code Editor ::"
 msgstr ""
 
-#: pycross/utils/synteditor.py:158
+#: pycross/utils/synteditor.py:198
 msgid "Regex"
 msgstr ""
 
-#: pycross/utils/synteditor.py:164
+#: pycross/utils/synteditor.py:204
 msgid "Filter"
 msgstr ""
 
@@ -2973,51 +2973,51 @@ msgstr ""
 msgid "{} completed with error!"
 msgstr ""
 
-#: pycross/utils/utils.py:484
+#: pycross/utils/utils.py:511
 msgid "Yes"
 msgstr ""
 
-#: pycross/utils/utils.py:485
+#: pycross/utils/utils.py:512
 msgid "No"
 msgstr ""
 
-#: pycross/utils/utils.py:486
+#: pycross/utils/utils.py:513
 msgid "Yes to All"
 msgstr ""
 
-#: pycross/utils/utils.py:486
+#: pycross/utils/utils.py:513
 msgid "No to All"
 msgstr ""
 
-#: pycross/utils/utils.py:487
+#: pycross/utils/utils.py:514
 msgid "Apply"
 msgstr ""
 
-#: pycross/utils/utils.py:487
+#: pycross/utils/utils.py:514
 msgid "Reset"
 msgstr ""
 
-#: pycross/utils/utils.py:489
+#: pycross/utils/utils.py:516
 msgid "Discard"
 msgstr ""
 
-#: pycross/utils/utils.py:490
+#: pycross/utils/utils.py:517
 msgid "Restore Defaults"
 msgstr ""
 
-#: pycross/utils/utils.py:491
+#: pycross/utils/utils.py:518
 msgid "Save All"
 msgstr ""
 
-#: pycross/utils/utils.py:491
+#: pycross/utils/utils.py:518
 msgid "Abort"
 msgstr ""
 
-#: pycross/utils/utils.py:492
+#: pycross/utils/utils.py:519
 msgid "Retry"
 msgstr ""
 
-#: pycross/utils/utils.py:492
+#: pycross/utils/utils.py:519
 msgid "Ignore"
 msgstr ""
 

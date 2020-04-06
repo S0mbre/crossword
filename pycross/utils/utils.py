@@ -7,7 +7,7 @@
 # across the entire application. The utilities include file operations, OS and system
 # queries, multithreading and some Qt GUI methods.
 import sys, os, subprocess, traceback, uuid
-import tempfile, platform, re, json, shutil, inspect
+import tempfile, platform, re, json, shutil, inspect, builtins
 import jedi
 from datetime import datetime, time
 from functools import wraps
@@ -382,21 +382,37 @@ def collect_pluggables(parent_object, indent='    '):
             for row in [comment.strip().replace('##', '#') for comment in comments.split('\n')]:
                 m += '\n' + indent + row
         else:
-            m += indent
+            if not m.endswith('\n'): m += '\n'
+            m += indent        
         m += 'return None'
         methods.append(m)
     methods.sort()
     return methods
 
-def get_script_members(script):
-    jscript = jedi.Script(script, _project=jedi.api.Project(make_abspath(None)))
+def get_builtins():
     res = []
-    for d in jscript.get_names(all_scopes=True, definitions=True):
-        res.append(d.name)
+    for elname in dir(builtins):
+        obj = getattr(builtins, elname)
+        if callable(obj):
+            try:
+                res.append(f"{elname}{str(inspect.signature(obj))}")
+            except:
+                res.append(elname)
+        else:
+            res.append(elname)
+    return res
+
+def get_script_members(script):
+    #jscript = jedi.Script(script, _project=jedi.api.Project(os.path.abspath('utils')))
+    jscript = jedi.Script(script, sys_path=sys.path + [os.path.abspath(os.path.dirname(__file__))])
+    res = get_builtins()
+    for d in jscript.get_names(all_scopes=True, definitions=True, references=True):        
         if d.type == 'function':
             for ds in d.get_signatures():
-                res.append(ds.to_string().replace('self, ', ''))
-    return sorted(res)
+                res.append(ds.to_string().replace('(self)', '()').replace('(self, ', '('))
+        else:
+            res.append(d.name)
+    return res
 
 # ---------------------------- GUI ---------------------------- #
 
