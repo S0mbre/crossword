@@ -1994,6 +1994,10 @@ class Crossword:
     #         [*][_]
     # 4 =     [_][_]
     #         [_][*]
+    # 5 =     [_][_]
+    #         [_][_]
+    # 6 =     [*][*]
+    #         [*][*]
     # </pre>
     # @returns `str` concatenated (newline-delimited) grid string
     @staticmethod
@@ -2001,7 +2005,7 @@ class Crossword:
         if cols < 2: cols = 2
         if rows < 2: rows = 2
         pair1 = ''; pair2 = ''
-        if base_pattern < 1 or base_pattern > 4:
+        if base_pattern < 1 or base_pattern > 6:
             base_pattern = 1
         if base_pattern == 1:
             pair1 = FILLER + BLANK
@@ -2015,6 +2019,12 @@ class Crossword:
         elif base_pattern == 4:
             pair1 = BLANK + BLANK
             pair2 = BLANK + FILLER
+        elif base_pattern == 5:
+            pair1 = BLANK + BLANK
+            pair2 = BLANK + BLANK
+        elif base_pattern == 6:
+            pair1 = FILLER + FILLER
+            pair2 = FILLER + FILLER
         grid = []
         for i in range(rows):
             pair = pair1 if (i == 0 or i % 2 == 0) else pair2

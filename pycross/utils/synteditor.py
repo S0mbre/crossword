@@ -58,7 +58,7 @@ class SynEditor(Qsci.QsciScintilla):
         # Current line visible with special background color
         self.setCaretLineVisible(True)
         self.setCaretLineBackgroundColor(QtGui.QColor("#f2f2f2"))
-
+        
         # Set Python lexer
         # Set style for Python comments (style number 1) to a fixed-width font.
         self.lexer = lexer
@@ -193,7 +193,7 @@ class PluginSynEditorWidget(SynEditorWidget):
         self.lw_methods.itemChanged.connect(self.on_lw_methods_changed)
         self.lw_methods.itemDoubleClicked.connect(self.on_lw_methods_dblclicked)
         self.reset_methods()
-
+    
         self.actn_clear_filter = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), _('Clear'))        
         self.actn_filter_regex = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/asterisk1.png"), _('Regex'))   
         self.actn_filter_regex.setCheckable(True)

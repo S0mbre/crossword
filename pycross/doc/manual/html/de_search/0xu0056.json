@@ -1,0 +1,19 @@
+[
+	{ "s": "VALUE", "p": [19] },
+	{ "s": "VARIANT", "p": [2] },
+	{ "s": "VARIETY", "p": [14, 3] },
+	{ "s": "VARIOUS", "p": [7] },
+	{ "s": "VE", "p": [13] },
+	{ "s": "VECTOR", "p": [14] },
+	{ "s": "VENV", "p": [2] },
+	{ "s": "VERSION", "p": [5, 2] },
+	{ "s": "VIEW", "p": [15, 9, 3] },
+	{ "s": "VIEWED", "p": [14] },
+	{ "s": "VIEWER", "p": [14] },
+	{ "s": "VIRTUAL", "p": [2, 15, 14, 7] },
+	{ "s": "VIRTUALENV", "p": [2] },
+	{ "s": "VISIBILITY", "p": [9] },
+	{ "s": "VISUAL", "p": [21] },
+	{ "s": "VISUALIZE", "p": [21] },
+	{ "s": "VISUALIZES", "p": [18] }
+]

@@ -314,8 +314,14 @@ class LoadCwDialog(BasicDialog):
         self.le_rows = QtWidgets.QLineEdit('15')
         self.le_cols = QtWidgets.QLineEdit('15')
         self.combo_pattern = QtWidgets.QComboBox()
-        for i in range(1, 5):
-            icon = QtGui.QIcon(f"{ICONFOLDER}/grid{i}.png")
+        for i in range(1, 7):
+            if i < 5:
+                nicon = i
+            elif i == 5:
+                nicon = 15
+            else:
+                nicon = 14
+            icon = QtGui.QIcon(f"{ICONFOLDER}/grid{nicon}.png")
             self.combo_pattern.addItem(icon, _("Pattern {}").format(i))
         self.layout_manual = QtWidgets.QFormLayout()
         self.layout_manual.addRow(_('Rows:'), self.le_rows)
@@ -1702,7 +1708,7 @@ class SettingsDialog(BasicDialog):
         self.chb_autosave_cw.setToolTip(_('Save crosswords on exit and load on startup'))
 
         self.act_register_associations = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/star.png"), _('Register file associations'), None)
-        self.act_register_associations.setToolTip(_('Associate crossword files (*.xpf, *.ipuz) with {}').format(APP_NAME))
+        self.act_register_associations.setToolTip(_('Associate crossword files (*.xpf, *.ipuz) and settings files (*.pxjson) with {}').format(APP_NAME))
         self.act_register_associations.triggered.connect(self.on_act_register_associations)
         self.btn_register_associations = QtWidgets.QToolButton()
         self.btn_register_associations.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -4061,15 +4067,26 @@ class CwTable(QtWidgets.QTableWidget):
     ## Constructor.
     # @param on_key `callable` callback for key release event
     # @param parent `QtWidgets.QWidget` parent widget
-    def __init__(self, on_key=None, parent: QtWidgets.QWidget=None):
+    def __init__(self, on_key=None, on_deselect=None, parent: QtWidgets.QWidget=None):
         ## Stored callback for key release event
         self.on_key = on_key
+        self.on_deselect = on_deselect
         super().__init__(parent)
+
+    def keyboardSearch(self, search):
+        return
         
     ## Key release event handler: call the stored callback.
     def keyReleaseEvent(self, event: QtGui.QKeyEvent):
         #super().keyReleaseEvent(event)
-        if self.on_key: self.on_key(event)
+        if self.on_key: 
+            self.on_key(event)
+
+    def mouseReleaseEvent(self, event: QtGui.QMouseEvent):        
+        if not self.indexAt(event.pos()).isValid() and self.on_deselect:
+            self.on_deselect()
+        super().mouseReleaseEvent(event)
+
 
 # ******************************************************************************** #
 # *****          ClickableLabel

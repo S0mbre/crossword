@@ -18,7 +18,7 @@ def main():
     parser.add_argument('-n', '--new', action='store_true', help='Create crossword')
     parser.add_argument('--cols', type=int, default=15, help='Number of columns')
     parser.add_argument('--rows', type=int, default=15, help='Number of rows')
-    parser.add_argument('--pattern', type=int, default=1, choices=[1, 2, 3, 4], help='Pattern type for new crossword')
+    parser.add_argument('--pattern', type=int, default=1, choices=[1, 2, 3, 4, 5, 6], help='Pattern type for new crossword')
     parser.add_argument('-e', '--empty', action='store_true', help='Do not open/restore or create a crossword')
     parser.add_argument('-a', '--addsrc', default='', action='append', help='Add word source') # see WordSrcDialog definition in forms.py for source string format
     args = parser.parse_args()

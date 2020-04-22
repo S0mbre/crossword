@@ -408,6 +408,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menu_main_file.addSeparator()
         self.menu_main_file.addAction(self.act_print)
         self.menu_main_file.addSeparator()
+        self.menu_main_file.addAction(self.act_config)
         self.menu_main_file.addAction(self.act_exit)
         ## `QtWidgets.QMenu` 'Edit' menu
         self.menu_main_edit = self.menu_main.addMenu(_('&Edit'))
@@ -429,10 +430,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menu_main_edit.addSeparator()
         self.menu_main_edit.addAction(self.act_reflect)
         self.menu_main_edit.addSeparator()
-        #self.menu_main_edit.addAction(self.act_addrow)
-        #self.menu_main_edit.addAction(self.act_addcol)
-        self.menu_main_edit.addSeparator()
-        self.menu_main_edit.addAction(self.act_config)
+        
         ## `QtWidgets.QMenu` 'View' menu
         self.menu_main_view = self.menu_main.addMenu(_('&View'))
         self.menu_main_view.addAction(self.act_view_showtoolbar)
@@ -464,7 +462,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ## `QtWidgets.QVBoxLayout` cw layout
         self.layout_vcw = QtWidgets.QVBoxLayout()
         ## `forms::CwTable` cw grid
-        self.twCw = CwTable(on_key=self.on_cw_key)
+        self.twCw = CwTable(on_key=self.on_cw_key, on_deselect=self.on_cw_deselect)
         self.twCw.setSortingEnabled(False)
         self.twCw.setDragDropMode(QtWidgets.QAbstractItemView.DropOnly)
         self.twCw.setDropIndicatorShown(True)
@@ -717,8 +715,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_edit.setEnabled(b_cw and not gen_running and not share_running)
         self.act_addcol.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
         self.act_addrow.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
-        self.act_delcol.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
-        self.act_delrow.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
+        self.act_delcol.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked() and self.twCw.currentColumn() >= 0)
+        self.act_delrow.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked() and self.twCw.currentRow() >= 0)
         self.act_reflect.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
         self.act_gen.setEnabled(b_cw and not gen_running and not share_running and bool(self.wordsrc))
         if not gen_running and not share_running: self.act_stop.setChecked(False)
@@ -2494,6 +2492,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(QtGui.QKeyEvent)
     def on_cw_key(self, event: QtGui.QKeyEvent):
+        event.ignore()
         # get key
         key = event.key()   
         # get text
@@ -2593,6 +2592,15 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.twCw.setCurrentItem(next_item)
             else:
                 self.reformat_cells()
+
+    @pluggable('general')
+    @QtCore.pyqtSlot()
+    def on_cw_deselect(self):
+        self.twCw.selectionModel().clear()
+        self.current_word = None
+        self.last_pressed_item = None
+        self.reformat_cells()
+        self.update_actions()
 
     ## Fires when the application is about to update.
     # @param old_version `str` the current app version
@@ -2761,9 +2769,9 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_addrow(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
-        if self.twCw.currentRow() >= 0:
-            self.cw.words.add_row(self.twCw.currentRow())
-            self.update_cw()
+        row = self.twCw.currentRow()
+        self.cw.words.add_row(row if row >= 0 else -1)
+        self.update_cw()
 
     ## @brief Slot for MainWindow::act_addcol: adds a new column after the selected one.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
@@ -2771,9 +2779,9 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_addcol(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
-        if self.twCw.currentColumn() >= 0:
-            self.cw.words.add_column(self.twCw.currentColumn())
-            self.update_cw()
+        col = self.twCw.currentColumn()
+        self.cw.words.add_column(col if col >= 0 else -1)
+        self.update_cw()
 
     ## @brief Slot for MainWindow::act_delrow: deletes the selected row.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
@@ -3033,14 +3041,15 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(bool)    
     def on_act_help(self, checked):
-        MsgBox(_('To be implemented in next release ))'), self, _('Show help docs')) 
+        os = getosname()
+        run_exe(['start' if os == 'Windows' else 'open', make_abspath(f"doc/manual/{'chm/UserGuide.chm' if os == 'Windows' else 'html/index.htm'}")], 
+                False, False, shell=True)
         
     ## @brief Slot for MainWindow::act_apiref: shows API reference in browser.
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_apiref(self, checked):
-        launcher = make_abspath(f"doc/apiref/opendoc.{'bat' if getosname() == 'Windows' else 'sh'}")
-        run_exe(launcher, True, False, shell=True)
+        run_exe(['start' if getosname() == 'Windows' else 'open', make_abspath("doc/apiref/html/index.html")], False, False, shell=True)
 
     ## @brief Slot for MainWindow::act_contact: shows form to contact author, i.e. me :)).
     @pluggable('general')
