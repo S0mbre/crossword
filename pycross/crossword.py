@@ -791,7 +791,7 @@ class Wordgrid:
     # @see reflect() for description of arguments.
     def reflect_right(self, mirror=True, reverse=True, border=''):
         self.height = len(self.grid)
-        last_col = self.width - 1
+        last_col = self.width
 
         if border:
             sborder = border * (self.height // len(border))
@@ -808,10 +808,12 @@ class Wordgrid:
                 if mirror: ls.reverse()
                 row += ls
         else:
+            i = 0
             for row in reversed(self.grid):
                 ls = [c if c in (BLANK, FILLER, FILLER2) else BLANK for c in row[:last_col]]
                 if mirror: ls.reverse()
-                row += ls
+                self.grid[i] += ls
+                i += 1
 
         self.reset()
 
@@ -837,10 +839,13 @@ class Wordgrid:
                 if mirror: ls.reverse()
                 row[0:0] = ls
         else:
+            w = len(self.grid[0])
+            i = 0
             for row in reversed(self.grid):
-                ls = [c if c in (BLANK, FILLER, FILLER2) else BLANK for c in row[first_col:]]
+                ls = [c if c in (BLANK, FILLER, FILLER2) else BLANK for c in row[(len(row) - w):]]
                 if mirror: ls.reverse()
-                row[0:0] = ls
+                self.grid[i][0:0] = ls
+                i += 1
 
         self.reset()
 
