@@ -6,7 +6,7 @@
 # Stores a single global configurations objects - CWSettings::settings
 # together with methods to load from and save to JSON files.
 from PyQt5 import QtGui, QtCore, QtWidgets
-import json, os
+import json, os, gzip
 
 from utils.globalvars import *
 
@@ -164,9 +164,10 @@ class CWSettings:
             return sorted(vals)
 
         if not os.path.isfile(filepath): return None
-        with open(filepath, 'r', encoding=ENCODING) as fsettings:
+        with gzip.open(filepath, 'rt', encoding=ENCODING) as fsettings:
             try:
-                d = json.load(fsettings)
+                content = fsettings.read()
+                d = json.loads(content)
             except:
                 return None
             if get_dic_str(d) == get_dic_str(CWSettings.settings):
@@ -174,9 +175,10 @@ class CWSettings:
         return None
 
     @staticmethod     
-    def save_to_file(filepath=SETTINGS_FILE):    
-        with open(filepath, 'w', encoding=ENCODING) as fsettings:
-            json.dump(CWSettings.settings, fsettings, indent='\t')            
+    def save_to_file(filepath=SETTINGS_FILE):
+        content = json.dumps(CWSettings.settings, indent='\t')
+        with gzip.open(filepath, 'wt', encoding=ENCODING) as fsettings:
+            fsettings.write(content)
     
     @staticmethod
     def load_from_file(filepath=SETTINGS_FILE):

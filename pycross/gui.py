@@ -290,6 +290,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_editclue.setToolTip(_('Edit clue'))
         self.act_editclue.setShortcut(QtGui.QKeySequence('Ctrl+k'))
         self.act_editclue.triggered.connect(self.on_act_editclue)
+        ## `QtWidgets.QAction` clear clues action
+        self.act_clearclues = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/key-clear.png"), _('Clear clues'))
+        self.act_clearclues.setToolTip(_('Clear all clues'))
+        self.act_clearclues.setShortcut(QtGui.QKeySequence('Ctrl+Alt+k'))
+        self.act_clearclues.triggered.connect(self.on_act_clearclues)
         ## `QtWidgets.QAction` edit word sources action
         self.act_wsrc = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"), _('Word sources'))
         self.act_wsrc.setToolTip(_('Select wordsources'))
@@ -421,6 +426,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menu_main_edit.addAction(self.act_suggest)
         self.menu_main_edit.addAction(self.act_lookup)
         self.menu_main_edit.addAction(self.act_editclue)
+        self.menu_main_edit.addAction(self.act_clearclues)
         self.menu_main_edit.addSeparator()
         self.menu_main_edit.addAction(self.act_addrow)
         self.menu_main_edit.addAction(self.act_delrow)
@@ -952,7 +958,8 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Returns Word object from self.cw corresponding to the given clue item.
     # @param item `QtGui.QStandardItem` the item in the clues table
     def _word_from_clue_item(self, item: QtGui.QStandardItem):
-        if not self.cw or item.rowCount(): return None
+        if not self.cw or item.rowCount(): 
+            return None
         root_item = item.parent()
         if not root_item: return None
         try:
@@ -1667,16 +1674,20 @@ class MainWindow(QtWidgets.QMainWindow):
         def _guess_filetype(filepath):
             if not filepath: return -1
             ext = os.path.splitext(filepath)[1][1:].lower()
-            if ext in ('xpf', 'ipuz'): return 0
-            if ext == 'pdf': return 1
-            if ext in ('jpg', 'png', 'tif', 'tiff', 'bmp'): return 2
-            if ext == 'svg': return 3
-            return 4
+            if ext == 'xpf': return 0
+            if ext == 'ipuz': return 1
+            if ext == 'pdf': return 2
+            if ext in ('jpg', 'jpeg'): return 3
+            if ext == 'bmp': return 4
+            if ext == 'png': return 5
+            if ext in ('tif', 'tiff'): return 6
+            if ext == 'svg': return 7
+            return 8
 
         def _get_filetype(filtername):
-            CWSAVE_FILTERS = [_('Crossword file (*.xpf *.ipuz)'), _('PDF file (*.pdf)'), 
-                    _('Image file (*.jpg *.png *.tif *.tiff *.bmp)'), _('SVG vector image (*.svg)'),
-                    _('Text file (*.txt)'), _('All files (*.*)')]
+            CWSAVE_FILTERS = [_('Crossword XPF file (*.xpf)'), _('Crossword IPUZ file (*.ipuz)'), _('PDF file (*.pdf)'), 
+                  _('JPEG image (*.jpg)'),  _('Bitmap image (*.bmp)'),  _('PNG image (*.png)'),  _('TIFF image (*.tif)'), _('SVG vector image (*.svg)'),
+                  _('Text file (*.txt)'), _('All files (*.*)')]
             try:
                 return CWSAVE_FILTERS.index(filtername)
             except:
@@ -1699,15 +1710,15 @@ class MainWindow(QtWidgets.QMainWindow):
         try:    
             ext = os.path.splitext(filepath)[1][1:].lower()
 
-            if file_type == 0:
+            if file_type in (0, 1):
                 # xpf, ipuz                
                 self.cw.words.to_file(filepath, ext)
 
-            elif file_type == 1:
+            elif file_type == 2:
                 # pdf
                 self.print_cw(filepath, False)
                 
-            elif file_type == 2 or file_type == 3:
+            elif file_type in (3, 4, 5, 6, 7):
                 # image (svg, jpg, bmp, tif, tiff, png)
                 self.export_cw(filepath)
 
@@ -1733,8 +1744,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if not res: return False
         if filepath is None:
             filepath = self.cw_file
-        if res[1] in (2, 3) and CWSettings.settings['export']['openfile']:
-            run_exe(filepath if getosname() == 'Windows' else f'xdg-open "{filepath}"', True, False, shell=True)    
+        if res[1] in (3, 4, 5, 6, 7) and CWSettings.settings['export']['openfile']:
+            run_exe(filepath if getosname() == 'Windows' else f'xdg-open "{filepath}"', True, False, shell=True)
 
         self.cw_file = os.path.abspath(res[0])
         self.cw_modified = False
@@ -1754,8 +1765,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.twCw.clearSelection()
         self.current_word = None
         self.reformat_cells()  
-       
-        ## TODO: add settings for size     
+          
         scale_factor = export_settings['img_resolution'] / 25.4 * export_settings['mm_per_cell']
         cw_size = QtCore.QSize(self.twCw.columnCount() * scale_factor, self.twCw.rowCount() * scale_factor)
         
@@ -1774,7 +1784,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 self._paint_cwgrid(painter, svg_generator.viewBoxF(), export_settings['clear_cw'])
                 painter.end()
         
-        elif ext in ('jpg', 'png', 'tif', 'tiff', 'bmp'):
+        elif ext in ('jpg', 'jpeg', 'png', 'tif', 'tiff', 'bmp'):
             # image                     
             img = QtGui.QImage(cw_size, QtGui.QImage.Format_ARGB32)
             painter = QtGui.QPainter()
@@ -2091,11 +2101,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 coord = (c, r)
                 # get cell character from underlying cw grid
                 ch = self.cw.words.get_char(coord)
-                # if it's a 'surrounding' cell (FILLER2) we'll skip it (don't paint)
-                if ch == FILLER2:
-                    # increment horizontal (column) offset
-                    h_offset += cell_sz - 2 * gridline_width
-                    continue
 
                 # get words starting with that coordinate
                 words = self.cw.words.find_by_coord(coord)
@@ -2106,6 +2111,10 @@ class MainWindow(QtWidgets.QMainWindow):
                 if ch == FILLER:
                     # ...for a blocked (FILLER) cell...
                     dic_format = CWSettings.settings['cell_format']['FILLER']
+                elif ch == FILLER2:
+                    # ...for a surrounding (FILLER2) cell...
+                    dic_format = CWSettings.settings['cell_format']['FILLER2'].copy()
+                    dic_format.update({'bg_pattern': QtCore.Qt.NoBrush})
                 elif ch == BLANK:
                     # ...for a blank cell...
                     dic_format = CWSettings.settings['cell_format']['BLANK']
@@ -2113,8 +2122,11 @@ class MainWindow(QtWidgets.QMainWindow):
                 # pick corresponding brush, pen and font for cell
                 brush_cell = QtGui.QBrush(QtGui.QColor.fromRgba(dic_format['bg_color']), dic_format['bg_pattern'])
                 brush_cell_border = QtGui.QBrush(QtGui.QColor.fromRgba(CWSettings.settings['grid_style']['line_color']))
-                pen_cell = QtGui.QPen(brush_cell_border, gridline_width,
+                if ch != FILLER2:
+                    pen_cell = QtGui.QPen(brush_cell_border, gridline_width,
                                       CWSettings.settings['grid_style']['line'])
+                else:
+                    pen_cell = QtGui.QPen(QtCore.Qt.NoPen)
                 font_cell = make_font(dic_format['font_name'], dic_format['font_size'],
                                       dic_format['font_weight'], dic_format['font_italic'])
                 pen_cell_font = QtGui.QPen(QtGui.QColor.fromRgba(dic_format['fg_color']))
@@ -2138,7 +2150,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                     QtCore.Qt.AlignCenter, str(w.num))
 
                 # draw text (letter) if that's a normal cell (not blank or filler)
-                if not clear_cw and ch != BLANK and ch != FILLER:
+                if not clear_cw and ch != BLANK and ch != FILLER and ch != FILLER2:
                     ch = ch.upper() if CWSettings.settings['grid_style']['char_case'] == 'upper' else ch.lower()
                     painter.setPen(pen_cell_font)
                     painter.setFont(font_cell)
@@ -2700,8 +2712,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_saveas(self, checked):
         if not self.cw: return
         
-        CWSAVE_FILTERS = [_('Crossword file (*.xpf *.ipuz)'), _('PDF file (*.pdf)'), 
-                  _('Image file (*.jpg *.png *.tif *.tiff *.bmp)'), _('SVG vector image (*.svg)'),
+        CWSAVE_FILTERS = [_('Crossword XPF file (*.xpf)'), _('Crossword IPUZ file (*.ipuz)'), _('PDF file (*.pdf)'), 
+                  _('JPEG image (*.jpg)'),  _('Bitmap image (*.bmp)'),  _('PNG image (*.png)'),  _('TIFF image (*.tif)'), _('SVG vector image (*.svg)'),
                   _('Text file (*.txt)'), _('All files (*.*)')]
         fname = 'crossword.xpf'
         selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), fname), 
@@ -2924,7 +2936,18 @@ class MainWindow(QtWidgets.QMainWindow):
         index = clue['clue'].index()
         if not self.tvClues.isIndexHidden(index):
             self.tvClues.setFocus()
+            self.tvClues.setCurrentIndex(index)
             self.tvClues.edit(index)
+
+    ## @brief Slot for MainWindow::act_clearclues: clears all clues from crossword.
+    @pluggable('general')
+    @QtCore.pyqtSlot(bool)
+    def on_act_clearclues(self, checked):
+        reply = MsgBox(_('Would you like to clear all clues?'), self, _('Confirm action'), 'ask')
+        if reply == 'yes':
+            for wd in self.cw.words.words:
+                wd.clue = ''
+            self.update_clues_model()
     
     ## @brief Slot for MainWindow::act_clear: clears the current crossword.
     # @see Crossword::clear()
@@ -3204,7 +3227,7 @@ class MainWindow(QtWidgets.QMainWindow):
         item = model.itemFromIndex(current)
         if not item: return
         word = self._word_from_clue_item(item)     
-        if word:  
+        if word:
             self.current_word = word
             self.twCw.setCurrentItem(None)
             self.twCw.setCurrentCell(word.start[1], word.start[0])
@@ -3226,7 +3249,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param editor `QtWidgets.QWidget` the internal widget used for editing the clue item (here = QLineEdit)
     @pluggable('general')
     @QtCore.pyqtSlot('QWidget*')
-    def on_clues_editor_commit(self, editor):      
+    def on_clues_editor_commit(self, editor):  
         model = self.tvClues.model()
         if not model: return
         index = self.tvClues.currentIndex()
