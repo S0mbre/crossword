@@ -354,6 +354,36 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_view_showtoolbar.setChecked(True)
         self.act_view_showtoolbar.setToolTip(_('Show / hide toolbar'))
         self.act_view_showtoolbar.toggled.connect(self.on_act_view_showtoolbar)
+        ## `QtWidgets.QAction` fit grid in window action
+        self.act_fitgrid = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/fitsize.png"), _('Fit in window'))
+        self.act_fitgrid.setToolTip(_('Fit grid in window'))
+        self.act_fitgrid.setCheckable(True)
+        self.act_fitgrid.setChecked(False)
+        self.act_fitgrid.toggled.connect(self.on_act_fitgrid)
+
+        # grid edit actions
+        self.act_grid_multiselect = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add-3.png"), _('Multiselect'))
+        self.act_grid_multiselect.setToolTip(_('Toggle multiple cell selection'))
+        self.act_grid_multiselect.setShortcut(QtGui.QKeySequence('F6'))
+        self.act_grid_multiselect.setCheckable(True)
+        self.act_grid_multiselect.setChecked(False)
+        self.act_grid_multiselect.setEnabled(False)
+        self.act_grid_multiselect.toggled.connect(self.on_act_grid_multiselect)
+
+        self.act_grid_blank = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cell-blank.png"), _('Blank'))
+        self.act_grid_blank.setToolTip(_('Clear selected cells'))
+        self.act_grid_blank.setEnabled(False)
+        self.act_grid_blank.triggered.connect(self.on_act_grid_blank)
+
+        self.act_grid_filler = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cell-filled.png"), _('Block'))
+        self.act_grid_filler.setToolTip(_('Block (fill) selected cells'))
+        self.act_grid_filler.setEnabled(False)
+        self.act_grid_filler.triggered.connect(self.on_act_grid_filler)
+
+        self.act_grid_filler2 = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cell-greyed.png"), _('Grey out'))
+        self.act_grid_filler2.setToolTip(_('Grey out selected cells (fill with surrounding area color)'))
+        self.act_grid_filler2.setEnabled(False)
+        self.act_grid_filler2.triggered.connect(self.on_act_grid_filler2)
     
     ## Creates the app's main toolbar (which can also be hidden in settings).
     @pluggable('general')
@@ -428,7 +458,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menu_main_edit.addAction(self.act_editclue)
         self.menu_main_edit.addAction(self.act_clearclues)
         self.menu_main_edit.addSeparator()
-        self.menu_main_edit.addAction(self.act_addrow)
+        self.menu_main_edit.addAction(self.act_grid_multiselect)
+        self.menu_main_edit.addSeparator()
+        self.menu_main_edit.addAction(self.act_grid_blank)
+        self.menu_main_edit.addAction(self.act_grid_filler)
+        self.menu_main_edit.addAction(self.act_grid_filler2)
+        self.menu_main_edit.addSeparator()
+        self.menu_main_edit.addAction(self.act_addrow)        
         self.menu_main_edit.addAction(self.act_delrow)
         self.menu_main_edit.addSeparator()
         self.menu_main_edit.addAction(self.act_addcol)        
@@ -467,6 +503,24 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cw_widget = QtWidgets.QWidget()
         ## `QtWidgets.QVBoxLayout` cw layout
         self.layout_vcw = QtWidgets.QVBoxLayout()
+
+        ## `QtWidgets.QToolBar` grid edit toolbar
+        self.toolbar_grid = QtWidgets.QToolBar()
+        self.toolbar_grid.addAction(self.act_grid_multiselect)
+        self.toolbar_grid.addSeparator()
+        self.toolbar_grid.addAction(self.act_grid_blank)
+        self.toolbar_grid.addAction(self.act_grid_filler)
+        self.toolbar_grid.addAction(self.act_grid_filler2)
+        self.toolbar_grid.addSeparator()
+        self.toolbar_grid.addAction(self.act_addrow)
+        self.toolbar_grid.addAction(self.act_delrow)
+        self.toolbar_grid.addSeparator()
+        self.toolbar_grid.addAction(self.act_addcol)
+        self.toolbar_grid.addAction(self.act_delcol)
+        self.toolbar_grid.addSeparator()
+        self.toolbar_grid.addAction(self.act_reflect)
+        self.toolbar_grid.setVisible(False)
+
         ## `forms::CwTable` cw grid
         self.twCw = CwTable(on_key=self.on_cw_key, on_deselect=self.on_cw_deselect)
         self.twCw.setSortingEnabled(False)
@@ -501,10 +555,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.l_cw_scale = QtWidgets.QLabel()
         self.l_cw_scale.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         self.slider_cw_scale.valueChanged.connect(self.on_slider_cw_scale)
+        ## `QtWidgets.QToolButton` fit grid in window button
+        self.btn_fitgrid = QtWidgets.QToolButton()
+        self.btn_fitgrid.setDefaultAction(self.act_fitgrid)
+        
         ## `QtWidgets.QHBoxLayout` cw table scale layout
         self.layout_cw_scale = QtWidgets.QHBoxLayout()
         self.layout_cw_scale.addWidget(self.slider_cw_scale)
         self.layout_cw_scale.addWidget(self.l_cw_scale)
+        self.layout_cw_scale.addWidget(self.btn_fitgrid)
+        self.layout_vcw.addWidget(self.toolbar_grid)
         self.layout_vcw.addWidget(self.twCw)
         self.layout_vcw.addLayout(self.layout_cw_scale)
         # set layout to container
@@ -702,6 +762,17 @@ class MainWindow(QtWidgets.QMainWindow):
             for j in range(self.twCw.rowCount()):
                 if i == 0:
                     self.twCw.setRowHeight(j, cell_sz)
+
+    @QtCore.pyqtSlot(int, int, int, int)
+    @pluggable('general')
+    def cw_resized(self, old_width, old_height, new_width, new_height):
+        w = CWSettings.settings['grid_style']['cell_size'] * self.twCw.columnCount()
+        h = CWSettings.settings['grid_style']['cell_size'] * self.twCw.rowCount()
+        # get scale
+        scale = min(new_width / float(w), new_height / float(h)) * 100.0
+        if scale < 100.0: scale = 100
+        if scale > 300.0: scale = 300
+        self.slider_cw_scale.setValue(scale)
                     
     ## Updates the `enabled` property of each action depending on which actions are currently available.
     @pluggable('general')
@@ -2496,6 +2567,112 @@ class MainWindow(QtWidgets.QMainWindow):
     def wheelEvent(self, event: QtGui.QWheelEvent):
         event.ignore()
 
+    @pluggable('general')
+    def edit_cw_cell(self, cell_item, key, text, modifiers, multiselect, fix_changes=True):
+
+        # quit if no selected item
+        if not cell_item: return
+        is_filler = cell_item.text() in (FILLER, FILLER2)
+
+        # quit if it's a filler and grid is not in edit mode
+        if is_filler and not self.act_edit.isChecked(): return
+        
+        # get coord tuple
+        coord = (cell_item.column(), cell_item.row())
+        # get next cell to move focus to
+        inc = -1 if key == QtCore.Qt.Key_Backspace else 1
+        if self.current_word and not multiselect:
+            next_item = self.twCw.item(cell_item.row() if self.current_word.dir == 'h' else cell_item.row() + inc,
+                                   cell_item.column() + inc if self.current_word.dir == 'h' else cell_item.column())
+        else:
+            next_item = None
+        
+        if key == QtCore.Qt.Key_Delete or key == QtCore.Qt.Key_Backspace:            
+            
+            if modifiers == QtCore.Qt.NoModifier:
+                # delete current
+                self.cw.words.put_char(coord, BLANK)
+                if is_filler:
+                    if fix_changes:
+                        self.cw.words.reset()
+                        self.cw.reset_used()
+                        self.update_cw_grid()
+                    return
+                else:
+                    cell_item.setText('')
+                    if fix_changes:
+                        self.cw.reset_used()
+                        self.update_clue_replies(coord)
+                
+            elif (modifiers & QtCore.Qt.ControlModifier):
+                # clear word
+                ctrlshift = modifiers == (QtCore.Qt.ControlModifier | QtCore.Qt.ShiftModifier)
+                if self.current_word: 
+                    self.cw.clear_word(self.current_word, ctrlshift)
+                else:
+                    words = self.cw.words.find_by_coord(coord, False)
+                    for wdir in words:
+                        if words[wdir]:
+                            self.cw.clear_word(words[wdir], ctrlshift)
+                if fix_changes: self.update_cw_grid()
+                return
+            
+            if fix_changes:
+                if next_item and not next_item.text() in (FILLER, FILLER2):
+                    self.twCw.setCurrentItem(next_item)
+                else:
+                    self.reformat_cells()
+                
+        elif key == QtCore.Qt.Key_Space and fix_changes and not multiselect:
+            # flip current word
+            self.update_current_word('flip')
+            self.reformat_cells()
+
+        else:  
+
+            txt = text
+            txt = BLANK if not txt.strip() else txt[0]
+            
+            if not self.act_edit.isChecked() and txt in (FILLER, FILLER2):
+                return
+
+            # set text
+            old_txt = self.cw.words.get_char(coord)
+
+            try:
+                self.cw.words.put_char(coord, txt)
+                if fix_changes: self.cw.reset_used()
+            except CWError as err:
+                #self.cw.words.put_char(coord, BLANK)
+                return
+                
+            txt = self.cw.words.get_char(coord)
+
+            if txt in (FILLER, FILLER2):
+                if fix_changes:
+                    self.cw.words.reset()
+                    self.cw.reset_used()
+                    self.update_cw_grid()
+                return
+            else:
+                txt = txt.lower() if CWSettings.settings['grid_style']['char_case'] == 'lower' else txt.upper()
+                cell_item.setText('' if txt == BLANK else txt)
+                if fix_changes:
+                    if is_filler:
+                        self.cw.words.reset()
+                        self.cw.reset_used()
+                        self.update_cw_grid()
+                    else:
+                        self.update_clue_replies(coord)
+                        self.cw_modified = (txt != old_txt)
+                        self.update_actions()
+            
+            if fix_changes:
+                if next_item and not next_item.text() in (FILLER, FILLER2):
+                    self.twCw.setCurrentItem(next_item)
+                else:
+                    self.reformat_cells()
+
     # ----- SLOTS ----- #
 
     ## Fires when a key is pressed in the crossword grid.
@@ -2514,96 +2691,20 @@ class MainWindow(QtWidgets.QMainWindow):
             key != QtCore.Qt.Key_Space and \
             not txt in (BLANK, FILLER, FILLER2) and not txt.isalpha():
                 return 
-        # get modifiers (e.g. Ctrl, Shift, Alt)
+
+        multiselect = self.act_grid_multiselect.isChecked()
+        text = event.text()
         modifiers = event.modifiers()
-        # find focused item
-        cell_item = self.twCw.currentItem()
-        # quit if no selected item
-        if not cell_item: return
-        is_filler = cell_item.text() in (FILLER, FILLER2)
-        # quit if it's a filler and grid is not in edit mode
-        if is_filler and not self.act_edit.isChecked(): return
-        
-        coord = (cell_item.column(), cell_item.row())
-        inc = -1 if key == QtCore.Qt.Key_Backspace else 1           
-        next_item = self.twCw.item(cell_item.row() if self.current_word.dir == 'h' else cell_item.row() + inc,
-                                   cell_item.column() + inc if self.current_word.dir == 'h' else cell_item.column()) \
-                                   if self.current_word else None
-        
-        if key == QtCore.Qt.Key_Delete or key == QtCore.Qt.Key_Backspace:            
-            
-            if modifiers == QtCore.Qt.NoModifier:
-                # delete current
-                self.cw.words.put_char(coord, BLANK)
-                if is_filler:
-                    self.cw.words.reset()
-                    self.cw.reset_used()
-                    self.update_cw_grid()
-                    return
-                else:
-                    cell_item.setText('')
-                    self.cw.reset_used()
-                    self.update_clue_replies(coord)
-                
-            elif modifiers == QtCore.Qt.ControlModifier:
-                # clear word
-                if self.current_word: 
-                    self.cw.clear_word(self.current_word, False)
-                    #self.cw.words.reset()
-                    self.update_cw_grid()
-                    return
-            
-            elif modifiers == (QtCore.Qt.ControlModifier | QtCore.Qt.ShiftModifier):
-                # clear word forcibly
-                if self.current_word: 
-                    self.cw.clear_word(self.current_word, True)
-                    #self.cw.words.reset()
-                    self.update_cw_grid()
-                    return
-            
-            if next_item and not next_item.text() in (FILLER, FILLER2):
-                self.twCw.setCurrentItem(next_item)
-            else:
-                self.reformat_cells()
-                
-        elif key == QtCore.Qt.Key_Space:
-            # flip current word
-            self.update_current_word('flip')
-            self.reformat_cells()
+        selected_items = self.twCw.selectedItems()
 
-        else:  
-
-            txt = event.text()
-            txt = BLANK if not txt.strip() else txt[0]
-            
-            if not self.act_edit.isChecked() and txt in (FILLER, FILLER2):
-                return
-            # set text
-            old_txt = self.cw.words.get_char(coord)
-            try:
-                self.cw.words.put_char(coord, txt)
-                self.cw.reset_used()
-            except CWError as err:
-                #self.cw.words.put_char(coord, BLANK)
-                return
-                
-            txt = self.cw.words.get_char(coord)
-            if txt in (FILLER, FILLER2):
-                self.cw.words.reset()
-                self.cw.reset_used()
-                self.update_cw_grid()
-                return
-            else:
-                txt = txt.lower() if CWSettings.settings['grid_style']['char_case'] == 'lower' else txt.upper()
-                cell_item.setText('' if txt == BLANK else txt)
-                self.update_clue_replies(coord)
-                if txt != old_txt: self.cw_modified = True
-                self.update_actions()
-            
-            if next_item and not next_item.text() in (FILLER, FILLER2):
-                self.twCw.setCurrentItem(next_item)
-            else:
-                self.reformat_cells()
+        if not multiselect or len(selected_items) == 1:
+            self.edit_cw_cell(self.twCw.currentItem(), key, text, modifiers, multiselect, True)
+        else:
+            for item in selected_items:
+                self.edit_cw_cell(item, key, text, modifiers, multiselect, False)
+            self.cw.words.reset()
+            self.cw.reset_used()
+            self.update_cw_grid()
 
     @pluggable('general')
     @QtCore.pyqtSlot()
@@ -2909,8 +3010,22 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_edit(self, checked):
-        self.reformat_cells()
-        self.update_actions()
+        self.toolbar_grid.setVisible(checked)
+        self.act_grid_multiselect.setEnabled(checked)
+        self.act_grid_blank.setEnabled(checked)
+        self.act_grid_filler.setEnabled(checked)
+        self.act_grid_filler2.setEnabled(checked)
+        if checked:
+            self.on_cw_deselect()
+        else:
+            self.act_grid_multiselect.setChecked(False)
+            selected_items = self.twCw.selectedItems()
+            for item in reversed(selected_items):
+                if not item.text() in (FILLER, FILLER2):
+                    self.twCw.setCurrentItem(item)
+                    break
+            self.reformat_cells()
+            self.update_actions()
 
     ## @brief Slot for MainWindow::act_view_showtoolbar: shows or hides the main toolbar.
     @pluggable('general')
@@ -2926,6 +3041,61 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.toolbar_main.hide()
             CWSettings.settings['gui']['toolbar_pos'] = 4
+
+    ## @brief Slot for MainWindow::act_grid_multiselect: toggle multi cell selection.
+    @pluggable('general')
+    @QtCore.pyqtSlot(bool)
+    def on_act_grid_multiselect(self, checked):
+        if self.act_edit.isChecked() and checked:
+            self.twCw.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        else:
+            self.twCw.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+
+    ## @brief Slot for MainWindow::act_fitgrid: fits the crossword grid in the window size.
+    @pluggable('general')
+    @QtCore.pyqtSlot(bool)
+    def on_act_fitgrid(self, checked):
+        if checked:
+            self.twCw.resized.connect(self.cw_resized)
+            self.twCw.resized.emit(0, 0, self.twCw.width(), self.twCw.height())
+        else:
+            self.twCw.resized.disconnect()
+
+    ## @brief Slot for MainWindow::act_grid_blank: makes selected cells blank (clears them).
+    @pluggable('general')
+    @QtCore.pyqtSlot(bool)
+    def on_act_grid_blank(self, checked):
+        if not self.cw or not self.act_edit.isChecked(): return
+        for item in self.twCw.selectedItems():
+            coord = (item.column(), item.row())
+            self.cw.words.put_char(coord, BLANK)
+        self.cw.words.reset()
+        self.cw.reset_used()
+        self.update_cw_grid()
+
+    ## @brief Slot for MainWindow::act_grid_filler: makes selected cells filled with FILLER.
+    @pluggable('general')
+    @QtCore.pyqtSlot(bool)
+    def on_act_grid_filler(self, checked):
+        if not self.cw or not self.act_edit.isChecked(): return
+        for item in self.twCw.selectedItems():
+            coord = (item.column(), item.row())
+            self.cw.words.put_char(coord, FILLER)
+        self.cw.words.reset()
+        self.cw.reset_used()
+        self.update_cw_grid()
+
+    ## @brief Slot for MainWindow::act_grid_filler2: makes selected cells filled with FILLER2.
+    @pluggable('general')
+    @QtCore.pyqtSlot(bool)
+    def on_act_grid_filler2(self, checked):
+        if not self.cw or not self.act_edit.isChecked(): return
+        for item in self.twCw.selectedItems():
+            coord = (item.column(), item.row())
+            self.cw.words.put_char(coord, FILLER2)
+        self.cw.words.reset()
+        self.cw.reset_used()
+        self.update_cw_grid()
 
     ## @brief Slot for MainWindow::act_editclue: activates the editing mode for the current word's clue.
     @pluggable('general')
@@ -3162,7 +3332,10 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param previous `QtWidgets.QTableWidgetItem` the previously focused cell
     @pluggable('general')
     @QtCore.pyqtSlot(QtWidgets.QTableWidgetItem, QtWidgets.QTableWidgetItem)
-    def on_cw_current_item_changed(self, current, previous):      
+    def on_cw_current_item_changed(self, current, previous):
+        if self.act_edit.isChecked(): 
+            self.last_pressed_item = current
+            return
         self.update_current_word('flip' if self.last_pressed_item==current else 'current')            
         self.reformat_cells()
         self.last_pressed_item = current
@@ -3172,6 +3345,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(QtWidgets.QTableWidgetItem)
     def on_cw_item_clicked(self, item):
+        if self.act_edit.isChecked(): return
         if self.twCw.currentItem() == item:
             self.update_current_word('flip' if self.last_pressed_item==item else 'current')            
             self.reformat_cells()

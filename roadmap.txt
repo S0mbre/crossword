@@ -23,13 +23,15 @@
 * + [v. 0.4] fix bug with transparent cells when exported to image (png, jpg...)
 * + [v. 0.4] clear all clues action
 * + [v. 0.4] GZIP-compressed PXJSON settings files (to compress large lists like words)
+* + [v. 0.4] fit grid in window
+* + [v. 0.4] enhanced grid editing: multiple selection, instruments for filler, 
+			blank, surrounding cells, batch cell edit etc.
 
 * [v. 0.4] fill all clues automatically from Google
+* [v. 0.4] undo / redo
+* [v. 0.4] search text in grid and clues
 * [v. 0.4] whats-this tips for UI elements linked to Help sections 
 			(QWhatsThis: https://doc.qt.io/qt-5/qwhatsthis.html)
-* [v. 0.4] scale grid: fit in window, fit to width
-* [v. 0.4] enhanced grid editing: multiple selection, instruments for filler, 
-			blank, surrounding cells, batch cell edit, apply mask, flood-fill etc.
 * [v. 0.4] non-rectangular cells (circles, hexagons, triangles, etc)
 * [v. 0.4] customizable interval between cells in grid (>=0)
 * [v. 0.4] individual cell styling (color, shape, font...) and custom style sets

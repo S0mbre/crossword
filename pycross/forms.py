@@ -4064,6 +4064,8 @@ class SettingsDialog(BasicDialog):
 # Custom implementation handles key events (like Del, Backspace, etc.) 
 class CwTable(QtWidgets.QTableWidget):
 
+    resized = QtCore.pyqtSignal(int, int, int, int)
+
     ## Constructor.
     # @param on_key `callable` callback for key release event
     # @param parent `QtWidgets.QWidget` parent widget
@@ -4086,6 +4088,11 @@ class CwTable(QtWidgets.QTableWidget):
         if not self.indexAt(event.pos()).isValid() and self.on_deselect:
             self.on_deselect()
         super().mouseReleaseEvent(event)
+
+    def resizeEvent(self, event: QtGui.QResizeEvent):
+        old_sz = event.oldSize()
+        new_sz = event.size()
+        self.resized.emit(old_sz.width(), old_sz.height(), new_sz.width(), new_sz.height())
 
 
 # ******************************************************************************** #
