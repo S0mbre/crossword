@@ -44,9 +44,10 @@ class HistoryOverflowError(Exception):
     pass
 
 class CommandManager():
-    def __init__(self, histsize=1e4, cyclic=True):
+    def __init__(self, histsize=1e4, cyclic=True, on_update=None):
         self.histsize = histsize
         self.cyclic = cyclic
+        self.on_update = on_update
         self._undo_commands = []
         self._redo_commands = []
 
@@ -91,6 +92,7 @@ class CommandManager():
         self._push_undo_command(command)
         # clear the redo stack when a new command was executed
         self._redo_commands.clear()
+        if self.on_update: self.on_update()
 
     def undo(self, n=1):
         for _ in range(n):
@@ -98,6 +100,7 @@ class CommandManager():
             if command is None: return False
             command.undo()
             self._push_redo_command(command)
+        if self.on_update: self.on_update()
         return True
 
     def redo(self, n=1):
@@ -106,4 +109,5 @@ class CommandManager():
             if not callable(command): return False
             command()
             self._push_undo_command(command)
+        if self.on_update: self.on_update()
         return True

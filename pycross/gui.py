@@ -104,7 +104,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ## `list` files to delete on startup / close
         self.garbage = []
         ## `utils::undo::CommandManager` undo / redo history manager    
-        self.undomgr = CommandManager()   
+        self.undomgr = CommandManager(on_update=self.update_actions)
         ## `GenThread` cw generation worker thread
         self.gen_thread = GenThread(on_gen_timeout=self.on_gen_timeout, on_gen_stopped=self.on_gen_stop, 
                                     on_gen_validate=self.on_gen_validate, on_gen_progress=self.on_gen_progress, 
@@ -271,7 +271,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ## `QtWidgets.QAction` stop (current operation) action
         self.act_stop = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), _('Stop'))
         self.act_stop.setToolTip(_('Stop operation'))
-        self.act_stop.setShortcuts(QtGui.QKeySequence.Undo)
+        self.act_stop.setShortcuts(QtGui.QKeySequence('Ctrl+t'))
         self.act_stop.triggered.connect(self.on_act_stop)
         self.act_stop.changed.connect(self.on_act_stop_changed)
         self.act_stop.setCheckable(True)
@@ -2902,7 +2902,6 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_undo_hovered(self):
         if not self.act_undo.isEnabled() or not self.undomgr.canundo(): return
         self.act_undo.setToolTip(_("Undo {}").format(self.undomgr.undoable().description or _('last operaction')))
-        self.act_undo.hover()
 
     ## Slot for MainWindow::act_undo: undoes last operation.
     @pluggable('general')
@@ -2918,7 +2917,6 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_redo_hovered(self):
         if not self.act_redo.isEnabled() or not self.undomgr.canredo(): return
         self.act_redo.setToolTip(_("Redo {}").format(self.undomgr.redoable().description or _('last operaction')))
-        self.act_redo.hover()
 
     ## Slot for MainWindow::act_redo: redoes last operation.
     @pluggable('general')
@@ -2935,8 +2933,19 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_addrow(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
         row = self.twCw.currentRow()
-        self.cw.words.add_row(row if row >= 0 else -1)
-        self.update_cw()
+        def do_():
+            self.cw.words.add_row(row if row >= 0 else -1)
+            self.update_cw()
+        def undo_():
+            self.cw.words.remove_row(row if row >= 0 else (self.twCw.rowCount() - 1))
+            self.update_cw()
+
+        try:
+            self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Add row')))
+        except:
+            traceback.print_exc(limit=None)
+        #self.cw.words.add_row(row if row >= 0 else -1)
+        #self.update_cw()
 
     ## @brief Slot for MainWindow::act_addcol: adds a new column after the selected one.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
@@ -2945,8 +2954,19 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_addcol(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
         col = self.twCw.currentColumn()
-        self.cw.words.add_column(col if col >= 0 else -1)
-        self.update_cw()
+        def do_():
+            self.cw.words.add_column(col if col >= 0 else -1)
+            self.update_cw()
+        def undo_():
+            self.cw.words.remove_column(col if col >= 0 else (self.twCw.columnCount() - 1))
+            self.update_cw()
+        try:
+            self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Add column')))
+        except:
+            traceback.print_exc(limit=None)
+        
+        #self.cw.words.add_column(col if col >= 0 else -1)
+        #self.update_cw()
 
     ## @brief Slot for MainWindow::act_delrow: deletes the selected row.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
@@ -3387,6 +3407,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_cw_current_item_changed(self, current, previous):
         if self.act_edit.isChecked(): 
             self.last_pressed_item = current
+            self.update_actions()
             return
         self.update_current_word('flip' if self.last_pressed_item==current else 'current')            
         self.reformat_cells()
@@ -3397,7 +3418,9 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(QtWidgets.QTableWidgetItem)
     def on_cw_item_clicked(self, item):
-        if self.act_edit.isChecked(): return
+        if self.act_edit.isChecked(): 
+            self.update_actions()
+            return
         if self.twCw.currentItem() == item:
             self.update_current_word('flip' if self.last_pressed_item==item else 'current')            
             self.reformat_cells()
