@@ -10,6 +10,7 @@ import os, json, re, threading, math, traceback, webbrowser
 
 from utils.globalvars import *
 from utils.utils import *
+from utils.undo import *
 from utils.update import Updater
 from utils.onlineservices import Cloudstorage, Share
 from utils.graphs import make_chart, data_from_dict
@@ -101,7 +102,9 @@ class MainWindow(QtWidgets.QMainWindow):
         ## `wordsrc::MultiWordsource` word source instance              
         self.wordsrc = MultiWordsource()       
         ## `list` files to delete on startup / close
-        self.garbage = []                      
+        self.garbage = []
+        ## `utils::undo::CommandManager` undo / redo history manager    
+        self.undomgr = CommandManager()   
         ## `GenThread` cw generation worker thread
         self.gen_thread = GenThread(on_gen_timeout=self.on_gen_timeout, on_gen_stopped=self.on_gen_stop, 
                                     on_gen_validate=self.on_gen_validate, on_gen_progress=self.on_gen_progress, 
@@ -223,6 +226,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_edit.setCheckable(True)
         self.act_edit.setShortcut(QtGui.QKeySequence('Ctrl+e'))
         self.act_edit.toggled.connect(self.on_act_edit)   
+        ## `QtWidgets.QAction` undo action
+        self.act_undo = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/undo.png"), _('Undo'))
+        self.act_undo.setToolTip(_('Undo last action'))
+        self.act_undo.setShortcut(QtGui.QKeySequence.Undo)
+        self.act_undo.hovered.connect(self.on_act_undo_hovered)     
+        self.act_undo.triggered.connect(self.on_act_undo)     
+        ## `QtWidgets.QAction` redo action
+        self.act_redo = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/redo.png"), _('Redo'))
+        self.act_redo.setToolTip(_('Redo last action'))
+        self.act_redo.setShortcut(QtGui.QKeySequence.Redo)
+        self.act_redo.hovered.connect(self.on_act_redo_hovered)     
+        self.act_redo.triggered.connect(self.on_act_redo)     
         ## `QtWidgets.QAction` add row action
         self.act_addrow = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add_row.png"), _('Add row'))
         self.act_addrow.setToolTip(_('Add row before selected'))
@@ -447,6 +462,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menu_main_file.addAction(self.act_exit)
         ## `QtWidgets.QMenu` 'Edit' menu
         self.menu_main_edit = self.menu_main.addMenu(_('&Edit'))
+        self.menu_main_edit.addAction(self.act_undo)
+        self.menu_main_edit.addAction(self.act_redo)
+        self.menu_main_edit.addSeparator()
         self.menu_main_edit.addAction(self.act_edit)
         self.menu_main_edit.addSeparator()
         self.menu_main_edit.addAction(self.act_clear)
@@ -789,6 +807,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_close.setEnabled(b_cw and not gen_running and not share_running)
         self.act_reload.setEnabled(b_cw and not gen_running and not share_running)
         self.act_share.setEnabled(b_cw and not gen_running and not share_running)
+        self.act_undo.setEnabled(not gen_running and not share_running and self.undomgr.canundo())
+        self.act_redo.setEnabled(not gen_running and not share_running and self.undomgr.canredo())
         self.act_edit.setEnabled(b_cw and not gen_running and not share_running)
         self.act_addcol.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
         self.act_addrow.setEnabled(b_cw and not gen_running and not share_running and self.act_edit.isChecked())
@@ -2875,6 +2895,38 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_exit(self, checked):
         self.close()
+
+    ## Slot for MainWindow::act_undo::hovered: updates the tooltip for the Undo action when hovered.
+    @pluggable('general')
+    @QtCore.pyqtSlot()
+    def on_act_undo_hovered(self):
+        if not self.act_undo.isEnabled() or not self.undomgr.canundo(): return
+        self.act_undo.setToolTip(_("Undo {}").format(self.undomgr.undoable().description or _('last operaction')))
+        self.act_undo.hover()
+
+    ## Slot for MainWindow::act_undo: undoes last operation.
+    @pluggable('general')
+    @QtCore.pyqtSlot(bool)
+    def on_act_undo(self, checked):
+        if not self.act_undo.isEnabled() or not self.undomgr.canundo(): return
+        self.undomgr.undo()
+        self.update_actions()
+
+    ## Slot for MainWindow::act_redo::hovered: updates the tooltip for the Redo action when hovered.
+    @pluggable('general')
+    @QtCore.pyqtSlot()
+    def on_act_redo_hovered(self):
+        if not self.act_redo.isEnabled() or not self.undomgr.canredo(): return
+        self.act_redo.setToolTip(_("Redo {}").format(self.undomgr.redoable().description or _('last operaction')))
+        self.act_redo.hover()
+
+    ## Slot for MainWindow::act_redo: redoes last operation.
+    @pluggable('general')
+    @QtCore.pyqtSlot(bool)
+    def on_act_redo(self, checked):
+        if not self.act_redo.isEnabled() or not self.undomgr.canredo(): return
+        self.undomgr.redo()
+        self.update_actions()
 
     ## @brief Slot for MainWindow::act_addrow: adds a new row after the selected one.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
