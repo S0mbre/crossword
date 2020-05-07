@@ -9,7 +9,9 @@
 from utils.globalvars import *
 from utils.utils import *
 
-import sys, os, json, datetime, numpy as np, timeit, xml.etree.ElementTree as ET
+import sys, os, json, datetime, timeit, copy
+import numpy as np
+import xml.etree.ElementTree as ET
 from operator import itemgetter
 from html.parser import HTMLParser
 
@@ -1246,7 +1248,7 @@ class Wordgrid:
     ## Saves all words to Wordgrid::old_words to be able to restore() later.
     def save(self):
         self.update_word_strings()
-        self.old_words = self.words[:]
+        self.old_words = copy.deepcopy(self.words)
 
     ## Restores words from Wordgrid::old_words written by save().
     def restore(self):

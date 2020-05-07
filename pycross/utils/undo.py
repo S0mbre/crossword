@@ -9,25 +9,24 @@ from .globalvars import *
 
 class Operation:
 
-    def __init__(self, command, undocommand, description=''):
-        if not isinstance(command, dict):
+    def __init__(self, command, undocommand, description='', **kwargs):
+        if not isinstance(command, dict) or not 'func' in command:
             raise Exception(_('command must be a dictionary type with "func" and optional "args" and "kwargs" keys!'))
         self.command = command
-        if not isinstance(undocommand, dict):
+        if not isinstance(undocommand, dict) or not 'func' in undocommand:
             raise Exception(_('undocommand must be a dictionary type with "func" and optional "args" and "kwargs" keys!'))
         self.undocommand = undocommand
         self.description = description
+        if kwargs: self.__dict__.update(kwargs)
 
     def _do_cmd(self, cmd):
-        if not 'func' in cmd:
-            raise Exception(_('No "func" key in passed command!'))
         if 'args' in cmd:
             if 'kwargs' in cmd:
-                cmd['func'](*cmd['args'], **cmd['kwargs'])
+                cmd['func'](self, *cmd['args'], **cmd['kwargs'])
             else:
-                cmd['func'](*cmd['args'])
+                cmd['func'](self, *cmd['args'])
         else:
-            cmd['func']()
+            cmd['func'](self)
 
     def __call__(self):
         self._do_cmd(self.command)
@@ -44,10 +43,15 @@ class HistoryOverflowError(Exception):
     pass
 
 class CommandManager():
-    def __init__(self, histsize=1e4, cyclic=True, on_update=None):
+    def __init__(self, histsize=1e4, cyclic=True, on_update=None,
+        on_pop_undo=None, on_push_undo=None, on_pop_redo=None, on_push_redo=None):
         self.histsize = histsize
         self.cyclic = cyclic
         self.on_update = on_update
+        self.on_pop_undo = on_pop_undo
+        self.on_push_undo = on_push_undo
+        self.on_pop_redo = on_pop_redo
+        self.on_push_redo = on_push_redo
         self._undo_commands = []
         self._redo_commands = []
 
@@ -70,9 +74,14 @@ class CommandManager():
             else:
                 raise HistoryOverflowError()
         self._undo_commands.append(command)
+        if self.on_push_undo:
+            self.on_push_undo(self, command)
 
     def _pop_undo_command(self):
-        return self._undo_commands.pop() if len(self._undo_commands) else None
+        cmd = self._undo_commands.pop() if len(self._undo_commands) else None
+        if self.on_pop_undo and not cmd is None:
+            self.on_pop_undo(self, cmd)
+        return cmd
 
     def _push_redo_command(self, command):
         if len(self._redo_commands) == self.histsize:
@@ -81,9 +90,14 @@ class CommandManager():
             else:
                 raise HistoryOverflowError()
         self._redo_commands.append(command)
+        if self.on_push_redo:
+            self.on_push_redo(self, command)
 
     def _pop_redo_command(self):
-        return self._redo_commands.pop() if len(self._redo_commands) else None
+        cmd = self._redo_commands.pop() if len(self._redo_commands) else None
+        if self.on_pop_redo and not cmd is None:
+            self.on_pop_redo(self, cmd)
+        return cmd
 
     def do(self, command):
         if not isinstance(command, Operation):

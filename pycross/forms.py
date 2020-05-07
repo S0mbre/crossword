@@ -2621,7 +2621,7 @@ class SettingsDialog(BasicDialog):
         self.lw_clues_cols.clear()
         for col in CWSettings.settings['clues']['columns']:
             lwitem = QtWidgets.QListWidgetItem(col['name'])
-            if col['name'] == _('Direction'):
+            if col['name'] == 'Direction':
                 lwitem.setFlags(QtCore.Qt.NoItemFlags)
                 lwitem.setForeground(QtGui.QBrush(QtGui.QColor(QtCore.Qt.red), QtCore.Qt.SolidPattern))
             else:
@@ -4158,6 +4158,11 @@ class CrosswordMenu(QtWidgets.QMenu):
         self.addAction(self.mainwindow.act_delcol)
         self.addSeparator()
         self.addAction(self.mainwindow.act_reflect)
+        self.addSeparator()
+        def on_menu():
+            self.mainwindow.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(3).child(1))
+            self.mainwindow.on_act_config(False)
+        self.addAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Configure grid...'), on_menu)
    
 
 # ******************************************************************************** #

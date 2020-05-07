@@ -6,7 +6,7 @@
 # The GUI app main window implementation -- see MainWindow class.
 from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport, QtSvg
 from subprocess import Popen
-import os, json, re, threading, math, traceback, webbrowser
+import os, json, re, threading, math, traceback, webbrowser, copy
 
 from utils.globalvars import *
 from utils.utils import *
@@ -104,8 +104,11 @@ class MainWindow(QtWidgets.QMainWindow):
         ## `list` files to delete on startup / close
         self.garbage = []
         ## `utils::undo::CommandManager` undo / redo history manager    
-        self.undomgr = CommandManager(on_update=self.update_actions)
+        self.undomgr = CommandManager(on_update=self.update_actions,
+            on_pop_undo=self.on_pop_undo, on_push_undo=self.on_push_undo, 
+            on_pop_redo=self.on_pop_redo, on_push_redo=self.on_push_redo)
         ## `GenThread` cw generation worker thread
+        self.saved_cw = []
         self.gen_thread = GenThread(on_gen_timeout=self.on_gen_timeout, on_gen_stopped=self.on_gen_stop, 
                                     on_gen_validate=self.on_gen_validate, on_gen_progress=self.on_gen_progress, 
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
@@ -419,7 +422,30 @@ class MainWindow(QtWidgets.QMainWindow):
             if act_ == 'SEP':
                 self.toolbar_main.addSeparator()
             else:
-                self.toolbar_main.addAction(getattr(self, act_))
+                if act_ == 'act_undo':
+                    self.btn_act_undo = QtWidgets.QToolButton()
+                    self.btn_act_undo.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
+                    self.btn_act_undo.setDefaultAction(self.act_undo)
+                    ## `QtWidgets.QMenu` dropdown menu for Undo button
+                    self.menu_undo = QtWidgets.QMenu()
+                    self.menu_undo.triggered.connect(self.on_menu_undo_triggered)
+                    self.btn_act_undo.setMenu(self.menu_undo)  
+                    self.menu_undo.setStyleSheet('QMenu { menu-scrollable: 1; }')
+                    self.menu_undo.setMaximumHeight(610)
+                    self.toolbar_main.addWidget(self.btn_act_undo).setVisible(True)
+                elif act_ == 'act_redo':
+                    self.btn_act_redo = QtWidgets.QToolButton()
+                    self.btn_act_redo.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
+                    self.btn_act_redo.setDefaultAction(self.act_redo)
+                    ## `QtWidgets.QMenu` dropdown menu for Redo button
+                    self.menu_redo = QtWidgets.QMenu()
+                    self.menu_redo.triggered.connect(self.on_menu_redo_triggered)
+                    self.btn_act_redo.setMenu(self.menu_redo)
+                    self.menu_redo.setStyleSheet('QMenu { menu-scrollable: 1; }')
+                    self.menu_redo.setMaximumHeight(610)
+                    self.toolbar_main.addWidget(self.btn_act_redo).setVisible(True)
+                else:
+                    self.toolbar_main.addAction(getattr(self, act_))
         # add lang combo
         self.toolbar_main.addSeparator()
         self.toolbar_main.addWidget(self.combo_lang).setVisible(True)
@@ -568,6 +594,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.slider_cw_scale.setPageStep(50)
         #self.slider_cw_scale.setTickPosition(QtWidgets.QSlider.TicksBelow)
         #self.slider_cw_scale.setTickInterval(10)
+        self.slider_cw_scale.setToolTip(_('Change crossword grid scale'))
         self.slider_cw_scale.setValue(CWSettings.settings['grid_style']['scale'])
         ## `QtWidgets.QLabel` cw table scale indicator
         self.l_cw_scale = QtWidgets.QLabel()
@@ -599,7 +626,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tvClues.setSelectionMode(1)
         self.tvClues.setSelectionBehavior(1)       
         self.tvClues.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        #self.tvClues.customContextMenuRequested.connect(self.on_tvClues_contextmenu)
+        self.tvClues.customContextMenuRequested.connect(self.on_tvClues_contextmenu)
+        self.tvClues.header().setToolTip(_('Move column'))
+        self.tvClues.header().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.tvClues.header().customContextMenuRequested.connect(self.on_tvClues_header_contextmenu)
         self.splitter1.addWidget(self.tvClues)        
         
         # add splitter1 as central widget
@@ -643,7 +673,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def UI_create_context_menus(self):
         ## `forms::CrosswordMenu` context menu for MainWindow::twCw
         self.menu_crossword = CrosswordMenu(self)
-
+        
     ## Looks for valid command-line commands (to open a file, etc.) and executes them.
     # @param kwargs `keyword arguments` commands to execute
     @pluggable('general')
@@ -763,23 +793,38 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Changes the scale of the crossword grid.
     # @param scale_factor `int` the scale factor in percent values
     # @param update_label `bool` whether to update the caption below the scale slider
+    # @param save_history `bool` `True` (default) to make this action undoable by saving it 
+    # to the Undo history; if set to `False`, the action will not be undoable
     @pluggable('general')
-    def scale_cw(self, scale_factor=100, update_label=True): 
-        # write to settings
-        CWSettings.settings['grid_style']['scale'] = scale_factor
-        # apply scale to fonts in grid   
-        self.reformat_cells()
-        # show scale text
-        if update_label:
-            self.l_cw_scale.setText(f"{int(scale_factor)}%")
+    def scale_cw(self, scale_factor=100, update_label=True, save_history=False): 
 
-        cell_sz = int(CWSettings.settings['grid_style']['cell_size'] * scale_factor / 100.)        
+        old_scale = CWSettings.settings['grid_style']['scale']
 
-        for i in range(self.twCw.columnCount()):
-            self.twCw.setColumnWidth(i, cell_sz)
-            for j in range(self.twCw.rowCount()):
-                if i == 0:
-                    self.twCw.setRowHeight(j, cell_sz)
+        def do_(op):
+            # write to settings
+            CWSettings.settings['grid_style']['scale'] = scale_factor
+            # apply scale to fonts in grid   
+            self.reformat_cells()
+            # show scale text
+            if update_label:
+                self.l_cw_scale.setText(f"{int(scale_factor)}%")
+
+            cell_sz = int(CWSettings.settings['grid_style']['cell_size'] * scale_factor / 100.)        
+
+            for i in range(self.twCw.columnCount()):
+                self.twCw.setColumnWidth(i, cell_sz)
+                for j in range(self.twCw.rowCount()):
+                    if i == 0:
+                        self.twCw.setRowHeight(j, cell_sz)
+
+        if not save_history:
+            do_(None)
+            return
+
+        def undo_(op):
+            self.scale_cw(old_scale, update_label, False)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.slider_cw_scale.toolTip()))        
 
     @QtCore.pyqtSlot(int, int, int, int)
     @pluggable('general')
@@ -874,9 +919,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.update_cw_grid()
         # rescale grid
         if rescale:
-            self.on_slider_cw_scale(CWSettings.settings['grid_style']['scale'])
-            #self.scale_cw(CWSettings.settings['grid_style']['scale'])
-            #self.slider_cw_scale.setValue(CWSettings.settings['grid_style']['scale'])
+            #self.on_slider_cw_scale(CWSettings.settings['grid_style']['scale'])
+            self.scale_cw(CWSettings.settings['grid_style']['scale'], True, False)
+            self.slider_cw_scale.setValue(CWSettings.settings['grid_style']['scale'])
         # update window title
         self.setWindowTitle(f"{APP_NAME}{(' - ' + os.path.basename(self.cw_file)) if (self.cw_file and self.cw_file != SAVEDCW_FILE) else ''}")
 
@@ -933,34 +978,108 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## Loads the crossword (MainWindow::cw) from a given file.
     # @param selected_path `str` the full file path to the file from which the crossword is loaded
+    # @param save_history `bool` `True` (default) to make this action undoable by saving it 
+    # to the Undo history; if set to `False`, the action will not be undoable
     @pluggable('general')
-    def open_cw(self, selected_path):
-        ext = os.path.splitext(selected_path)[1][1:]
-        if ext in ('xpf', 'ipuz'):
-            # cw file
-            self.cw = Crossword(data=selected_path, data_type='file',
-                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
-                                log=CWSettings.settings['cw_settings']['log'])
-        else:
-            # text file with grid
-            self.cw = Crossword(data=self.grid_from_file(selected_path), data_type='grid',
-                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
-                                log=CWSettings.settings['cw_settings']['log'])
-        self.cw_file = selected_path
-        self.update_cw()
-        self.cw_modified = False
+    def open_cw(self, selected_path, save_history=True):
+        ext = os.path.splitext(selected_path)[1][1:]            
+
+        def do_(op):
+            if ext in ('xpf', 'ipuz'):
+                # cw file
+                self.cw = Crossword(data=selected_path, data_type='file',
+                                    wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                    log=CWSettings.settings['cw_settings']['log'])
+            else:
+                # text file with grid
+                self.cw = Crossword(data=self.grid_from_file(selected_path), data_type='grid',
+                                    wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                    log=CWSettings.settings['cw_settings']['log'])
+            self.cw_file = selected_path
+            self.update_cw()
+            self.cw_modified = False
+
+        if not save_history:
+            do_(None)
+            return
+
+        self.cw.words.update_word_strings()
+        old_words = copy.deepcopy(self.cw.words.words)
+        old_cw_file = self.cw_file
+        old_last_pressed_item_coord = \
+            (self.last_pressed_item.row(), self.last_pressed_item.column()) \
+            if self.last_pressed_item else None
+        old_current_word = (self.current_word.start, self.current_word.dir) \
+            if self.current_word else None
+        old_cw_modified = self.cw_modified
+
+        def undo_(op):
+            try:
+                self.cw = Crossword(data=old_words, data_type='words',
+                                    wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                    log=CWSettings.settings['cw_settings']['log'])
+                self.cw_file = old_cw_file
+                self.update_cw()
+                self.last_pressed_item = self.twCw.item(*old_last_pressed_item_coord) if old_last_pressed_item_coord else None
+                self.current_word = self.cw.words.find_by_coord_dir(*old_current_word) if old_current_word else None
+                self.cw_modified = old_cw_modified
+                self.reformat_cells()
+                self.update_actions()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_open.toolTip()))
 
     ## Closes the currently open crossword (freeing MainWindow::cw).
+    # @param save_history `bool` `True` (default) to make this action undoable by saving it 
+    # to the Undo history; if set to `False`, the action will not be undoable
     @pluggable('general')
-    def close_cw(self):
-        self.cw = None
-        self.cw_file = ''
-        self.last_pressed_item = None
-        self.current_word = None
-        self.cw_modified = False
-        self.twCw.clear()
-        self.update_clues_model()        
-        self.update_actions()
+    def close_cw(self, save_history=True):
+
+        if not self.cw: return
+
+        def do_(op):            
+            self.cw = None
+            self.cw_file = ''
+            self.last_pressed_item = None
+            self.current_word = None
+            self.cw_modified = False
+            self.twCw.clear()
+            self.twCw.setRowCount(0)
+            self.twCw.setColumnCount(0)
+            self.update_clues_model()        
+            self.update_actions()
+
+        if not save_history:
+            do_(None)
+            return
+
+        self.cw.words.update_word_strings()
+        old_words = copy.deepcopy(self.cw.words.words)
+        old_cw_file = self.cw_file
+        old_last_pressed_item_coord = \
+            (self.last_pressed_item.row(), self.last_pressed_item.column()) \
+            if self.last_pressed_item else None
+        old_current_word = (self.current_word.start, self.current_word.dir) \
+            if self.current_word else None
+        old_cw_modified = self.cw_modified
+
+        def undo_(op):
+            try:
+                self.cw = Crossword(data=old_words, data_type='words',
+                                    wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                    log=CWSettings.settings['cw_settings']['log'])
+                self.cw_file = old_cw_file
+                self.update_cw()
+                self.last_pressed_item = self.twCw.item(*old_last_pressed_item_coord) if old_last_pressed_item_coord else None
+                self.current_word = self.cw.words.find_by_coord_dir(*old_current_word) if old_current_word else None
+                self.cw_modified = old_cw_modified
+                self.reformat_cells()
+                self.update_actions()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_close.toolTip()))
     
     ## Updates the currently selected word in the grid and clues table.
     # @param on_intersect `str` one of:
@@ -1049,7 +1168,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## Returns Word object from self.cw corresponding to the given clue item.
     # @param item `QtGui.QStandardItem` the item in the clues table
     def _word_from_clue_item(self, item: QtGui.QStandardItem):
-        if not self.cw or item.rowCount(): 
+        if not item or not self.cw or item.rowCount(): 
             return None
         root_item = item.parent()
         if not root_item: return None
@@ -1257,22 +1376,22 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 self.cw.wordfilter = lambda w: not any(w.lower() == pattern.lower() for pattern in CWSettings.settings['wordsrc']['excluded']['words'])
 
+    def _localize_colname(self, name):
+        if name == 'Direction':
+            return _('Direction')
+        elif name == 'No.':
+            return _('No.')
+        elif name == 'Clue':
+            return _('Clue')
+        elif name == 'Letters':
+            return _('Letters')
+        elif name == 'Reply':
+            return _('Reply')
+        return ''
+    
     ## Updates (regenerates) the clues table from the clues contained in the current crossword.
     @pluggable('general')
     def update_clues_model(self):
-
-        def _localize_colname(name):
-            if name == 'Direction':
-                return _('Direction')
-            elif name == 'No.':
-                return _('No.')
-            elif name == 'Clue':
-                return _('Clue')
-            elif name == 'Letters':
-                return _('Letters')
-            elif name == 'Reply':
-                return _('Reply')
-            return ''
 
         sort_role = QtCore.Qt.UserRole + 2
         delegate = self.tvClues.itemDelegate()
@@ -1286,9 +1405,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cluesmodel = QtGui.QStandardItemModel(0, 5)
         self.cluesmodel.setSortRole(sort_role)
         col_labels = [col['name'] for col in CWSettings.settings['clues']['columns']]
-        #self.cluesmodel.setHorizontalHeaderLabels(_localize_colnames(col_labels))
         for i, col_label in enumerate(col_labels):
-            header_item = QtGui.QStandardItem(_localize_colname(col_label))
+            header_item = QtGui.QStandardItem(self._localize_colname(col_label))
             header_item.setData(col_label)
             self.cluesmodel.setHorizontalHeaderItem(i, header_item)
         if not self.cw: 
@@ -1677,6 +1795,9 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot()
     def on_generate_start(self):
+        self.cw.words.update_word_strings()
+        self.saved_cw = copy.deepcopy(self.cw.words.words)
+
         self.statusbar_pbar.reset()
         self.statusbar_pbar.setFormat('%p%')
         self.statusbar_pbar.show()
@@ -1688,7 +1809,21 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_generate_finish(self):
         self.statusbar_pbar.hide()
         self.statusbar_pbar.reset()
-        self.update_cw_grid()
+        self.cw.words.update_word_strings()
+        saved_cw = copy.deepcopy(self.cw.words.words)
+
+        def do_(op):
+            self.cw.words.from_words(saved_cw)
+            self.update_cw_grid()
+
+        def undo_(op):
+            try:
+                self.cw.words.from_words(self.saved_cw)
+                self.update_cw_grid()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_gen.text()))
 
     ## Slot fires when the cw generation thread (MainWindow::gen_thread) has timed out.
     # @param timeout_ `float` timeout in (fractions of) seconds
@@ -1746,13 +1881,13 @@ class MainWindow(QtWidgets.QMainWindow):
             self.gen_thread.unlock()
 
         self.cw.generate(method=method, 
-                         timeout=timeout,
-                         stopcheck=self.act_stop.isChecked,
-                         ontimeout=lambda timeout_: self.gen_thread.sig_timeout.emit(timeout_),
-                         onstop=lambda: self.gen_thread.sig_stopped.emit(),
-                         onerror=lambda err_: self.gen_thread.sig_error.emit(self.gen_thread, str(err_)),
-                         onvalidate=lambda bad_: self.gen_thread.sig_validate.emit(bad_),
-                         on_progress=lambda cw_, complete_, total_: self.gen_thread.sig_progress.emit(cw_, complete_, total_))
+                        timeout=timeout,
+                        stopcheck=self.act_stop.isChecked,
+                        ontimeout=lambda timeout_: self.gen_thread.sig_timeout.emit(timeout_),
+                        onstop=lambda: self.gen_thread.sig_stopped.emit(),
+                        onerror=lambda err_: self.gen_thread.sig_error.emit(self.gen_thread, str(err_)),
+                        onvalidate=lambda bad_: self.gen_thread.sig_validate.emit(bad_),
+                        on_progress=lambda cw_, complete_, total_: self.gen_thread.sig_progress.emit(cw_, complete_, total_))
 
     ## Util function to save or export current crossword to a given file and file type.
     # @param filepath `str` the full path to the file where the cw must be saved.
@@ -2715,16 +2850,34 @@ class MainWindow(QtWidgets.QMainWindow):
         multiselect = self.act_grid_multiselect.isChecked()
         text = event.text()
         modifiers = event.modifiers()
-        selected_items = self.twCw.selectedItems()
+        selected_items = [(item.row(), item.column()) for item in self.twCw.selectedItems()]
 
-        if not multiselect or len(selected_items) == 1:
-            self.edit_cw_cell(self.twCw.currentItem(), key, text, modifiers, multiselect, True)
-        else:
-            for item in selected_items:
-                self.edit_cw_cell(item, key, text, modifiers, multiselect, False)
-            self.cw.words.reset()
-            self.cw.reset_used()
-            self.update_cw_grid()
+        def do_(op):
+            once = (len(selected_items) == 1)
+            for item_coord in selected_items:
+                item = self.twCw.item(*item_coord)
+                if not item: continue
+                self.edit_cw_cell(item, key, text, modifiers, multiselect, once)
+
+            if not once:
+                self.cw.words.reset()
+                self.cw.reset_used()
+                self.update_cw_grid()
+
+        self.cw.words.update_word_strings()
+        old_words = copy.deepcopy(self.cw.words.words)
+        old_cw_modified = self.cw_modified
+
+        def undo_(op):
+            try:
+                self.cw.words.from_words(old_words)
+                self.update_cw_grid()
+                self.cw_modified = old_cw_modified
+                self.update_actions()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Edit crossword')))
 
     @pluggable('general')
     @QtCore.pyqtSlot()
@@ -2766,39 +2919,78 @@ class MainWindow(QtWidgets.QMainWindow):
             ## `forms::LoadCwDialog` CW load dialog
             self.dia_load = LoadCwDialog(self)
         if not self.dia_load.exec(): return
-        if self.cw: self.cw.closelog()
-        
-        self.cw_file = ''
-        
+        option = ''
         if self.dia_load.rb_grid.isChecked():
-            selected_path = self.dia_load.le_pattern.text()
-            self.cw = Crossword(data=self.grid_from_file(selected_path), data_type='grid',
-                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
-                                log=CWSettings.settings['cw_settings']['log'])
-            self.cw_file = selected_path
-        
+            option = 'grid'        
         elif self.dia_load.rb_file.isChecked():
-            selected_path = self.dia_load.le_file.text()
-            self.cw = Crossword(data=selected_path, data_type='file',
-                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
-                                log=CWSettings.settings['cw_settings']['log'])
-            self.cw_file = selected_path
-       
+            option = 'file'    
         elif self.dia_load.rb_empty.isChecked():
-            cols = int(self.dia_load.le_cols.text())
-            rows = int(self.dia_load.le_rows.text())
-            patn = self.dia_load.combo_pattern.currentIndex() + 1
-            self.cw = Crossword(data=Crossword.basic_grid(cols, rows, patn), data_type='grid',
-                                wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
-                                log=CWSettings.settings['cw_settings']['log'])            
+            option = 'empty'           
         else:
             return
-
-        #print(str(self.cw.words.info))
-        self.update_cw()
         
-        if self.dia_load.rb_empty.isChecked():
-            self.act_edit.setChecked(True)
+        def do_(op):
+            if self.cw: self.cw.closelog()            
+            self.cw_file = ''
+            
+            if option == 'grid':
+                selected_path = self.dia_load.le_pattern.text()
+                self.cw = Crossword(data=self.grid_from_file(selected_path), data_type='grid',
+                                    wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                    log=CWSettings.settings['cw_settings']['log'])
+                self.cw_file = selected_path
+            
+            elif option == 'file':
+                selected_path = self.dia_load.le_file.text()
+                self.cw = Crossword(data=selected_path, data_type='file',
+                                    wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                    log=CWSettings.settings['cw_settings']['log'])
+                self.cw_file = selected_path
+        
+            else:
+                cols = int(self.dia_load.le_cols.text())
+                rows = int(self.dia_load.le_rows.text())
+                patn = self.dia_load.combo_pattern.currentIndex() + 1
+                self.cw = Crossword(data=Crossword.basic_grid(cols, rows, patn), data_type='grid',
+                                    wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                    log=CWSettings.settings['cw_settings']['log'])            
+
+            #print(str(self.cw.words.info))
+            self.update_cw()        
+            if option == 'empty':
+                self.act_edit.setChecked(True)
+
+        old_words = None
+        if self.cw:
+            self.cw.words.update_word_strings()
+            old_words = copy.deepcopy(self.cw.words.words)
+            old_cw_file = self.cw_file
+            old_last_pressed_item_coord = \
+                (self.last_pressed_item.row(), self.last_pressed_item.column()) \
+                if self.last_pressed_item else None
+            old_current_word = (self.current_word.start, self.current_word.dir) \
+                if self.current_word else None
+            old_cw_modified = self.cw_modified
+
+        def undo_(op):
+            try:
+                if old_words:
+                    self.cw = Crossword(data=old_words, data_type='words',
+                                        wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                        log=CWSettings.settings['cw_settings']['log'])
+                    self.cw_file = old_cw_file
+                    self.update_cw()
+                    self.last_pressed_item = self.twCw.item(*old_last_pressed_item_coord) if old_last_pressed_item_coord else None
+                    self.current_word = self.cw.words.find_by_coord_dir(*old_current_word) if old_current_word else None
+                    self.cw_modified = old_cw_modified
+                    self.reformat_cells()
+                    self.update_actions()
+                else:
+                    self.close_cw(False)
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_close.toolTip()))
             
     ## Slot for MainWindow::act_open: loads crossword from a file (showing an Open File dialog).
     # @see open_cw()
@@ -2847,23 +3039,52 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_reload(self, checked):
-        if not self.cw_file: return
+        if not self.cw or not self.cw_file: return
         if self.cw and self.cw_modified:
             reply = MsgBox(_('You have unsaved changes in your current crossword. Are you sure to reload it from the file (all changes will be lost)?'), self, _('Confirm Action'), 'ask')
             if reply != 'yes': return
-        old_cw = self.cw
-        try:
-            self.cw = Crossword(data=self.cw_file, data_type='file',
+
+        def do_(op):
+            old_cw = self.cw
+            try:
+                self.cw = Crossword(data=self.cw_file, data_type='file',
+                                        wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
+                                        log=CWSettings.settings['cw_settings']['log'])
+                self.update_cw()
+            except Exception as err:
+                self._log(err)
+                try:
+                    self.cw = old_cw
+                    self.update_cw()
+                except Exception as err2:
+                    self._log(err2)
+
+        self.cw.words.update_word_strings()
+        old_words = copy.deepcopy(self.cw.words.words)
+        old_cw_file = self.cw_file
+        old_last_pressed_item_coord = \
+            (self.last_pressed_item.row(), self.last_pressed_item.column()) \
+            if self.last_pressed_item else None
+        old_current_word = (self.current_word.start, self.current_word.dir) \
+            if self.current_word else None
+        old_cw_modified = self.cw_modified
+
+        def undo_(op):
+            try:
+                self.cw = Crossword(data=old_words, data_type='words',
                                     wordsource=self.wordsrc, wordfilter=self.on_filter_word, pos=CWSettings.settings['cw_settings']['pos'],
                                     log=CWSettings.settings['cw_settings']['log'])
-            self.update_cw()
-        except Exception as err:
-            self._log(err)
-            try:
-                self.cw = old_cw
+                self.cw_file = old_cw_file
                 self.update_cw()
-            except Exception as err2:
-                self._log(err2)
+                self.last_pressed_item = self.twCw.item(*old_last_pressed_item_coord) if old_last_pressed_item_coord else None
+                self.current_word = self.cw.words.find_by_coord_dir(*old_current_word) if old_current_word else None
+                self.cw_modified = old_cw_modified
+                self.reformat_cells()
+                self.update_actions()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_reload.toolTip()))
 
     ## Slot for MainWindow::act_close: closes current crossword calling close_cw().
     @pluggable('general')
@@ -2933,19 +3154,17 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_addrow(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
         row = self.twCw.currentRow()
-        def do_():
+        def do_(op):
             self.cw.words.add_row(row if row >= 0 else -1)
             self.update_cw()
-        def undo_():
-            self.cw.words.remove_row(row if row >= 0 else (self.twCw.rowCount() - 1))
-            self.update_cw()
+        def undo_(op):
+            try:
+                self.cw.words.remove_row(row if row >= 0 else (self.twCw.rowCount() - 1))
+                self.update_cw()
+            except:
+                traceback.print_exc(limit=None)
 
-        try:
-            self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Add row')))
-        except:
-            traceback.print_exc(limit=None)
-        #self.cw.words.add_row(row if row >= 0 else -1)
-        #self.update_cw()
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_addrow.text()))
 
     ## @brief Slot for MainWindow::act_addcol: adds a new column after the selected one.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
@@ -2954,19 +3173,17 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_addcol(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
         col = self.twCw.currentColumn()
-        def do_():
+        def do_(op):
             self.cw.words.add_column(col if col >= 0 else -1)
             self.update_cw()
-        def undo_():
-            self.cw.words.remove_column(col if col >= 0 else (self.twCw.columnCount() - 1))
-            self.update_cw()
-        try:
-            self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Add column')))
-        except:
-            traceback.print_exc(limit=None)
-        
-        #self.cw.words.add_column(col if col >= 0 else -1)
-        #self.update_cw()
+        def undo_(op):
+            try:
+                self.cw.words.remove_column(col if col >= 0 else (self.twCw.columnCount() - 1))
+                self.update_cw()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_addcol.text()))
 
     ## @brief Slot for MainWindow::act_delrow: deletes the selected row.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
@@ -2974,19 +3191,49 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_delrow(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return 
-        if self.twCw.currentRow() >= 0:
-            self.cw.words.remove_row(self.twCw.currentRow())
+        row = self.twCw.currentRow()
+        if row < 0: return
+
+        self.cw.words.update_word_strings()
+        saved_words = copy.deepcopy(self.cw.words.words)
+
+        def do_(op):            
+            self.cw.words.remove_row(row)
             self.update_cw()
+
+        def undo_(op):
+            try:
+                self.cw.words.from_words(saved_words)
+                self.update_cw()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_delrow.text()))
 
     ## @brief Slot for MainWindow::act_delcol: deletes the selected column.
     # The action is available only in the Editing mode (when MainWindow::act_edit is checked).
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_delcol(self, checked):
-        if not self.cw or not self.act_edit.isChecked(): return 
-        if self.twCw.currentColumn() >= 0:
-            self.cw.words.remove_column(self.twCw.currentColumn())
+        if not self.cw or not self.act_edit.isChecked(): return
+        col = self.twCw.currentColumn()
+        if col < 0: return
+
+        self.cw.words.update_word_strings()
+        saved_words = copy.deepcopy(self.cw.words.words)
+
+        def do_(op):
+            self.cw.words.remove_column(col)
             self.update_cw()
+
+        def undo_(op):
+            try:
+                self.cw.words.from_words(saved_words)
+                self.update_cw()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_delcol.text()))
 
     ## @brief Slot for MainWindow::act_reflect: reflects (duplicates) the current cw grid
     # (all cells) to any position (left, right, up, down).
@@ -3017,8 +3264,24 @@ class MainWindow(QtWidgets.QMainWindow):
             border = ' *'
         elif self.dia_reflect.act_b4.isChecked():
             border = '**'
-        self.cw.words.reflect(direction, self.dia_reflect.chb_mirror.isChecked(), self.dia_reflect.chb_reverse.isChecked(), border)
-        self.update_cw()
+        mirror = self.dia_reflect.chb_mirror.isChecked()
+        rev = self.dia_reflect.chb_reverse.isChecked()
+
+        def do_(op):
+            self.cw.words.reflect(direction, mirror, rev, border)
+            self.update_cw()
+
+        self.cw.words.update_word_strings()
+        saved_words = copy.deepcopy(self.cw.words.words)
+
+        def undo_(op):
+            try:
+                self.cw.words.from_words(saved_words)
+                self.update_cw()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_reflect.text()))
 
     ## @brief Slot for MainWindow::act_clear_wd: clears currently selected word without affecting
     # any crossing words.
@@ -3030,8 +3293,25 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_clear_wd(self, checked):
         if not self.cw or not self.current_word or self.cw.words.is_word_blank(self.current_word):
             return
-        self.cw.clear_word(self.current_word, False)
-        self.update_cw_grid()
+        old_current_word = (self.current_word.start, self.current_word.dir)
+        old_word = self.cw.words.get_word_str(self.current_word)
+
+        def do_(op):
+            wd = self.cw.words.find_by_coord_dir(*old_current_word)
+            if wd:
+                self.cw.clear_word(wd, False)
+                self.update_cw_grid()
+
+        def undo_(op):
+            try:
+                wd = self.cw.words.find_by_coord_dir(*old_current_word)
+                if wd:
+                    self.cw.change_word(wd, old_word)
+                    self.update_cw_grid()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_clear_wd.text()))
 
     ## @brief Slot for MainWindow::act_erase_wd: clears currently selected word (all letters).
     # Compared to on_act_clear_wd(), this action affects crossing words, if any, since
@@ -3042,8 +3322,25 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_erase_wd(self, checked):
         if not self.cw or not self.current_word or self.cw.words.is_word_blank(self.current_word):
             return
-        self.cw.clear_word(self.current_word, True)
-        self.update_cw_grid()
+        old_current_word = (self.current_word.start, self.current_word.dir)
+        old_word = self.cw.words.get_word_str(self.current_word)
+
+        def do_(op):
+            wd = self.cw.words.find_by_coord_dir(*old_current_word)
+            if wd:
+                self.cw.clear_word(wd, True)
+                self.update_cw_grid()
+
+        def undo_(op):
+            try:
+                wd = self.cw.words.find_by_coord_dir(*old_current_word)
+                if wd:
+                    self.cw.change_word(wd, old_word)
+                    self.update_cw_grid()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_erase_wd.text()))
     
     ## Slot for MainWindow::act_gen: generates (fills) the current crossword taking word
     # suggestions from the active word sources.
@@ -3133,41 +3430,54 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.twCw.resized.disconnect()
 
+    def _put_grid_char(self, character):
+        selected_items = [(item.row(), item.column()) for item in self.twCw.selectedItems()]
+
+        def do_(op):
+            once = (len(selected_items) == 1)
+            for item_coord in selected_items:
+                item = self.twCw.item(*item_coord)
+                if not item: continue
+                self.cw.words.put_char(tuple(reversed(item_coord)), character)
+            self.cw.words.reset()
+            self.cw.reset_used()
+            self.update_cw_grid()
+
+        self.cw.words.update_word_strings()
+        old_words = copy.deepcopy(self.cw.words.words)
+        old_cw_modified = self.cw_modified
+
+        def undo_(op):
+            try:
+                self.cw.words.from_words(old_words)
+                self.update_cw_grid()
+                self.cw_modified = old_cw_modified
+                self.update_actions()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Edit crossword')))
+
     ## @brief Slot for MainWindow::act_grid_blank: makes selected cells blank (clears them).
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_grid_blank(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return
-        for item in self.twCw.selectedItems():
-            coord = (item.column(), item.row())
-            self.cw.words.put_char(coord, BLANK)
-        self.cw.words.reset()
-        self.cw.reset_used()
-        self.update_cw_grid()
+        self._put_grid_char(BLANK)
 
     ## @brief Slot for MainWindow::act_grid_filler: makes selected cells filled with FILLER.
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_grid_filler(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return
-        for item in self.twCw.selectedItems():
-            coord = (item.column(), item.row())
-            self.cw.words.put_char(coord, FILLER)
-        self.cw.words.reset()
-        self.cw.reset_used()
-        self.update_cw_grid()
+        self._put_grid_char(FILLER)
 
     ## @brief Slot for MainWindow::act_grid_filler2: makes selected cells filled with FILLER2.
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_grid_filler2(self, checked):
         if not self.cw or not self.act_edit.isChecked(): return
-        for item in self.twCw.selectedItems():
-            coord = (item.column(), item.row())
-            self.cw.words.put_char(coord, FILLER2)
-        self.cw.words.reset()
-        self.cw.reset_used()
-        self.update_cw_grid()
+        self._put_grid_char(FILLER2)
 
     ## @brief Slot for MainWindow::act_editclue: activates the editing mode for the current word's clue.
     @pluggable('general')
@@ -3186,10 +3496,24 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_clearclues(self, checked):
         reply = MsgBox(_('Would you like to clear all clues?'), self, _('Confirm action'), 'ask')
-        if reply == 'yes':
+        if reply != 'yes': return
+
+        def do_(op):
             for wd in self.cw.words.words:
                 wd.clue = ''
             self.update_clues_model()
+
+        old_clues = [wd.clue for wd in self.cw.words.words]
+
+        def undo_(op):
+            try:
+                for wd, clue in zip(self.cw.words.words, old_clues):
+                    wd.clue = clue
+                self.update_clues_model()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_clearclues.text()))
     
     ## @brief Slot for MainWindow::act_clear: clears the current crossword.
     # @see Crossword::clear()
@@ -3197,8 +3521,25 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_clear(self, checked):
         if not self.cw: return
-        self.cw.clear()
-        self.update_cw_grid()
+
+        def do_(op):
+            self.cw.clear()
+            self.update_cw_grid()
+
+        self.cw.words.update_word_strings()
+        old_words = copy.deepcopy(self.cw.words.words)
+        old_cw_modified = self.cw_modified
+
+        def undo_(op):
+            try:
+                self.cw.words.from_words(old_words)
+                self.update_cw_grid()
+                self.cw_modified = old_cw_modified
+                self.update_actions()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_clear.toolTip()))
 
     ## @brief Slot for MainWindow::act_suggest: brings up a list of words for the selected one in the grid
     # and lets the user place it into the grid.
@@ -3206,13 +3547,26 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_suggest(self, checked):
-        if not self.cw: return
+        if not self.cw or not self.current_word: return
         wordstr = self.cw.words.get_word_str(self.current_word)
         sug = self.get_word_suggestion(wordstr)
         if not sug or sug.lower() == wordstr.lower(): return
-        #print(f"Changing '{wordstr}' for '{sug}'...")
-        self.cw.change_word(self.current_word, sug)
-        self.update_cw_grid()
+
+        def do_(op):
+            self.cw.change_word(self.current_word, sug)
+            self.update_cw_grid()
+
+        wd = self.current_word
+        old_word = self.cw.words.get_word_str(wd)      
+
+        def undo_(op):
+            try:
+                self.cw.change_word(wd, old_word)
+                self.update_cw_grid()
+            except:
+                traceback.print_exc(limit=None)
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_suggest.toolTip()))
 
     ## @brief Slot for MainWindow::act_lookup: looks up the current word's definition / meaning
     # in a dictionary and/or Google.
@@ -3230,18 +3584,34 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 self.dia_lookup.word = wordstr
                 self.dia_lookup.init()
-            if self.dia_lookup.exec():
-                # insert definition into clue
-                txt = ''
-                if self.dia_lookup.rb_dict.isChecked():
-                    txt = self.dia_lookup.te_dict_defs.toPlainText().strip()
-                else:
-                    txt = self.dia_lookup.te_google_res.toPlainText().strip()
-                clue_items = self._clue_items_from_word(self.current_word)
-                if clue_items and txt:
-                    clue_items['clue'].setText(txt)
-                    self.current_word.clue = txt
+            if not self.dia_lookup.exec(): return
+
+            # insert definition into clue
+            txt = ''
+            if self.dia_lookup.rb_dict.isChecked():
+                txt = self.dia_lookup.te_dict_defs.toPlainText().strip()
+            else:
+                txt = self.dia_lookup.te_google_res.toPlainText().strip()
+            clue_items = self._clue_items_from_word(self.current_word)
+            if not clue_items or not txt: return
+
+            def do_(op):
+                clue_items['clue'].setText(txt)
+                self.current_word.clue = txt
+                self.reformat_clues()
+
+            old_text = clue_items['clue'].text()
+
+            def undo_(op):
+                try:
+                    clue_items['clue'].setText(old_text)
+                    self.current_word.clue = old_text
                     self.reformat_clues()
+                except:
+                    traceback.print_exc(limit=None)
+
+            self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Change word clue')))
+
         else:
             MsgBox(_('No lookup sources are active! Please go to Settings (F11) to verify your lookup source configuration.'), 
                    self, _('No Lookup Sources'), 'warn')
@@ -3265,9 +3635,25 @@ class MainWindow(QtWidgets.QMainWindow):
             ## crossword information edit dialog
             self.dia_info = CwInfoDialog(self, self)
         else:
-            self.dia_info.init()            
+            self.dia_info.init()     
+
         if self.dia_info.exec():
-            self.cw.words.info = self.dia_info.to_info()
+
+            info = self.dia_info.to_info()
+            if self.cw.words.info != info:
+
+                def do_(op):
+                    self.cw.words.info = self.dia_info.to_info()
+
+                old_info = copy.copy(self.cw.words.info)
+
+                def undo_(op):
+                    try:
+                        self.cw.words.info = old_info
+                    except:
+                        traceback.print_exc(limit=None)
+                    
+                self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Change crossword info')))
         
     ## @brief Slot for MainWindow::act_print: prints current CW and/or clues to printer or PDF.
     # @see print_cw()
@@ -3284,10 +3670,23 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_act_config(self, checked):
         if not self.dia_settings.exec(): return
         settings = self.dia_settings.to_settings()
+        settings_str = json.dumps(settings, sort_keys=True)
+        old_settings_str = json.dumps(CWSettings.settings, sort_keys=True)
         # apply settings only if they are different from current
-        if json.dumps(settings, sort_keys=True) != json.dumps(CWSettings.settings, sort_keys=True):
+        if settings_str == old_settings_str: return
+
+        def do_(op):
             CWSettings.settings = settings
             self.apply_config()
+
+        def undo_(op):
+            CWSettings.settings = json.loads(old_settings_str)
+            self.apply_config()
+
+        try:
+            self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.act_config.toolTip()))
+        except:
+            traceback.print_exc(limit=None)
 
     ## @brief Slot for MainWindow::act_update: checks for app updates on the server (github).
     # If a new version is available and the user accepts it, the app will close down
@@ -3397,7 +3796,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(int)
     def on_slider_cw_scale(self, value):
-        self.scale_cw(value)        
+        self.scale_cw(value)
         
     ## @brief Fires when a new cw grid cell is focused.
     # @param current `QtWidgets.QTableWidgetItem` the currently focused cell
@@ -3435,6 +3834,66 @@ class MainWindow(QtWidgets.QMainWindow):
         cell_item = self.twCw.itemAt(point)
         if not cell_item: return
         self.menu_crossword.exec(self.twCw.mapToGlobal(point))
+
+    ## @brief Fires when the custom context meny is requested on the Clues panel.
+    # @param point `QtCore.QPoint` the current cursor position (relative to grid coordinates)
+    @pluggable('general')
+    @QtCore.pyqtSlot(QtCore.QPoint)
+    def on_tvClues_contextmenu(self, point):
+        model = self.tvClues.model()
+        if not model: return
+
+        index = self.tvClues.indexAt(point)
+        menu = QtWidgets.QMenu(self)
+        menu.addAction(self.act_clearclues)
+        if index.isValid():
+            item = model.itemFromIndex(index)
+            wd = self._word_from_clue_item(item)
+            if wd:
+                menu.addSeparator()
+                menu.addAction(self.act_clear_wd)
+                menu.addAction(self.act_erase_wd)
+                menu.addSeparator()
+                menu.addAction(self.act_suggest)
+                menu.addAction(self.act_lookup)
+                menu.addAction(self.act_editclue)
+        menu.addSeparator()
+        @QtCore.pyqtSlot()
+        def on_menu():
+            self.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(3).child(2))
+            self.on_act_config(False)
+        menu.addAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Configure clues...'), on_menu)
+
+        menu.exec(self.tvClues.mapToGlobal(point))
+
+    ## @brief Fires when the custom context meny is requested on the Clues panel header.
+    # @param point `QtCore.QPoint` the current cursor position (relative to grid coordinates)
+    @pluggable('general')
+    @QtCore.pyqtSlot(QtCore.QPoint)
+    def on_tvClues_header_contextmenu(self, point):
+        model = self.tvClues.model()
+        header = self.tvClues.header()
+        menu = QtWidgets.QMenu(self)
+
+        @QtCore.pyqtSlot(QtWidgets.QAction)
+        def on_header_menu_actn(action):
+            checked = action.isChecked()
+            model_index = self._logical_col_by_name(action.data())
+            if model_index >= 0 and (header.isSectionHidden(model_index) == checked):
+                header.setSectionHidden(model_index, not checked)
+                self.update_clue_column_settings()
+
+        for i in range(header.count()):
+            model_index = header.logicalIndex(i)
+            header_item = model.horizontalHeaderItem(model_index)
+            if not header_item or header_item.data() == 'Direction': continue
+            action = menu.addAction(header_item.text())
+            action.setData(header_item.data())
+            action.setCheckable(True)
+            action.setChecked(not header.isSectionHidden(model_index))
+
+        menu.triggered.connect(on_header_menu_actn)
+        menu.exec(self.tvClues.header().mapToGlobal(point))
 
     ## @brief Fires when the custom context meny is requested on the main toolbar.
     # @param point `QtCore.QPoint` the current cursor position (relative to toolbar coordinates)
@@ -3489,8 +3948,24 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(int, int, int)
     def on_tvClues_column_moved(self, logicalIndex, oldVisualIndex, newVisualIndex):
-        # save new column order to global settings
-        self.update_clue_column_settings()
+
+        hdr = self.tvClues.header()
+
+        def do_(op):                        
+            if hdr.visualIndex(logicalIndex) != newVisualIndex:
+                hdr.sectionMoved.disconnect()
+                hdr.moveSection(oldVisualIndex, newVisualIndex)
+                hdr.sectionMoved.connect(self.on_tvClues_column_moved)
+            # save new column order to global settings
+            self.update_clue_column_settings()
+
+        def undo_(op):
+            hdr.sectionMoved.disconnect()
+            hdr.moveSection(newVisualIndex, oldVisualIndex)
+            hdr.sectionMoved.connect(self.on_tvClues_column_moved)
+            self.update_clue_column_settings()
+
+        self.undomgr.do(Operation({'func': do_}, {'func': undo_}, hdr.toolTip()))
 
     ## @brief Fires every time a cell in clues table has been edited (manually) and
     # is about to write data back to the underlying model. 
@@ -3499,49 +3974,109 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot('QWidget*')
     def on_clues_editor_commit(self, editor):  
+
         model = self.tvClues.model()
         if not model: return
-        index = self.tvClues.currentIndex()
-        item = model.itemFromIndex(index)
+        item = model.itemFromIndex(self.tvClues.currentIndex())
         if not item: return
-        word = self._word_from_clue_item(item)
-        if not word: return
         parent = item.parent()
         if parent is None: return
-        item_params = {'parent': (parent.row(), parent.column()) if parent else None, 'item': (item.row(), item.column())}
-        txt = editor.text()
         col = item.column()
-        if col == 4:
-            # word text 
-            ltxt = len(txt)
-            lword = len(word)
-            if ltxt > lword:
-                txt = txt[:lword]
-            elif ltxt < lword:
-                txt += BLANK * (lword - ltxt)
-            try:
-                #print(f"Changing '{str(word)}' to '{txt}'...")
-                item.setText(txt)
-                self.cw.change_word(word, txt)
-                self.update_cw_grid()      
-            except CWError as err:
-                self._log(err)
+        parent_coord = (parent.row(), parent.column()) 
+        item_coord = (item.row(), col)
+        txt = editor.text()
+
+        word = self._word_from_clue_item(item)
+        if not word: return
+
+        old_word = self.cw.words.get_word_str(word)
+        old_clue = word.clue
+
+        def get_item(parent_coord, child_coord):
+            # re-activate clue cell (after update_cw_grid operation - full model reset)
+            model = self.tvClues.model()
+            if not model: return None
+            parent = model.item(*parent_coord)
+            return parent.child(*child_coord) if parent else None
+
+        if col == 4:            
+            # word text (reply)
+
+            def do_(op):
+                nonlocal txt
+                try:
+                    item = get_item(parent_coord, item_coord)
+                    if not item: return
+                    word = self._word_from_clue_item(item)
+                    if not word: return
+                    # word text 
+                    ltxt = len(txt)
+                    lword = len(word)
+                    if ltxt > lword:
+                        txt = txt[:lword]
+                    elif ltxt < lword:
+                        txt += BLANK * (lword - ltxt)
+
+                    if old_word.lower() == txt.lower(): return
+
+                    item.setText(txt)
+                    self.cw.change_word(word, txt)
+                    self.update_cw_grid()
+                    item = get_item(parent_coord, item_coord)
+                    if item: self.tvClues.setCurrentIndex(item.index())
+                    # restore focus (update_cw_grid removes focus from tvClues)
+                    self.tvClues.setFocus()
+
+                except Exception as err:
+                    self._log(err)
+
+            def undo_(op):
+                try:
+                    item = get_item(parent_coord, item_coord)
+                    if not item: return
+                    word = self._word_from_clue_item(item)
+                    if not word: return
+
+                    item.setText(old_word)
+                    self.cw.change_word(word, old_word)
+                    self.update_cw_grid()
+                    item = get_item(parent_coord, item_coord)
+                    if item: self.tvClues.setCurrentIndex(item.index())
+                    # restore focus (update_cw_grid removes focus from tvClues)
+                    self.tvClues.setFocus()
+
+                except Exception as err:
+                    self._log(err)
+
+            self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Edit crossword')))
 
         elif col == 2:
             # word clue
-            item.setText(txt)
-            word.clue = txt
-            self.reformat_clues()
 
-        # re-activate clue cell (after update_cw_grid operation - full model reset)
-        model = self.tvClues.model()
-        parent = model.item(item_params['parent'][0], item_params['parent'][1])
-        if parent:
-            item = parent.child(item_params['item'][0], item_params['item'][1])
-            if item:
-                self.tvClues.setCurrentIndex(item.index())
-        # restore focus (update_cw_grid removes focus from tvClues)
-        self.tvClues.setFocus()
+            def do_(op):
+                nonlocal txt
+                item = get_item(parent_coord, item_coord)
+                if not item: return
+                word = self._word_from_clue_item(item)
+                if not word: return
+                item.setText(txt)
+                word.clue = txt
+                self.reformat_clues()
+
+            def undo_(op):
+                try:
+                    item = get_item(parent_coord, item_coord)
+                    if not item: return
+                    word = self._word_from_clue_item(item)
+                    if not word: return
+
+                    item.setText(old_clue)
+                    word.clue = old_clue
+                    self.reformat_clues()
+                except:
+                    traceback.print_exc(limit=None)
+
+            self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Edit clue')))
 
     @pluggable('general')
     def set_selected_lang(self):
@@ -3565,3 +4100,43 @@ class MainWindow(QtWidgets.QMainWindow):
         reply = MsgBox(sel_lang[4], self, _('Language settings'), 'ask')
         if reply == 'yes': 
             restart_app(self.close)
+
+    @pluggable('general')
+    def on_pop_undo(self, histmgr, cmd):
+        self.menu_undo.clear()
+        for cmd in reversed(histmgr._undo_commands):
+            self.menu_undo.addAction(cmd.description)
+
+    @pluggable('general')
+    def on_push_undo(self, histmgr, cmd):
+        self.menu_undo.clear()
+        for cmd in reversed(histmgr._undo_commands):
+            self.menu_undo.addAction(cmd.description)
+
+    @pluggable('general')
+    def on_pop_redo(self, histmgr, cmd):
+        self.menu_redo.clear()
+        for cmd in reversed(histmgr._redo_commands):
+            self.menu_redo.addAction(cmd.description)
+
+    @pluggable('general')
+    def on_push_redo(self, histmgr, cmd):
+        self.menu_redo.clear()
+        for cmd in reversed(histmgr._redo_commands):
+            self.menu_redo.addAction(cmd.description)
+
+    @pluggable('general')
+    @QtCore.pyqtSlot(QtWidgets.QAction)
+    def on_menu_undo_triggered(self, action):
+        for i, act_ in enumerate(self.menu_undo.actions()):
+            if act_ == action:
+                self.undomgr.undo(i + 1)
+                break
+
+    @pluggable('general')
+    @QtCore.pyqtSlot(QtWidgets.QAction)
+    def on_menu_redo_triggered(self, action):
+        for i, act_ in enumerate(self.menu_redo.actions()):
+            if act_ == action:
+                self.undomgr.redo(i + 1)
+                break
