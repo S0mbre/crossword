@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['jsonhiliter_1455',['JsonHiliter',['../classpycross_1_1utils_1_1utils_1_1_json_hiliter.html',1,'pycross::utils::utils']]]
+  ['historyoverflowerror_1547',['HistoryOverflowError',['../classpycross_1_1utils_1_1undo_1_1_history_overflow_error.html',1,'pycross::utils::undo']]]
 ];

@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package pycross.forms
-# Classes for all the GUI app's forms but the main window.
+# Classes for all the GUI app's forms except the main window.
 from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport, 
                     QtWebEngineWidgets, QtWebEngineCore, QtWebEngine)
 import os, copy, json
@@ -4061,7 +4061,8 @@ class SettingsDialog(BasicDialog):
 # ******************************************************************************** # 
 
 ## @brief Crossword grid class (based on `QtWidgets.QTableWidget`).
-# Custom implementation handles key events (like Del, Backspace, etc.) 
+# Custom implementation handles key events (like Del, Backspace, etc.),
+# mouse click events and the resize event.
 class CwTable(QtWidgets.QTableWidget):
 
     resized = QtCore.pyqtSignal(int, int, int, int)
@@ -4070,25 +4071,29 @@ class CwTable(QtWidgets.QTableWidget):
     # @param on_key `callable` callback for key release event
     # @param parent `QtWidgets.QWidget` parent widget
     def __init__(self, on_key=None, on_deselect=None, parent: QtWidgets.QWidget=None):
-        ## Stored callback for key release event
+        ## Stored callback for key release event (edit grid)
         self.on_key = on_key
+        ## Callback for mouse release event (deselect cells)
         self.on_deselect = on_deselect
         super().__init__(parent)
 
+    ## Disable keyboard search functionality to enable cell editing by keyboard. 
     def keyboardSearch(self, search):
         return
         
-    ## Key release event handler: call the stored callback.
+    ## Key release event handler: call the stored on_key callback.
     def keyReleaseEvent(self, event: QtGui.QKeyEvent):
-        #super().keyReleaseEvent(event)
-        if self.on_key: 
-            self.on_key(event)
+        if self.on_key: self.on_key(event)
 
+    ## Mouse button release event handler: call the on_deselect callback
+    # to deselect all grid cells if pressed outside of the grid.
     def mouseReleaseEvent(self, event: QtGui.QMouseEvent):        
         if not self.indexAt(event.pos()).isValid() and self.on_deselect:
             self.on_deselect()
         super().mouseReleaseEvent(event)
 
+    ## Resize event handler: emit custom `resized` signal to let the app
+    # handle the event.
     def resizeEvent(self, event: QtGui.QResizeEvent):
         old_sz = event.oldSize()
         new_sz = event.size()

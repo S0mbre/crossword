@@ -3,8 +3,8 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package pycross.guisettings
-# Stores a single global configurations objects - CWSettings::settings
-# together with methods to load from and save to JSON files.
+# Stores a single global configurations object - CWSettings::settings
+# together with methods to load from and save to compressed JSON files.
 from PyQt5 import QtGui, QtCore, QtWidgets
 import json, os, gzip
 
@@ -12,8 +12,11 @@ from utils.globalvars import *
 
 # ******************************************************************************** #
 
+## Application settings class.
 class CWSettings:
     
+    ## global app settings dictionary synched with settings files
+    # @see `pycross::forms::SettingsDialog`
     settings = { \
     'gui': {
         'theme': 'Fusion', 'toolbar_pos': 0, 'win_pos': (300, 300), 'win_size': (800, 500),
@@ -151,8 +154,19 @@ class CWSettings:
                     'req_timeout': 5
                 }
         }
-    } # settings
-         
+    }
+    
+    ## @brief Validates a settings file and returns its contents as a dictionary.
+    # Validation compares the structure of the settings file contents
+    # to `CWSettings::settings` and checks if the settings file
+    # contains the exact same keys recursively in each root key.
+    # @param filepath `str` path to the settings file to load
+    # @returns `dict`|`None` settings read from the file as a Python dictionary --
+    # see `CWSettings::settings`; or `None` on validation error
+    # @warning The app uses GZIP compression in settings files (*.pxjson), so the
+    # raw JSON data is not viewable directly when you open such files
+    # in a notepad; you may still unpack them using your GZIP-compatible
+    # decompression tool.
     @staticmethod
     def validate_file(filepath=SETTINGS_FILE):
         def get_dic_str(d):
@@ -174,12 +188,26 @@ class CWSettings:
                 return d
         return None
 
+    ## Dumps the current app settings into a settings file.
+    # @param filepath `str` path to the settings file to save to
+    # @warning The app uses GZIP compression in settings files (*.pxjson), so the
+    # raw JSON data is not viewable directly when you open such files
+    # in a notepad; you may still unpack them using your GZIP-compatible
+    # decompression tool.
+    # @see CWSettings::load_from_file()
     @staticmethod     
     def save_to_file(filepath=SETTINGS_FILE):
         content = json.dumps(CWSettings.settings, indent='\t')
         with gzip.open(filepath, 'wt', encoding=ENCODING) as fsettings:
             fsettings.write(content)
     
+    ## Loads the app settings from a settings file.
+    # @param filepath `str` path to the settings file to load from
+    # @warning The app uses GZIP compression in settings files (*.pxjson), so the
+    # raw JSON data is not viewable directly when you open such files
+    # in a notepad; you may still unpack them using your GZIP-compatible
+    # decompression tool.
+    # @see CWSettings::save_to_file()
     @staticmethod
     def load_from_file(filepath=SETTINGS_FILE):
         d = CWSettings.validate_file(filepath)

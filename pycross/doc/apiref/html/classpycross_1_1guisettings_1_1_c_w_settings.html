@@ -78,22 +78,31 @@ $(function() {
 <div class="title">pycross.guisettings.CWSettings Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Application settings class.  
+ <a href="classpycross_1_1guisettings_1_1_c_w_settings.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ab52968472c95abe168778209ddba63e3"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#ab52968472c95abe168778209ddba63e3">validate_file</a> (filepath=SETTINGS_FILE)</td></tr>
+<tr class="memdesc:ab52968472c95abe168778209ddba63e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates a settings file and returns its contents as a dictionary.  <a href="classpycross_1_1guisettings_1_1_c_w_settings.html#ab52968472c95abe168778209ddba63e3">More...</a><br /></td></tr>
 <tr class="separator:ab52968472c95abe168778209ddba63e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a861d19b60d227a6238bb720ad31f87c9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a861d19b60d227a6238bb720ad31f87c9">save_to_file</a> (filepath=SETTINGS_FILE)</td></tr>
+<tr class="memdesc:a861d19b60d227a6238bb720ad31f87c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the current app settings into a settings file.  <a href="classpycross_1_1guisettings_1_1_c_w_settings.html#a861d19b60d227a6238bb720ad31f87c9">More...</a><br /></td></tr>
 <tr class="separator:a861d19b60d227a6238bb720ad31f87c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afad16c3a05bf755366f7ad684a7c633c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#afad16c3a05bf755366f7ad684a7c633c">load_from_file</a> (filepath=SETTINGS_FILE)</td></tr>
+<tr class="memdesc:afad16c3a05bf755366f7ad684a7c633c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the app settings from a settings file.  <a href="classpycross_1_1guisettings_1_1_c_w_settings.html#afad16c3a05bf755366f7ad684a7c633c">More...</a><br /></td></tr>
 <tr class="separator:afad16c3a05bf755366f7ad684a7c633c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a69b6d83e588b180947f808a2d988b31b"><td class="memItemLeft" align="right" valign="top">dictionary&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">settings</a></td></tr>
+<tr class="memdesc:a69b6d83e588b180947f808a2d988b31b"><td class="mdescLeft">&#160;</td><td class="mdescRight">global app settings dictionary synched with settings files  <a href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">More...</a><br /></td></tr>
 <tr class="separator:a69b6d83e588b180947f808a2d988b31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Application settings class. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="afad16c3a05bf755366f7ad684a7c633c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afad16c3a05bf755366f7ad684a7c633c">&#9670;&nbsp;</a></span>load_from_file()</h2>
 
@@ -117,6 +126,16 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Loads the app settings from a settings file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filepath</td><td><code>str</code> path to the settings file to load from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>The app uses GZIP compression in settings files (*.pxjson), so the raw JSON data is not viewable directly when you open such files in a notepad; you may still unpack them using your GZIP-compatible decompression tool. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a861d19b60d227a6238bb720ad31f87c9" title="Dumps the current app settings into a settings file.">CWSettings::save_to_file()</a> </dd></dl>
 
 </div>
 </div>
@@ -144,6 +163,16 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Dumps the current app settings into a settings file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filepath</td><td><code>str</code> path to the settings file to save to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>The app uses GZIP compression in settings files (*.pxjson), so the raw JSON data is not viewable directly when you open such files in a notepad; you may still unpack them using your GZIP-compatible decompression tool. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#afad16c3a05bf755366f7ad684a7c633c" title="Loads the app settings from a settings file.">CWSettings::load_from_file()</a> </dd></dl>
+
 </div>
 </div>
 <a id="ab52968472c95abe168778209ddba63e3"></a>
@@ -170,6 +199,16 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Validates a settings file and returns its contents as a dictionary. </p>
+<p>Validation compares the structure of the settings file contents to <code><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b" title="global app settings dictionary synched with settings files">CWSettings::settings</a></code> and checks if the settings file contains the exact same keys recursively in each root key. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filepath</td><td><code>str</code> path to the settings file to load </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code>|<code>None</code> settings read from the file as a Python dictionary &ndash; see <code><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b" title="global app settings dictionary synched with settings files">CWSettings::settings</a></code>; or <code>None</code> on validation error </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>The app uses GZIP compression in settings files (*.pxjson), so the raw JSON data is not viewable directly when you open such files in a notepad; you may still unpack them using your GZIP-compatible decompression tool. </dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -192,6 +231,9 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>global app settings dictionary synched with settings files </p>
+<dl class="section see"><dt>See also</dt><dd><code><a class="el" href="classpycross_1_1forms_1_1_settings_dialog.html" title="Global app settings configuration window.">pycross::forms::SettingsDialog</a></code> </dd></dl>
 
 </div>
 </div>

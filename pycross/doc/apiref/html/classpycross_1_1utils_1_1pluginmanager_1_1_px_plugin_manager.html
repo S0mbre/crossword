@@ -107,7 +107,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad14824a7851933e02ecff6239875fac6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a plugin's active state to True or False.  <a href="classpycross_1_1utils_1_1pluginmanager_1_1_px_plugin_manager.html#ad14824a7851933e02ecff6239875fac6">More...</a><br /></td></tr>
 <tr class="separator:ad14824a7851933e02ecff6239875fac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2dbee70bffeb2031d8b78a61a1ba0bb"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1pluginmanager_1_1_px_plugin_manager.html#ac2dbee70bffeb2031d8b78a61a1ba0bb">update_global_settings</a> (self, forced_update=False)</td></tr>
-<tr class="memdesc:ac2dbee70bffeb2031d8b78a61a1ba0bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the custom plugin settings in <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">guisettings::CWSettings::settings</a>.  <a href="classpycross_1_1utils_1_1pluginmanager_1_1_px_plugin_manager.html#ac2dbee70bffeb2031d8b78a61a1ba0bb">More...</a><br /></td></tr>
+<tr class="memdesc:ac2dbee70bffeb2031d8b78a61a1ba0bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the custom plugin settings in <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b" title="global app settings dictionary synched with settings files">guisettings::CWSettings::settings</a>.  <a href="classpycross_1_1utils_1_1pluginmanager_1_1_px_plugin_manager.html#ac2dbee70bffeb2031d8b78a61a1ba0bb">More...</a><br /></td></tr>
 <tr class="separator:ac2dbee70bffeb2031d8b78a61a1ba0bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa02fafe8e43f0942ff5d2b045428c170"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1pluginmanager_1_1_px_plugin_manager.html#aa02fafe8e43f0942ff5d2b045428c170">get_plugins_of_category</a> (self, category, active_only=True)</td></tr>
 <tr class="memdesc:aa02fafe8e43f0942ff5d2b045428c170"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the list of plugins for a given category respecting their order.  <a href="classpycross_1_1utils_1_1pluginmanager_1_1_px_plugin_manager.html#aa02fafe8e43f0942ff5d2b045428c170">More...</a><br /></td></tr>
@@ -412,7 +412,7 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the list of plugins for a given category respecting their order. </p>
-<p>This method is added since the inherited <code>getPluginsOfCategory</code> method of <code>PluginManager</code> does not respect the order of the plugins (it knows nothing about the order). The plugin order is taken from the global settings (<a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">guisettings::CWSettings::settings</a>). </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This method is added since the inherited <code>getPluginsOfCategory</code> method of <code>PluginManager</code> does not respect the order of the plugins (it knows nothing about the order). The plugin order is taken from the global settings (<a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b" title="global app settings dictionary synched with settings files">guisettings::CWSettings::settings</a>). </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">category</td><td><code>str</code> plugin category name </td></tr>
     <tr><td class="paramname">active_only</td><td><code>bool</code> only list active plugins (default) </td></tr>
@@ -599,7 +599,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates the custom plugin settings in <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">guisettings::CWSettings::settings</a>. </p>
+<p>Updates the custom plugin settings in <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b" title="global app settings dictionary synched with settings files">guisettings::CWSettings::settings</a>. </p>
 <p>The function will first look for plugins contained in the current settings and update their data from the existing plugins collected by the plugin manager. Plugins that are found in settings but not in the plugin manager will be removed from settings. Then finally plugins collected by the manager but not contained in the settings will be appended to the settings, in their respective categories. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">forced_update</td><td><code>bool</code> if <code>True</code>, all current plugin settings will be cleared and plugins will be added anew from the plugin manager (default = <code>False</code>) </td></tr>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-04-06 15:59+1100\n"
+"POT-Creation-Date: 2020-05-13 12:34+1100\n"
 "PO-Revision-Date: 2020-01-18 23:54+1100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
@@ -120,8 +120,8 @@ msgstr ""
 msgid "Reload &All Tabs"
 msgstr ""
 
-#: pycross/browser.py:516 pycross/forms.py:224 pycross/forms.py:5322
-#: pycross/utils/synteditor.py:153 pycross/utils/utils.py:512
+#: pycross/browser.py:516 pycross/forms.py:224 pycross/forms.py:5356
+#: pycross/utils/synteditor.py:153 pycross/utils/utils.py:587
 msgid "Cancel"
 msgstr ""
 
@@ -173,7 +173,7 @@ msgstr ""
 msgid "Confirm quit"
 msgstr ""
 
-#: pycross/browser.py:731 pycross/gui.py:397
+#: pycross/browser.py:731 pycross/gui.py:475
 msgid "&File"
 msgstr ""
 
@@ -205,7 +205,7 @@ msgstr ""
 msgid "&Close window"
 msgstr ""
 
-#: pycross/browser.py:756 pycross/gui.py:413
+#: pycross/browser.py:756 pycross/gui.py:492
 msgid "&Edit"
 msgstr ""
 
@@ -221,7 +221,7 @@ msgstr ""
 msgid "Find &previous"
 msgstr ""
 
-#: pycross/browser.py:774 pycross/gui.py:437
+#: pycross/browser.py:774 pycross/gui.py:523
 msgid "&View"
 msgstr ""
 
@@ -249,7 +249,7 @@ msgstr ""
 msgid "Hide toolbar"
 msgstr ""
 
-#: pycross/browser.py:806 pycross/gui.py:347
+#: pycross/browser.py:806 pycross/gui.py:371
 msgid "Show toolbar"
 msgstr ""
 
@@ -273,7 +273,7 @@ msgstr ""
 msgid "Show previous tab"
 msgstr ""
 
-#: pycross/browser.py:863 pycross/gui.py:448
+#: pycross/browser.py:863 pycross/gui.py:534
 msgid "&Help"
 msgstr ""
 
@@ -341,98 +341,98 @@ msgstr ""
 msgid "'{}' found: {}/{}"
 msgstr ""
 
-#: pycross/crossword.py:95 pycross/crossword.py:97
+#: pycross/crossword.py:97 pycross/crossword.py:99
 msgid "Coords.start and Coords.end must be 2-tuples!"
 msgstr ""
 
-#: pycross/crossword.py:101 pycross/crossword.py:107
+#: pycross/crossword.py:103 pycross/crossword.py:109
 msgid "End coordinate {} must be greater than the start coordinate {}!"
 msgstr ""
 
-#: pycross/crossword.py:110
+#: pycross/crossword.py:112
 msgid "One coordinate must be equal!"
 msgstr ""
 
-#: pycross/crossword.py:138
+#: pycross/crossword.py:140
 msgid "Coords object :: start = {}, end = {}, dir = '{}'"
 msgstr ""
 
-#: pycross/crossword.py:165
+#: pycross/crossword.py:167
 msgid "Word length is not correct!"
 msgstr ""
 
-#: pycross/crossword.py:175
+#: pycross/crossword.py:177
 msgid "Word object :: num = {}, start = {}, end = {}, dir = '{}'"
 msgstr ""
 
-#: pycross/crossword.py:277
+#: pycross/crossword.py:279
 msgid "Wrong 'data_type' argument: '{}'! Must be 'grid' OR 'words' OR 'file'!"
 msgstr ""
 
-#: pycross/crossword.py:290
+#: pycross/crossword.py:292
 msgid "Grid appears incorrect, for in contains less than 2 rows!"
 msgstr ""
 
-#: pycross/crossword.py:295
+#: pycross/crossword.py:297
 msgid ""
 "Grid contains invalid characters! Must contain only [a-z], '{}', '{}' and"
 " '{}'."
 msgstr ""
 
-#: pycross/crossword.py:298
+#: pycross/crossword.py:300
 msgid ""
 "Grid must be passed either as a list of strings or a single string of "
 "rows delimited by new-line symbols!"
 msgstr ""
 
-#: pycross/crossword.py:313
+#: pycross/crossword.py:315
 msgid "Cannot call reset() on a null grid!"
 msgstr ""
 
-#: pycross/crossword.py:397
+#: pycross/crossword.py:399
 msgid ""
 "\"words\" argument must be a non-empty collection of Word / Coords "
 "objects!"
 msgstr ""
 
-#: pycross/crossword.py:517 pycross/crossword.py:536
+#: pycross/crossword.py:519 pycross/crossword.py:538
 msgid "Unable to parse '{}' as IPUZ file!"
 msgstr ""
 
-#: pycross/crossword.py:586
+#: pycross/crossword.py:588
 msgid "No puzzles in '{}'!"
 msgstr ""
 
-#: pycross/crossword.py:603
+#: pycross/crossword.py:605
 msgid "No grid in '{}'!"
 msgstr ""
 
-#: pycross/crossword.py:686
+#: pycross/crossword.py:688
 msgid "Character \"{}\" is invalid!"
 msgstr ""
 
-#: pycross/crossword.py:693
+#: pycross/crossword.py:695
 msgid "Coordinate {} is out of the grid range (w={}, h={})!"
 msgstr ""
 
-#: pycross/crossword.py:952 pycross/crossword.py:961 pycross/crossword.py:1090
-#: pycross/crossword.py:1134
+#: pycross/crossword.py:959 pycross/crossword.py:968 pycross/crossword.py:1097
+#: pycross/crossword.py:1141
 msgid "Word '{}' is absent from grid!"
 msgstr ""
 
-#: pycross/crossword.py:1154
+#: pycross/crossword.py:1161
 msgid ""
 "Num{}Coord{}Value\n"
 "-------------------------------------------\n"
 msgstr ""
 
-#: pycross/crossword.py:1155
+#: pycross/crossword.py:1162
 msgid ""
 "ACROSS:\n"
 "-------------------------------------------\n"
 msgstr ""
 
-#: pycross/crossword.py:1157
+#: pycross/crossword.py:1164
 msgid ""
 "\n"
 "-------------------------------------------\n"
@@ -440,127 +440,127 @@ msgid ""
 "-------------------------------------------\n"
 msgstr ""
 
-#: pycross/crossword.py:1259
+#: pycross/crossword.py:1266
 msgid "Word must be a Word object!"
 msgstr ""
 
-#: pycross/crossword.py:1539 pycross/crossword.py:1707
+#: pycross/crossword.py:1546 pycross/crossword.py:1714
 msgid ""
 "\n"
 "\tCompleted CW!"
 msgstr ""
 
-#: pycross/crossword.py:1542
+#: pycross/crossword.py:1549
 msgid "Creating word paths..."
 msgstr ""
 
-#: pycross/crossword.py:1566
+#: pycross/crossword.py:1573
 msgid "Created {} paths"
 msgstr ""
 
-#: pycross/crossword.py:1593
+#: pycross/crossword.py:1600
 msgid ""
 "\n"
 "Next word = [{}]"
 msgstr ""
 
-#: pycross/crossword.py:1600
+#: pycross/crossword.py:1607
 msgid "Skipping [{}] (found in USED)..."
 msgstr ""
 
-#: pycross/crossword.py:1607
+#: pycross/crossword.py:1614
 msgid "Fetched {} suggestions for [{}]"
 msgstr ""
 
-#: pycross/crossword.py:1617
+#: pycross/crossword.py:1624
 msgid "No suggestions for [{}]!"
 msgstr ""
 
-#: pycross/crossword.py:1620 pycross/crossword.py:1658
+#: pycross/crossword.py:1627 pycross/crossword.py:1665
 msgid "Clearing [{}]..."
 msgstr ""
 
-#: pycross/crossword.py:1682
+#: pycross/crossword.py:1689
 msgid "Start node reached; unable to generate for path!"
 msgstr ""
 
-#: pycross/crossword.py:1693
+#: pycross/crossword.py:1700
 msgid "Trying '{}' for [{}]..."
 msgstr ""
 
-#: pycross/crossword.py:1705
+#: pycross/crossword.py:1712
 msgid ""
 "\n"
 "\tCompleted path with result = {}"
 msgstr ""
 
-#: pycross/crossword.py:1735
+#: pycross/crossword.py:1742
 msgid "Words collection is not initialized!"
 msgstr ""
 
-#: pycross/crossword.py:1756
+#: pycross/crossword.py:1763
 msgid "{}New start word is: {}"
 msgstr ""
 
-#: pycross/crossword.py:1762 pycross/crossword.py:1858
+#: pycross/crossword.py:1769 pycross/crossword.py:1865
 msgid "{}Unable to generate CW for word '{}'!"
 msgstr ""
 
-#: pycross/crossword.py:1765
+#: pycross/crossword.py:1772
 msgid "{}Fetched {} suggestions"
 msgstr ""
 
-#: pycross/crossword.py:1781
+#: pycross/crossword.py:1788
 msgid "{}Trying '{}' for '{}'..."
 msgstr ""
 
-#: pycross/crossword.py:1793
+#: pycross/crossword.py:1800
 msgid "{}No crosses for '{}'"
 msgstr ""
 
-#: pycross/crossword.py:1796
+#: pycross/crossword.py:1803
 msgid "{}Found {} crosses for '{}': {}"
 msgstr ""
 
-#: pycross/crossword.py:1809
+#: pycross/crossword.py:1816
 msgid "{}Skipping cross '{}'..."
 msgstr ""
 
-#: pycross/crossword.py:1821
+#: pycross/crossword.py:1828
 msgid "{}Generated for cross '{}'"
 msgstr ""
 
-#: pycross/crossword.py:1832
+#: pycross/crossword.py:1839
 msgid "{}Failed to generate for cross '{}', restoring grid..."
 msgstr ""
 
-#: pycross/crossword.py:1899
+#: pycross/crossword.py:1906
 msgid "No valid word source for crossword generation!"
 msgstr ""
 
-#: pycross/crossword.py:1932
+#: pycross/crossword.py:1939
 msgid ""
 "'method' argument ({}) is not valid! Must be one of: 'iter', 'recurse', "
 "or None / empty string."
 msgstr ""
 
-#: pycross/crossword.py:1935
+#: pycross/crossword.py:1942
 msgid "TIMED OUT AT {} SEC!"
 msgstr ""
 
-#: pycross/crossword.py:1939
+#: pycross/crossword.py:1946
 msgid "STOPPED!"
 msgstr ""
 
-#: pycross/crossword.py:1962
+#: pycross/crossword.py:1969
 msgid "GENERATION COMPLETED IN {:.1f} SEC."
 msgstr ""
 
-#: pycross/crossword.py:1974
+#: pycross/crossword.py:1981
 msgid "No database results for {}!"
 msgstr ""
 
-#: pycross/crossword.py:1977
+#: pycross/crossword.py:1984
 msgid "CHECK OK"
 msgstr ""
 
@@ -580,18 +580,18 @@ msgstr ""
 msgid "Select folder"
 msgstr ""
 
-#: pycross/forms.py:56 pycross/forms.py:3757 pycross/forms.py:3769
-#: pycross/forms.py:3779 pycross/gui.py:2671 pycross/gui.py:2699
+#: pycross/forms.py:56 pycross/forms.py:3763 pycross/forms.py:3775
+#: pycross/forms.py:3785 pycross/gui.py:3016 pycross/gui.py:3044
 msgid "Select file"
 msgstr ""
 
-#: pycross/forms.py:58 pycross/forms.py:3779 pycross/gui.py:1681
-#: pycross/gui.py:2697
+#: pycross/forms.py:58 pycross/forms.py:3785 pycross/gui.py:1921
+#: pycross/gui.py:3042
 msgid "All files (*.*)"
 msgstr ""
 
-#: pycross/forms.py:219 pycross/forms.py:5232 pycross/forms.py:5317
-#: pycross/utils/synteditor.py:149 pycross/utils/utils.py:511
+#: pycross/forms.py:219 pycross/forms.py:5266 pycross/forms.py:5351
+#: pycross/utils/synteditor.py:149 pycross/utils/utils.py:586
 msgid "OK"
 msgstr ""
 
@@ -607,7 +607,7 @@ msgstr ""
 msgid "Load pattern preset"
 msgstr ""
 
-#: pycross/forms.py:290 pycross/forms.py:432
+#: pycross/forms.py:290 pycross/forms.py:438
 msgid "File"
 msgstr ""
 
@@ -615,7 +615,7 @@ msgstr ""
 msgid "Import crossword from file"
 msgstr ""
 
-#: pycross/forms.py:294 pycross/forms.py:2474
+#: pycross/forms.py:294 pycross/forms.py:2480
 msgid "Empty grid"
 msgstr ""
 
@@ -639,2283 +639,2398 @@ msgstr ""
 msgid "Grid dimensions"
 msgstr ""
 
-#: pycross/forms.py:319
+#: pycross/forms.py:325
 msgid "Pattern {}"
 msgstr ""
 
-#: pycross/forms.py:321
+#: pycross/forms.py:327
 msgid "Rows:"
 msgstr ""
 
-#: pycross/forms.py:322
+#: pycross/forms.py:328
 msgid "Columns:"
 msgstr ""
 
-#: pycross/forms.py:323
+#: pycross/forms.py:329
 msgid "Pattern:"
 msgstr ""
 
-#: pycross/forms.py:341
+#: pycross/forms.py:347
 msgid "Pattern file is unavailable, please check!"
 msgstr ""
 
-#: pycross/forms.py:341 pycross/forms.py:344 pycross/forms.py:350
-#: pycross/forms.py:648 pycross/forms.py:652 pycross/forms.py:667
-#: pycross/forms.py:672 pycross/forms.py:675 pycross/forms.py:679
-#: pycross/forms.py:682 pycross/forms.py:689 pycross/forms.py:692
-#: pycross/forms.py:695 pycross/forms.py:3762 pycross/forms.py:4034
-#: pycross/forms.py:4239 pycross/forms.py:4888 pycross/forms.py:5200
-#: pycross/forms.py:5203 pycross/gui.py:1616 pycross/gui.py:1727
-#: pycross/gui.py:1847 pycross/gui.py:1881 pycross/gui.py:2057
-#: pycross/gui.py:2324 pycross/utils/onlineservices.py:288
-#: pycross/utils/onlineservices.py:556
+#: pycross/forms.py:347 pycross/forms.py:350 pycross/forms.py:356
+#: pycross/forms.py:654 pycross/forms.py:658 pycross/forms.py:673
+#: pycross/forms.py:678 pycross/forms.py:681 pycross/forms.py:685
+#: pycross/forms.py:688 pycross/forms.py:695 pycross/forms.py:698
+#: pycross/forms.py:701 pycross/forms.py:3768 pycross/forms.py:4040
+#: pycross/forms.py:4273 pycross/forms.py:4922 pycross/forms.py:5234
+#: pycross/forms.py:5237 pycross/gui.py:1852 pycross/gui.py:1967
+#: pycross/gui.py:2086 pycross/gui.py:2120 pycross/gui.py:2296
+#: pycross/gui.py:2565 pycross/utils/onlineservices.py:380
+#: pycross/utils/onlineservices.py:648
 msgid "Error"
 msgstr ""
 
-#: pycross/forms.py:344
+#: pycross/forms.py:350
 msgid "Crossword file is unavailable, please check!"
 msgstr ""
 
-#: pycross/forms.py:350
+#: pycross/forms.py:356
 msgid "Rows and columns must be valid numbers (e.g. 10)!"
 msgstr ""
 
-#: pycross/forms.py:413
+#: pycross/forms.py:419
 msgid "Word Source"
 msgstr ""
 
-#: pycross/forms.py:420 pycross/forms.py:1090 pycross/forms.py:1241
+#: pycross/forms.py:426 pycross/forms.py:1096 pycross/forms.py:1247
 msgid "Name"
 msgstr ""
 
-#: pycross/forms.py:428
+#: pycross/forms.py:434
 msgid "Source type"
 msgstr ""
 
-#: pycross/forms.py:430
+#: pycross/forms.py:436
 msgid "Database"
 msgstr ""
 
-#: pycross/forms.py:434
+#: pycross/forms.py:440
 msgid "Simple list"
 msgstr ""
 
-#: pycross/forms.py:456
+#: pycross/forms.py:462
 msgid "SQLite database files (*.db)"
 msgstr ""
 
-#: pycross/forms.py:472
+#: pycross/forms.py:478
 msgid "Database table and field names"
 msgstr ""
 
-#: pycross/forms.py:490 pycross/forms.py:518 pycross/forms.py:1166
-#: pycross/forms.py:1798 pycross/gui.py:221
+#: pycross/forms.py:496 pycross/forms.py:524 pycross/forms.py:1172
+#: pycross/forms.py:1804 pycross/gui.py:228
 msgid "Edit"
 msgstr ""
 
-#: pycross/forms.py:491
+#: pycross/forms.py:497
 msgid "Edit database in external editor"
 msgstr ""
 
-#: pycross/forms.py:494 pycross/forms.py:522 pycross/forms.py:1243
-#: pycross/forms.py:2353 pycross/forms.py:2372 pycross/forms.py:2396
+#: pycross/forms.py:500 pycross/forms.py:528 pycross/forms.py:1249
+#: pycross/forms.py:2359 pycross/forms.py:2378 pycross/forms.py:2402
 msgid "Path"
 msgstr ""
 
-#: pycross/forms.py:495
+#: pycross/forms.py:501
 msgid "Type"
 msgstr ""
 
-#: pycross/forms.py:496 pycross/forms.py:5181
+#: pycross/forms.py:502 pycross/forms.py:5215
 msgid "User"
 msgstr ""
 
-#: pycross/forms.py:497 pycross/forms.py:5181
+#: pycross/forms.py:503 pycross/forms.py:5215
 msgid "Password"
 msgstr ""
 
-#: pycross/forms.py:498
+#: pycross/forms.py:504
 msgid "Tables"
 msgstr ""
 
-#: pycross/forms.py:499 pycross/forms.py:525 pycross/forms.py:549
-#: pycross/forms.py:4195
+#: pycross/forms.py:505 pycross/forms.py:531 pycross/forms.py:555
+#: pycross/forms.py:4229
 msgid "Shuffle"
 msgstr ""
 
-#: pycross/forms.py:513 pycross/forms.py:536 pycross/forms.py:576
-#: pycross/forms.py:588 pycross/forms.py:622 pycross/forms.py:634
-#: pycross/forms.py:681 pycross/forms.py:691
+#: pycross/forms.py:519 pycross/forms.py:542 pycross/forms.py:582
+#: pycross/forms.py:594 pycross/forms.py:628 pycross/forms.py:640
+#: pycross/forms.py:687 pycross/forms.py:697
 msgid "SPACE"
 msgstr ""
 
-#: pycross/forms.py:513 pycross/forms.py:536 pycross/forms.py:578
-#: pycross/forms.py:590 pycross/forms.py:624 pycross/forms.py:636
-#: pycross/forms.py:681 pycross/forms.py:691
+#: pycross/forms.py:519 pycross/forms.py:542 pycross/forms.py:584
+#: pycross/forms.py:596 pycross/forms.py:630 pycross/forms.py:642
+#: pycross/forms.py:687 pycross/forms.py:697
 msgid "TAB"
 msgstr ""
 
-#: pycross/forms.py:519
+#: pycross/forms.py:525
 msgid "Edit text file in external editor"
 msgstr ""
 
-#: pycross/forms.py:523
+#: pycross/forms.py:529
 msgid "Encoding"
 msgstr ""
 
-#: pycross/forms.py:524 pycross/forms.py:547
+#: pycross/forms.py:530 pycross/forms.py:553
 msgid "Delimiter"
 msgstr ""
 
-#: pycross/forms.py:546
+#: pycross/forms.py:552
 msgid "Has parts of speech"
 msgstr ""
 
-#: pycross/forms.py:548
+#: pycross/forms.py:554
 msgid "Words"
 msgstr ""
 
-#: pycross/forms.py:648
+#: pycross/forms.py:654
 msgid "Source must have a non-empty name!"
 msgstr ""
 
-#: pycross/forms.py:652
+#: pycross/forms.py:658
 msgid "DB file path must be valid!"
 msgstr ""
 
-#: pycross/forms.py:657
+#: pycross/forms.py:663
 msgid "DB tables field has incorrect value!"
 msgstr ""
 
-#: pycross/forms.py:660
+#: pycross/forms.py:666
 msgid "DB table structure must define the 'words' dictionary!"
 msgstr ""
 
-#: pycross/forms.py:662
+#: pycross/forms.py:668
 msgid "DB table 'words' object must define the 'table' key!"
 msgstr ""
 
-#: pycross/forms.py:664
+#: pycross/forms.py:670
 msgid "DB table 'words' object must define the 'fwords' key!"
 msgstr ""
 
-#: pycross/forms.py:672
+#: pycross/forms.py:678
 msgid "Text file path must be valid!"
 msgstr ""
 
-#: pycross/forms.py:675
+#: pycross/forms.py:681
 msgid "Text file encoding must not be empty!"
 msgstr ""
 
-#: pycross/forms.py:679
+#: pycross/forms.py:685
 msgid "Text file delimiter must not be empty!"
 msgstr ""
 
-#: pycross/forms.py:682
+#: pycross/forms.py:688
 msgid ""
 "Text file delimiter must be either \"SPACE\" or \"TAB\" or a single "
 "character!"
 msgstr ""
 
-#: pycross/forms.py:689
+#: pycross/forms.py:695
 msgid "Word list delimiter must not be empty if is has parts of speech!"
 msgstr ""
 
-#: pycross/forms.py:692
+#: pycross/forms.py:698
 msgid ""
 "Word list delimiter must be either \"SPACE\" or \"TAB\" or a single "
 "character!"
 msgstr ""
 
-#: pycross/forms.py:695
+#: pycross/forms.py:701
 msgid "Word list is empty or invalid!"
 msgstr ""
 
-#: pycross/forms.py:742 pycross/utils/update.py:207
+#: pycross/forms.py:748 pycross/utils/update.py:207
 msgid ""
 "{}\n"
 "at line {}, column {}"
 msgstr ""
 
-#: pycross/forms.py:780
+#: pycross/forms.py:786
 msgid "Null action source or toolbar pointers passed to ToolbarCustomizer!"
 msgstr ""
 
-#: pycross/forms.py:816 pycross/forms.py:1794
+#: pycross/forms.py:822 pycross/forms.py:1800
 msgid "Add"
 msgstr ""
 
-#: pycross/forms.py:817 pycross/forms.py:1796
+#: pycross/forms.py:823 pycross/forms.py:1802
 msgid "Remove"
 msgstr ""
 
-#: pycross/forms.py:818
+#: pycross/forms.py:824
 msgid "Add separator"
 msgstr ""
 
-#: pycross/forms.py:820 pycross/forms.py:1170 pycross/forms.py:1800
-#: pycross/gui.py:264 pycross/utils/synteditor.py:197
+#: pycross/forms.py:826 pycross/forms.py:1176 pycross/forms.py:1806
+#: pycross/gui.py:283 pycross/utils/synteditor.py:197
 msgid "Clear"
 msgstr ""
 
-#: pycross/forms.py:822 pycross/forms.py:1176 pycross/forms.py:1787
-#: pycross/forms.py:2140 pycross/forms.py:5084
+#: pycross/forms.py:828 pycross/forms.py:1182 pycross/forms.py:1793
+#: pycross/forms.py:2146 pycross/forms.py:5118
 msgid "Up"
 msgstr ""
 
-#: pycross/forms.py:825 pycross/forms.py:1180 pycross/forms.py:1791
-#: pycross/forms.py:2144 pycross/forms.py:5081
+#: pycross/forms.py:831 pycross/forms.py:1186 pycross/forms.py:1797
+#: pycross/forms.py:2150 pycross/forms.py:5115
 msgid "Down"
 msgstr ""
 
-#: pycross/forms.py:828
+#: pycross/forms.py:834
 msgid "Added items:"
 msgstr ""
 
-#: pycross/forms.py:927
+#: pycross/forms.py:933
 msgid "<Unnamed>"
 msgstr ""
 
-#: pycross/forms.py:1084
+#: pycross/forms.py:1090
 msgid "From file"
 msgstr ""
 
-#: pycross/forms.py:1084
+#: pycross/forms.py:1090
 msgid "Edit in Editor"
 msgstr ""
 
-#: pycross/forms.py:1085
+#: pycross/forms.py:1091
 msgid "Python source files (*.py)"
 msgstr ""
 
-#: pycross/forms.py:1089
+#: pycross/forms.py:1095
 msgid "Category"
 msgstr ""
 
-#: pycross/forms.py:1091 pycross/forms.py:1242
+#: pycross/forms.py:1097 pycross/forms.py:1248
 msgid "Author"
 msgstr ""
 
-#: pycross/forms.py:1092 pycross/forms.py:1242
+#: pycross/forms.py:1098 pycross/forms.py:1248
 msgid "Version"
 msgstr ""
 
-#: pycross/forms.py:1093 pycross/forms.py:1241
+#: pycross/forms.py:1099 pycross/forms.py:1247
 msgid "Description"
 msgstr ""
 
-#: pycross/forms.py:1094 pycross/forms.py:1242
+#: pycross/forms.py:1100 pycross/forms.py:1248
 msgid "Copyright"
 msgstr ""
 
-#: pycross/forms.py:1095 pycross/forms.py:1243
+#: pycross/forms.py:1101 pycross/forms.py:1249
 msgid "Website"
 msgstr ""
 
-#: pycross/forms.py:1096
+#: pycross/forms.py:1102
 msgid "Plugin source"
 msgstr ""
 
-#: pycross/forms.py:1097
+#: pycross/forms.py:1103
 msgid "Source path"
 msgstr ""
 
-#: pycross/forms.py:1102
+#: pycross/forms.py:1108
 msgid "Plugin category must be assigned!"
 msgstr ""
 
-#: pycross/forms.py:1102 pycross/forms.py:1106 pycross/forms.py:1111
-#: pycross/forms.py:1118 pycross/forms.py:1121
+#: pycross/forms.py:1108 pycross/forms.py:1112 pycross/forms.py:1117
+#: pycross/forms.py:1124 pycross/forms.py:1127
 msgid "Invalid input"
 msgstr ""
 
-#: pycross/forms.py:1106
+#: pycross/forms.py:1112
 msgid "Plugin name must contain at least 4 letters!"
 msgstr ""
 
-#: pycross/forms.py:1111
+#: pycross/forms.py:1117
 msgid "Plugin name \"{}\" is already occupied! Please choose another."
 msgstr ""
 
-#: pycross/forms.py:1118
+#: pycross/forms.py:1124
 msgid "Version string \"{}\" is incorrectly formatted!"
 msgstr ""
 
-#: pycross/forms.py:1121
+#: pycross/forms.py:1127
 msgid "Path to source file is invalid!"
 msgstr ""
 
-#: pycross/forms.py:1154 pycross/gui.py:211
+#: pycross/forms.py:1160 pycross/gui.py:218
 msgid "Reload"
 msgstr ""
 
-#: pycross/forms.py:1155
+#: pycross/forms.py:1161
 msgid "Reload plugins from plugin folder"
 msgstr ""
 
-#: pycross/forms.py:1158 pycross/gui.py:186
+#: pycross/forms.py:1164 pycross/gui.py:193
 msgid "New"
 msgstr ""
 
-#: pycross/forms.py:1159
+#: pycross/forms.py:1165
 msgid "Create new plugin"
 msgstr ""
 
-#: pycross/forms.py:1162
+#: pycross/forms.py:1168
 msgid "Delete"
 msgstr ""
 
-#: pycross/forms.py:1163
+#: pycross/forms.py:1169
 msgid "Delete selected plugins"
 msgstr ""
 
-#: pycross/forms.py:1167
+#: pycross/forms.py:1173
 msgid "Edit selected plugin"
 msgstr ""
 
-#: pycross/forms.py:1171
+#: pycross/forms.py:1177
 msgid "Delete all plugins"
 msgstr ""
 
-#: pycross/forms.py:1177
+#: pycross/forms.py:1183
 msgid "Move plugin down (lower precedence)"
 msgstr ""
 
-#: pycross/forms.py:1181
+#: pycross/forms.py:1187
 msgid "Move plugin up (raise precendence)"
 msgstr ""
 
-#: pycross/forms.py:1371
+#: pycross/forms.py:1377
 msgid "New plugin"
 msgstr ""
 
-#: pycross/forms.py:1371
+#: pycross/forms.py:1377
 msgid "Editing: {}"
 msgstr ""
 
-#: pycross/forms.py:1485
+#: pycross/forms.py:1491
 msgid ""
 "Reload plugins from folder? Click YES to soft-update currently loaded "
 "plugins and add new ones, NO to hard-reload plugins (current plugin "
 "config will be lost!)."
 msgstr ""
 
-#: pycross/forms.py:1486 pycross/forms.py:1501 pycross/forms.py:1538
-#: pycross/gui.py:2219 pycross/gui.py:2314 pycross/gui.py:2711
+#: pycross/forms.py:1492 pycross/forms.py:1507 pycross/forms.py:1544
+#: pycross/gui.py:2460 pycross/gui.py:2555 pycross/gui.py:3056
 msgid "Confirm Action"
 msgstr ""
 
-#: pycross/forms.py:1500
+#: pycross/forms.py:1506
 msgid ""
 "Are you sure you would like to PERMANENTLY delete the selected plugins?\n"
 "You can deactivate a plugin by unchecking it."
 msgstr ""
 
-#: pycross/forms.py:1537
+#: pycross/forms.py:1543
 msgid ""
 "Are you sure you would like to PERMANENTLY delete ALL plugins?\n"
 "You can deactivate plugins by unchecking them."
 msgstr ""
 
-#: pycross/forms.py:1593 pycross/forms.py:1627 pycross/forms.py:3166
+#: pycross/forms.py:1599 pycross/forms.py:1633 pycross/forms.py:3172
 msgid "Common"
 msgstr ""
 
-#: pycross/forms.py:1593 pycross/forms.py:1628 pycross/forms.py:3179
+#: pycross/forms.py:1599 pycross/forms.py:1634 pycross/forms.py:3185
 msgid "Generation"
 msgstr ""
 
-#: pycross/forms.py:1593 pycross/forms.py:1631 pycross/forms.py:3200
+#: pycross/forms.py:1599 pycross/forms.py:1637 pycross/forms.py:3206
 msgid "Source management"
 msgstr ""
 
-#: pycross/forms.py:1593 pycross/forms.py:1632 pycross/forms.py:3214
+#: pycross/forms.py:1599 pycross/forms.py:1638 pycross/forms.py:3220
 msgid "Search rules"
 msgstr ""
 
-#: pycross/forms.py:1594 pycross/forms.py:1637 pycross/forms.py:3232
+#: pycross/forms.py:1600 pycross/forms.py:1643 pycross/forms.py:3238
 msgid "Window"
 msgstr ""
 
-#: pycross/forms.py:1594 pycross/forms.py:1638 pycross/forms.py:3241
+#: pycross/forms.py:1600 pycross/forms.py:1644 pycross/forms.py:3247
 msgid "Grid"
 msgstr ""
 
-#: pycross/forms.py:1594 pycross/forms.py:1639 pycross/forms.py:2445
-#: pycross/forms.py:3416
+#: pycross/forms.py:1600 pycross/forms.py:1645 pycross/forms.py:2451
+#: pycross/forms.py:3422
 msgid "Clues"
 msgstr ""
 
-#: pycross/forms.py:1594 pycross/forms.py:1640 pycross/forms.py:3516
+#: pycross/forms.py:1600 pycross/forms.py:1646 pycross/forms.py:3522
 msgid "Toolbar"
 msgstr ""
 
-#: pycross/forms.py:1594 pycross/forms.py:1643 pycross/forms.py:3520
+#: pycross/forms.py:1600 pycross/forms.py:1649 pycross/forms.py:3526
 msgid "Definition lookup"
 msgstr ""
 
-#: pycross/forms.py:1594 pycross/forms.py:1644 pycross/forms.py:3563
+#: pycross/forms.py:1600 pycross/forms.py:1650 pycross/forms.py:3569
 msgid "Import & Export"
 msgstr ""
 
-#: pycross/forms.py:1595 pycross/forms.py:1647 pycross/forms.py:3577
+#: pycross/forms.py:1601 pycross/forms.py:1653 pycross/forms.py:3583
 msgid "Third-party"
 msgstr ""
 
-#: pycross/forms.py:1595 pycross/forms.py:1648 pycross/forms.py:3608
+#: pycross/forms.py:1601 pycross/forms.py:1654 pycross/forms.py:3614
 msgid "Custom"
 msgstr ""
 
-#: pycross/forms.py:1595 pycross/forms.py:1650 pycross/forms.py:3612
+#: pycross/forms.py:1601 pycross/forms.py:1656 pycross/forms.py:3618
 msgid "Printing"
 msgstr ""
 
-#: pycross/forms.py:1595 pycross/forms.py:1651 pycross/forms.py:3680
+#: pycross/forms.py:1601 pycross/forms.py:1657 pycross/forms.py:3686
 msgid "Updating"
 msgstr ""
 
-#: pycross/forms.py:1595 pycross/forms.py:1652 pycross/forms.py:5375
+#: pycross/forms.py:1601 pycross/forms.py:1658 pycross/forms.py:5409
 msgid "Sharing"
 msgstr ""
 
-#: pycross/forms.py:1597 pycross/forms.py:1629
+#: pycross/forms.py:1603 pycross/forms.py:1635
 msgid "Sources"
 msgstr ""
 
-#: pycross/forms.py:1597 pycross/forms.py:1635
+#: pycross/forms.py:1603 pycross/forms.py:1641
 msgid "User interface"
 msgstr ""
 
-#: pycross/forms.py:1597 pycross/forms.py:1645
+#: pycross/forms.py:1603 pycross/forms.py:1651
 msgid "Plugins"
 msgstr ""
 
-#: pycross/forms.py:1606 pycross/forms.py:1805 pycross/forms.py:4451
-#: pycross/gui.py:309
+#: pycross/forms.py:1612 pycross/forms.py:1811 pycross/forms.py:4485
+#: pycross/gui.py:333
 msgid "Settings"
 msgstr ""
 
-#: pycross/forms.py:1660 pycross/forms.py:3742
+#: pycross/forms.py:1666 pycross/forms.py:3748
 msgid "Restore defaults"
 msgstr ""
 
-#: pycross/forms.py:1661
+#: pycross/forms.py:1667
 msgid "Restore default settings for selected page"
 msgstr ""
 
-#: pycross/forms.py:1663
+#: pycross/forms.py:1669
 msgid "Load Settings"
 msgstr ""
 
-#: pycross/forms.py:1664
+#: pycross/forms.py:1670
 msgid "Load settings from file"
 msgstr ""
 
-#: pycross/forms.py:1666
+#: pycross/forms.py:1672
 msgid "Save Settings"
 msgstr ""
 
-#: pycross/forms.py:1667
+#: pycross/forms.py:1673
 msgid "Save settings to file"
 msgstr ""
 
-#: pycross/forms.py:1694
+#: pycross/forms.py:1700
 msgid "Common settings"
 msgstr ""
 
-#: pycross/forms.py:1699
+#: pycross/forms.py:1705
 msgid "Temp directory (leave EMPTY for default)"
 msgstr ""
 
-#: pycross/forms.py:1702
+#: pycross/forms.py:1708
 msgid "Save crosswords on exit and load on startup"
 msgstr ""
 
-#: pycross/forms.py:1704 pycross/forms.py:1714 pycross/forms.py:3171
-#: pycross/forms.py:4031
+#: pycross/forms.py:1710 pycross/forms.py:1720 pycross/forms.py:3177
+#: pycross/forms.py:4037
 msgid "Register file associations"
 msgstr ""
 
-#: pycross/forms.py:1705
-msgid "Associate crossword files (*.xpf, *.ipuz) with {}"
-msgstr ""
-
-#: pycross/forms.py:1712
-msgid "Temp directory"
-msgstr ""
-
-#: pycross/forms.py:1713
-msgid "Auto save/load crossword"
+#: pycross/forms.py:1711
+msgid ""
+"Associate crossword files (*.xpf, *.ipuz) and settings files (*.pxjson) "
+"with {}"
 msgstr ""
 
 #: pycross/forms.py:1718
+msgid "Temp directory"
+msgstr ""
+
+#: pycross/forms.py:1719
+msgid "Auto save/load crossword"
+msgstr ""
+
+#: pycross/forms.py:1724
 msgid "Net settings"
 msgstr ""
 
-#: pycross/forms.py:1728
+#: pycross/forms.py:1734
 msgid "Use system proxy settings"
 msgstr ""
 
-#: pycross/forms.py:1733
+#: pycross/forms.py:1739
 msgid "HTTP proxy and port, e.g. http://192.168.1.10:3333"
 msgstr ""
 
-#: pycross/forms.py:1735
+#: pycross/forms.py:1741
 msgid "HTTPS proxy and port, e.g. https://192.168.1.10:3333"
 msgstr ""
 
-#: pycross/forms.py:1736
+#: pycross/forms.py:1742
 msgid "HTTP proxy"
 msgstr ""
 
-#: pycross/forms.py:1737
+#: pycross/forms.py:1743
 msgid "HTTPS proxy"
 msgstr ""
 
-#: pycross/forms.py:1741
+#: pycross/forms.py:1747
 msgid "Request timeout (sec):"
 msgstr ""
 
-#: pycross/forms.py:1742
+#: pycross/forms.py:1748
 msgid "Proxy settings:"
 msgstr ""
 
-#: pycross/forms.py:1754
+#: pycross/forms.py:1760
 msgid "Guess"
 msgstr ""
 
-#: pycross/forms.py:1754
+#: pycross/forms.py:1760
 msgid "Iterative"
 msgstr ""
 
-#: pycross/forms.py:1754
+#: pycross/forms.py:1760
 msgid "Recursive"
 msgstr ""
 
-#: pycross/forms.py:1760
+#: pycross/forms.py:1766
 msgid " sec."
 msgstr ""
 
-#: pycross/forms.py:1762
+#: pycross/forms.py:1768
 msgid "File..."
 msgstr ""
 
-#: pycross/forms.py:1762 pycross/forms.py:2676
+#: pycross/forms.py:1768 pycross/forms.py:2682
 msgid "No log"
 msgstr ""
 
-#: pycross/forms.py:1762 pycross/forms.py:2678
+#: pycross/forms.py:1768 pycross/forms.py:2684
 msgid "Console"
 msgstr ""
 
-#: pycross/forms.py:1767
+#: pycross/forms.py:1773
 msgid "Method"
 msgstr ""
 
-#: pycross/forms.py:1768 pycross/gui.py:1602
+#: pycross/forms.py:1774 pycross/gui.py:1838
 msgid "Timeout"
 msgstr ""
 
-#: pycross/forms.py:1769
+#: pycross/forms.py:1775
 msgid "Log"
 msgstr ""
 
-#: pycross/forms.py:1778
+#: pycross/forms.py:1784
 msgid "Manage sources"
 msgstr ""
 
-#: pycross/forms.py:1781
+#: pycross/forms.py:1787
 msgid ""
 "Higher sources in this list take higher precedence (use UP and DOWN "
 "buttons to move items)"
 msgstr ""
 
-#: pycross/forms.py:1807
+#: pycross/forms.py:1813
 msgid "Constrain max results:"
 msgstr ""
 
-#: pycross/forms.py:1825
+#: pycross/forms.py:1831
 msgid "Parts of speech"
 msgstr ""
 
-#: pycross/forms.py:1828
+#: pycross/forms.py:1834
 msgid ""
 "Check / uncheck items to include in search (valid only for sources with "
 "POS data)"
 msgstr ""
 
-#: pycross/forms.py:1839
+#: pycross/forms.py:1845
 msgid "Excluded words"
 msgstr ""
 
-#: pycross/forms.py:1846
+#: pycross/forms.py:1852
 msgid "Use regular expressions"
 msgstr ""
 
-#: pycross/forms.py:1864
+#: pycross/forms.py:1870
 msgid "Hidden"
 msgstr ""
 
-#: pycross/forms.py:1864 pycross/forms.py:2056 pycross/forms.py:2465
-#: pycross/forms.py:5090
+#: pycross/forms.py:1870 pycross/forms.py:2062 pycross/forms.py:2471
+#: pycross/forms.py:5124
 msgid "Left"
 msgstr ""
 
-#: pycross/forms.py:1864 pycross/forms.py:2056 pycross/forms.py:2466
-#: pycross/forms.py:5087
+#: pycross/forms.py:1870 pycross/forms.py:2062 pycross/forms.py:2472
+#: pycross/forms.py:5121
 msgid "Right"
 msgstr ""
 
-#: pycross/forms.py:1864 pycross/forms.py:2467
+#: pycross/forms.py:1870 pycross/forms.py:2473
 msgid "Top"
 msgstr ""
 
-#: pycross/forms.py:1864 pycross/forms.py:2468
+#: pycross/forms.py:1870 pycross/forms.py:2474
 msgid "Bottom"
 msgstr ""
 
-#: pycross/forms.py:1868
+#: pycross/forms.py:1874
 msgid "Theme"
 msgstr ""
 
-#: pycross/forms.py:1869
+#: pycross/forms.py:1875
 msgid "Toolbar position"
 msgstr ""
 
-#: pycross/forms.py:1888
+#: pycross/forms.py:1894
 msgid "Dash"
 msgstr ""
 
-#: pycross/forms.py:1888
+#: pycross/forms.py:1894
 msgid "Dot"
 msgstr ""
 
-#: pycross/forms.py:1888
+#: pycross/forms.py:1894
 msgid "Dash-dot"
 msgstr ""
 
-#: pycross/forms.py:1888 pycross/forms.py:1926 pycross/forms.py:1943
-#: pycross/forms.py:1960 pycross/forms.py:1969 pycross/forms.py:1978
-#: pycross/forms.py:2044 pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1894 pycross/forms.py:1932 pycross/forms.py:1949
+#: pycross/forms.py:1966 pycross/forms.py:1975 pycross/forms.py:1984
+#: pycross/forms.py:2050 pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Solid"
 msgstr ""
 
-#: pycross/forms.py:1911 pycross/forms.py:1933 pycross/forms.py:1950
-#: pycross/forms.py:2051 pycross/forms.py:2489 pycross/forms.py:2498
-#: pycross/forms.py:2507 pycross/forms.py:2516 pycross/forms.py:2525
+#: pycross/forms.py:1917 pycross/forms.py:1939 pycross/forms.py:1956
+#: pycross/forms.py:2057 pycross/forms.py:2495 pycross/forms.py:2504
+#: pycross/forms.py:2513 pycross/forms.py:2522 pycross/forms.py:2531
 msgid "Font..."
 msgstr ""
 
-#: pycross/forms.py:1916
+#: pycross/forms.py:1922
 msgid "UPPERCASE"
 msgstr ""
 
-#: pycross/forms.py:1916
+#: pycross/forms.py:1922
 msgid "lowercase"
 msgstr ""
 
-#: pycross/forms.py:1926 pycross/forms.py:1943 pycross/forms.py:1960
-#: pycross/forms.py:1969 pycross/forms.py:1978 pycross/forms.py:2044
-#: pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1932 pycross/forms.py:1949 pycross/forms.py:1966
+#: pycross/forms.py:1975 pycross/forms.py:1984 pycross/forms.py:2050
+#: pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Dense"
 msgstr ""
 
-#: pycross/forms.py:1926 pycross/forms.py:1943 pycross/forms.py:1960
-#: pycross/forms.py:1969 pycross/forms.py:1978 pycross/forms.py:2044
-#: pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1932 pycross/forms.py:1949 pycross/forms.py:1966
+#: pycross/forms.py:1975 pycross/forms.py:1984 pycross/forms.py:2050
+#: pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Striped"
 msgstr ""
 
-#: pycross/forms.py:1926 pycross/forms.py:1943 pycross/forms.py:1960
-#: pycross/forms.py:1969 pycross/forms.py:1978 pycross/forms.py:2044
-#: pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1932 pycross/forms.py:1949 pycross/forms.py:1966
+#: pycross/forms.py:1975 pycross/forms.py:1984 pycross/forms.py:2050
+#: pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Lines"
 msgstr ""
 
-#: pycross/forms.py:1926 pycross/forms.py:1943 pycross/forms.py:1960
-#: pycross/forms.py:1969 pycross/forms.py:1978 pycross/forms.py:2044
-#: pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1932 pycross/forms.py:1949 pycross/forms.py:1966
+#: pycross/forms.py:1975 pycross/forms.py:1984 pycross/forms.py:2050
+#: pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Checkered"
 msgstr ""
 
-#: pycross/forms.py:1926 pycross/forms.py:1943 pycross/forms.py:1960
-#: pycross/forms.py:1969 pycross/forms.py:1978 pycross/forms.py:2044
-#: pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1932 pycross/forms.py:1949 pycross/forms.py:1966
+#: pycross/forms.py:1975 pycross/forms.py:1984 pycross/forms.py:2050
+#: pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Diag1"
 msgstr ""
 
-#: pycross/forms.py:1926 pycross/forms.py:1943 pycross/forms.py:1960
-#: pycross/forms.py:1969 pycross/forms.py:1978 pycross/forms.py:2044
-#: pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1932 pycross/forms.py:1949 pycross/forms.py:1966
+#: pycross/forms.py:1975 pycross/forms.py:1984 pycross/forms.py:2050
+#: pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Diag2"
 msgstr ""
 
-#: pycross/forms.py:1926 pycross/forms.py:1943 pycross/forms.py:1960
-#: pycross/forms.py:1969 pycross/forms.py:1978 pycross/forms.py:2044
-#: pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1932 pycross/forms.py:1949 pycross/forms.py:1966
+#: pycross/forms.py:1975 pycross/forms.py:1984 pycross/forms.py:2050
+#: pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Diag cross"
 msgstr ""
 
-#: pycross/forms.py:1926 pycross/forms.py:1943 pycross/forms.py:1960
-#: pycross/forms.py:1969 pycross/forms.py:1978 pycross/forms.py:2044
-#: pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1932 pycross/forms.py:1949 pycross/forms.py:1966
+#: pycross/forms.py:1975 pycross/forms.py:1984 pycross/forms.py:2050
+#: pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Gradient linear"
 msgstr ""
 
-#: pycross/forms.py:1926 pycross/forms.py:1943 pycross/forms.py:1960
-#: pycross/forms.py:1969 pycross/forms.py:1978 pycross/forms.py:2044
-#: pycross/forms.py:2065 pycross/forms.py:2078
+#: pycross/forms.py:1932 pycross/forms.py:1949 pycross/forms.py:1966
+#: pycross/forms.py:1975 pycross/forms.py:1984 pycross/forms.py:2050
+#: pycross/forms.py:2071 pycross/forms.py:2084
 msgid "Gradient radial"
 msgstr ""
 
-#: pycross/forms.py:1982
+#: pycross/forms.py:1988
 msgid "Grid scale"
 msgstr ""
 
-#: pycross/forms.py:1983
+#: pycross/forms.py:1989
 msgid "Show grid borders"
 msgstr ""
 
-#: pycross/forms.py:1984
+#: pycross/forms.py:1990
 msgid "Show grid coords"
 msgstr ""
 
-#: pycross/forms.py:1985
+#: pycross/forms.py:1991
 msgid "Grid border style"
 msgstr ""
 
-#: pycross/forms.py:1986
+#: pycross/forms.py:1992
 msgid "Grid border width"
 msgstr ""
 
-#: pycross/forms.py:1987
+#: pycross/forms.py:1993
 msgid "Grid border color"
 msgstr ""
 
-#: pycross/forms.py:1988
+#: pycross/forms.py:1994
 msgid "Active cell color"
 msgstr ""
 
-#: pycross/forms.py:1989
+#: pycross/forms.py:1995
 msgid "Grid cell size"
 msgstr ""
 
-#: pycross/forms.py:1990
+#: pycross/forms.py:1996
 msgid "Character case"
 msgstr ""
 
-#: pycross/forms.py:1994
+#: pycross/forms.py:2000
 msgid "Show word numbers"
 msgstr ""
 
-#: pycross/forms.py:1995 pycross/forms.py:2536
+#: pycross/forms.py:2001 pycross/forms.py:2542
 msgid "Word number color"
 msgstr ""
 
-#: pycross/forms.py:1996 pycross/forms.py:2537
+#: pycross/forms.py:2002 pycross/forms.py:2543
 msgid "Word number font"
 msgstr ""
 
-#: pycross/forms.py:2000
+#: pycross/forms.py:2006
 msgid "Normal cell color"
 msgstr ""
 
-#: pycross/forms.py:2001
+#: pycross/forms.py:2007
 msgid "Normal cell style"
 msgstr ""
 
-#: pycross/forms.py:2002
+#: pycross/forms.py:2008
 msgid "Normal cell font color"
 msgstr ""
 
-#: pycross/forms.py:2003
+#: pycross/forms.py:2009
 msgid "Normal cell font"
 msgstr ""
 
-#: pycross/forms.py:2007
+#: pycross/forms.py:2013
 msgid "Hilite cell color"
 msgstr ""
 
-#: pycross/forms.py:2008
+#: pycross/forms.py:2014
 msgid "Hilite cell style"
 msgstr ""
 
-#: pycross/forms.py:2009
+#: pycross/forms.py:2015
 msgid "Hilite cell font color"
 msgstr ""
 
-#: pycross/forms.py:2010
+#: pycross/forms.py:2016
 msgid "Hilite cell font"
 msgstr ""
 
-#: pycross/forms.py:2014
+#: pycross/forms.py:2020
 msgid "Blank cell color"
 msgstr ""
 
-#: pycross/forms.py:2015
+#: pycross/forms.py:2021
 msgid "Blank cell style"
 msgstr ""
 
-#: pycross/forms.py:2019
+#: pycross/forms.py:2025
 msgid "Filler cell color"
 msgstr ""
 
-#: pycross/forms.py:2020
+#: pycross/forms.py:2026
 msgid "Filler cell style"
 msgstr ""
 
-#: pycross/forms.py:2024 pycross/forms.py:2116
+#: pycross/forms.py:2030 pycross/forms.py:2122
 msgid "Surrounding color"
 msgstr ""
 
-#: pycross/forms.py:2025
+#: pycross/forms.py:2031
 msgid "Surrounding style"
 msgstr ""
 
-#: pycross/forms.py:2056
+#: pycross/forms.py:2062
 msgid "Center"
 msgstr ""
 
-#: pycross/forms.py:2091
+#: pycross/forms.py:2097
 msgid "Font"
 msgstr ""
 
-#: pycross/forms.py:2092
+#: pycross/forms.py:2098
 msgid "Text alignment"
 msgstr ""
 
-#: pycross/forms.py:2098
+#: pycross/forms.py:2104
 msgid "Normal color"
 msgstr ""
 
-#: pycross/forms.py:2099
+#: pycross/forms.py:2105
 msgid "Normal style"
 msgstr ""
 
-#: pycross/forms.py:2100
+#: pycross/forms.py:2106
 msgid "Normal font color"
 msgstr ""
 
-#: pycross/forms.py:2104
+#: pycross/forms.py:2110
 msgid "Incomplete color"
 msgstr ""
 
-#: pycross/forms.py:2105
+#: pycross/forms.py:2111
 msgid "Incomplete style"
 msgstr ""
 
-#: pycross/forms.py:2106
+#: pycross/forms.py:2112
 msgid "Incomplete font color"
 msgstr ""
 
-#: pycross/forms.py:2110
+#: pycross/forms.py:2116
 msgid "Complete color"
 msgstr ""
 
-#: pycross/forms.py:2111
+#: pycross/forms.py:2117
 msgid "Complete style"
 msgstr ""
 
-#: pycross/forms.py:2112
+#: pycross/forms.py:2118
 msgid "Complete font color"
 msgstr ""
 
-#: pycross/forms.py:2125
+#: pycross/forms.py:2131
 msgid "Columns"
 msgstr ""
 
-#: pycross/forms.py:2128
+#: pycross/forms.py:2134
 msgid "Check / uncheck items to show or hide columns, drag to reorder"
 msgstr ""
 
-#: pycross/forms.py:2175
+#: pycross/forms.py:2181
 msgid "Default language:"
 msgstr ""
 
-#: pycross/forms.py:2179
+#: pycross/forms.py:2185
 msgid "Dictionaries"
 msgstr ""
 
-#: pycross/forms.py:2184
+#: pycross/forms.py:2190
 msgid "UNKNOWN"
 msgstr ""
 
-#: pycross/forms.py:2186
+#: pycross/forms.py:2192
 msgid "Merriam-Webster Dictionary API key (empty string to use default)"
 msgstr ""
 
-#: pycross/forms.py:2188
+#: pycross/forms.py:2194
 msgid "Yandex Dictionary API key (empty string to use default)"
 msgstr ""
 
-#: pycross/forms.py:2189 pycross/forms.py:2260
+#: pycross/forms.py:2195 pycross/forms.py:2266
 msgid "Show:"
 msgstr ""
 
-#: pycross/forms.py:2190
+#: pycross/forms.py:2196
 msgid "Exact word match:"
 msgstr ""
 
-#: pycross/forms.py:2191
+#: pycross/forms.py:2197
 msgid "Show parts of speech:"
 msgstr ""
 
-#: pycross/forms.py:2192
+#: pycross/forms.py:2198
 msgid "Unknown parts of speech:"
 msgstr ""
 
-#: pycross/forms.py:2193
+#: pycross/forms.py:2199
 msgid "Merriam-Webster Dictionary API key:"
 msgstr ""
 
-#: pycross/forms.py:2194
+#: pycross/forms.py:2200
 msgid "Yandex Dictionary API key:"
 msgstr ""
 
-#: pycross/forms.py:2199
+#: pycross/forms.py:2205
 msgid "Google Search"
 msgstr ""
 
-#: pycross/forms.py:2205
+#: pycross/forms.py:2211
 msgid "Add file types delimited by SPACE, e.g. \"txt doc pdf\""
 msgstr ""
 
-#: pycross/forms.py:2206 pycross/forms.py:2220 pycross/forms.py:2234
+#: pycross/forms.py:2212 pycross/forms.py:2226 pycross/forms.py:2240
 msgid "ALL"
 msgstr ""
 
-#: pycross/forms.py:2211
+#: pycross/forms.py:2217
 msgid "Search documents restricted only to checked languages"
 msgstr ""
 
-#: pycross/forms.py:2225
+#: pycross/forms.py:2231
 msgid "Search using only checked interface languages"
 msgstr ""
 
-#: pycross/forms.py:2239
+#: pycross/forms.py:2245
 msgid "Search in checked locations only"
 msgstr ""
 
-#: pycross/forms.py:2252
+#: pycross/forms.py:2258
 msgid "Limit returned results for page (-1 = no limit)"
 msgstr ""
 
-#: pycross/forms.py:2256
+#: pycross/forms.py:2262
 msgid "Google Custom Search API key (empty string to use default)"
 msgstr ""
 
-#: pycross/forms.py:2258
+#: pycross/forms.py:2264
 msgid "Google Custom Search CSE ID (empty string to use default)"
 msgstr ""
 
-#: pycross/forms.py:2261
+#: pycross/forms.py:2267
 msgid "Exact phrase:"
 msgstr ""
 
-#: pycross/forms.py:2262
+#: pycross/forms.py:2268
 msgid "File types:"
 msgstr ""
 
-#: pycross/forms.py:2264
+#: pycross/forms.py:2270
 msgid "Document languages:"
 msgstr ""
 
-#: pycross/forms.py:2266
+#: pycross/forms.py:2272
 msgid "Interface languages:"
 msgstr ""
 
-#: pycross/forms.py:2268
+#: pycross/forms.py:2274
 msgid "Locations:"
 msgstr ""
 
-#: pycross/forms.py:2269
+#: pycross/forms.py:2275
 msgid "Link site:"
 msgstr ""
 
-#: pycross/forms.py:2270
+#: pycross/forms.py:2276
 msgid "Related (parent) site:"
 msgstr ""
 
-#: pycross/forms.py:2271
+#: pycross/forms.py:2277
 msgid "Search in site:"
 msgstr ""
 
-#: pycross/forms.py:2272
+#: pycross/forms.py:2278
 msgid "Results per page:"
 msgstr ""
 
-#: pycross/forms.py:2273
+#: pycross/forms.py:2279
 msgid "Safe filter:"
 msgstr ""
 
-#: pycross/forms.py:2274
+#: pycross/forms.py:2280
 msgid "Google Custom Search API key:"
 msgstr ""
 
-#: pycross/forms.py:2275
+#: pycross/forms.py:2281
 msgid "Google Custom Search CSE ID:"
 msgstr ""
 
-#: pycross/forms.py:2290 pycross/forms.py:5401
+#: pycross/forms.py:2296 pycross/forms.py:5435
 msgid "Export"
 msgstr ""
 
-#: pycross/forms.py:2296 pycross/forms.py:2299
+#: pycross/forms.py:2302 pycross/forms.py:2305
 msgid " dpi"
 msgstr ""
 
-#: pycross/forms.py:2302 pycross/forms.py:2455 pycross/forms.py:2458
-#: pycross/forms.py:2461 pycross/forms.py:2464
+#: pycross/forms.py:2308 pycross/forms.py:2461 pycross/forms.py:2464
+#: pycross/forms.py:2467 pycross/forms.py:2470
 msgid " mm"
 msgstr ""
 
-#: pycross/forms.py:2306
+#: pycross/forms.py:2312
 msgid "Quality in percent (set to -1 for auto quality)"
 msgstr ""
 
-#: pycross/forms.py:2307 pycross/forms.py:2309 pycross/forms.py:2442
-#: pycross/forms.py:4399
+#: pycross/forms.py:2313 pycross/forms.py:2315 pycross/forms.py:2448
+#: pycross/forms.py:4433
 msgid "Auto"
 msgstr ""
 
-#: pycross/forms.py:2319
+#: pycross/forms.py:2325
 msgid "Image resolution"
 msgstr ""
 
-#: pycross/forms.py:2320
+#: pycross/forms.py:2326
 msgid "PDF resolution"
 msgstr ""
 
-#: pycross/forms.py:2321
+#: pycross/forms.py:2327
 msgid "Image quality"
 msgstr ""
 
-#: pycross/forms.py:2322
+#: pycross/forms.py:2328
 msgid "Output grid cell size"
 msgstr ""
 
-#: pycross/forms.py:2323
+#: pycross/forms.py:2329
 msgid "SVG image title"
 msgstr ""
 
-#: pycross/forms.py:2324
+#: pycross/forms.py:2330
 msgid "SVG image description"
 msgstr ""
 
-#: pycross/forms.py:2325
+#: pycross/forms.py:2331
 msgid "Clear crossword before export"
 msgstr ""
 
-#: pycross/forms.py:2326
+#: pycross/forms.py:2332
 msgid "Open exported file"
 msgstr ""
 
-#: pycross/forms.py:2340
+#: pycross/forms.py:2346
 msgid "Plugin"
 msgstr ""
 
-#: pycross/forms.py:2340
+#: pycross/forms.py:2346
 msgid "Value"
 msgstr ""
 
-#: pycross/forms.py:2345 pycross/forms.py:2364 pycross/forms.py:2388
+#: pycross/forms.py:2351 pycross/forms.py:2370 pycross/forms.py:2394
 msgid "Enabled"
 msgstr ""
 
-#: pycross/forms.py:2362
+#: pycross/forms.py:2368
 msgid "SQLite Editor"
 msgstr ""
 
-#: pycross/forms.py:2377 pycross/forms.py:2401
+#: pycross/forms.py:2383 pycross/forms.py:2407
 msgid "Commands"
 msgstr ""
 
-#: pycross/forms.py:2386
+#: pycross/forms.py:2392
 msgid "Text Editor"
 msgstr ""
 
-#: pycross/forms.py:2442 pycross/forms.py:4399
+#: pycross/forms.py:2448 pycross/forms.py:4433
 msgid "Portrait"
 msgstr ""
 
-#: pycross/forms.py:2442 pycross/forms.py:4399
+#: pycross/forms.py:2448 pycross/forms.py:4433
 msgid "Landscape"
 msgstr ""
 
-#: pycross/forms.py:2447
+#: pycross/forms.py:2453
 msgid "Page layout"
 msgstr ""
 
-#: pycross/forms.py:2448
+#: pycross/forms.py:2454
 msgid "Crossword title"
 msgstr ""
 
-#: pycross/forms.py:2449
+#: pycross/forms.py:2455
 msgid "Clues title (header)"
 msgstr ""
 
-#: pycross/forms.py:2451 pycross/forms.py:4446
+#: pycross/forms.py:2457 pycross/forms.py:4480
 msgid "Margins"
 msgstr ""
 
-#: pycross/forms.py:2470
+#: pycross/forms.py:2476
 msgid "Embed fonts"
 msgstr ""
 
-#: pycross/forms.py:2471
+#: pycross/forms.py:2477
 msgid "Antialiasing"
 msgstr ""
 
-#: pycross/forms.py:2472
+#: pycross/forms.py:2478
 msgid "Print crossword grid"
 msgstr ""
 
-#: pycross/forms.py:2473
+#: pycross/forms.py:2479
 msgid "Print clues"
 msgstr ""
 
-#: pycross/forms.py:2476
+#: pycross/forms.py:2482
 msgid "Include word size hint"
 msgstr ""
 
-#: pycross/forms.py:2478
+#: pycross/forms.py:2484
 msgid "Print crossword information"
 msgstr ""
 
-#: pycross/forms.py:2479
+#: pycross/forms.py:2485
 msgid "Colored output"
 msgstr ""
 
-#: pycross/forms.py:2480
+#: pycross/forms.py:2486
 msgid "Open file (PDF) on print complete"
 msgstr ""
 
-#: pycross/forms.py:2482
+#: pycross/forms.py:2488
 msgid "Fonts"
 msgstr ""
 
-#: pycross/forms.py:2530
+#: pycross/forms.py:2536
 msgid "Title color"
 msgstr ""
 
-#: pycross/forms.py:2531
+#: pycross/forms.py:2537
 msgid "Title font"
 msgstr ""
 
-#: pycross/forms.py:2532
+#: pycross/forms.py:2538
 msgid "Info color"
 msgstr ""
 
-#: pycross/forms.py:2533
+#: pycross/forms.py:2539
 msgid "Info font"
 msgstr ""
 
-#: pycross/forms.py:2534
+#: pycross/forms.py:2540
 msgid "Clues color"
 msgstr ""
 
-#: pycross/forms.py:2535
+#: pycross/forms.py:2541
 msgid "Clues font"
 msgstr ""
 
-#: pycross/forms.py:2538
+#: pycross/forms.py:2544
 msgid "Word size hint color"
 msgstr ""
 
-#: pycross/forms.py:2539
+#: pycross/forms.py:2545
 msgid "Word size hint font"
 msgstr ""
 
-#: pycross/forms.py:2567
+#: pycross/forms.py:2573
 msgid " days"
 msgstr ""
 
-#: pycross/forms.py:2568
+#: pycross/forms.py:2574
 msgid "Set to -1 to disable update checks"
 msgstr ""
 
-#: pycross/forms.py:2574
+#: pycross/forms.py:2580
 msgid "Log file for update operations"
 msgstr ""
 
-#: pycross/forms.py:2576
+#: pycross/forms.py:2582
 msgid "Check for updates every"
 msgstr ""
 
-#: pycross/forms.py:2577
+#: pycross/forms.py:2583
 msgid "Check / update major releases only"
 msgstr ""
 
-#: pycross/forms.py:2578
+#: pycross/forms.py:2584
 msgid "Auto update"
 msgstr ""
 
-#: pycross/forms.py:2579
+#: pycross/forms.py:2585
 msgid "Restart on update"
 msgstr ""
 
-#: pycross/forms.py:2580
+#: pycross/forms.py:2586
 msgid "Log file"
 msgstr ""
 
-#: pycross/forms.py:2591
+#: pycross/forms.py:2597
 msgid "Kloudless account ID (leave EMPTY for default)"
 msgstr ""
 
-#: pycross/forms.py:2593
+#: pycross/forms.py:2599
 msgid "Kloudless Bearer Token (leave EMPTY for default)"
 msgstr ""
 
-#: pycross/forms.py:2595
+#: pycross/forms.py:2601
 msgid "Kloudless root folder (leave EMPTY for default)"
 msgstr ""
 
-#: pycross/forms.py:2597
+#: pycross/forms.py:2603
 msgid "Kloudless username (leave EMPTY to create new user automatically)"
 msgstr ""
 
-#: pycross/forms.py:2599
+#: pycross/forms.py:2605
 msgid ""
 "Check this to use one single API key for authentication (WARNING! NOT "
 "SAFE!)"
 msgstr ""
 
-#: pycross/forms.py:2601
+#: pycross/forms.py:2607
 msgid ""
 "Use app inbuilt browser to open share links (otherwise, use system "
 "browser)"
 msgstr ""
 
-#: pycross/forms.py:2603
+#: pycross/forms.py:2609
 msgid "Kloudless account ID"
 msgstr ""
 
-#: pycross/forms.py:2604
+#: pycross/forms.py:2610
 msgid "Kloudless Bearer Token"
 msgstr ""
 
-#: pycross/forms.py:2605
+#: pycross/forms.py:2611
 msgid "Kloudless root folder"
 msgstr ""
 
-#: pycross/forms.py:2606
+#: pycross/forms.py:2612
 msgid "Kloudless username"
 msgstr ""
 
-#: pycross/forms.py:2607
+#: pycross/forms.py:2613
 msgid "Use API key"
 msgstr ""
 
-#: pycross/forms.py:2608
+#: pycross/forms.py:2614
 msgid "Use inbuilt browser"
 msgstr ""
 
-#: pycross/forms.py:2618 pycross/gui.py:1170
-msgid "Direction"
-msgstr ""
-
-#: pycross/forms.py:2691 pycross/forms.py:3837
+#: pycross/forms.py:2697 pycross/forms.py:3843
 msgid "No user data in src!"
 msgstr ""
 
-#: pycross/forms.py:3171 pycross/forms.py:4031
+#: pycross/forms.py:3177 pycross/forms.py:4037
 msgid "Unregister file associations"
 msgstr ""
 
-#: pycross/forms.py:3741
+#: pycross/forms.py:3747
 msgid ""
 "Press YES to restore defaults only for current page and YES TO ALL to "
 "restore all default settings"
 msgstr ""
 
-#: pycross/forms.py:3751
+#: pycross/forms.py:3757
 msgid ""
 "Press YES to load settings only for current page and YES TO ALL to load "
 "all settings"
 msgstr ""
 
-#: pycross/forms.py:3752
+#: pycross/forms.py:3758
 msgid "Load defaults"
 msgstr ""
 
-#: pycross/forms.py:3757 pycross/forms.py:3769
+#: pycross/forms.py:3763 pycross/forms.py:3775
 msgid "Settings files (*.pxjson)"
 msgstr ""
 
-#: pycross/forms.py:3762
+#: pycross/forms.py:3768
 msgid "File '{}' has a wrong format or incomplete settings!"
 msgstr ""
 
-#: pycross/forms.py:3916
+#: pycross/forms.py:3922
 msgid "Choose font"
 msgstr ""
 
-#: pycross/forms.py:4034
+#: pycross/forms.py:4040
 msgid "Could not assign file associations!"
 msgstr ""
 
-#: pycross/forms.py:4172 pycross/forms.py:4705
+#: pycross/forms.py:4170
+msgid "Configure grid..."
+msgstr ""
+
+#: pycross/forms.py:4206 pycross/forms.py:4739
 msgid "Word Lookup"
 msgstr ""
 
-#: pycross/forms.py:4179
+#: pycross/forms.py:4213
 msgid "Suggestions for:"
 msgstr ""
 
-#: pycross/forms.py:4181
+#: pycross/forms.py:4215
 msgid "Use '{}' as blank symbol"
 msgstr ""
 
-#: pycross/forms.py:4191
+#: pycross/forms.py:4225
 msgid "Refresh"
 msgstr ""
 
-#: pycross/forms.py:4193
+#: pycross/forms.py:4227
 msgid "Sort"
 msgstr ""
 
-#: pycross/forms.py:4197
+#: pycross/forms.py:4231
 msgid "Sources..."
 msgstr ""
 
-#: pycross/forms.py:4202
+#: pycross/forms.py:4236
 msgid "Truncate"
 msgstr ""
 
-#: pycross/forms.py:4203
+#: pycross/forms.py:4237
 msgid "Uncheck to retrieve all results with no truncation"
 msgstr ""
 
-#: pycross/forms.py:4239
+#: pycross/forms.py:4273
 msgid "No word selected!"
 msgstr ""
 
-#: pycross/forms.py:4254
+#: pycross/forms.py:4288
 msgid "{} result{}"
 msgstr ""
 
-#: pycross/forms.py:4336
+#: pycross/forms.py:4370
 msgid "No valid printer!"
 msgstr ""
 
-#: pycross/forms.py:4339
+#: pycross/forms.py:4373
 msgid "Crossword not available!"
 msgstr ""
 
-#: pycross/forms.py:4344
+#: pycross/forms.py:4378
 msgid "Printing to: {}"
 msgstr ""
 
-#: pycross/forms.py:4387
+#: pycross/forms.py:4421
 msgid "Page Size"
 msgstr ""
 
-#: pycross/forms.py:4391
+#: pycross/forms.py:4425
 msgid "Single"
 msgstr ""
 
-#: pycross/forms.py:4391
+#: pycross/forms.py:4425
 msgid "Two"
 msgstr ""
 
-#: pycross/forms.py:4391
+#: pycross/forms.py:4425
 msgid "All"
 msgstr ""
 
-#: pycross/forms.py:4395
+#: pycross/forms.py:4429
 msgid "View"
 msgstr ""
 
-#: pycross/forms.py:4403
+#: pycross/forms.py:4437
 msgid "Layout"
 msgstr ""
 
-#: pycross/forms.py:4406
+#: pycross/forms.py:4440
 msgid "Zoom to width"
 msgstr ""
 
-#: pycross/forms.py:4407
+#: pycross/forms.py:4441
 msgid "Zoom to window width"
 msgstr ""
 
-#: pycross/forms.py:4409
+#: pycross/forms.py:4443 pycross/gui.py:377
 msgid "Fit in window"
 msgstr ""
 
-#: pycross/forms.py:4410
+#: pycross/forms.py:4444
 msgid "Zoom to window size"
 msgstr ""
 
-#: pycross/forms.py:4417
+#: pycross/forms.py:4451
 msgid "Zoom %"
 msgstr ""
 
-#: pycross/forms.py:4419
+#: pycross/forms.py:4453
 msgid "Fit & Zoom"
 msgstr ""
 
-#: pycross/forms.py:4423
+#: pycross/forms.py:4457
 msgid "Greyscale"
 msgstr ""
 
-#: pycross/forms.py:4423
+#: pycross/forms.py:4457
 msgid "Color"
 msgstr ""
 
-#: pycross/forms.py:4427
+#: pycross/forms.py:4461
 msgid "Color Print"
 msgstr ""
 
-#: pycross/forms.py:4432
+#: pycross/forms.py:4466
 msgid "Left, mm"
 msgstr ""
 
-#: pycross/forms.py:4436
+#: pycross/forms.py:4470
 msgid "Right, mm"
 msgstr ""
 
-#: pycross/forms.py:4440
+#: pycross/forms.py:4474
 msgid "Top, mm"
 msgstr ""
 
-#: pycross/forms.py:4444
+#: pycross/forms.py:4478
 msgid "Bottom, mm"
 msgstr ""
 
-#: pycross/forms.py:4452
+#: pycross/forms.py:4486
 msgid "Configure additional printing settings"
 msgstr ""
 
-#: pycross/forms.py:4633
+#: pycross/forms.py:4667
 msgid "Crossword Info"
 msgstr ""
 
-#: pycross/forms.py:4650
+#: pycross/forms.py:4684
 msgid "Title:"
 msgstr ""
 
-#: pycross/forms.py:4651 pycross/forms.py:5289
+#: pycross/forms.py:4685 pycross/forms.py:5323
 msgid "Author:"
 msgstr ""
 
-#: pycross/forms.py:4652
+#: pycross/forms.py:4686
 msgid "Editor:"
 msgstr ""
 
-#: pycross/forms.py:4653
+#: pycross/forms.py:4687
 msgid "Publisher:"
 msgstr ""
 
-#: pycross/forms.py:4654
+#: pycross/forms.py:4688
 msgid "Copyright:"
 msgstr ""
 
-#: pycross/forms.py:4655
+#: pycross/forms.py:4689
 msgid "Date:"
 msgstr ""
 
-#: pycross/forms.py:4737 pycross/gui.py:284
+#: pycross/forms.py:4771 pycross/gui.py:303
 msgid "Lookup word"
 msgstr ""
 
-#: pycross/forms.py:4750
+#: pycross/forms.py:4784
 msgid "Lookup in"
 msgstr ""
 
-#: pycross/forms.py:4752
+#: pycross/forms.py:4786
 msgid "Dictionary"
 msgstr ""
 
-#: pycross/forms.py:4755
+#: pycross/forms.py:4789
 msgid "Google"
 msgstr ""
 
-#: pycross/forms.py:4781
+#: pycross/forms.py:4815
 msgid "Language '{}' not available!"
 msgstr ""
 
-#: pycross/forms.py:4844
+#: pycross/forms.py:4878
 msgid "Choose entry / meaning:"
 msgstr ""
 
-#: pycross/forms.py:4851 pycross/forms.py:4874 pycross/forms.py:4906
-#: pycross/forms.py:4953 pycross/forms.py:5040 pycross/forms.py:5055
+#: pycross/forms.py:4885 pycross/forms.py:4908 pycross/forms.py:4940
+#: pycross/forms.py:4987 pycross/forms.py:5074 pycross/forms.py:5089
 msgid "Link"
 msgstr ""
 
-#: pycross/forms.py:4867
+#: pycross/forms.py:4901
 msgid "Choose link page:"
 msgstr ""
 
-#: pycross/forms.py:4888
+#: pycross/forms.py:4922
 msgid ""
 "Load failed with error:\n"
 "{}"
 msgstr ""
 
-#: pycross/forms.py:4914 pycross/forms.py:4961
+#: pycross/forms.py:4948 pycross/forms.py:4995
 msgid "UPDATING ..."
 msgstr ""
 
-#: pycross/forms.py:5072
+#: pycross/forms.py:5106
 msgid "Duplicate Grid"
 msgstr ""
 
-#: pycross/forms.py:5099
+#: pycross/forms.py:5133
 msgid "Duplication direction:"
 msgstr ""
 
-#: pycross/forms.py:5102
+#: pycross/forms.py:5136
 msgid "No border"
 msgstr ""
 
-#: pycross/forms.py:5105
+#: pycross/forms.py:5139
 msgid "Empty"
 msgstr ""
 
-#: pycross/forms.py:5107
+#: pycross/forms.py:5141
 msgid "Filled-Empty"
 msgstr ""
 
-#: pycross/forms.py:5109
+#: pycross/forms.py:5143
 msgid "Empty-Filled"
 msgstr ""
 
-#: pycross/forms.py:5111
+#: pycross/forms.py:5145
 msgid "Filled"
 msgstr ""
 
-#: pycross/forms.py:5120
+#: pycross/forms.py:5154
 msgid "Border style:"
 msgstr ""
 
-#: pycross/forms.py:5122
+#: pycross/forms.py:5156
 msgid "Duplicate options"
 msgstr ""
 
-#: pycross/forms.py:5124
+#: pycross/forms.py:5158
 msgid "Mirror"
 msgstr ""
 
-#: pycross/forms.py:5125
+#: pycross/forms.py:5159
 msgid "Mirror duplicate grids along duplication axis"
 msgstr ""
 
-#: pycross/forms.py:5127
+#: pycross/forms.py:5161
 msgid "Reverse"
 msgstr ""
 
-#: pycross/forms.py:5128
+#: pycross/forms.py:5162
 msgid "Reverse the sequence of duplicate grids"
 msgstr ""
 
-#: pycross/forms.py:5180
+#: pycross/forms.py:5214
 msgid "Authentication"
 msgstr ""
 
-#: pycross/forms.py:5200 pycross/forms.py:5203
+#: pycross/forms.py:5234 pycross/forms.py:5237
 msgid "{} field cannot be empty!"
 msgstr ""
 
-#: pycross/forms.py:5226 pycross/gui.py:332
+#: pycross/forms.py:5260 pycross/gui.py:356
 msgid "About"
 msgstr ""
 
-#: pycross/forms.py:5264
+#: pycross/forms.py:5298
 msgid "Send mail to {}"
 msgstr ""
 
-#: pycross/forms.py:5269
+#: pycross/forms.py:5303
 msgid "Visit {}"
 msgstr ""
 
-#: pycross/forms.py:5287
+#: pycross/forms.py:5321
 msgid "App name:"
 msgstr ""
 
-#: pycross/forms.py:5288
+#: pycross/forms.py:5322
 msgid "Version:"
 msgstr ""
 
-#: pycross/forms.py:5290
+#: pycross/forms.py:5324
 msgid "Email:"
 msgstr ""
 
-#: pycross/forms.py:5291
+#: pycross/forms.py:5325
 msgid "Website:"
 msgstr ""
 
-#: pycross/forms.py:5292
+#: pycross/forms.py:5326
 msgid "Acknowledgements:"
 msgstr ""
 
-#: pycross/forms.py:5310
+#: pycross/forms.py:5344
 msgid "Bearer Token required"
 msgstr ""
 
-#: pycross/forms.py:5326
+#: pycross/forms.py:5360
 msgid "Get token..."
 msgstr ""
 
-#: pycross/forms.py:5353
+#: pycross/forms.py:5387
 msgid "Your Bearer Token:"
 msgstr ""
 
-#: pycross/forms.py:5369 pycross/gui.py:216
+#: pycross/forms.py:5403 pycross/gui.py:223
 msgid "Share"
 msgstr ""
 
-#: pycross/forms.py:5382
+#: pycross/forms.py:5416
 msgid "My new crossword"
 msgstr ""
 
-#: pycross/forms.py:5384
+#: pycross/forms.py:5418
 msgid "pycrossword,crossword,python"
 msgstr ""
 
-#: pycross/forms.py:5389 pycross/forms.py:5410
+#: pycross/forms.py:5423 pycross/forms.py:5444
 msgid "Settings..."
 msgstr ""
 
-#: pycross/forms.py:5392
+#: pycross/forms.py:5426
 msgid "Target"
 msgstr ""
 
-#: pycross/forms.py:5393
+#: pycross/forms.py:5427
 msgid "Title"
 msgstr ""
 
-#: pycross/forms.py:5394
+#: pycross/forms.py:5428
 msgid "Tags"
 msgstr ""
 
-#: pycross/forms.py:5395
+#: pycross/forms.py:5429
 msgid "Source"
 msgstr ""
 
-#: pycross/forms.py:5396
+#: pycross/forms.py:5430
 msgid "Notes"
 msgstr ""
 
-#: pycross/gui.py:187
+#: pycross/gui.py:194
 msgid "Create new crossword"
 msgstr ""
 
-#: pycross/gui.py:191 pycross/utils/utils.py:515
+#: pycross/gui.py:198 pycross/utils/utils.py:590
 msgid "Open"
 msgstr ""
 
-#: pycross/gui.py:192
+#: pycross/gui.py:199
 msgid "Open crossword from file"
 msgstr ""
 
-#: pycross/gui.py:196 pycross/utils/utils.py:515
+#: pycross/gui.py:203 pycross/utils/utils.py:590
 msgid "Save"
 msgstr ""
 
-#: pycross/gui.py:197
+#: pycross/gui.py:204
 msgid "Save crossword"
 msgstr ""
 
-#: pycross/gui.py:201
+#: pycross/gui.py:208
 msgid "Save As..."
 msgstr ""
 
-#: pycross/gui.py:202
+#: pycross/gui.py:209
 msgid "Save crossword as new file"
 msgstr ""
 
-#: pycross/gui.py:206 pycross/utils/utils.py:516
+#: pycross/gui.py:213 pycross/utils/utils.py:591
 msgid "Close"
 msgstr ""
 
-#: pycross/gui.py:207
+#: pycross/gui.py:214
 msgid "Close current crossword"
 msgstr ""
 
-#: pycross/gui.py:212
+#: pycross/gui.py:219
 msgid "Reload crossword from file"
 msgstr ""
 
-#: pycross/gui.py:217
+#: pycross/gui.py:224
 msgid "Share crossword in social networks"
 msgstr ""
 
-#: pycross/gui.py:222
+#: pycross/gui.py:229 pycross/gui.py:2894 pycross/gui.py:3474
+#: pycross/gui.py:4066
 msgid "Edit crossword"
 msgstr ""
 
-#: pycross/gui.py:227
+#: pycross/gui.py:234
+msgid "Undo"
+msgstr ""
+
+#: pycross/gui.py:235
+msgid "Undo last action"
+msgstr ""
+
+#: pycross/gui.py:240
+msgid "Redo"
+msgstr ""
+
+#: pycross/gui.py:241
+msgid "Redo last action"
+msgstr ""
+
+#: pycross/gui.py:246
 msgid "Add row"
 msgstr ""
 
-#: pycross/gui.py:228
+#: pycross/gui.py:247
 msgid "Add row before selected"
 msgstr ""
 
-#: pycross/gui.py:232 pycross/gui.py:233
+#: pycross/gui.py:251 pycross/gui.py:252
 msgid "Delete row"
 msgstr ""
 
-#: pycross/gui.py:237
+#: pycross/gui.py:256
 msgid "Add column"
 msgstr ""
 
-#: pycross/gui.py:238
+#: pycross/gui.py:257
 msgid "Add column before selected"
 msgstr ""
 
-#: pycross/gui.py:242 pycross/gui.py:243
+#: pycross/gui.py:261 pycross/gui.py:262
 msgid "Delete column"
 msgstr ""
 
-#: pycross/gui.py:247
+#: pycross/gui.py:266
 msgid "Duplicate"
 msgstr ""
 
-#: pycross/gui.py:248
+#: pycross/gui.py:267
 msgid "Duplicate (reflect) grid cells to any direction"
 msgstr ""
 
-#: pycross/gui.py:252
+#: pycross/gui.py:271
 msgid "Generate"
 msgstr ""
 
-#: pycross/gui.py:253
+#: pycross/gui.py:272
 msgid "Generate (solve) crossword"
 msgstr ""
 
-#: pycross/gui.py:257
+#: pycross/gui.py:276
 msgid "Stop"
 msgstr ""
 
-#: pycross/gui.py:258
+#: pycross/gui.py:277
 msgid "Stop operation"
 msgstr ""
 
-#: pycross/gui.py:265
+#: pycross/gui.py:284
 msgid "Clear all words"
 msgstr ""
 
-#: pycross/gui.py:269 pycross/gui.py:270
+#: pycross/gui.py:288 pycross/gui.py:289
 msgid "Clear word"
 msgstr ""
 
-#: pycross/gui.py:274 pycross/gui.py:275
+#: pycross/gui.py:293 pycross/gui.py:294
 msgid "Erase word"
 msgstr ""
 
-#: pycross/gui.py:279 pycross/gui.py:280
+#: pycross/gui.py:298 pycross/gui.py:299
 msgid "Suggest word"
 msgstr ""
 
-#: pycross/gui.py:285
+#: pycross/gui.py:304
 msgid "Lookup word definition"
 msgstr ""
 
-#: pycross/gui.py:289 pycross/gui.py:290
+#: pycross/gui.py:308 pycross/gui.py:309 pycross/gui.py:4094
 msgid "Edit clue"
 msgstr ""
 
-#: pycross/gui.py:294
-msgid "Word sources"
-msgstr ""
-
-#: pycross/gui.py:295
-msgid "Select wordsources"
-msgstr ""
-
-#: pycross/gui.py:299
-msgid "Info"
-msgstr ""
-
-#: pycross/gui.py:300
-msgid "Show / edit crossword info (Ctrl+I)"
-msgstr ""
-
-#: pycross/gui.py:304
-msgid "Print"
-msgstr ""
-
-#: pycross/gui.py:305
-msgid "Print crossword and/or clues"
-msgstr ""
-
-#: pycross/gui.py:310
-msgid "Configure settings"
+#: pycross/gui.py:313
+msgid "Clear clues"
 msgstr ""
 
 #: pycross/gui.py:314
-msgid "Update"
+msgid "Clear all clues"
 msgstr ""
 
-#: pycross/gui.py:315
-msgid "Check for updates"
+#: pycross/gui.py:318
+msgid "Word sources"
 msgstr ""
 
-#: pycross/gui.py:319 pycross/utils/utils.py:517
-msgid "Help"
+#: pycross/gui.py:319
+msgid "Select wordsources"
 msgstr ""
 
-#: pycross/gui.py:320
-msgid "Show help"
+#: pycross/gui.py:323
+msgid "Info"
 msgstr ""
 
 #: pycross/gui.py:324
-msgid "API reference"
-msgstr ""
-
-#: pycross/gui.py:325
-msgid "Show API reference"
+msgid "Show / edit crossword info (Ctrl+I)"
 msgstr ""
 
 #: pycross/gui.py:328
-msgid "Contact author"
+msgid "Print"
 msgstr ""
 
 #: pycross/gui.py:329
-msgid "Write to author to leave feedback or report bug"
+msgid "Print crossword and/or clues"
 msgstr ""
 
-#: pycross/gui.py:333
-msgid "Show About"
-msgstr ""
-
-#: pycross/gui.py:337
-msgid "Show stats"
+#: pycross/gui.py:334
+msgid "Configure settings"
 msgstr ""
 
 #: pycross/gui.py:338
+msgid "Update"
+msgstr ""
+
+#: pycross/gui.py:339
+msgid "Check for updates"
+msgstr ""
+
+#: pycross/gui.py:343 pycross/utils/utils.py:592
+msgid "Help"
+msgstr ""
+
+#: pycross/gui.py:344
+msgid "Show help"
+msgstr ""
+
+#: pycross/gui.py:348
+msgid "API reference"
+msgstr ""
+
+#: pycross/gui.py:349
+msgid "Show API reference"
+msgstr ""
+
+#: pycross/gui.py:352
+msgid "Contact author"
+msgstr ""
+
+#: pycross/gui.py:353
+msgid "Write to author to leave feedback or report bug"
+msgstr ""
+
+#: pycross/gui.py:357
+msgid "Show About"
+msgstr ""
+
+#: pycross/gui.py:361
+msgid "Show stats"
+msgstr ""
+
+#: pycross/gui.py:362
 msgid "Show detailed crossword statistics"
 msgstr ""
 
-#: pycross/gui.py:342
+#: pycross/gui.py:366
 msgid "Quit"
 msgstr ""
 
-#: pycross/gui.py:343
+#: pycross/gui.py:367
 msgid "Quit application"
 msgstr ""
 
-#: pycross/gui.py:350
+#: pycross/gui.py:374
 msgid "Show / hide toolbar"
 msgstr ""
 
-#: pycross/gui.py:443
+#: pycross/gui.py:378
+msgid "Fit grid in window"
+msgstr ""
+
+#: pycross/gui.py:385
+msgid "Multiselect"
+msgstr ""
+
+#: pycross/gui.py:386
+msgid "Toggle multiple cell selection"
+msgstr ""
+
+#: pycross/gui.py:393
+msgid "Blank"
+msgstr ""
+
+#: pycross/gui.py:394
+msgid "Clear selected cells"
+msgstr ""
+
+#: pycross/gui.py:398
+msgid "Block"
+msgstr ""
+
+#: pycross/gui.py:399
+msgid "Block (fill) selected cells"
+msgstr ""
+
+#: pycross/gui.py:403
+msgid "Grey out"
+msgstr ""
+
+#: pycross/gui.py:404
+msgid "Grey out selected cells (fill with surrounding area color)"
+msgstr ""
+
+#: pycross/gui.py:529
 msgid "&Generate"
 msgstr ""
 
-#: pycross/gui.py:555
+#: pycross/gui.py:599
+msgid "Change crossword grid scale"
+msgstr ""
+
+#: pycross/gui.py:632
+msgid "Move column"
+msgstr ""
+
+#: pycross/gui.py:669
 msgid "Double-click to update"
 msgstr ""
 
-#: pycross/gui.py:596
+#: pycross/gui.py:710
 msgid "UPDATE SUCCEEDED"
 msgstr ""
 
-#: pycross/gui.py:757
+#: pycross/gui.py:901
 msgid "DB path {} unavailable!"
 msgstr ""
 
-#: pycross/gui.py:964 pycross/gui.py:980 pycross/gui.py:1202
+#: pycross/gui.py:1183 pycross/gui.py:1199 pycross/gui.py:1421
 msgid "ACROSS"
 msgstr ""
 
-#: pycross/gui.py:980 pycross/gui.py:1202
+#: pycross/gui.py:1199 pycross/gui.py:1421
 msgid "DOWN"
 msgstr ""
 
-#: pycross/gui.py:1021
+#: pycross/gui.py:1240
 msgid "No current word"
 msgstr ""
 
-#: pycross/gui.py:1025
+#: pycross/gui.py:1244
 msgid "No root item"
 msgstr ""
 
-#: pycross/gui.py:1172
+#: pycross/gui.py:1386
+msgid "Direction"
+msgstr ""
+
+#: pycross/gui.py:1388
 msgid "No."
 msgstr ""
 
-#: pycross/gui.py:1174
+#: pycross/gui.py:1390
 msgid "Clue"
 msgstr ""
 
-#: pycross/gui.py:1176
+#: pycross/gui.py:1392
 msgid "Letters"
 msgstr ""
 
-#: pycross/gui.py:1178
+#: pycross/gui.py:1394
 msgid "Reply"
 msgstr ""
 
-#: pycross/gui.py:1323
+#: pycross/gui.py:1542
 msgid "Uploaded '{}' to '{}'"
 msgstr ""
 
-#: pycross/gui.py:1333
+#: pycross/gui.py:1552
 msgid "Copied URL '{}' to clipboard"
 msgstr ""
 
-#: pycross/gui.py:1359 pycross/utils/onlineservices.py:348
+#: pycross/gui.py:1578 pycross/utils/onlineservices.py:440
 msgid "Enter your API key"
 msgstr ""
 
-#: pycross/gui.py:1375
+#: pycross/gui.py:1594
 msgid "Authorize your app on the webpage and paste the access token here."
 msgstr ""
 
-#: pycross/gui.py:1414
+#: pycross/gui.py:1633
 msgid "Opening share link..."
 msgstr ""
 
-#: pycross/gui.py:1445
+#: pycross/gui.py:1664
 msgid "Setting up cloud storage..."
 msgstr ""
 
-#: pycross/gui.py:1458
+#: pycross/gui.py:1677
 msgid "Exporting crossword..."
 msgstr ""
 
-#: pycross/gui.py:1475
+#: pycross/gui.py:1694
 msgid "Uploading file to cloud..."
 msgstr ""
 
-#: pycross/gui.py:1484
+#: pycross/gui.py:1703
 msgid "Finished"
 msgstr ""
 
-#: pycross/gui.py:1512
+#: pycross/gui.py:1731
 msgid ""
 "You don't have a registered user name for uploading and sharing files.\n"
 "Would you like to set a new user name yourself (YES) or let {} assign the"
 " name for you (NO)?"
 msgstr ""
 
-#: pycross/gui.py:1514 pycross/gui.py:1518 pycross/gui.py:1520
-#: pycross/gui.py:1524
+#: pycross/gui.py:1733 pycross/gui.py:1737 pycross/gui.py:1739
+#: pycross/gui.py:1743
 msgid "Create new user"
 msgstr ""
 
-#: pycross/gui.py:1518
+#: pycross/gui.py:1737
 msgid "Enter user name:"
 msgstr ""
 
-#: pycross/gui.py:1520
+#: pycross/gui.py:1739
 msgid "{} will generate a new user name automatically"
 msgstr ""
 
-#: pycross/gui.py:1523
+#: pycross/gui.py:1742
 msgid ""
 "Username {} is already occupied!\n"
 "User another name (YES) or create name for you (NO)?"
 msgstr ""
 
-#: pycross/gui.py:1602
+#: pycross/gui.py:1838
 msgid "Timeout occurred at {} seconds!"
 msgstr ""
 
-#: pycross/gui.py:1608
+#: pycross/gui.py:1844
 msgid "Stopped"
 msgstr ""
 
-#: pycross/gui.py:1616
+#: pycross/gui.py:1852
 msgid "Generation failed with error:{}{}"
 msgstr ""
 
-#: pycross/gui.py:1623
+#: pycross/gui.py:1859
 msgid "Generation finished!{}{}"
 msgstr ""
 
-#: pycross/gui.py:1623
+#: pycross/gui.py:1859
 msgid "Check OK"
 msgstr ""
 
-#: pycross/gui.py:1623
+#: pycross/gui.py:1859
 msgid "The following words failed validation: "
 msgstr ""
 
-#: pycross/gui.py:1624
+#: pycross/gui.py:1860
 msgid "Generation finished"
 msgstr ""
 
-#: pycross/gui.py:1679 pycross/gui.py:2695
-msgid "Crossword file (*.xpf *.ipuz)"
+#: pycross/gui.py:1919 pycross/gui.py:3040
+msgid "Crossword XPF file (*.xpf)"
 msgstr ""
 
-#: pycross/gui.py:1679 pycross/gui.py:2695
+#: pycross/gui.py:1919 pycross/gui.py:3040
+msgid "Crossword IPUZ file (*.ipuz)"
+msgstr ""
+
+#: pycross/gui.py:1919 pycross/gui.py:3040
 msgid "PDF file (*.pdf)"
 msgstr ""
 
-#: pycross/gui.py:1680 pycross/gui.py:2696
-msgid "Image file (*.jpg *.png *.tif *.tiff *.bmp)"
+#: pycross/gui.py:1920 pycross/gui.py:3041
+msgid "JPEG image (*.jpg)"
 msgstr ""
 
-#: pycross/gui.py:1680 pycross/gui.py:2696
+#: pycross/gui.py:1920 pycross/gui.py:3041
+msgid "Bitmap image (*.bmp)"
+msgstr ""
+
+#: pycross/gui.py:1920 pycross/gui.py:3041
+msgid "PNG image (*.png)"
+msgstr ""
+
+#: pycross/gui.py:1920 pycross/gui.py:3041
+msgid "TIFF image (*.tif)"
+msgstr ""
+
+#: pycross/gui.py:1920 pycross/gui.py:3041
 msgid "SVG vector image (*.svg)"
 msgstr ""
 
-#: pycross/gui.py:1681 pycross/gui.py:2697
+#: pycross/gui.py:1921 pycross/gui.py:3042
 msgid "Text file (*.txt)"
 msgstr ""
 
-#: pycross/gui.py:1722
+#: pycross/gui.py:1962
 msgid "Error saving crossword to '{}'"
 msgstr ""
 
-#: pycross/gui.py:1881
+#: pycross/gui.py:2120
 msgid "Printing error"
 msgstr ""
 
-#: pycross/gui.py:1920
+#: pycross/gui.py:2159
 msgid "by {}"
 msgstr ""
 
-#: pycross/gui.py:1926
+#: pycross/gui.py:2165
 msgid "Published by {}"
 msgstr ""
 
-#: pycross/gui.py:1932
+#: pycross/gui.py:2171
 msgid "© {}"
 msgstr ""
 
-#: pycross/gui.py:1966 pycross/gui.py:1990 pycross/gui.py:2006
-#: pycross/gui.py:2018
+#: pycross/gui.py:2205 pycross/gui.py:2229 pycross/gui.py:2245
+#: pycross/gui.py:2257
 msgid "Cannot make new page!"
 msgstr ""
 
-#: pycross/gui.py:2001
+#: pycross/gui.py:2240
 msgid "ACROSS:"
 msgstr ""
 
-#: pycross/gui.py:2001
+#: pycross/gui.py:2240
 msgid "DOWN:"
 msgstr ""
 
-#: pycross/gui.py:2047
+#: pycross/gui.py:2286
 msgid "[{} letters]"
 msgstr ""
 
-#: pycross/gui.py:2195
+#: pycross/gui.py:2436
 msgid "Update ready: v. {}"
 msgstr ""
 
-#: pycross/gui.py:2219
+#: pycross/gui.py:2460
 msgid ""
 "You have unsaved changes in your current crossword. Would you like to "
 "save them?"
 msgstr ""
 
-#: pycross/gui.py:2238
+#: pycross/gui.py:2479
 msgid "v. {}"
 msgstr ""
 
-#: pycross/gui.py:2313
+#: pycross/gui.py:2554
 msgid "Are you sure to apply new settings from \"{}\"?"
 msgstr ""
 
-#: pycross/gui.py:2603
+#: pycross/gui.py:2911
 msgid "Application update"
 msgstr ""
 
-#: pycross/gui.py:2604
+#: pycross/gui.py:2912
 msgid ""
 "Do you wish to update your current version {} to version {}\n"
 "(release date: {})?"
 msgstr ""
 
-#: pycross/gui.py:2612
+#: pycross/gui.py:2920
 msgid "No updates are available"
 msgstr ""
 
-#: pycross/gui.py:2671
+#: pycross/gui.py:3016
 msgid "Crossword files (*.xpf *.ipuz);;All files (*.*)"
 msgstr ""
 
-#: pycross/gui.py:2711
+#: pycross/gui.py:3056
 msgid ""
 "You have unsaved changes in your current crossword. Are you sure to "
 "reload it from the file (all changes will be lost)?"
 msgstr ""
 
-#: pycross/gui.py:2973
+#: pycross/gui.py:3137
+msgid "Undo {}"
+msgstr ""
+
+#: pycross/gui.py:3137 pycross/gui.py:3152
+msgid "last operaction"
+msgstr ""
+
+#: pycross/gui.py:3152
+msgid "Redo {}"
+msgstr ""
+
+#: pycross/gui.py:3513
+msgid "Would you like to clear all clues?"
+msgstr ""
+
+#: pycross/gui.py:3513
+msgid "Confirm action"
+msgstr ""
+
+#: pycross/gui.py:3628
+msgid "Change word clue"
+msgstr ""
+
+#: pycross/gui.py:3631
 msgid ""
 "No lookup sources are active! Please go to Settings (F11) to verify your "
 "lookup source configuration."
 msgstr ""
 
-#: pycross/gui.py:2974
+#: pycross/gui.py:3632
 msgid "No Lookup Sources"
 msgstr ""
 
-#: pycross/gui.py:3036
-msgid "To be implemented in next release ))"
+#: pycross/gui.py:3671
+msgid "Change crossword info"
 msgstr ""
 
-#: pycross/gui.py:3036
-msgid "Show help docs"
-msgstr ""
-
-#: pycross/gui.py:3051
+#: pycross/gui.py:3739
 msgid "Would you like to report a bug (YES) or just leave feedback (NO)?"
 msgstr ""
 
-#: pycross/gui.py:3051
+#: pycross/gui.py:3739
 msgid "Contact"
 msgstr ""
 
-#: pycross/gui.py:3168
+#: pycross/gui.py:3880
+msgid "Configure clues..."
+msgstr ""
+
+#: pycross/gui.py:3923
 msgid "Configure toolbar..."
 msgstr ""
 
-#: pycross/gui.py:3284
+#: pycross/gui.py:4116
 msgid "Language settings"
 msgstr ""
 
-#: pycross/guisettings.py:185
+#: pycross/guisettings.py:215
 msgid "File '{}' is unavailable or has an invalid format!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:75
+#: pycross/utils/onlineservices.py:138
 msgid "GOOGLE SEARCH REQUEST = '{}'"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:80
+#: pycross/utils/onlineservices.py:143
 msgid "GOOGLE SEARCH RESULT = '{}'"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:83
+#: pycross/utils/onlineservices.py:146
 msgid "Request returned error '{}', code = {}"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:86 pycross/utils/onlineservices.py:141
+#: pycross/utils/onlineservices.py:149 pycross/utils/onlineservices.py:225
 msgid "Request returned error {}"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:133
+#: pycross/utils/onlineservices.py:217
 msgid "DICTIONARY SEARCH REQUEST = '{}'"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:138
+#: pycross/utils/onlineservices.py:222
 msgid "DICTIONARY SEARCH RESULT = '{}'"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:251
+#: pycross/utils/onlineservices.py:343
 msgid "Failed to authenticate!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:264
+#: pycross/utils/onlineservices.py:356
 msgid "Unable to create/access folder '{}'!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:275
+#: pycross/utils/onlineservices.py:367
 msgid ""
 "No valid API key provided!\n"
 "Provide a valid API key or change your \"use_api_key\" settings\n"
 "to use a different authentication method."
 msgstr ""
 
-#: pycross/utils/onlineservices.py:281
+#: pycross/utils/onlineservices.py:373
 msgid ""
 "No valid Bearer token provided!\n"
 "Provide a valid Bearer token or change your \"use_api_key\" settings\n"
 "to use a different authentication method."
 msgstr ""
 
-#: pycross/utils/onlineservices.py:284
+#: pycross/utils/onlineservices.py:376
 msgid "Bearer token is invalid or expired!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:308
+#: pycross/utils/onlineservices.py:400
 msgid ""
 "CLOUD SENDING '{}' REQUEST = '{}',\n"
 "HEADERS = {},\n"
 "DATA = {}"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:320
+#: pycross/utils/onlineservices.py:412
 msgid "Empty result returned by request '{}'"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:322
+#: pycross/utils/onlineservices.py:414
 msgid "CLOUD REQUEST RESULT = '{}'"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:328
+#: pycross/utils/onlineservices.py:420
 msgid "Error returned by request '{}'"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:361
+#: pycross/utils/onlineservices.py:453
 msgid "Enter your Bearer token"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:430
+#: pycross/utils/onlineservices.py:522
 msgid "Empty folder ID passed to _get_folder_objects()!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:498 pycross/utils/onlineservices.py:572
+#: pycross/utils/onlineservices.py:590 pycross/utils/onlineservices.py:664
 msgid "Neither the folder ID not the user ID is valid!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:550
+#: pycross/utils/onlineservices.py:642
 msgid "You can delete other users only with a valid API key!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:556
+#: pycross/utils/onlineservices.py:648
 msgid "No current user present!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:579 pycross/utils/onlineservices.py:615
+#: pycross/utils/onlineservices.py:671 pycross/utils/onlineservices.py:707
 msgid "You cannot clear folders created by other users without a valid API key!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:608
+#: pycross/utils/onlineservices.py:700
 msgid "No folder ID provided"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:640
+#: pycross/utils/onlineservices.py:732
 msgid "Current user is not defined! Please create new user first."
 msgstr ""
 
-#: pycross/utils/onlineservices.py:643
+#: pycross/utils/onlineservices.py:735
 msgid "File '{}' is not accessable!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:692
+#: pycross/utils/onlineservices.py:784
 msgid "File '{}' already exists!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:711
+#: pycross/utils/onlineservices.py:803
 msgid "Empty file ID passed to create_file_link()!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:728
+#: pycross/utils/onlineservices.py:820
 msgid "Empty link ID passed to get_file_link()!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:740
+#: pycross/utils/onlineservices.py:832
 msgid "Empty link ID passed to update_file_link()!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:759
+#: pycross/utils/onlineservices.py:851
 msgid "Empty link ID passed to delete_file_link()!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:785
+#: pycross/utils/onlineservices.py:877
 msgid ""
 "Share object must be given a valid instance of Cloudstorage as the "
 "\"cloud\" argument!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:789
+#: pycross/utils/onlineservices.py:881
 msgid "See my new crossword"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:799
+#: pycross/utils/onlineservices.py:891
 msgid "Cannot find social network '{}'!"
 msgstr ""
 
-#: pycross/utils/onlineservices.py:816
+#: pycross/utils/onlineservices.py:908
 msgid "Malformed URL or file path!"
 msgstr ""
 
@@ -2951,6 +3066,22 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
+#: pycross/utils/undo.py:35
+msgid ""
+"command must be a dictionary type with \"func\" and optional \"args\" and"
+" \"kwargs\" keys!"
+msgstr ""
+
+#: pycross/utils/undo.py:40
+msgid ""
+"undocommand must be a dictionary type with \"func\" and optional \"args\""
+" and \"kwargs\" keys!"
+msgstr ""
+
+#: pycross/utils/undo.py:188
+msgid "command must be an instance of Operation class!"
+msgstr ""
+
 #: pycross/utils/update.py:12
 msgid ""
 "You do not appear to have a valid version of git installed!\n"
@@ -2973,51 +3104,51 @@ msgstr ""
 msgid "{} completed with error!"
 msgstr ""
 
-#: pycross/utils/utils.py:511
+#: pycross/utils/utils.py:586
 msgid "Yes"
 msgstr ""
 
-#: pycross/utils/utils.py:512
+#: pycross/utils/utils.py:587
 msgid "No"
 msgstr ""
 
-#: pycross/utils/utils.py:513
+#: pycross/utils/utils.py:588
 msgid "Yes to All"
 msgstr ""
 
-#: pycross/utils/utils.py:513
+#: pycross/utils/utils.py:588
 msgid "No to All"
 msgstr ""
 
-#: pycross/utils/utils.py:514
+#: pycross/utils/utils.py:589
 msgid "Apply"
 msgstr ""
 
-#: pycross/utils/utils.py:514
+#: pycross/utils/utils.py:589
 msgid "Reset"
 msgstr ""
 
-#: pycross/utils/utils.py:516
+#: pycross/utils/utils.py:591
 msgid "Discard"
 msgstr ""
 
-#: pycross/utils/utils.py:517
+#: pycross/utils/utils.py:592
 msgid "Restore Defaults"
 msgstr ""
 
-#: pycross/utils/utils.py:518
+#: pycross/utils/utils.py:593
 msgid "Save All"
 msgstr ""
 
-#: pycross/utils/utils.py:518
+#: pycross/utils/utils.py:593
 msgid "Abort"
 msgstr ""
 
-#: pycross/utils/utils.py:519
+#: pycross/utils/utils.py:594
 msgid "Retry"
 msgstr ""
 
-#: pycross/utils/utils.py:519
+#: pycross/utils/utils.py:594
 msgid "Ignore"
 msgstr ""
 
@@ -3068,5 +3199,14 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Plugin name cannot be empty!"
+#~ msgstr ""
+
+#~ msgid "Associate crossword files (*.xpf, *.ipuz) with {}"
+#~ msgstr ""
+
+#~ msgid "Crossword file (*.xpf *.ipuz)"
+#~ msgstr ""
+
+#~ msgid "Image file (*.jpg *.png *.tif *.tiff *.bmp)"
 #~ msgstr ""
 

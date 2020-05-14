@@ -78,14 +78,17 @@ $(function() {
 <div class="title">pycross.utils.onlineservices.OnlineDictionary Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Base (abstract) class for online dictionaries.  
+ <a href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.utils.onlineservices.OnlineDictionary:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.png" usemap="#pycross.utils.onlineservices.OnlineDictionary_map" alt=""/>
   <map id="pycross.utils.onlineservices.OnlineDictionary_map" name="pycross.utils.onlineservices.OnlineDictionary_map">
-<area href="classpycross_1_1utils_1_1onlineservices_1_1_m_w_dict.html" alt="pycross.utils.onlineservices.MWDict" shape="rect" coords="0,112,268,136"/>
-<area href="classpycross_1_1utils_1_1onlineservices_1_1_yandex_dict.html" alt="pycross.utils.onlineservices.YandexDict" shape="rect" coords="278,112,546,136"/>
+<area href="classpycross_1_1utils_1_1onlineservices_1_1_m_w_dict.html" title="Interface for Merriam-Webster Collegiate dictionary." alt="pycross.utils.onlineservices.MWDict" shape="rect" coords="0,112,268,136"/>
+<area href="classpycross_1_1utils_1_1onlineservices_1_1_yandex_dict.html" title="Interface for Yandex dictionary." alt="pycross.utils.onlineservices.YandexDict" shape="rect" coords="278,112,546,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -94,22 +97,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af286cefb2fdfaa4b7bff90b5ae2cfbdc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#af286cefb2fdfaa4b7bff90b5ae2cfbdc">__init__</a> (self, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#a862540cf076285152677c972ee735dab">settings</a>, url_template='', <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#acc1ea6d53f119909e254f53ce8aaaa79">timeout</a>=5000)</td></tr>
 <tr class="separator:af286cefb2fdfaa4b7bff90b5ae2cfbdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa482003aef334aa283759cbbc631694d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#aa482003aef334aa283759cbbc631694d">prepare_request_url</a> (self, word)</td></tr>
+<tr class="memdesc:aa482003aef334aa283759cbbc631694d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the search URL given a search word.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#aa482003aef334aa283759cbbc631694d">More...</a><br /></td></tr>
 <tr class="separator:aa482003aef334aa283759cbbc631694d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae0b84e40e6cbde247771dec7c0951ea"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#aae0b84e40e6cbde247771dec7c0951ea">get_definitions</a> (self, word, method='json')</td></tr>
+<tr class="memdesc:aae0b84e40e6cbde247771dec7c0951ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns full definitions for 'word' in JSON (python object) or raw text format.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#aae0b84e40e6cbde247771dec7c0951ea">More...</a><br /></td></tr>
 <tr class="separator:aae0b84e40e6cbde247771dec7c0951ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdc7360331307cfdfbf82436bf101b44"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#abdc7360331307cfdfbf82436bf101b44">get_short_defs</a> (self, word, exact_match=True, partsofspeech=None, bad_pos='UNKNOWN')</td></tr>
+<tr class="memdesc:abdc7360331307cfdfbf82436bf101b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the abridged definition for the given entry.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#abdc7360331307cfdfbf82436bf101b44">More...</a><br /></td></tr>
 <tr class="separator:abdc7360331307cfdfbf82436bf101b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a3524f585fad471d92f0da1a1f1fabef8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#a3524f585fad471d92f0da1a1f1fabef8">url</a></td></tr>
+<tr class="memdesc:a3524f585fad471d92f0da1a1f1fabef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">str&lsquo; search URL template with placeholders (&rsquo;{}') for parameters  <a href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#a3524f585fad471d92f0da1a1f1fabef8">More...</a><br /></td></tr>
 <tr class="separator:a3524f585fad471d92f0da1a1f1fabef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc1ea6d53f119909e254f53ce8aaaa79"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#acc1ea6d53f119909e254f53ce8aaaa79">timeout</a></td></tr>
+<tr class="memdesc:acc1ea6d53f119909e254f53ce8aaaa79"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> network request timeout (in msec.)  <a href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#acc1ea6d53f119909e254f53ce8aaaa79">More...</a><br /></td></tr>
 <tr class="separator:acc1ea6d53f119909e254f53ce8aaaa79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a862540cf076285152677c972ee735dab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#a862540cf076285152677c972ee735dab">settings</a></td></tr>
+<tr class="memdesc:a862540cf076285152677c972ee735dab"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dict</code> stored pointer to app global settings  <a href="classpycross_1_1utils_1_1onlineservices_1_1_online_dictionary.html#a862540cf076285152677c972ee735dab">More...</a><br /></td></tr>
 <tr class="separator:a862540cf076285152677c972ee735dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base (abstract) class for online dictionaries. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af286cefb2fdfaa4b7bff90b5ae2cfbdc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af286cefb2fdfaa4b7bff90b5ae2cfbdc">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -147,6 +158,14 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">settings</td><td><code>dict</code> pointer to the app settings dictionary (<code><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b" title="global app settings dictionary synched with settings files">pycross::guisettings::CWSettings::settings</a></code>) </td></tr>
+    <tr><td class="paramname">url_template</td><td><code>str</code> search URL template with placeholders ('{}') for parameters </td></tr>
+    <tr><td class="paramname">timeout</td><td><code>int</code> network request timeout (in msec.) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Reimplemented in <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_yandex_dict.html#a9acdeedbdfbfb8591758df1737ccf64e">pycross.utils.onlineservices.YandexDict</a>.</p>
 
@@ -184,8 +203,17 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Returns full definitions for 'word' in JSON (python object) or raw text format.
-</pre> 
+
+<p>Returns full definitions for 'word' in JSON (python object) or raw text format. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">word</td><td><code>str</code> search word </td></tr>
+    <tr><td class="paramname">method</td><td><code>str</code> parsing method to parse the results </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> | <code>str</code> search results; if <code>method</code> == 'json' (default), the results are parsed as a JSON-formatted string into a Python dictionary object. Otherwise, the raw result string is returned. </dd></dl>
+
 </div>
 </div>
 <a id="abdc7360331307cfdfbf82436bf101b44"></a>
@@ -231,17 +259,20 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Returns the abridged definition for the given entry.
-Params:
-- word [str]: the word query
-- exact_match [bool]: if True, only defitions for the exact word given by 'word' will be returned
-- partsofspeech [list or tuple]: parts of speech to get definitions for
-(None = all available)
-- bad_pos [str]: substitution for part of speech if unavailable        
-Returns:
-- list of short definitions in the format:
-[('word', 'part of speech', [list of defs], 'url'), ...]
-</pre> 
+
+<p>Returns the abridged definition for the given entry. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">word</td><td><code>str</code> the word query </td></tr>
+    <tr><td class="paramname">exact_match</td><td><code>bool</code> if <code>True</code>, only defitions for the exact word given by <code>word</code> will be returned </td></tr>
+    <tr><td class="paramname">partsofspeech</td><td><code>list</code>|<code>tuple</code> parts of speech to get definitions for (<code>None</code> = all available) </td></tr>
+    <tr><td class="paramname">bad_pos</td><td><code>str</code> substitution for part of speech if unavailable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> list of short definitions in the format: <div class="fragment"><div class="line">[(<span class="stringliteral">&#39;word&#39;</span>, <span class="stringliteral">&#39;part of speech&#39;</span>, [list of defs], <span class="stringliteral">&#39;url&#39;</span>), ...]</div>
+</div><!-- fragment --> </dd></dl>
+
 <p>Reimplemented in <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_yandex_dict.html#abc8efa2a0e37c3a100488e321e56b058">pycross.utils.onlineservices.YandexDict</a>, and <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_m_w_dict.html#a7c796e4998dc5f0f7e8225a55a1317f1">pycross.utils.onlineservices.MWDict</a>.</p>
 
 </div>
@@ -272,6 +303,15 @@ Returns:
       </table>
 </div><div class="memdoc">
 
+<p>Constructs the search URL given a search word. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">word</td><td><code>str</code> search word </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> prepared search URL </dd></dl>
+
 <p>Reimplemented in <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_yandex_dict.html#a9875320fd79cc9f5642be6582a8b4304">pycross.utils.onlineservices.YandexDict</a>, and <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_m_w_dict.html#af08d9d749e9efba02ec9269653a65ea5">pycross.utils.onlineservices.MWDict</a>.</p>
 
 </div>
@@ -289,6 +329,8 @@ Returns:
       </table>
 </div><div class="memdoc">
 
+<p><code>dict</code> stored pointer to app global settings </p>
+
 </div>
 </div>
 <a id="acc1ea6d53f119909e254f53ce8aaaa79"></a>
@@ -303,6 +345,8 @@ Returns:
       </table>
 </div><div class="memdoc">
 
+<p><code>int</code> network request timeout (in msec.) </p>
+
 </div>
 </div>
 <a id="a3524f585fad471d92f0da1a1f1fabef8"></a>
@@ -316,6 +360,8 @@ Returns:
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>str&lsquo; search URL template with placeholders (&rsquo;{}') for parameters </p>
 
 </div>
 </div>

@@ -91,11 +91,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a86210c3aeaaf3a3c72bab46164bcf887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers an action of the app main window.  <a href="classpycross_1_1utils_1_1pluginmanager_1_1_px_a_p_i.html#a86210c3aeaaf3a3c72bab46164bcf887">More...</a><br /></td></tr>
 <tr class="separator:a86210c3aeaaf3a3c72bab46164bcf887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb6c0f1a9e263ecda5584d0606033ace"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1pluginmanager_1_1_px_a_p_i.html#abb6c0f1a9e263ecda5584d0606033ace">global_options</a> (self, option=None, option_sep='/')</td></tr>
-<tr class="memdesc:abb6c0f1a9e263ecda5584d0606033ace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the global options dict <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">guisettings::CWSettings::settings</a>.  <a href="classpycross_1_1utils_1_1pluginmanager_1_1_px_a_p_i.html#abb6c0f1a9e263ecda5584d0606033ace">More...</a><br /></td></tr>
+<tr class="memdesc:abb6c0f1a9e263ecda5584d0606033ace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the global options dict <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b" title="global app settings dictionary synched with settings files">guisettings::CWSettings::settings</a>.  <a href="classpycross_1_1utils_1_1pluginmanager_1_1_px_a_p_i.html#abb6c0f1a9e263ecda5584d0606033ace">More...</a><br /></td></tr>
 <tr class="separator:abb6c0f1a9e263ecda5584d0606033ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2abbdcd4a546c7a0ed77c6662a0b4123"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1pluginmanager_1_1_px_a_p_i.html#a2abbdcd4a546c7a0ed77c6662a0b4123">get_prop</a> (self, propname, default=None)</td></tr>
 <tr class="memdesc:a2abbdcd4a546c7a0ed77c6662a0b4123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for the main window members by their name.  <a href="classpycross_1_1utils_1_1pluginmanager_1_1_px_a_p_i.html#a2abbdcd4a546c7a0ed77c6662a0b4123">More...</a><br /></td></tr>
 <tr class="separator:a2abbdcd4a546c7a0ed77c6662a0b4123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2d5bcd0d7f6a0a95c8e722af000bec6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1pluginmanager_1_1_px_a_p_i.html#ae2d5bcd0d7f6a0a95c8e722af000bec6">__getattr__</a> (self, attr)</td></tr>
+<tr class="separator:ae2d5bcd0d7f6a0a95c8e722af000bec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -138,6 +140,34 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae2d5bcd0d7f6a0a95c8e722af000bec6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2d5bcd0d7f6a0a95c8e722af000bec6">&#9670;&nbsp;</a></span>__getattr__()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.pluginmanager.PxAPI.__getattr__ </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>attr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2abbdcd4a546c7a0ed77c6662a0b4123"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2abbdcd4a546c7a0ed77c6662a0b4123">&#9670;&nbsp;</a></span>get_prop()</h2>
 
@@ -178,6 +208,7 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>member of the main window instance </dd></dl>
 
 </div>
 </div>
@@ -213,7 +244,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns a pointer to the global options dict <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b">guisettings::CWSettings::settings</a>. </p>
+<p>Returns a pointer to the global options dict <a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b" title="global app settings dictionary synched with settings files">guisettings::CWSettings::settings</a>. </p>
 
 </div>
 </div>

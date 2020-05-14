@@ -328,6 +328,16 @@ def register_file_types(filetypes=('xpf', 'ipuz', 'pxjson'), register=True):
     return False
 
 ## @brief Plugin decorator for custom plugins.
+# Searches the Plugin manager for methods (function) in the given category
+# having the same name as the wrapped method and calls the plugin methods in
+# the order as stored in the Plugin manager for that category. 
+# Plugin methods can be called:
+#   * _before_ the original method
+#   * _after_ the original method
+#   * _instead of_ the original method,
+# depending on the `wraptype` attribute of the plugin method ('before', 'after' or 'replace'). 
+# @param category `str` name of the plugin category (e.g. 'general')
+# @see utils.pluginmanager, utils.pluginbase
 def pluggable(category):
     def plugin_general(func):
         @wraps(func)
@@ -364,6 +374,19 @@ def pluggable(category):
         return wrapped
     return plugin_general
 
+## @brief Collects the names and signatures of wrapped methods from a class instance.
+# Used in this app to generate the list of pycross::gui::MainWindow methods
+# that can be overridden in user plugin classes.
+# @param parent_object `Python object` object that defines wrapped methods.
+# @warning Only decorated methods will be retrieved by this function! This is done
+# on purpose so that the object may expose only specific methods for plugins.
+# @param indent `str` indentation for method docs, if present
+# @returns `list of str` list of wrapped method signatures, e.g.:
+# ```
+# ['def foo(arg1, arg2):', 
+#  'def bar():', 
+#  'def commentedfunc():\n    This is comment']
+# ```
 def collect_pluggables(parent_object, indent='    '):
     methods = []
     for itemname in dir(parent_object):
@@ -389,6 +412,9 @@ def collect_pluggables(parent_object, indent='    '):
     methods.sort()
     return methods
 
+## Collects the names and signatures of builtin Python functions.
+# @returns `list of str` list of names and signatures, e.g. 'sort(iterable, key)'
+# @see collect_pluggables()
 def get_builtins():
     res = []
     for elname in dir(builtins):
@@ -402,6 +428,14 @@ def get_builtins():
             res.append(elname)
     return res
 
+## @brief Retrieves the names of all variables in the given Python script.
+# This function collects all variables (builtin, global, local) that the given
+# script references or creates using the [Jedi autocompletion package](https://jedi.readthedocs.io/en/latest/).
+# The resulting list of names can be then used for autocompletion. This app uses
+# this function in the user plugin script editor. 
+# @param script `str` source script in Python
+# @returns `list of str` list of referenced variables (functions also have signatures, 
+# i.e. arguments in brackets)
 def get_script_members(script):
     #jscript = jedi.Script(script, _project=jedi.api.Project(os.path.abspath('utils')))
     jscript = jedi.Script(script, sys_path=sys.path + [os.path.abspath(os.path.dirname(__file__))])
@@ -458,6 +492,23 @@ class QThreadStump(QtCore.QThread):
             pass
 
     ## Initializes signals binding them to callbacks and other members.
+    # @param default_priority `int` thread default priority (default = normal)
+    # @param on_start `callable` callback function called before the main
+    # operation is executed (callback has no args or returned result)
+    # @param on_finish `callable` callback function called after the main
+    # operation completes (callback has no args or returned result)
+    # @param on_run `callable` callback function for the main
+    # operation (callback has no args or returned result)
+    # @param on_error `callable` callback function to handle exceptions
+    # raised during the thread operation (see QThreadStump::sig_error)
+    # @param start_signal `QtCore.pyqtSignal` signal that can be connected to 
+    # the `start` slot (if not `None`)
+    # @param stop_signal `QtCore.pyqtSignal` signal that can be connected to 
+    # the `terminate` slot (if not `None`)
+    # @param free_on_finish `bool` whether the thread instance will be deleted
+    # from memory after it completes its operation (default = `False`)
+    # @param start_now `bool` whether to start the thread upon creation (default = `False`)
+    # @param can_terminate `bool` whether the thread can be terminated (default = `True`)
     def init(self, default_priority=QtCore.QThread.NormalPriority,
              on_start=None, on_finish=None, on_run=None, on_error=None,
              start_signal=None, stop_signal=None,
@@ -476,16 +527,22 @@ class QThreadStump(QtCore.QThread):
         if start_signal: start_signal.connect(self.start)
         if stop_signal: stop_signal.connect(self.terminate)
         if on_error: self.sig_error.connect(on_error)
+        ## `int` thread default priority (default = normal)
         self.default_priority = default_priority if default_priority != QtCore.QThread.InheritPriority else QtCore.QThread.NormalPriority
+        ## `callable` callback function for the main operation 
         self.on_run = on_run
+        ## `QtCore.QMutex` mutex lock used by QThreadStump::lock() and QThreadStump::unlock()
         self.mutex = QtCore.QMutex()
 
+    ## Locks the internal mutex to preclude data racing.
     def lock(self):
         self.mutex.lock()
 
+    ## Releases the mutex lock.
     def unlock(self):
         self.mutex.unlock()
 
+    ## Executes the worker function pointed to by QThreadStump::on_run.
     def run(self):
         self.setPriority(self.default_priority)
         if self.on_run and not self.isInterruptionRequested():
@@ -497,6 +554,23 @@ class QThreadStump(QtCore.QThread):
 
 # ------------------------------------------------------------------------ #
 
+## Constructs a `QtGui.QFont` object from given font parameters.
+# @param family `str` font familty name, e.g. 'Arial'
+# @param size `int` font size in points or pixels (default = -1: default size)
+# @param weight `int` font weight (default = -1: default size).
+# The following constants can be used:
+#   * QFont::Thin	0
+#   * QFont::ExtraLight	12
+#   * QFont::Light	25
+#   * QFont::Normal	50
+#   * QFont::Medium	57
+#   * QFont::DemiBold	63
+#   * QFont::Bold	75
+#   * QFont::ExtraBold	81
+#   * QFont::Black	87
+# @param italic `bool` `True` to set the italic style
+# @param font_unit `str` font size unit: 'pt' = points (default), 'px' = pixels
+# @returns `QtGui.QFont` created font object
 def make_font(family, size=-1, weight=-1, italic=False, font_unit='pt'):
     font = QtGui.QFont(family)
     if font_unit == 'pt':
@@ -508,6 +582,7 @@ def make_font(family, size=-1, weight=-1, italic=False, font_unit='pt'):
     #print(f"make_font: font_unit={font_unit}, family={font.family()}, size(pt) = {font.pointSize()}, size(px)={font.pixelSize()}")
     return font
 
+## Button names, their localized names and roles used in MsgBox() function
 MSGBOX_BUTTONS = {'ok': (_('OK'), QtWidgets.QMessageBox.AcceptRole), 'yes': (_('Yes'), QtWidgets.QMessageBox.YesRole),
                   'no': (_('No'), QtWidgets.QMessageBox.NoRole), 'cancel': (_('Cancel'), QtWidgets.QMessageBox.RejectRole),
                   'yesall': (_('Yes to All'), QtWidgets.QMessageBox.YesRole), 'noall': (_('No to All'), QtWidgets.QMessageBox.NoRole),
@@ -517,10 +592,24 @@ MSGBOX_BUTTONS = {'ok': (_('OK'), QtWidgets.QMessageBox.AcceptRole), 'yes': (_('
                   'restoredefaults': (_('Restore Defaults'), QtWidgets.QMessageBox.ResetRole), 'help': (_('Help'), QtWidgets.QMessageBox.HelpRole),
                   'saveall': (_('Save All'), QtWidgets.QMessageBox.AcceptRole), 'abort': (_('Abort'), QtWidgets.QMessageBox.RejectRole),
                   'retry': (_('Retry'), QtWidgets.QMessageBox.AcceptRole), 'ignore': (_('Ignore'), QtWidgets.QMessageBox.AcceptRole)}
+## Types of MsgBox dialogs used in MsgBox() function
 MSGBOX_TYPES = {'error': (QtWidgets.QMessageBox.Critical, ['ok']), 'warn': (QtWidgets.QMessageBox.Warning, ['ok']), 'ask': (QtWidgets.QMessageBox.Question, ['yes', 'no']),
                 'info': (QtWidgets.QMessageBox.Information, ['ok']), '-': (QtWidgets.QMessageBox.NoIcon, ['ok'])}
 
-def MsgBox(what, parent=None, title='pyCross', msgtype='info', btn=None, detailedText='', infoText='', execnow=True):
+## Displays a GUI message dialog and returns the user's reply.
+# @param what `str` message dialog text (body) 
+# @param parent `QtWidgets.QWidget` parent widget for the dialog or `None` if no parent is required
+# @param title `str` dialog title (caption)
+# @param msgtype `str` dialog type affecting the icon: 'error', 'info', 'ask', 'warn' or '-' (no icon)
+# @param btn `list of str` list of button names to be placed in the dialog -- see MSGBOX_BUTTONS
+# @param detailedText `str` additional text below the dialog text to be used for extra explanations, notes etc.
+# @param infoText `str` additional text below the dialog text to be used for extra explanations, notes etc.
+# @param execnow `bool` if `True` (default), the dialog will be executed (displayed) on creation
+# @returns `str` | `QtWidgets.QMessageBox` user's reply (if `execnow` is `True`) as
+# the name of the clicked button or an empty string if cancelled; or the dialog object
+# if `execnow` is `False`
+def MsgBox(what, parent=None, title='pyCross', msgtype='info', btn=None, 
+           detailedText='', infoText='', execnow=True):
     msgtype = MSGBOX_TYPES.get(msgtype, MSGBOX_TYPES['-'])
     msgbox = QtWidgets.QMessageBox(parent)
     msgbox.setIcon(msgtype[0])
@@ -544,6 +633,29 @@ def MsgBox(what, parent=None, title='pyCross', msgtype='info', btn=None, detaile
     else:
         return msgbox
 
+## Displays a GUI user input dialog and returns the user's input.
+# @param dialogtype `str` input result type; can be any of:
+#   * 'text' (default) usual one-line text string
+#   * 'multitext' multi-line text string
+#   * 'int' integer numeric value
+#   * 'float' floating-point numeric value
+#   * 'item' an item string chosen from a drop-down menu
+# @param parent `QtWidgets.QWidget` parent widget for the dialog or `None` if no parent is required
+# @param title `str` dialog title (caption)
+# @param label `str` optional label for the input field
+# @param value `str` | `int` | `float` default value set in the input field (default = `None`: empty field)
+# @param textmode `str` text masking; any of:
+#   * 'normal' (default) no text masking
+#   * 'noecho' no text will appear in the input field when typed
+#   * 'password' masked text (with bullet placeholders)
+#   * 'passwordonedit' masked text when editing, otherwise normal
+# @param valrange `2-tuple` min/max range of the numerical value, e.g. (1, 100)
+# @param decimals `int` number of decimals after the floating point, default = 1
+# @param step `int` step value for the int / float spinbox, default = 1
+# @param comboeditable `bool` if `True`, the item selection combobox for the 'item' mode
+# will be editable, otherwise non-editable 
+# @param comboitems `list` list of items to choose from in the 'item' input mode
+# @returns `str` | `int` | `float` the user's input
 def UserInput(dialogtype='text', parent=None, title='pyCross', label='', value=None, textmode='normal',
               valrange=None, decimals=1, step=1, comboeditable=True, comboitems=[]):
     modes = {'normal': QtWidgets.QLineEdit.Normal, 'noecho': QtWidgets.QLineEdit.NoEcho,
@@ -567,6 +679,13 @@ def UserInput(dialogtype='text', parent=None, title='pyCross', label='', value=N
         return QtWidgets.QInputDialog.getMultiLineText(parent, title, label,
                 comboitems, current=value if value else 0, editable=comboeditable)
 
+## Copies a given value / object to the system clipboard.
+# @param value `str` | `QtCore.QMimeData` | `QtGui.QPixmap` | `QtGui.QImage` value to copy
+# @param valtype `str` type of the value, any of:
+#   * 'text' (default): text string
+#   * 'mime': MIME data as a `QtCore.QMimeData` object
+#   * 'pixmap': bitmap (pixmap) as a `QtGui.QPixmap` object
+#   * 'image': image as a `QtGui.QImage` object
 def clipboard_copy(value, valtype='text'):
     clip = QtWidgets.qApp.clipboard()
     if valtype == 'text':
@@ -578,6 +697,13 @@ def clipboard_copy(value, valtype='text'):
     elif valtype == 'image':
         clip.setImage(value)
 
+## Retrieves the contents of the system clipboard.
+# @param valtype `str` type of the value, any of:
+#   * 'text' (default): text string
+#   * 'mime': MIME data as a `QtCore.QMimeData` object
+#   * 'pixmap': bitmap (pixmap) as a `QtGui.QPixmap` object
+#   * 'image': image as a `QtGui.QImage` object
+# @returns `str` | `QtCore.QMimeData` | `QtGui.QPixmap` | `QtGui.QImage` the clipboard contents as a single object
 def clipboard_get(valtype='text'):
     clip = QtWidgets.qApp.clipboard()
     if valtype == 'text':
@@ -590,9 +716,23 @@ def clipboard_get(valtype='text'):
         return clip.image()
     return None
 
+## Clears the system clipboard.
 def clipboard_clear():
     QtWidgets.qApp.clipboard().clear()
 
+## @brief Returns a Qt widget's [stylesheet](https://doc.qt.io/qt-5/stylesheet-reference.html) 
+# as a Python dictionary.
+# This is the reverse of stylesheet_dump().
+# @param style `str` the widget style sheet that is retrieved with the styleSheet() method
+# of `QtWidgets.QWidget` derived classes
+# @param dequote `bool` whether to dequote (strip quotation symbols from) values 
+# found in the style sheet (default = `True`)
+# @param strip_sz `bool` whether to drop size units like 'pt' or 'px' and return just
+# the numerical values (default = `True`)
+# @param units `iterable` unit names that can be stripped with the `strip_sz` option
+# @returns `dict` Python dictionary with style sheet attributes, e.g.
+# `{'font-family': 'Arial', 'font-size': 12, ...}`
+# @see stylesheet_dump()
 def stylesheet_load(style, dequote=True, strip_sz=True, units=('pt', 'px')):
     ls_style = [s.strip() for s in style.split(';')]
     d = {}
@@ -615,6 +755,14 @@ def stylesheet_load(style, dequote=True, strip_sz=True, units=('pt', 'px')):
     #print(f"_stylesheet_load: {d}")
     return d
 
+## @brief Serializes a Python dictionary representing a widget's style sheet into a string.
+# This is the reverse of stylesheet_load(). The resulting string is compatible
+# with the [Qt style sheets](https://doc.qt.io/qt-5/stylesheet-reference.html).
+# @param quoted_keys `iterable` attribute names whose values must be quoted
+# @param add_units `dict` attribute names and their corresponding size units that
+# will be appended to numerical values of those attributes
+# @returns `str` Qt5-compatible style sheet string
+# @see stylesheet_load()
 def stylesheet_dump(d, quoted_keys=('font-family',), add_units={'font-size': 'pt', 'border': 'px', 'border-width': 'px'}):
     l = []
     for key in d:
@@ -631,6 +779,12 @@ def stylesheet_dump(d, quoted_keys=('font-family',), add_units={'font-size': 'pt
     #print(f"_stylesheet_dump: {s}")
     return s
 
+## Converts CSS font weight constants to Qt font weight constants.
+# @param weight `int` font weight in CSS style sheet
+# @param default `int` default Qt font weight used on failure to get the 
+# corresponding Qt weight value
+# @returns `int` Qt font weight constant, such as `QtGui.QFont.Normal` or `QtGui.QFont.Bold`
+# @see globalvars::FONT_WEIGHTS, font_weight_qt2css()
 def font_weight_css2qt(weight, default=0):
     if weight == 'normal':
         weight = QtGui.QFont.Normal
@@ -640,12 +794,25 @@ def font_weight_css2qt(weight, default=0):
         weight = FONT_WEIGHTS.get(int(weight), default)
     return weight
 
+## Converts Qt font weight constants to CSS font weight constants.
+# @param weight `int` font weight Qt constant, such as `QtGui.QFont.Normal` or `QtGui.QFont.Bold`
+# @param default `int` default CSS stylesheet font weight used on failure to get the 
+# corresponding CSS weight value
+# @returns `int` CSS font weight constant
+# @see globalvars::FONT_WEIGHTS, font_weight_css2qt()
 def font_weight_qt2css(weight, default=0):
     for w in FONT_WEIGHTS:
         if FONT_WEIGHTS[w] == weight:
             return w
     return default
 
+## Constructs a Qt font object (`QtGui.QFont`) from a Qt style sheet string.
+# @param style `str` the widget style sheet that is retrieved with the styleSheet() method
+# of `QtWidgets.QWidget` derived classes
+# @param font_unit `str` font size unit: either 'pt' (points) or 'px' (pixels)
+# @param default_font `QtGui.QFont` default font used in case of failure
+# @returns `QtGui.QFont` Qt font object
+# @see stylesheet_load(), make_font(), font_to_stylesheet()
 def font_from_stylesheet(style, font_unit='pt', default_font=None):
     dic_style = stylesheet_load(style)
     if not 'font-family' in dic_style:
@@ -670,6 +837,13 @@ def font_from_stylesheet(style, font_unit='pt', default_font=None):
     #print(f"FONT: font_unit={font_unit}, family={font.family()}, size(pt)={font.pointSize()}, size(px)={font.pixelSize()}, weight={font.weight()}")
     return font
 
+## Stores a give Qt font in a style sheet string and returns the modified style sheet.
+# @param font `QtGui.QFont` Qt font object
+# @param style `str` the widget style sheet that is retrieved with the styleSheet() method
+# of `QtWidgets.QWidget` derived classes
+# @param font_unit `str` font size unit: either 'pt' (points) or 'px' (pixels)
+# @returns `str` updated style sheet string
+# @see stylesheet_load(), stylesheet_dump(), font_from_stylesheet()
 def font_to_stylesheet(font, style, font_unit='pt'):
     dic_style = stylesheet_load(style)
     dic_style['font-family'] = font.family()
@@ -678,20 +852,46 @@ def font_to_stylesheet(font, style, font_unit='pt'):
     dic_style['font-style'] = 'italic' if font.italic() else 'normal'
     return stylesheet_dump(dic_style, add_units={'font-size': font_unit})
 
+## Returns a Qt color object from a Qt style sheet string.
+# @param style `str` the widget style sheet that is retrieved with the styleSheet() method
+# of `QtWidgets.QWidget` derived classes
+# @param tag `str` the specific color attribute name in the style sheet
+# @param default `str` default color name used in case of failure
+# @returns `QtGui.QColor` Qt color object constructed from the style sheet
+# @see stylesheet_load(), color_to_stylesheet()
 def color_from_stylesheet(style, tag='background-color', default='black'):
     dic_style = stylesheet_load(style)
     return QtGui.QColor(dic_style.get(tag, default))
 
+## Stores a Qt color object in a style sheet string and returns the modified style sheet.
+# @param style `str` the widget style sheet that is retrieved with the styleSheet() method
+# of `QtWidgets.QWidget` derived classes
+# @param tag `str` the specific color attribute name in the style sheet
+# @returns `str` updated style sheet string
+# @see stylesheet_load(), stylesheet_dump(), color_from_stylesheet()
 def color_to_stylesheet(color, style, tag='background-color'):
     dic_style = stylesheet_load(style)
     dic_style[tag] = color.name(1)
     return stylesheet_dump(dic_style)
 
+## Stores a property (attribute) in a style sheet string and returns the modified style sheet.
+# @param propname `str` name of the property to store, e.g. 'background-color'
+# @param propvalue `str` value of the property to store, e.g. 'black'
+# @param style `str` the widget style sheet that is retrieved with the styleSheet() method
+# of `QtWidgets.QWidget` derived classes
+# @returns `str` updated style sheet string
+# @see stylesheet_load(), stylesheet_dump(), property_from_stylesheet()
 def property_to_stylesheet(propname, propvalue, style):
     dic_style = stylesheet_load(style)
     dic_style[propname] = propvalue
     return stylesheet_dump(dic_style)
 
+## Reads a property from a style sheet string and returns its value.
+# @param propname `str` name of the property to store, e.g. 'background-color'
+# @param style `str` the widget style sheet that is retrieved with the styleSheet() method
+# of `QtWidgets.QWidget` derived classes
+# @param default `str` | `int` | `float` default value used in case of failure
+# @returns `str` | `int` | `float` the value of the queried property
 def property_from_stylesheet(propname, style, default=None):
     dic_style = stylesheet_load(style)
     return dic_style.get(propname, default)
@@ -736,21 +936,40 @@ class JsonHiliter(QtGui.QSyntaxHighlighter):
         (re.compile(r'(\".*?\")(\s*\:)'), 1, QtGui.QColor(QtCore.Qt.darkGreen))        
     ]
 
+    ## @brief Qt signal emitted on a syntax parser error. 
+    # Arguments:
+    #   * `QtGui.QSyntaxHighlighter` this instance
+    #   * `str` error message string
+    #   * `str` error docs string
+    #   * `int` absolute position of the error in the source code
+    #   * `int` line number in the source code
+    #   * `int` column number in the source code
     sig_parse_error = QtCore.pyqtSignal(QtGui.QSyntaxHighlighter, str, str, int, int, int)
+    ## @brief Qt signal emitted on a syntax parser success. 
+    # Arguments:
+    #   * `QtGui.QSyntaxHighlighter` this instance
     sig_parse_success = QtCore.pyqtSignal(QtGui.QSyntaxHighlighter)
 
+    ## @param parent `QtGui.QTextDocument` parent document that the highlighter binds to
+    # @param decode_errors `bool` whether to highlight and process JSON decode errors
+    # @param on_decode_error `QtCore.pyQtSlot` slot for the `JsonHiliter::sig_parse_error` signal
+    # @param on_decode_success `QtCore.pyQtSlot` slot for the `JsonHiliter::sig_parse_success` signal
     def __init__(self, parent: QtGui.QTextDocument, decode_errors=False, 
         on_decode_error=None, on_decode_success=None):
         super().__init__(parent)
-        ## `bool` whether JSON decode errors must be highlighted dynamically
+        ## `bool` whether to highlight and process JSON decode errors
         self.decode_errors = decode_errors
         if on_decode_error: self.sig_parse_error.connect(on_decode_error)
         if on_decode_success: self.sig_parse_success.connect(on_decode_success)
+        ## `QtGui.QTextCharFormat` error highlighting text format
         self._error_format = QtGui.QTextCharFormat()
         self._error_format.setBackground(QtGui.QBrush(QtGui.QColor(QtCore.Qt.darkRed)))
         self._error_format.setForeground(QtGui.QBrush(QtGui.QColor(QtCore.Qt.yellow)))
+        ## `json.JSONDecoder` JSON decoder
         self.decoder = json.JSONDecoder()
 
+    ## Override of `QtGui.QSyntaxHighlighter::highlightBlock()` method: does the syntax highlighting.
+    # @param text `str` the text string to be parsed and highlighted
     def highlightBlock(self, text):
         # clear format
         length = self.currentBlock().length()

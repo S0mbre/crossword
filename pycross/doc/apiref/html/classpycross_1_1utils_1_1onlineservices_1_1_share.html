@@ -79,41 +79,58 @@ $(function() {
 <div class="title">pycross.utils.onlineservices.Share Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Interface class for the <a href="https://www.shareaholic.com/">Shareaholic service</a>.  
+ <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4e377c37d0fceee9527fe4574ed885cc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a4e377c37d0fceee9527fe4574ed885cc">__init__</a> (self, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html">Cloudstorage</a> <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#af99d19d47e82cc4f70a6feb082606e2d">cloud</a>, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a3c6772cc8e7b3ea891f0d2473db5ea17">on_upload</a>=None, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#af09c2f2e2e1111d326fcc0a177cffa07">on_clipboard_write</a>=None, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#acdb9c22d97644c6539338a36b538208c">on_prepare_url</a>=None, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a8f74e0cb555ce43133d1cd24bd7b3aca">stop_check</a>=None, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a0c01fbbcd22cec53d2c31cff5ffc3bcd">timeout</a>=5000)</td></tr>
 <tr class="separator:a4e377c37d0fceee9527fe4574ed885cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390f2e8df98e8f071064c9619dfcbb56"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a390f2e8df98e8f071064c9619dfcbb56">share</a> (self, file_or_url, social='twitter', title='My new crossword', notes=_('See my new crossword'), url_shortener='google', tags='pycross, crossword, python', source='pyCross')</td></tr>
-<tr class="separator:a390f2e8df98e8f071064c9619dfcbb56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaa942d6e058641d7652367c0e04af83"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#afaa942d6e058641d7652367c0e04af83">share</a> (self, file_or_url, social='twitter', title='My new crossword', notes=_('See my new crossword'), url_shortener='shrlc', tags='pycrossword, crossword, python', source='pycrossword')</td></tr>
+<tr class="memdesc:afaa942d6e058641d7652367c0e04af83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shares a given URL or file in selected social networks.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#afaa942d6e058641d7652367c0e04af83">More...</a><br /></td></tr>
+<tr class="separator:afaa942d6e058641d7652367c0e04af83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a3c6772cc8e7b3ea891f0d2473db5ea17"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a3c6772cc8e7b3ea891f0d2473db5ea17">on_upload</a></td></tr>
+<tr class="memdesc:a3c6772cc8e7b3ea891f0d2473db5ea17"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> function called when a file is uploaded  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a3c6772cc8e7b3ea891f0d2473db5ea17">More...</a><br /></td></tr>
 <tr class="separator:a3c6772cc8e7b3ea891f0d2473db5ea17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af09c2f2e2e1111d326fcc0a177cffa07"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#af09c2f2e2e1111d326fcc0a177cffa07">on_clipboard_write</a></td></tr>
+<tr class="memdesc:af09c2f2e2e1111d326fcc0a177cffa07"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback called when data is written to the system clipboard (as one sharing option)  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#af09c2f2e2e1111d326fcc0a177cffa07">More...</a><br /></td></tr>
 <tr class="separator:af09c2f2e2e1111d326fcc0a177cffa07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdb9c22d97644c6539338a36b538208c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#acdb9c22d97644c6539338a36b538208c">on_prepare_url</a></td></tr>
+<tr class="memdesc:acdb9c22d97644c6539338a36b538208c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback called when the request URL to Shareaholic is prepared  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#acdb9c22d97644c6539338a36b538208c">More...</a><br /></td></tr>
 <tr class="separator:acdb9c22d97644c6539338a36b538208c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f74e0cb555ce43133d1cd24bd7b3aca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a8f74e0cb555ce43133d1cd24bd7b3aca">stop_check</a></td></tr>
+<tr class="memdesc:a8f74e0cb555ce43133d1cd24bd7b3aca"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback that takes no arguments and returns <code>True</code> to stop the current sharing operation or <code>False</code> to continue  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a8f74e0cb555ce43133d1cd24bd7b3aca">More...</a><br /></td></tr>
 <tr class="separator:a8f74e0cb555ce43133d1cd24bd7b3aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c01fbbcd22cec53d2c31cff5ffc3bcd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a0c01fbbcd22cec53d2c31cff5ffc3bcd">timeout</a></td></tr>
+<tr class="memdesc:a0c01fbbcd22cec53d2c31cff5ffc3bcd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> network request timeout (in msec)  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a0c01fbbcd22cec53d2c31cff5ffc3bcd">More...</a><br /></td></tr>
 <tr class="separator:a0c01fbbcd22cec53d2c31cff5ffc3bcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af99d19d47e82cc4f70a6feb082606e2d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#af99d19d47e82cc4f70a6feb082606e2d">cloud</a></td></tr>
+<tr class="memdesc:af99d19d47e82cc4f70a6feb082606e2d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html" title="Interface for the Kloudless cloud storage API.">Cloudstorage</a></code> pointer to the <code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html" title="Interface for the Kloudless cloud storage API.">Cloudstorage</a></code> object  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#af99d19d47e82cc4f70a6feb082606e2d">More...</a><br /></td></tr>
 <tr class="separator:af99d19d47e82cc4f70a6feb082606e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a4a24a06b2b58dba237f5e2688f050776"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a4a24a06b2b58dba237f5e2688f050776">APPID</a> = 'abf1b67f10817416ba9fee9b76455bef'</td></tr>
+<tr class="memdesc:a4a24a06b2b58dba237f5e2688f050776"><td class="mdescLeft">&#160;</td><td class="mdescRight">ID of pycrossword app on Shareaholic.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a4a24a06b2b58dba237f5e2688f050776">More...</a><br /></td></tr>
 <tr class="separator:a4a24a06b2b58dba237f5e2688f050776"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18856007b5264cfaec8c1e017070ef42"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a18856007b5264cfaec8c1e017070ef42">BASEURL</a> = 'https://www.shareaholic.com/api/<a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a390f2e8df98e8f071064c9619dfcbb56">share</a>/?v=1&amp;apitype=1'</td></tr>
+<tr class="memitem:a18856007b5264cfaec8c1e017070ef42"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a18856007b5264cfaec8c1e017070ef42">BASEURL</a> = 'https://www.shareaholic.com/api/<a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#afaa942d6e058641d7652367c0e04af83">share</a>/?v=1&amp;apitype=1'</td></tr>
+<tr class="memdesc:a18856007b5264cfaec8c1e017070ef42"><td class="mdescLeft">&#160;</td><td class="mdescRight">base URL for Shareaholic API requests  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a18856007b5264cfaec8c1e017070ef42">More...</a><br /></td></tr>
 <tr class="separator:a18856007b5264cfaec8c1e017070ef42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ec90f447994f06cc1e51d5abb77b036"><td class="memItemLeft" align="right" valign="top">dictionary&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a5ec90f447994f06cc1e51d5abb77b036">ERRMAP</a> = {'message': 'data', 'code': 'code'}</td></tr>
+<tr class="memdesc:a5ec90f447994f06cc1e51d5abb77b036"><td class="mdescLeft">&#160;</td><td class="mdescRight">error message key map  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a5ec90f447994f06cc1e51d5abb77b036">More...</a><br /></td></tr>
 <tr class="separator:a5ec90f447994f06cc1e51d5abb77b036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a388a3ebd3cc014475a851ad599ccb783"><td class="memItemLeft" align="right" valign="top">dictionary&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a388a3ebd3cc014475a851ad599ccb783">SERVICES</a></td></tr>
+<tr class="memdesc:a388a3ebd3cc014475a851ad599ccb783"><td class="mdescLeft">&#160;</td><td class="mdescRight">enabled social networks and their Shareaholic internal numbers  <a href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a388a3ebd3cc014475a851ad599ccb783">More...</a><br /></td></tr>
 <tr class="separator:a388a3ebd3cc014475a851ad599ccb783"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Interface class for the <a href="https://www.shareaholic.com/">Shareaholic service</a>. </p>
+<p>The application has a free account on Shareaholic to enable social sharing, i.e. posting text / URLs to your Twitter, Facebook and other social networks. </p><dl class="section see"><dt>See also</dt><dd><a href="https://www.shareaholic.com/api/">Shareaholic Share API docs</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4e377c37d0fceee9527fe4574ed885cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4e377c37d0fceee9527fe4574ed885cc">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -169,12 +186,27 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cloud</td><td><code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html" title="Interface for the Kloudless cloud storage API.">Cloudstorage</a></code> pointer to a <code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html" title="Interface for the Kloudless cloud storage API.">Cloudstorage</a></code> object </td></tr>
+    <tr><td class="paramname">on_upload</td><td><code>callable</code> function called when a file is uploaded to the cloud storage; takes to args:<ol type="1">
+<li><code>str</code> full path to the uploaded file</li>
+<li><code>str</code> generated public link (URL) </li>
+</ol>
+</td></tr>
+    <tr><td class="paramname">on_clipboard_write</td><td><code>callable</code> callback called when data is written to the system clipboard (as one sharing option); takes one arg: <code>str</code> generated public link (URL) </td></tr>
+    <tr><td class="paramname">on_prepare_url</td><td><code>callable</code> callback called when the request URL to Shareaholic is prepared; takes one arg: <code>str</code> the request URL </td></tr>
+    <tr><td class="paramname">stop_check</td><td><code>callable</code> callback that takes no arguments and returns <code>True</code> to stop the current sharing operation or <code>False</code> to continue </td></tr>
+    <tr><td class="paramname">timeout</td><td><code>int</code> network request timeout (in msec) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a390f2e8df98e8f071064c9619dfcbb56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a390f2e8df98e8f071064c9619dfcbb56">&#9670;&nbsp;</a></span>share()</h2>
+<a id="afaa942d6e058641d7652367c0e04af83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaa942d6e058641d7652367c0e04af83">&#9670;&nbsp;</a></span>share()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -213,19 +245,19 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>url_shortener</em> = <code>'google'</code>, </td>
+          <td class="paramname"><em>url_shortener</em> = <code>'shrlc'</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>tags</em> = <code>'pycross,crossword,python'</code>, </td>
+          <td class="paramname"><em>tags</em> = <code>'pycrossword,crossword,python'</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>source</em> = <code>'pyCross'</code>&#160;</td>
+          <td class="paramname"><em>source</em> = <code>'pycrossword'</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -234,6 +266,21 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Shares a given URL or file in selected social networks. </p>
+<p>This method is the main interface for the application, since it encapsulates the lower-level cloud storage functionality to upload files and create public links. </p><dl class="section warning"><dt>Warning</dt><dd>This method is called in a separate thread, so it is designed for maximum thread safety. That is also the reason why it doesn't return any results but rather replies on callback functions. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_or_url</td><td><code>str</code> full path to a local file or a prepared link (URL) </td></tr>
+    <tr><td class="paramname">social</td><td><code>str</code> social network short name, e.g. 'twitter' &ndash; see <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a388a3ebd3cc014475a851ad599ccb783" title="enabled social networks and their Shareaholic internal numbers">Share::SERVICES</a> </td></tr>
+    <tr><td class="paramname">title</td><td><code>str</code> title (caption) for your post </td></tr>
+    <tr><td class="paramname">notes</td><td><code>str</code> message body for your post </td></tr>
+    <tr><td class="paramname">url_shortener</td><td><code>str</code> URL shortening service to shorten your link URL; see <a href="https://www.shareaholic.com/api/">Shareaholic docs</a> for available options </td></tr>
+    <tr><td class="paramname">tags</td><td><code>str</code> comma-separated tags for your post </td></tr>
+    <tr><td class="paramname">source</td><td><code>str</code> name of the sharing app ('pycrossword') </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -258,6 +305,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>ID of pycrossword app on Shareaholic. </p>
+
 </div>
 </div>
 <a id="a18856007b5264cfaec8c1e017070ef42"></a>
@@ -270,7 +319,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">string pycross.utils.onlineservices.Share.BASEURL = 'https://www.shareaholic.com/api/<a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#a390f2e8df98e8f071064c9619dfcbb56">share</a>/?v=1&amp;apitype=1'</td>
+          <td class="memname">string pycross.utils.onlineservices.Share.BASEURL = 'https://www.shareaholic.com/api/<a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_share.html#afaa942d6e058641d7652367c0e04af83">share</a>/?v=1&amp;apitype=1'</td>
         </tr>
       </table>
   </td>
@@ -279,6 +328,8 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>base URL for Shareaholic API requests </p>
 
 </div>
 </div>
@@ -293,6 +344,8 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html" title="Interface for the Kloudless cloud storage API.">Cloudstorage</a></code> pointer to the <code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html" title="Interface for the Kloudless cloud storage API.">Cloudstorage</a></code> object </p>
 
 </div>
 </div>
@@ -316,6 +369,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>error message key map </p>
+
 </div>
 </div>
 <a id="af09c2f2e2e1111d326fcc0a177cffa07"></a>
@@ -329,6 +384,8 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>callable</code> callback called when data is written to the system clipboard (as one sharing option) </p>
 
 </div>
 </div>
@@ -344,6 +401,8 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>callable</code> callback called when the request URL to Shareaholic is prepared </p>
+
 </div>
 </div>
 <a id="a3c6772cc8e7b3ea891f0d2473db5ea17"></a>
@@ -357,6 +416,8 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>callable</code> function called when a file is uploaded </p>
 
 </div>
 </div>
@@ -383,6 +444,8 @@ Static Public Attributes</h2></td></tr>
 <div class="line">                <span class="stringliteral">&#39;yahoomail&#39;</span>: 54, <span class="stringliteral">&#39;aolmail&#39;</span>: 55, <span class="stringliteral">&#39;hotmail&#39;</span>: 53, <span class="stringliteral">&#39;myspace&#39;</span>: 39,</div>
 <div class="line">                <span class="stringliteral">&#39;reddit&#39;</span>: 40, <span class="stringliteral">&#39;skype&#39;</span>: 989, <span class="stringliteral">&#39;tumblr&#39;</span>: 78, <span class="stringliteral">&#39;yandex&#39;</span>: 267, <span class="stringliteral">&#39;clipboard&#39;</span>: 0}</div>
 </div><!-- fragment -->
+<p>enabled social networks and their Shareaholic internal numbers </p>
+
 </div>
 </div>
 <a id="a8f74e0cb555ce43133d1cd24bd7b3aca"></a>
@@ -397,6 +460,8 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>callable</code> callback that takes no arguments and returns <code>True</code> to stop the current sharing operation or <code>False</code> to continue </p>
+
 </div>
 </div>
 <a id="a0c01fbbcd22cec53d2c31cff5ffc3bcd"></a>
@@ -410,6 +475,8 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>int</code> network request timeout (in msec) </p>
 
 </div>
 </div>

@@ -80,12 +80,16 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a5596188996c4894611f2d7472fa54fea"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1graphs.html#a5596188996c4894611f2d7472fa54fea">data_from_dict</a> (data, panda=True, xy=True)</td></tr>
+<tr class="memdesc:a5596188996c4894611f2d7472fa54fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a Python dictionary into a pandas <code>DataFrame</code> or altair <code>NamedData</code>  <a href="namespacepycross_1_1utils_1_1graphs.html#a5596188996c4894611f2d7472fa54fea">More...</a><br /></td></tr>
 <tr class="separator:a5596188996c4894611f2d7472fa54fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2e6f7aa8e1ec939ca076fd860c1e3f0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1graphs.html#ab2e6f7aa8e1ec939ca076fd860c1e3f0">data_from_url</a> (url)</td></tr>
+<tr class="memdesc:ab2e6f7aa8e1ec939ca076fd860c1e3f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads data from a URL into an altair <code>UrlData</code> object.  <a href="namespacepycross_1_1utils_1_1graphs.html#ab2e6f7aa8e1ec939ca076fd860c1e3f0">More...</a><br /></td></tr>
 <tr class="separator:ab2e6f7aa8e1ec939ca076fd860c1e3f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a389313de36fd27a5e1c2ec31efca038d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1graphs.html#a389313de36fd27a5e1c2ec31efca038d">data_from_array</a> (array)</td></tr>
+<tr class="memdesc:a389313de36fd27a5e1c2ec31efca038d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads data from an array (list) into an altair <code>InlineData</code> object.  <a href="namespacepycross_1_1utils_1_1graphs.html#a389313de36fd27a5e1c2ec31efca038d">More...</a><br /></td></tr>
 <tr class="separator:a389313de36fd27a5e1c2ec31efca038d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2aa9352a5e73a0b18e9b01883663096b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1utils_1_1graphs.html#a2aa9352a5e73a0b18e9b01883663096b">make_chart</a> (data, mark_type='point', mark_props={}, x_title='x', x_props={}, y_title='y', y_props={}, color='x:N', shape='x:N', text_col=None, text_props={}, other_axes_and_channels={}, interactive=True, scale_factor=1.0, svg=False, save_file='chart.html', on_save=None)</td></tr>
+<tr class="memdesc:a2aa9352a5e73a0b18e9b01883663096b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an Altair graph from user data optionally saving it to an HTML file.  <a href="namespacepycross_1_1utils_1_1graphs.html#a2aa9352a5e73a0b18e9b01883663096b">More...</a><br /></td></tr>
 <tr class="separator:a2aa9352a5e73a0b18e9b01883663096b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -104,6 +108,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Loads data from an array (list) into an altair <code>InlineData</code> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">array</td><td><code>list</code> data values </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>altair <code>InlineData</code> object </dd></dl>
 
 </div>
 </div>
@@ -139,6 +152,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Converts a Python dictionary into a pandas <code>DataFrame</code> or altair <code>NamedData</code> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">panda</td><td><code>bool</code> <code>True</code> to convert to a pandas <code>DataFrame</code> object; <code>False</code> to convert to a <code>NamedData</code> object </td></tr>
+    <tr><td class="paramname">xy</td><td><code>bool</code> if <code>True</code>, the <code>data</code> dict will be aggregated into a dict with 2 keys: <code>x</code>: all keys and <code>y</code>: all values; e.g. if <code>data</code> is originally: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;a&#39;</span>:}</div>
+<div class="line">it will be transformed into:</div>
+<div class="line">```{<span class="stringliteral">&#39;x&#39;</span>: [<span class="stringliteral">&#39;a&#39;</span>, <span class="stringliteral">&#39;b&#39;</span>, <span class="stringliteral">&#39;c&#39;</span>], <span class="stringliteral">&#39;y&#39;</span>: [1, 2, 3]</div>
+</div><!-- fragment --></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>DataFrame</code>|<code>NamedData</code> converted object </dd></dl>
+
 </div>
 </div>
 <a id="ab2e6f7aa8e1ec939ca076fd860c1e3f0"></a>
@@ -156,6 +182,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Loads data from a URL into an altair <code>UrlData</code> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">url</td><td><code>str</code> URL string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>altair <code>UrlData</code> object </dd></dl>
 
 </div>
 </div>
@@ -274,12 +309,31 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Constructs an Altair graph from data given by 'data'.
 
-    - mark_type [str]: Any of:
-        [area, bar, circle, geoshape, image, line, point, rect, rule, 
-        square, text, tick, boxplot, errorband, errorbar]
-</pre> 
+<p>Constructs an Altair graph from user data optionally saving it to an HTML file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td><code>DataFrame</code>|<code>NamedData</code> source data </td></tr>
+    <tr><td class="paramname">mark_type</td><td><code>str</code> graph mark type, any of: 'area', 'bar', 'circle', 'geoshape', 'image', 'line', 'point', 'rect', 'rule', 'square', 'text', 'tick', 'boxplot', 'errorband', 'errorbar' </td></tr>
+    <tr><td class="paramname">mark_props</td><td><code>dict</code> property dictionary for the marks </td></tr>
+    <tr><td class="paramname">x_title</td><td><code>str</code> label for the horizontal axis </td></tr>
+    <tr><td class="paramname">x_props</td><td><code>dict</code> property dictionary for the horizontal axis </td></tr>
+    <tr><td class="paramname">y_title</td><td><code>str</code> label for the vertical axis </td></tr>
+    <tr><td class="paramname">y_props</td><td><code>dict</code> property dictionary for the vertical axis </td></tr>
+    <tr><td class="paramname">color</td><td><code>str</code>|<code>dict</code> graph color settings </td></tr>
+    <tr><td class="paramname">shape</td><td><code>str</code>|<code>dict</code> graph shape settings </td></tr>
+    <tr><td class="paramname">text_col</td><td><code>str</code> text labels for the marks </td></tr>
+    <tr><td class="paramname">text_props</td><td><code>dict</code> proprties of the text labels </td></tr>
+    <tr><td class="paramname">other_axes_and_channels</td><td><code>dict</code> additional axes / channels </td></tr>
+    <tr><td class="paramname">interactive</td><td><code>bool</code> whether the chart is interactive or static </td></tr>
+    <tr><td class="paramname">scale_factor</td><td><code>float</code> scale (zoom) factor for graph </td></tr>
+    <tr><td class="paramname">svg</td><td><code>bool</code> whether to use the SVG (vector image) renderer </td></tr>
+    <tr><td class="paramname">save_file</td><td><code>str</code> path to output file (HTML) </td></tr>
+    <tr><td class="paramname">on_save</td><td><code>callable</code> callback function called when the chart has been saved to the file; takes one argument &ndash; the output file path </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 </div><!-- contents -->

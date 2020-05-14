@@ -11,26 +11,29 @@ The python package is available from [PyPi](https://pypi.org/project/pycrossword
 * cross-platform implementation
 * multilingual interface
 * fully Unicode-based
-* install from Github or PyPI
 * open, save, restore, export, and import crossword puzzles
 * powerful word sources: SQLite database / CSV (plaintext) / raw python list
+* unlimited undo / redo history
 * customizable word blacklisting
 * crossword generation (from word sources)
 * supports common puzzle file formats: [XPF](https://www.xwordinfo.com/XPF/), [IPUZ](http://www.ipuz.org/) and raw text grid 
 * easily load, edit and save word clues
-* flexible GUI settings: zoom, colors, fonts, grid settings, clues table look & feel, etc. (can load and save settings)
+* flexible GUI settings: zoom, colors, fonts, grid settings, clues table look & feel, etc.
+* import & export configuration presets (JSON-based files)
 * auto app updating / new release checking from Github / PyPI
 * lookup word definition in an online dictionary and Google
 * manual editing of individual words and suggestions from word sources
 * comfortable navigation in GUI (hotkeys, keystrokes, mouse)
+* multi-character editing
+* extensive grid editing (row / column / cell manipulation, block duplication etc.)
 * context menus
 * hi-res printing to PDF or printer with customizable page / element layout
 * export crossword to image (jpg, png, tiff) / PDF / SVG with customizable resolution and other settings
-* store crosswords in cloud and share them social networks
+* store crosswords in cloud and share them in social networks (Twitter, Facebook, Instagram etc.)
 * view user-friendly stats on current crossword in chart
 * inbuilt web browser and Python code editor
 * app extension through external and custom plugins (Python API included)
-* comprehensive Doxygen-generated API reference
+* comprehensive Doxygen-generated API reference and rich help documentation
 
 ## Installation
 

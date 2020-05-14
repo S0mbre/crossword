@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="main.ico"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">pycrossword
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
    <div id="projectbrief">Pure-Python implementation of a crossword puzzle generator and editor</div>
   </td>
@@ -80,7 +80,14 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1undo_1_1_history.html">pycross.utils.undo.History</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1undo_1_1_operation.html">pycross.utils.undo.Operation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract undoable operation (action) with a do/undo callback pair.  <a href="classpycross_1_1utils_1_1undo_1_1_operation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1undo_1_1_history_overflow_error.html">pycross.utils.undo.HistoryOverflowError</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exception raised when the Undo or Redo history exceeds its threshold size.  <a href="classpycross_1_1utils_1_1undo_1_1_history_overflow_error.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1undo_1_1_command_manager.html">pycross.utils.undo.CommandManager</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack-like Undo / Redo history manager: lets the app manage undoable actions.  <a href="classpycross_1_1utils_1_1undo_1_1_command_manager.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>

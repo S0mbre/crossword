@@ -81,137 +81,196 @@ $(function() {
 <div class="title">pycross.utils.onlineservices.Cloudstorage Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Interface for the <a href="https://kloudless.com/cloud-storage-api/">Kloudless cloud storage API</a>.  
+ <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ca6c22d5db49ee9d99b9ab570cf206e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5ca6c22d5db49ee9d99b9ab570cf206e">__init__</a> (self, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a4dcb16a757cbff66a77cbe5d1b4f423c">settings</a>, auto_create_user=False, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#afa92c078598c8c67a3bc2d8da71344f2">on_user_exist</a>=None, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab4b923e2f660e882a79845676d3e99e1">on_update_users</a>=None, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a8d0fc14f62693f5c058f642ad0e2d967">on_error</a>=None, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a026395419a846bfe98b1bd7c57c5001d">show_errors</a>=False, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab9bb041759e025cdf12526071d6a8fde">on_apikey_required</a>=None, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#abdab444f96d169d45cdbcd76ba5277cf">on_bearer_required</a>=None, <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a340c32aeb74defa287e63813733ad2e9">timeout</a>=5000)</td></tr>
 <tr class="separator:a5ca6c22d5db49ee9d99b9ab570cf206e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcf04f428b03935dde6caf14c436039f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#afcf04f428b03935dde6caf14c436039f">init_settings</a> (self, auto_create_user=True)</td></tr>
+<tr class="memdesc:afcf04f428b03935dde6caf14c436039f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the Kloudless config, optionally creating the user account and folders.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#afcf04f428b03935dde6caf14c436039f">More...</a><br /></td></tr>
 <tr class="separator:afcf04f428b03935dde6caf14c436039f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad90cb3fbc82a73c05d58ca227cad8e23"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ad90cb3fbc82a73c05d58ca227cad8e23">find_or_create_folder</a> (self, folder_name)</td></tr>
+<tr class="memdesc:ad90cb3fbc82a73c05d58ca227cad8e23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds or creates a new subfolder in the current user's folder.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ad90cb3fbc82a73c05d58ca227cad8e23">More...</a><br /></td></tr>
 <tr class="separator:ad90cb3fbc82a73c05d58ca227cad8e23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d93552b41907b39f70fda3d3afb2183"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0d93552b41907b39f70fda3d3afb2183">clear_folder</a> (self, folder_id=None)</td></tr>
+<tr class="memdesc:a0d93552b41907b39f70fda3d3afb2183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears given (sub)folder.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0d93552b41907b39f70fda3d3afb2183">More...</a><br /></td></tr>
 <tr class="separator:a0d93552b41907b39f70fda3d3afb2183"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64db151e79a834dc926665a69f8ce19c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a64db151e79a834dc926665a69f8ce19c">delete_folder</a> (self, folder_id, permanent=True, recurse=True)</td></tr>
+<tr class="memdesc:a64db151e79a834dc926665a69f8ce19c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the folder with the given ID, optionally permanently.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a64db151e79a834dc926665a69f8ce19c">More...</a><br /></td></tr>
 <tr class="separator:a64db151e79a834dc926665a69f8ce19c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a8c614c377b68a5b24009f617315d1d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a7a8c614c377b68a5b24009f617315d1d">rename_folder</a> (self, folder_id, new_name)</td></tr>
+<tr class="memdesc:a7a8c614c377b68a5b24009f617315d1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renames the given (sub)folder.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a7a8c614c377b68a5b24009f617315d1d">More...</a><br /></td></tr>
 <tr class="separator:a7a8c614c377b68a5b24009f617315d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae14c1ec04eda08efe34d38f0714bd33c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ae14c1ec04eda08efe34d38f0714bd33c">upload_file</a> (self, filepath, folder_id=None, overwrite=False, makelink=True, activelink=True, directlink=True, expire=None, password=None)</td></tr>
+<tr class="memdesc:ae14c1ec04eda08efe34d38f0714bd33c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uploads a file into the current user's folder (optionally subfolder) and returns the link info.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ae14c1ec04eda08efe34d38f0714bd33c">More...</a><br /></td></tr>
 <tr class="separator:ae14c1ec04eda08efe34d38f0714bd33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9aa0802d730c2841a85c676a0303257e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a9aa0802d730c2841a85c676a0303257e">delete_file</a> (self, file_id, permanent=True)</td></tr>
+<tr class="memdesc:a9aa0802d730c2841a85c676a0303257e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the file with the given ID, optionally permanently.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a9aa0802d730c2841a85c676a0303257e">More...</a><br /></td></tr>
 <tr class="separator:a9aa0802d730c2841a85c676a0303257e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad59ccab475673c59ff66acf49d0116c5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ad59ccab475673c59ff66acf49d0116c5">rename_file</a> (self, file_id, new_name)</td></tr>
+<tr class="memdesc:ad59ccab475673c59ff66acf49d0116c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renames the given file (in the original folder).  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ad59ccab475673c59ff66acf49d0116c5">More...</a><br /></td></tr>
 <tr class="separator:ad59ccab475673c59ff66acf49d0116c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7847cb7d5047babfaed456014a2ecb66"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a7847cb7d5047babfaed456014a2ecb66">download_file</a> (self, file_id, save_folder='', overwrite=False)</td></tr>
+<tr class="memdesc:a7847cb7d5047babfaed456014a2ecb66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Downloads the given file and saves it to a local folder.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a7847cb7d5047babfaed456014a2ecb66">More...</a><br /></td></tr>
 <tr class="separator:a7847cb7d5047babfaed456014a2ecb66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2f1c86aadcecfb1f76a43e71e9909d5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab2f1c86aadcecfb1f76a43e71e9909d5">create_file_link</a> (self, file_id, activelink=True, directlink=True, expire=None, password=None)</td></tr>
+<tr class="memdesc:ab2f1c86aadcecfb1f76a43e71e9909d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a public link to the specified file (given by a file ID).  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab2f1c86aadcecfb1f76a43e71e9909d5">More...</a><br /></td></tr>
 <tr class="separator:ab2f1c86aadcecfb1f76a43e71e9909d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d051c6fa29ae29701cbb995fbd6b78f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a9d051c6fa29ae29701cbb995fbd6b78f">get_file_link</a> (self, link_id)</td></tr>
+<tr class="memdesc:a9d051c6fa29ae29701cbb995fbd6b78f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves file link info (given by link ID).  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a9d051c6fa29ae29701cbb995fbd6b78f">More...</a><br /></td></tr>
 <tr class="separator:a9d051c6fa29ae29701cbb995fbd6b78f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3891feb844fea06f18caf0657de9195"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa3891feb844fea06f18caf0657de9195">update_file_link</a> (self, link_id, activelink=None, expire=None, password=None)</td></tr>
+<tr class="memdesc:aa3891feb844fea06f18caf0657de9195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the public link to the specified file (given by file ID).  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa3891feb844fea06f18caf0657de9195">More...</a><br /></td></tr>
 <tr class="separator:aa3891feb844fea06f18caf0657de9195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac42187b9c256130cea0deb2ddf8d4e49"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ac42187b9c256130cea0deb2ddf8d4e49">delete_file_link</a> (self, link_id)</td></tr>
+<tr class="memdesc:ac42187b9c256130cea0deb2ddf8d4e49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the public link to the specified file (given by file ID).  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ac42187b9c256130cea0deb2ddf8d4e49">More...</a><br /></td></tr>
 <tr class="separator:ac42187b9c256130cea0deb2ddf8d4e49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a4dcb16a757cbff66a77cbe5d1b4f423c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a4dcb16a757cbff66a77cbe5d1b4f423c">settings</a></td></tr>
+<tr class="memdesc:a4dcb16a757cbff66a77cbe5d1b4f423c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dict</code> stored pointer to app global settings  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a4dcb16a757cbff66a77cbe5d1b4f423c">More...</a><br /></td></tr>
 <tr class="separator:a4dcb16a757cbff66a77cbe5d1b4f423c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a340c32aeb74defa287e63813733ad2e9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a340c32aeb74defa287e63813733ad2e9">timeout</a></td></tr>
+<tr class="memdesc:a340c32aeb74defa287e63813733ad2e9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> network request timeout (in msec.)  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a340c32aeb74defa287e63813733ad2e9">More...</a><br /></td></tr>
 <tr class="separator:a340c32aeb74defa287e63813733ad2e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa92c078598c8c67a3bc2d8da71344f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#afa92c078598c8c67a3bc2d8da71344f2">on_user_exist</a></td></tr>
+<tr class="memdesc:afa92c078598c8c67a3bc2d8da71344f2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback function called when the user with the name stored in the app settings already exists  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#afa92c078598c8c67a3bc2d8da71344f2">More...</a><br /></td></tr>
 <tr class="separator:afa92c078598c8c67a3bc2d8da71344f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4b923e2f660e882a79845676d3e99e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab4b923e2f660e882a79845676d3e99e1">on_update_users</a></td></tr>
+<tr class="memdesc:ab4b923e2f660e882a79845676d3e99e1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback function fired when the user list (list of users connected to the cloud) is updated  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab4b923e2f660e882a79845676d3e99e1">More...</a><br /></td></tr>
 <tr class="separator:ab4b923e2f660e882a79845676d3e99e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d0fc14f62693f5c058f642ad0e2d967"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a8d0fc14f62693f5c058f642ad0e2d967">on_error</a></td></tr>
+<tr class="memdesc:a8d0fc14f62693f5c058f642ad0e2d967"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback function fired when an exception is raised  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a8d0fc14f62693f5c058f642ad0e2d967">More...</a><br /></td></tr>
 <tr class="separator:a8d0fc14f62693f5c058f642ad0e2d967"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a026395419a846bfe98b1bd7c57c5001d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a026395419a846bfe98b1bd7c57c5001d">show_errors</a></td></tr>
+<tr class="memdesc:a026395419a846bfe98b1bd7c57c5001d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> whether to display error messages in GUI dialogs  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a026395419a846bfe98b1bd7c57c5001d">More...</a><br /></td></tr>
 <tr class="separator:a026395419a846bfe98b1bd7c57c5001d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9bb041759e025cdf12526071d6a8fde"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab9bb041759e025cdf12526071d6a8fde">on_apikey_required</a></td></tr>
+<tr class="memdesc:ab9bb041759e025cdf12526071d6a8fde"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback function called when the app requires the user to enter a Kloudless API key  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab9bb041759e025cdf12526071d6a8fde">More...</a><br /></td></tr>
 <tr class="separator:ab9bb041759e025cdf12526071d6a8fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdab444f96d169d45cdbcd76ba5277cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#abdab444f96d169d45cdbcd76ba5277cf">on_bearer_required</a></td></tr>
+<tr class="memdesc:abdab444f96d169d45cdbcd76ba5277cf"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback function called when the app requires the user to enter a Kloudless Bearer Token  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#abdab444f96d169d45cdbcd76ba5277cf">More...</a><br /></td></tr>
 <tr class="separator:abdab444f96d169d45cdbcd76ba5277cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a466bc97fb6778a829700ed15c710ee8a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a466bc97fb6778a829700ed15c710ee8a">users</a></td></tr>
+<tr class="memdesc:a466bc97fb6778a829700ed15c710ee8a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>list</code> list of users connected to the cloud  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a466bc97fb6778a829700ed15c710ee8a">More...</a><br /></td></tr>
 <tr class="separator:a466bc97fb6778a829700ed15c710ee8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a769a5224217ae8ed2f50f2b26ff935fb"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a769a5224217ae8ed2f50f2b26ff935fb">APIURL</a> = 'https://api.kloudless.com/v2/'</td></tr>
+<tr class="memdesc:a769a5224217ae8ed2f50f2b26ff935fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">base URL for Kloudless Storage API (version 2)  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a769a5224217ae8ed2f50f2b26ff935fb">More...</a><br /></td></tr>
 <tr class="separator:a769a5224217ae8ed2f50f2b26ff935fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83c1604d8127a03f5f52c3023e7c13b9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a83c1604d8127a03f5f52c3023e7c13b9">ACCID</a> = 352604900</td></tr>
+<tr class="memdesc:a83c1604d8127a03f5f52c3023e7c13b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">DropBox account ID (connected to the pycross app on Kloudless)  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a83c1604d8127a03f5f52c3023e7c13b9">More...</a><br /></td></tr>
 <tr class="separator:a83c1604d8127a03f5f52c3023e7c13b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af438ee342c16e6fdbdbab070687e0b5e"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#af438ee342c16e6fdbdbab070687e0b5e">ROOTNAME</a> = 'pycrossall'</td></tr>
+<tr class="memdesc:af438ee342c16e6fdbdbab070687e0b5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">root folder name on DropBox  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#af438ee342c16e6fdbdbab070687e0b5e">More...</a><br /></td></tr>
 <tr class="separator:af438ee342c16e6fdbdbab070687e0b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae8fa0f4f43eb80713cebbc28e7bf4e0"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aae8fa0f4f43eb80713cebbc28e7bf4e0">APP_ID</a> = 'RXaPpmxluGS7vMYoWfve847PzGuvPVdbunZe2W_vJKQdvxzx'</td></tr>
+<tr class="memdesc:aae8fa0f4f43eb80713cebbc28e7bf4e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">pycrossword app ID on Kloudless  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aae8fa0f4f43eb80713cebbc28e7bf4e0">More...</a><br /></td></tr>
 <tr class="separator:aae8fa0f4f43eb80713cebbc28e7bf4e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42b2059ede87316e683a6e8c58f2a90d"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a42b2059ede87316e683a6e8c58f2a90d">OAUTH_URL</a> = f&quot;https://api.kloudless.com/v1/oauth/?client_id={<a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aae8fa0f4f43eb80713cebbc28e7bf4e0">APP_ID</a>}&amp;response_type=token&amp;redirect_uri=urn:ietf:wg:oauth:2.0:oob&amp;scope=dropbox&amp;state={{}}&quot;</td></tr>
+<tr class="memdesc:a42b2059ede87316e683a6e8c58f2a90d"><td class="mdescLeft">&#160;</td><td class="mdescRight">base URL for OAuth 2.0 authorization chain  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a42b2059ede87316e683a6e8c58f2a90d">More...</a><br /></td></tr>
 <tr class="separator:a42b2059ede87316e683a6e8c58f2a90d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a5966144d62926aef178bb8e08baf7aa1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5966144d62926aef178bb8e08baf7aa1">_authenticate</a> (self, force_api_key=False)</td></tr>
+<tr class="memdesc:a5966144d62926aef178bb8e08baf7aa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Authenticates the user using either the API key or the Bearer Token.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5966144d62926aef178bb8e08baf7aa1">More...</a><br /></td></tr>
 <tr class="separator:a5966144d62926aef178bb8e08baf7aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55d1ddc8cb3c4bade671081560621e0e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a55d1ddc8cb3c4bade671081560621e0e">_error</a> (self, message, code=None, title=_('Error'), msgtype='error', raise_error=False)</td></tr>
+<tr class="memdesc:a55d1ddc8cb3c4bade671081560621e0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows an error message or raises an exception.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a55d1ddc8cb3c4bade671081560621e0e">More...</a><br /></td></tr>
 <tr class="separator:a55d1ddc8cb3c4bade671081560621e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38d651fb9230b0ed25b67cc8bd31d68b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a38d651fb9230b0ed25b67cc8bd31d68b">_error_tostr</a> (self, error)</td></tr>
+<tr class="memdesc:a38d651fb9230b0ed25b67cc8bd31d68b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an error dictionary object into a single string.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a38d651fb9230b0ed25b67cc8bd31d68b">More...</a><br /></td></tr>
 <tr class="separator:a38d651fb9230b0ed25b67cc8bd31d68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e71cb48afc0a593da3579d6f55fee51"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0e71cb48afc0a593da3579d6f55fee51">_request</a> (self, url, command='get', returntype='json', error_keymap={ 'message':'message', 'code':'status_code'}, **kwargs)</td></tr>
+<tr class="memdesc:a0e71cb48afc0a593da3579d6f55fee51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sumbits an HTTP(S) request to a URL and returns the result.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0e71cb48afc0a593da3579d6f55fee51">More...</a><br /></td></tr>
 <tr class="separator:a0e71cb48afc0a593da3579d6f55fee51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c3e3e93d3c46d1895cd0243ba3cac09"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a2c3e3e93d3c46d1895cd0243ba3cac09">_get_apikey</a> (self)</td></tr>
+<tr class="memdesc:a2c3e3e93d3c46d1895cd0243ba3cac09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unless no Kloudless API key is stored in <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa01fb8d79c86f4fba9c501a64716c528" title="str the stored API key">Cloudstorage::_apikey</a>, asks the user to provide one.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a2c3e3e93d3c46d1895cd0243ba3cac09">More...</a><br /></td></tr>
 <tr class="separator:a2c3e3e93d3c46d1895cd0243ba3cac09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd774184454d57f4a37cd55ef1db9c25"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#afd774184454d57f4a37cd55ef1db9c25">_get_bearer</a> (self)</td></tr>
+<tr class="memdesc:afd774184454d57f4a37cd55ef1db9c25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unless no Bearer Token is stored in <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#abcfb5df062ace983e57128aae8498688" title="str the stored Bearer Token">Cloudstorage::_bearer</a>, asks the user to provide one.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#afd774184454d57f4a37cd55ef1db9c25">More...</a><br /></td></tr>
 <tr class="separator:afd774184454d57f4a37cd55ef1db9c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52436e05acb5dd11c10c0f9f1bde4bb4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a52436e05acb5dd11c10c0f9f1bde4bb4">_check_bearer</a> (self, bearer_token=None)</td></tr>
+<tr class="memdesc:a52436e05acb5dd11c10c0f9f1bde4bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the provided Bearer Token againt the app ID in Kloudless.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a52436e05acb5dd11c10c0f9f1bde4bb4">More...</a><br /></td></tr>
 <tr class="separator:a52436e05acb5dd11c10c0f9f1bde4bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeafd3a88031897f73acf0c80b7624ced"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aeafd3a88031897f73acf0c80b7624ced">_make_headers</a> (self, content_type='application/json', force_api_key=False)</td></tr>
+<tr class="memdesc:aeafd3a88031897f73acf0c80b7624ced"><td class="mdescLeft">&#160;</td><td class="mdescRight">Authenticates the user for an operation and returns the corresponding headers.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aeafd3a88031897f73acf0c80b7624ced">More...</a><br /></td></tr>
 <tr class="separator:aeafd3a88031897f73acf0c80b7624ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72542948a720ab2ef34169d485610aa1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a72542948a720ab2ef34169d485610aa1">_create_account</a> (self)</td></tr>
-<tr class="separator:a72542948a720ab2ef34169d485610aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a877ebd8dad4afe42ac09d8a0a86e988c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a877ebd8dad4afe42ac09d8a0a86e988c">_get_accounts</a> (self, enabled=None, admin=None, search=None)</td></tr>
+<tr class="memdesc:a877ebd8dad4afe42ac09d8a0a86e988c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service method: lists all accounts tied to the pycross app on Kloudless.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a877ebd8dad4afe42ac09d8a0a86e988c">More...</a><br /></td></tr>
 <tr class="separator:a877ebd8dad4afe42ac09d8a0a86e988c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9224329a9efcf2ef4848c93f976761b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ad9224329a9efcf2ef4848c93f976761b">_get_account_matadata</a> (self, account_id, retrieve_tokens=False, retrieve_full=True)</td></tr>
+<tr class="memdesc:ad9224329a9efcf2ef4848c93f976761b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service method: gets metadata for account specified by 'account_id'.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ad9224329a9efcf2ef4848c93f976761b">More...</a><br /></td></tr>
 <tr class="separator:ad9224329a9efcf2ef4848c93f976761b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e5cffc156e0fa70076a83a43559ffc7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0e5cffc156e0fa70076a83a43559ffc7">_get_quota</a> (self)</td></tr>
+<tr class="memdesc:a0e5cffc156e0fa70076a83a43559ffc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves storage quota information.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a0e5cffc156e0fa70076a83a43559ffc7">More...</a><br /></td></tr>
 <tr class="separator:a0e5cffc156e0fa70076a83a43559ffc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7070bf42f560c045663145f934da53ce"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a7070bf42f560c045663145f934da53ce">_get_folder_objects</a> (self, fid, recurse=False)</td></tr>
+<tr class="memdesc:a7070bf42f560c045663145f934da53ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists items in a folder.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a7070bf42f560c045663145f934da53ce">More...</a><br /></td></tr>
 <tr class="separator:a7070bf42f560c045663145f934da53ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab852970d027e5e04042355123393d518"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab852970d027e5e04042355123393d518">_get_folder_ancestors</a> (self, folder_id)</td></tr>
+<tr class="memdesc:ab852970d027e5e04042355123393d518"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a folder's parent folders (ancestors).  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab852970d027e5e04042355123393d518">More...</a><br /></td></tr>
 <tr class="separator:ab852970d027e5e04042355123393d518"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3e1823c9490463fc4f27fc3f7103b67"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#af3e1823c9490463fc4f27fc3f7103b67">_is_user_folder</a> (self, folder_id)</td></tr>
+<tr class="memdesc:af3e1823c9490463fc4f27fc3f7103b67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if given folder is inside current user's folder.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#af3e1823c9490463fc4f27fc3f7103b67">More...</a><br /></td></tr>
 <tr class="separator:af3e1823c9490463fc4f27fc3f7103b67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1fdb2cda96df214a7d757c4c57cdeb4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa1fdb2cda96df214a7d757c4c57cdeb4">_generate_username</a> (self)</td></tr>
+<tr class="memdesc:aa1fdb2cda96df214a7d757c4c57cdeb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a randon user name (GUID).  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa1fdb2cda96df214a7d757c4c57cdeb4">More...</a><br /></td></tr>
 <tr class="separator:aa1fdb2cda96df214a7d757c4c57cdeb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f463c2d6716a33de010a9113fe094e2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a2f463c2d6716a33de010a9113fe094e2">_create_folder</a> (self, folder_name, parent_id='root', error_on_exist=False)</td></tr>
+<tr class="memdesc:a2f463c2d6716a33de010a9113fe094e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new folder within the current user's space on DropBox.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a2f463c2d6716a33de010a9113fe094e2">More...</a><br /></td></tr>
 <tr class="separator:a2f463c2d6716a33de010a9113fe094e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01ce9c2474d9f0d693707424e541b9d8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a01ce9c2474d9f0d693707424e541b9d8">_update_users</a> (self)</td></tr>
+<tr class="memdesc:a01ce9c2474d9f0d693707424e541b9d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the list of subfolders present in <code>dropbox/pycrossall</code> root folder.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a01ce9c2474d9f0d693707424e541b9d8">More...</a><br /></td></tr>
 <tr class="separator:a01ce9c2474d9f0d693707424e541b9d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a8fe97584b469e7a8e5e721e3ccc954"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a3a8fe97584b469e7a8e5e721e3ccc954">_get_file_metadata</a> (self, file_id)</td></tr>
+<tr class="memdesc:a3a8fe97584b469e7a8e5e721e3ccc954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the metadata of the given file: name, path, size, date, etc.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a3a8fe97584b469e7a8e5e721e3ccc954">More...</a><br /></td></tr>
 <tr class="separator:a3a8fe97584b469e7a8e5e721e3ccc954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f8f1e9cc9a944cac732570009a6ccdc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5f8f1e9cc9a944cac732570009a6ccdc">_get_folder_metadata</a> (self, folder_id=None)</td></tr>
+<tr class="memdesc:a5f8f1e9cc9a944cac732570009a6ccdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the metadata of the given folder: name, path, size, date, etc.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5f8f1e9cc9a944cac732570009a6ccdc">More...</a><br /></td></tr>
 <tr class="separator:a5f8f1e9cc9a944cac732570009a6ccdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf8447cbf3dc4fdd15297d814af6e1fa"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aaf8447cbf3dc4fdd15297d814af6e1fa">_user_exists</a> (self, username, update_user_list=False)</td></tr>
+<tr class="memdesc:aaf8447cbf3dc4fdd15297d814af6e1fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a user with the given name exists.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aaf8447cbf3dc4fdd15297d814af6e1fa">More...</a><br /></td></tr>
 <tr class="separator:aaf8447cbf3dc4fdd15297d814af6e1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af03c1378ff0607c6c8340ae9722714e8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#af03c1378ff0607c6c8340ae9722714e8">_find_or_create_user</a> (self, username=None, update_user_list=False)</td></tr>
+<tr class="memdesc:af03c1378ff0607c6c8340ae9722714e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates or finds a user folder in <code>dropbox/pycrossall/&lt;username&gt;</code>.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#af03c1378ff0607c6c8340ae9722714e8">More...</a><br /></td></tr>
 <tr class="separator:af03c1378ff0607c6c8340ae9722714e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec8c34bf5fe43df14410d4850d40751d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aec8c34bf5fe43df14410d4850d40751d">_delete_user</a> (self, username=None)</td></tr>
+<tr class="memdesc:aec8c34bf5fe43df14410d4850d40751d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes a user permanently.  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aec8c34bf5fe43df14410d4850d40751d">More...</a><br /></td></tr>
 <tr class="separator:aec8c34bf5fe43df14410d4850d40751d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a3e56f966086d5ecd88de7820651a3d5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a3e56f966086d5ecd88de7820651a3d5e">_accid</a></td></tr>
+<tr class="memdesc:a3e56f966086d5ecd88de7820651a3d5e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> Kloudless account ID  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a3e56f966086d5ecd88de7820651a3d5e">More...</a><br /></td></tr>
 <tr class="separator:a3e56f966086d5ecd88de7820651a3d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d2b022a8e908d22a3c1a60177a8fd01"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5d2b022a8e908d22a3c1a60177a8fd01">_baseurl</a></td></tr>
+<tr class="memdesc:a5d2b022a8e908d22a3c1a60177a8fd01"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> base URL for REST requests to the Kloudless API  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5d2b022a8e908d22a3c1a60177a8fd01">More...</a><br /></td></tr>
 <tr class="separator:a5d2b022a8e908d22a3c1a60177a8fd01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55060307846d7be639366497fa6de075"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a55060307846d7be639366497fa6de075">_rootid</a></td></tr>
+<tr class="memdesc:a55060307846d7be639366497fa6de075"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> root folder ID in the DropBox storage  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a55060307846d7be639366497fa6de075">More...</a><br /></td></tr>
 <tr class="separator:a55060307846d7be639366497fa6de075"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa01fb8d79c86f4fba9c501a64716c528"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa01fb8d79c86f4fba9c501a64716c528">_apikey</a></td></tr>
+<tr class="memdesc:aa01fb8d79c86f4fba9c501a64716c528"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> the stored API key  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa01fb8d79c86f4fba9c501a64716c528">More...</a><br /></td></tr>
 <tr class="separator:aa01fb8d79c86f4fba9c501a64716c528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcfb5df062ace983e57128aae8498688"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#abcfb5df062ace983e57128aae8498688">_bearer</a></td></tr>
+<tr class="memdesc:abcfb5df062ace983e57128aae8498688"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> the stored Bearer Token  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#abcfb5df062ace983e57128aae8498688">More...</a><br /></td></tr>
 <tr class="separator:abcfb5df062ace983e57128aae8498688"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2bde0d07d595c41b5a26cea108c958a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa2bde0d07d595c41b5a26cea108c958a">_user</a></td></tr>
+<tr class="memdesc:aa2bde0d07d595c41b5a26cea108c958a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>tuple</code> current user; contains 3 elements:  <a href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa2bde0d07d595c41b5a26cea108c958a">More...</a><br /></td></tr>
 <tr class="separator:aa2bde0d07d595c41b5a26cea108c958a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Interface for the <a href="https://kloudless.com/cloud-storage-api/">Kloudless cloud storage API</a>. </p>
+<p>Kloudless lets user apps integrate a number of external storage services (like DropBox or Google Drive) and access data via a single API. <b>pycrossword</b> uses a registered app on Kloudless (<code>pycross</code>) that is tied to a default DropBox file storage account. Most methods deal with fildes and folders referencing them by their unique IDs (hash strings). Read the <a href="https://kloudless.com/unified-api/">Kloudless docs</a> to learn more. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5ca6c22d5db49ee9d99b9ab570cf206e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ca6c22d5db49ee9d99b9ab570cf206e">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -285,6 +344,28 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">settings</td><td><code>dict</code> pointer to the app settings dictionary (<code><a class="el" href="classpycross_1_1guisettings_1_1_c_w_settings.html#a69b6d83e588b180947f808a2d988b31b" title="global app settings dictionary synched with settings files">pycross::guisettings::CWSettings::settings</a></code>) </td></tr>
+    <tr><td class="paramname">auto_create_user</td><td><code>bool</code> create a new user account if the user ID stored in the app global settings is not active / not found </td></tr>
+    <tr><td class="paramname">on_user_exist</td><td><code>callable</code> callback function called when the user with the name stored in the app settings already exists. The callback tales one parameter &ndash; the user name, and returns a Boolean value: <code>True</code> to go on with that user name, <code>False</code> to cancel </td></tr>
+    <tr><td class="paramname">on_update_users</td><td><code>callable</code> callback function fired when the user list (list of users connected to the cloud) is updated; it takes one argument &ndash; a <code>list</code> of users and returns nothing </td></tr>
+    <tr><td class="paramname">on_error</td><td><code>callable</code> callback function fired when an exception is raised; it takes a single argument &ndash; the error message </td></tr>
+    <tr><td class="paramname">show_errors</td><td><code>bool</code> whether to display error messages in GUI dialogs </td></tr>
+    <tr><td class="paramname">on_apikey_required</td><td><code>callable</code> callback function called when the app requires the user to enter a Kloudless API key; it takes one argument &ndash; a list containing two elements:<ul>
+<li><code>str</code> the API key entered by the user</li>
+<li><code>bool</code> user action result: <code>True</code> = use the API key, <code>False</code> = cancel </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">on_bearer_required</td><td><code>callable</code> callback function called when the app requires the user to enter a Kloudless Bearer Token; it takes one argument &ndash; a list containing two elements:<ul>
+<li><code>str</code> the Bearer Token entered by the user</li>
+<li><code>bool</code> user action result: <code>True</code> = use the Bearer Token, <code>False</code> = cancel </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">timeout</td><td><code>int</code> network request timeout (in msec.) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -323,6 +404,15 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Authenticates the user using either the API key or the Bearer Token. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force_api_key</td><td><code>bool</code> if <code>True</code>, the API key will be demanded regardless of the existing Bearer Token (used for admin operations) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> | <code>None</code> the authentication method used ('APIKey' or 'Bearer') or <code>None</code> on failure to authenticate </dd></dl>
+
 </div>
 </div>
 <a id="a52436e05acb5dd11c10c0f9f1bde4bb4"></a>
@@ -359,35 +449,15 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a72542948a720ab2ef34169d485610aa1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72542948a720ab2ef34169d485610aa1">&#9670;&nbsp;</a></span>_create_account()</h2>
+<p>Validates the provided Bearer Token againt the app ID in Kloudless. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bearer_token</td><td><code>str</code> the user's Bearer Token; if <code>None</code>, it will be retrieved from <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#abcfb5df062ace983e57128aae8498688" title="str the stored Bearer Token">Cloudstorage::_bearer</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if the Bearer Token has been successfully validated; <code>False</code> otherwise </dd></dl>
 
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">def pycross.utils.onlineservices.Cloudstorage._create_account </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<pre class="fragment">Create a new client account and bind it to the Kloudless/pycross app.
-Retrieved Account ID and Bearer Token will be written to settings.
-TODO: Implement when default Dropbox storage is not enough.
-</pre> 
 </div>
 </div>
 <a id="a2f463c2d6716a33de010a9113fe094e2"></a>
@@ -436,6 +506,23 @@ TODO: Implement when default Dropbox storage is not enough.
 </table>
 </div><div class="memdoc">
 
+<p>Creates a new folder within the current user's space on DropBox. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">folder_name</td><td><code>str</code> the new folder name </td></tr>
+    <tr><td class="paramname">parent_id</td><td><code>str</code> the ID of the parent folder (where the new one is to be created) </td></tr>
+    <tr><td class="paramname">error_on_exist</td><td><code>bool</code> cancel operation if the folder with that name already exists in the indicated location; if <code>False</code>, the existing folder will be used </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>tuple</code>|<code>None</code> tuple containing the new folder data:<ol type="1">
+<li>folder name</li>
+<li>folder ID</li>
+<li>full path to folder In case of failure (e.g. when the folder exists and <code>error_on_exist</code> is <code>True</code>), returns <code>None</code>. </li>
+</ol>
+</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#folders-create-a-folder-post">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="aec8c34bf5fe43df14410d4850d40751d"></a>
@@ -471,6 +558,17 @@ TODO: Implement when default Dropbox storage is not enough.
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Deletes a user permanently. </p>
+<p>This in effect deletes the corresponding user's root folder from the app root folder on DropBox (<code>pycrossall/&lt;username&gt;</code>), naturally erasing all its contents. <br  />
+ </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">username</td><td><code>str</code>|<code>None</code> name of the user to delete; if <code>None</code>, the current user will be deleted </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>Note that you cannot delete other users unless authorized by the application API Key on Kloudless! </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> on success, <code>False</code> on failure </dd></dl>
 
 </div>
 </div>
@@ -532,6 +630,24 @@ TODO: Implement when default Dropbox storage is not enough.
 </table>
 </div><div class="memdoc">
 
+<p>Shows an error message or raises an exception. </p>
+<p>Calls <code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a8d0fc14f62693f5c058f642ad0e2d967" title="callable callback function fired when an exception is raised">Cloudstorage::on_error</a></code>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td><code>str</code> the error / exception message </td></tr>
+    <tr><td class="paramname">code</td><td><code>str</code> code fragment where the exceptio has occurred </td></tr>
+    <tr><td class="paramname">title</td><td><code>str</code> error dialog title (caption) </td></tr>
+    <tr><td class="paramname">msgtype</td><td><code>str</code> error dialog type (icon) as given in <a class="el" href="namespacepycross_1_1utils_1_1utils.html#a554499425965960d29f484d540709ae9" title="Displays a GUI message dialog and returns the user&#39;s reply.">utils::MsgBox()</a> </td></tr>
+    <tr><td class="paramname">raise_error</td><td><code>bool</code> if <code>True</code>, an Exception will be raised reporting that error </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">&lt;tt&gt;Exception&lt;/tt&gt;</td><td>if <code>raise_error</code> is <code>True</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a38d651fb9230b0ed25b67cc8bd31d68b"></a>
@@ -567,6 +683,15 @@ TODO: Implement when default Dropbox storage is not enough.
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Converts an error dictionary object into a single string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">error</td><td><code>dict</code> | <code>str</code> error data with 2 keys: 'message' (error message) and 'code' (the code fragment that caused the error); or a prepared error message </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> formatted error message </dd></dl>
 
 </div>
 </div>
@@ -609,12 +734,16 @@ TODO: Implement when default Dropbox storage is not enough.
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Creates or finds the subfolder: dropbox/pycrossall/&lt;username&gt;.
-If found and 'error_on_exist' == True, displays error and quits.
-Otherwise, sets self._user = (user_name, user_id).
-On any failure, self._user will be set to None.
-If username == None (default), an automatic username is generated.
-</pre> 
+
+<p>Creates or finds a user folder in <code>dropbox/pycrossall/&lt;username&gt;</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">username</td><td><code>str</code> user name to find or create. If <code>None</code> (default), a new unique name will be generated with <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa1fdb2cda96df214a7d757c4c57cdeb4" title="Generates a randon user name (GUID).">_generate_username()</a>. Otherwise, the behavior depends on the result of <code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#afa92c078598c8c67a3bc2d8da71344f2" title="callable callback function called when the user with the name stored in the app settings already exis...">Cloudstorage::on_user_exist</a></code> callback: if it is set and returns <code>True</code>, the found user will be stored as the current user (<code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa2bde0d07d595c41b5a26cea108c958a" title="tuple current user; contains 3 elements:">Cloudstorage::_user</a></code>) and saved to the app global settings. Otherwise, the methods returns <code>False</code>. </td></tr>
+    <tr><td class="paramname">update_user_list</td><td><code>bool</code> whether the user list (<code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a466bc97fb6778a829700ed15c710ee8a" title="list list of users connected to the cloud">Cloudstorage::users</a></code>) must first be refreshed from the server </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="aa1fdb2cda96df214a7d757c4c57cdeb4"></a>
@@ -640,6 +769,9 @@ If username == None (default), an automatic username is generated.
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Generates a randon user name (GUID). </p>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> new user name </dd></dl>
 
 </div>
 </div>
@@ -688,8 +820,19 @@ If username == None (default), an automatic username is generated.
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Service method: gets metadata for account specified by 'account_id'.
-</pre> 
+
+<p>Service method: gets metadata for account specified by 'account_id'. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">account_id</td><td><code>str</code> requested account ID </td></tr>
+    <tr><td class="paramname">retrieve_tokens</td><td><code>bool</code> include Bearer Tokens in result </td></tr>
+    <tr><td class="paramname">retrieve_full</td><td><code>bool</code> include full account info in result (like quota etc.) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> account metadata </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/authentication#accounts-retrieve-an-account-get">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="a877ebd8dad4afe42ac09d8a0a86e988c"></a>
@@ -737,8 +880,19 @@ If username == None (default), an automatic username is generated.
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Service method: lists all accounts tied to the pycross app on Kloudless.
-</pre> 
+
+<p>Service method: lists all accounts tied to the pycross app on Kloudless. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enabled</td><td><code>bool</code>|<code>None</code> list only enabled or disabled accounts; <code>None</code> = list all </td></tr>
+    <tr><td class="paramname">admin</td><td><code>bool</code>|<code>None</code> list only admin/non-admin accounts; <code>None</code> = list all </td></tr>
+    <tr><td class="paramname">search</td><td><code>str</code> search string to locate specific users </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> accounts data </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/authentication#accounts-list-accounts-get">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="a2c3e3e93d3c46d1895cd0243ba3cac09"></a>
@@ -765,6 +919,8 @@ If username == None (default), an automatic username is generated.
 </table>
 </div><div class="memdoc">
 
+<p>Unless no Kloudless API key is stored in <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#aa01fb8d79c86f4fba9c501a64716c528" title="str the stored API key">Cloudstorage::_apikey</a>, asks the user to provide one. </p>
+
 </div>
 </div>
 <a id="afd774184454d57f4a37cd55ef1db9c25"></a>
@@ -790,6 +946,8 @@ If username == None (default), an automatic username is generated.
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Unless no Bearer Token is stored in <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#abcfb5df062ace983e57128aae8498688" title="str the stored Bearer Token">Cloudstorage::_bearer</a>, asks the user to provide one. </p>
 
 </div>
 </div>
@@ -826,8 +984,18 @@ If username == None (default), an automatic username is generated.
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Retrieves the metadata of the given file: name, path, size, date, etc.
-</pre> 
+
+<p>Retrieves the metadata of the given file: name, path, size, date, etc. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td><code>str</code> the ID of the requested file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a5f8f1e9cc9a944cac732570009a6ccdc" title="Retrieves the metadata of the given folder: name, path, size, date, etc.">_get_folder_metadata()</a> </dd>
+<dd>
+<a href="https://developers.kloudless.com/docs/v1/storage#files-retrieve-file-metadata-get">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="ab852970d027e5e04042355123393d518"></a>
@@ -864,6 +1032,16 @@ If username == None (default), an automatic username is generated.
 </table>
 </div><div class="memdoc">
 
+<p>Gets a folder's parent folders (ancestors). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">folder_id</td><td><code>str</code> folder ID </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> folder ancestors </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#folders-retrieve-folder-metadata-get">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="a5f8f1e9cc9a944cac732570009a6ccdc"></a>
@@ -899,9 +1077,18 @@ If username == None (default), an automatic username is generated.
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Retrieves the metadata of the given folder: name, path, size, date, etc.
-If 'folder_id' is None, the current user's folder will be used.
-</pre> 
+
+<p>Retrieves the metadata of the given folder: name, path, size, date, etc. </p>
+<p>If <code>folder_id</code> is <code>None</code>, the current user's folder will be used. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">folder_id</td><td><code>str</code> the ID of the requested folder </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a3a8fe97584b469e7a8e5e721e3ccc954" title="Retrieves the metadata of the given file: name, path, size, date, etc.">_get_file_metadata()</a> </dd>
+<dd>
+<a href="https://developers.kloudless.com/docs/v1/storage#folders-retrieve-folder-metadata-get">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="a7070bf42f560c045663145f934da53ce"></a>
@@ -944,6 +1131,17 @@ If 'folder_id' is None, the current user's folder will be used.
 </table>
 </div><div class="memdoc">
 
+<p>Lists items in a folder. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fid</td><td><code>str</code> folder ID </td></tr>
+    <tr><td class="paramname">recurse</td><td><code>bool</code> recurse into subfolders </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> folder elements (subfolders and files) </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#folders-retrieve-folder-contents-get">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="a0e5cffc156e0fa70076a83a43559ffc7"></a>
@@ -969,8 +1167,11 @@ If 'folder_id' is None, the current user's folder will be used.
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Retrieves storage quota information.
-</pre> 
+
+<p>Retrieves storage quota information. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> storage quota info </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#other-storage-quota-get">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="af3e1823c9490463fc4f27fc3f7103b67"></a>
@@ -1006,8 +1207,16 @@ If 'folder_id' is None, the current user's folder will be used.
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Checks if given folder is inside current user's folder.
-</pre> 
+
+<p>Checks if given folder is inside current user's folder. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">folder_id</td><td><code>str</code> folder ID </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if the given folder is inside the current user's root folder; <code>False</code> otherwise </dd></dl>
+
 </div>
 </div>
 <a id="aeafd3a88031897f73acf0c80b7624ced"></a>
@@ -1049,6 +1258,16 @@ If 'folder_id' is None, the current user's folder will be used.
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Authenticates the user for an operation and returns the corresponding headers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">content_type</td><td><code>str</code> application content type string </td></tr>
+    <tr><td class="paramname">force_api_key</td><td><code>bool</code> demand API key unconditionally </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code>|<code>None</code> HTTP(S) headers with content type and auth details or <code>None</code> if failed to authorize user </dd></dl>
 
 </div>
 </div>
@@ -1110,6 +1329,31 @@ If 'folder_id' is None, the current user's folder will be used.
 </table>
 </div><div class="memdoc">
 
+<p>Sumbits an HTTP(S) request to a URL and returns the result. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">url</td><td><code>str</code> the requested URL </td></tr>
+    <tr><td class="paramname">command</td><td><code>str</code> any of the four HTTP(S) verbs:<ul>
+<li>'get' the GET command</li>
+<li>'post' the POST command</li>
+<li>'delete' the DELETE command</li>
+<li>'update' the UPDATE command </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">returntype</td><td><code>str</code> type of the returned results; any of:<ul>
+<li>'json' (default) Python dictionary constructed from JSON text</li>
+<li>'bool' Boolean value (<code>True</code> or <code>False</code>)</li>
+<li>'text' Unicode-formatted text</li>
+<li>&lt;anything else&gt; raw result contents (bytes) </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">error_keymap</td><td><code>dict</code> dictionary mapping the error message and code to the keys in the JSON result </td></tr>
+    <tr><td class="paramname">kwargs</td><td><code>keyword arguments</code> additional args that may be passed to the <code>requests</code> methods (like <code>timeout</code>, <code>proxies</code> etc.) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code>|<code>str</code>|<code>bool</code>|<code>bytes</code> request result depending on the value of <code>returntype</code> </dd></dl>
+
 </div>
 </div>
 <a id="a01ce9c2474d9f0d693707424e541b9d8"></a>
@@ -1135,10 +1379,14 @@ If 'folder_id' is None, the current user's folder will be used.
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Updates the list of subfolders present in dropbox/pycrossall root folder.
-The names of these subfolders correspond to the names of the
-registered users.
-</pre> 
+
+<p>Updates the list of subfolders present in <code>dropbox/pycrossall</code> root folder. </p>
+<p>The names of these subfolders correspond to the names of the registered users. Each element in <code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a466bc97fb6778a829700ed15c710ee8a" title="list list of users connected to the cloud">Cloudstorage::users</a></code> is a 3-tuple:</p><ol type="1">
+<li>user name (in lower case)</li>
+<li>user ID (unique hash string)</li>
+<li>path to user's root folder </li>
+</ol>
+
 </div>
 </div>
 <a id="aaf8447cbf3dc4fdd15297d814af6e1fa"></a>
@@ -1181,6 +1429,16 @@ registered users.
 </table>
 </div><div class="memdoc">
 
+<p>Checks if a user with the given name exists. </p>
+<p>Internally, it checks if a folder with that user name exists in the root folder. Remember that folders placed in the root folder (1-level folders) correspond to user 'accounts'. Each user can operate only within his/her folder. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">username</td><td><code>str</code> name of the user to check </td></tr>
+    <tr><td class="paramname">update_user_list</td><td><code>bool</code> whether the user list (<code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a466bc97fb6778a829700ed15c710ee8a" title="list list of users connected to the cloud">Cloudstorage::users</a></code>) must first be refreshed from the server </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>tuple</code>|<code>None</code> 3-tuple containing information on the existing user if the user is found (see <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a01ce9c2474d9f0d693707424e541b9d8" title="Updates the list of subfolders present in dropbox/pycrossall root folder.">_update_users()</a>), or <code>None</code> if the user is not found </dd></dl>
+
 </div>
 </div>
 <a id="a0d93552b41907b39f70fda3d3afb2183"></a>
@@ -1208,8 +1466,16 @@ registered users.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Clears given (sub)folder.
-</pre> 
+
+<p>Clears given (sub)folder. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">folder_id</td><td><code>str</code>|<code>None</code> ID of the folder to clear; if <code>None</code> (default), the current user's root folder will be used </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> on success, <code>False</code> on failure </dd></dl>
+
 </div>
 </div>
 <a id="ab2f1c86aadcecfb1f76a43e71e9909d5"></a>
@@ -1261,9 +1527,21 @@ registered users.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Creates public link to specified file (given by file ID).
-Returns the link meta info (dict).
-</pre> 
+
+<p>Creates a public link to the specified file (given by a file ID). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td><code>str</code> ID of the file </td></tr>
+    <tr><td class="paramname">activelink</td><td><code>bool</code> <code>True</code> to enable the external link, <code>False</code> to disable it </td></tr>
+    <tr><td class="paramname">directlink</td><td><code>bool</code> <code>True</code> to make the external link direct, <code>False</code> to use redirection </td></tr>
+    <tr><td class="paramname">expire</td><td><code>datetime</code>|<code>None</code> expiry date&amp;time for the link (<code>None</code> = never expire) </td></tr>
+    <tr><td class="paramname">password</td><td><code>str</code>|<code>None</code> password to protect the link for downloading (<code>None</code> = don't protect) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code>|<code>None</code> the link meta info or <code>None</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#links-create-a-link-post">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="a9aa0802d730c2841a85c676a0303257e"></a>
@@ -1297,9 +1575,18 @@ Returns the link meta info (dict).
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Deletes the file with the given ID, optionally permanently.
-Returns True on success, False otherwise.
-</pre> 
+
+<p>Deletes the file with the given ID, optionally permanently. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td><code>str</code> ID of the file to delete </td></tr>
+    <tr><td class="paramname">permanent</td><td><code>bool</code> whether to delete the file permanently </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> on success, <code>False</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#files-delete-a-file-delete">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="ac42187b9c256130cea0deb2ddf8d4e49"></a>
@@ -1327,9 +1614,16 @@ Returns True on success, False otherwise.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Deletes public link to specified file (given by file ID).
-Returns True on success / False on failure.
-</pre> 
+
+<p>Deletes the public link to the specified file (given by file ID). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">link_id</td><td><code>str</code> ID of the file link </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> on success / <code>False</code> on failure </dd></dl>
+
 </div>
 </div>
 <a id="a64db151e79a834dc926665a69f8ce19c"></a>
@@ -1369,9 +1663,19 @@ Returns True on success / False on failure.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Deletes the folder with the given ID, optionally permanently.
-Returns True on success, False otherwise.
-</pre> 
+
+<p>Deletes the folder with the given ID, optionally permanently. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">folder_id</td><td><code>str</code> ID of the folder to clear </td></tr>
+    <tr><td class="paramname">permanent</td><td><code>bool</code> whether to delete the folder permanently </td></tr>
+    <tr><td class="paramname">recurse</td><td><code>bool</code> whether to recurse into subdirectories (effectively clearing <b>everything</b> in that folder) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> on success, <code>False</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#folders-delete-a-folder-delete">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="a7847cb7d5047babfaed456014a2ecb66"></a>
@@ -1411,10 +1715,18 @@ Returns True on success, False otherwise.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Downloads the given file to the folder given by 'save_folder'.
-If 'save_folder' is empty, the file is downloaded to the working dir.
-Returns True on success / False otherwise.
-</pre> 
+
+<p>Downloads the given file and saves it to a local folder. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td><code>str</code> ID of the file to download </td></tr>
+    <tr><td class="paramname">save_folder</td><td><code>str</code> path to a local folder to save the file; if empty (default), the current working directory is used </td></tr>
+    <tr><td class="paramname">overwrite</td><td><code>bool</code> whether to overwrite existing files (if <code>False</code>, an error is displayed) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#files-download-a-file-get">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="ad90cb3fbc82a73c05d58ca227cad8e23"></a>
@@ -1442,9 +1754,16 @@ Returns True on success / False otherwise.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Finds or creates new subfolder in user's folder.
-Returns the tuple (folder_name, folder_id) or None on failure.
-</pre> 
+
+<p>Finds or creates a new subfolder in the current user's folder. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">folder_name</td><td><code>str</code> new folder name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>tuple</code>|<code>None</code> the result of <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#a2f463c2d6716a33de010a9113fe094e2" title="Creates a new folder within the current user&#39;s space on DropBox.">_create_folder()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a9d051c6fa29ae29701cbb995fbd6b78f"></a>
@@ -1472,9 +1791,17 @@ Returns the tuple (folder_name, folder_id) or None on failure.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Retrieves file link info (given by link ID).
-Returns the link meta info (dict).
-</pre> 
+
+<p>Retrieves file link info (given by link ID). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">link_id</td><td><code>str</code> ID of the file link </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> the link meta info </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#links-retrieve-a-link-get">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="afcf04f428b03935dde6caf14c436039f"></a>
@@ -1502,6 +1829,14 @@ Returns the link meta info (dict).
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initializes the Kloudless config, optionally creating the user account and folders. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">auto_create_user</td><td><code>bool</code> create a new user account if the user ID stored in the app global settings is not active / not found </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1536,9 +1871,18 @@ Returns the link meta info (dict).
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Renames the given file (in the original folder).
-Returns the tuple (file_name, file_id) or None on failure.
-</pre> 
+
+<p>Renames the given file (in the original folder). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td><code>str</code> ID of the file to rename </td></tr>
+    <tr><td class="paramname">new_name</td><td><code>str</code> new file name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>tuple</code>|<code>None</code> the tuple ('file name', 'file id') on success or <code>None</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#files-rename-move-a-file-patch">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="a7a8c614c377b68a5b24009f617315d1d"></a>
@@ -1572,9 +1916,18 @@ Returns the tuple (file_name, file_id) or None on failure.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Renames the given (sub)folder to 'new_name'.
-Returns the tuple (folder_name, folder_id) or None on failure.
-</pre> 
+
+<p>Renames the given (sub)folder. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">folder_id</td><td><code>str</code> ID of the folder to clear </td></tr>
+    <tr><td class="paramname">new_name</td><td><code>str</code> new folder name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>tuple</code>|<code>None</code> the tuple ('folder name', 'folder id') on success or <code>None</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#folders-rename-move-a-folder-patch">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="aa3891feb844fea06f18caf0657de9195"></a>
@@ -1620,9 +1973,20 @@ Returns the tuple (folder_name, folder_id) or None on failure.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Updates public link to specified file (given by file ID).
-Returns the link meta info (dict).
-</pre> 
+
+<p>Updates the public link to the specified file (given by file ID). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">link_id</td><td><code>str</code> ID of the file link </td></tr>
+    <tr><td class="paramname">activelink</td><td><code>bool</code> <code>True</code> to enable the external link, <code>False</code> to disable it </td></tr>
+    <tr><td class="paramname">expire</td><td><code>datetime</code>|<code>None</code> expiry date&amp;time for the link (<code>None</code> = never expire) </td></tr>
+    <tr><td class="paramname">password</td><td><code>str</code>|<code>None</code> password to protect the link for downloading (<code>None</code> = don't protect) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code>|<code>None</code> the link meta info or <code>None</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#links-update-a-link-patch">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="ae14c1ec04eda08efe34d38f0714bd33c"></a>
@@ -1692,10 +2056,24 @@ Returns the link meta info (dict).
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Uploads a file into the current user's folder (optionally subfolder) and returns the link info.
-If 'overwrite' == True, the first file with the same name will be overwritten.
-Otherwise, the uploaded file will be automatically renamed.
-</pre> 
+
+<p>Uploads a file into the current user's folder (optionally subfolder) and returns the link info. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filepath</td><td><code>str</code> full path to the local file to upload </td></tr>
+    <tr><td class="paramname">folder_id</td><td><code>str</code>|<code>None</code> ID of the folder to clear; if <code>None</code> (default), the current user's root folder will be used </td></tr>
+    <tr><td class="paramname">overwrite</td><td><code>bool</code> whether to overwrite the existing file, if found; if <code>True</code>, the first file with the same name will be overwritten; if <code>False</code>, the uploaded file will be automatically renamed </td></tr>
+    <tr><td class="paramname">makelink</td><td><code>bool</code> whether to generate a permanent external link (URL) to the uploaded file (e.g. to share it) </td></tr>
+    <tr><td class="paramname">activelink</td><td><code>bool</code> <code>True</code> to enable the external link, <code>False</code> to disable it </td></tr>
+    <tr><td class="paramname">directlink</td><td><code>bool</code> <code>True</code> to make the external link direct, <code>False</code> to use redirection </td></tr>
+    <tr><td class="paramname">expire</td><td><code>datetime</code>|<code>None</code> expiry date&amp;time for the link (<code>None</code> = never expire) </td></tr>
+    <tr><td class="paramname">password</td><td><code>str</code>|<code>None</code> password to protect the link for downloading (<code>None</code> = don't protect) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code>|<code>None</code> the result of <a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html#ab2f1c86aadcecfb1f76a43e71e9909d5" title="Creates a public link to the specified file (given by a file ID).">create_file_link()</a> or <code>None</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://developers.kloudless.com/docs/v1/storage#files-upload-a-file-post">Kloudless docs</a> </dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -1719,6 +2097,8 @@ Otherwise, the uploaded file will be automatically renamed.
 </table>
 </div><div class="memdoc">
 
+<p><code>str</code> Kloudless account ID </p>
+
 </div>
 </div>
 <a id="aa01fb8d79c86f4fba9c501a64716c528"></a>
@@ -1740,6 +2120,8 @@ Otherwise, the uploaded file will be automatically renamed.
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><code>str</code> the stored API key </p>
 
 </div>
 </div>
@@ -1763,6 +2145,8 @@ Otherwise, the uploaded file will be automatically renamed.
 </table>
 </div><div class="memdoc">
 
+<p><code>str</code> base URL for REST requests to the Kloudless API </p>
+
 </div>
 </div>
 <a id="abcfb5df062ace983e57128aae8498688"></a>
@@ -1784,6 +2168,8 @@ Otherwise, the uploaded file will be automatically renamed.
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><code>str</code> the stored Bearer Token </p>
 
 </div>
 </div>
@@ -1807,6 +2193,8 @@ Otherwise, the uploaded file will be automatically renamed.
 </table>
 </div><div class="memdoc">
 
+<p><code>str</code> root folder ID in the DropBox storage </p>
+
 </div>
 </div>
 <a id="aa2bde0d07d595c41b5a26cea108c958a"></a>
@@ -1828,6 +2216,13 @@ Otherwise, the uploaded file will be automatically renamed.
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><code>tuple</code> current user; contains 3 elements: </p>
+<ol type="1">
+<li>user name (in lower case)</li>
+<li>user ID (unique hash string)</li>
+<li>path to user's root folder </li>
+</ol>
 
 </div>
 </div>
@@ -1851,6 +2246,8 @@ Otherwise, the uploaded file will be automatically renamed.
 </table>
 </div><div class="memdoc">
 
+<p>DropBox account ID (connected to the pycross app on Kloudless) </p>
+
 </div>
 </div>
 <a id="a769a5224217ae8ed2f50f2b26ff935fb"></a>
@@ -1872,6 +2269,8 @@ Otherwise, the uploaded file will be automatically renamed.
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>base URL for Kloudless Storage API (version 2) </p>
 
 </div>
 </div>
@@ -1895,6 +2294,8 @@ Otherwise, the uploaded file will be automatically renamed.
 </table>
 </div><div class="memdoc">
 
+<p>pycrossword app ID on Kloudless </p>
+
 </div>
 </div>
 <a id="a42b2059ede87316e683a6e8c58f2a90d"></a>
@@ -1917,6 +2318,8 @@ Otherwise, the uploaded file will be automatically renamed.
 </table>
 </div><div class="memdoc">
 
+<p>base URL for OAuth 2.0 authorization chain </p>
+
 </div>
 </div>
 <a id="ab9bb041759e025cdf12526071d6a8fde"></a>
@@ -1930,6 +2333,8 @@ Otherwise, the uploaded file will be automatically renamed.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>callable</code> callback function called when the app requires the user to enter a Kloudless API key </p>
 
 </div>
 </div>
@@ -1945,6 +2350,8 @@ Otherwise, the uploaded file will be automatically renamed.
       </table>
 </div><div class="memdoc">
 
+<p><code>callable</code> callback function called when the app requires the user to enter a Kloudless Bearer Token </p>
+
 </div>
 </div>
 <a id="a8d0fc14f62693f5c058f642ad0e2d967"></a>
@@ -1958,6 +2365,8 @@ Otherwise, the uploaded file will be automatically renamed.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>callable</code> callback function fired when an exception is raised </p>
 
 </div>
 </div>
@@ -1973,6 +2382,8 @@ Otherwise, the uploaded file will be automatically renamed.
       </table>
 </div><div class="memdoc">
 
+<p><code>callable</code> callback function fired when the user list (list of users connected to the cloud) is updated </p>
+
 </div>
 </div>
 <a id="afa92c078598c8c67a3bc2d8da71344f2"></a>
@@ -1986,6 +2397,8 @@ Otherwise, the uploaded file will be automatically renamed.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>callable</code> callback function called when the user with the name stored in the app settings already exists </p>
 
 </div>
 </div>
@@ -2009,6 +2422,8 @@ Otherwise, the uploaded file will be automatically renamed.
 </table>
 </div><div class="memdoc">
 
+<p>root folder name on DropBox </p>
+
 </div>
 </div>
 <a id="a4dcb16a757cbff66a77cbe5d1b4f423c"></a>
@@ -2022,6 +2437,8 @@ Otherwise, the uploaded file will be automatically renamed.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>dict</code> stored pointer to app global settings </p>
 
 </div>
 </div>
@@ -2037,6 +2454,8 @@ Otherwise, the uploaded file will be automatically renamed.
       </table>
 </div><div class="memdoc">
 
+<p><code>bool</code> whether to display error messages in GUI dialogs </p>
+
 </div>
 </div>
 <a id="a340c32aeb74defa287e63813733ad2e9"></a>
@@ -2051,6 +2470,8 @@ Otherwise, the uploaded file will be automatically renamed.
       </table>
 </div><div class="memdoc">
 
+<p><code>int</code> network request timeout (in msec.) </p>
+
 </div>
 </div>
 <a id="a466bc97fb6778a829700ed15c710ee8a"></a>
@@ -2064,6 +2485,8 @@ Otherwise, the uploaded file will be automatically renamed.
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>list</code> list of users connected to the cloud </p>
 
 </div>
 </div>

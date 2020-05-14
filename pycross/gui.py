@@ -107,8 +107,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.undomgr = CommandManager(on_update=self.update_actions,
             on_pop_undo=self.on_pop_undo, on_push_undo=self.on_push_undo, 
             on_pop_redo=self.on_pop_redo, on_push_redo=self.on_push_redo)
-        ## `GenThread` cw generation worker thread
+        ## `list` temporary saved crossword words (crossword::Word objects)
         self.saved_cw = []
+        ## `GenThread` cw generation worker thread
         self.gen_thread = GenThread(on_gen_timeout=self.on_gen_timeout, on_gen_stopped=self.on_gen_stop, 
                                     on_gen_validate=self.on_gen_validate, on_gen_progress=self.on_gen_progress, 
                                     on_start=self.on_generate_start, on_finish=self.on_generate_finish,
@@ -229,13 +230,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_edit.setCheckable(True)
         self.act_edit.setShortcut(QtGui.QKeySequence('Ctrl+e'))
         self.act_edit.toggled.connect(self.on_act_edit)   
-        ## `QtWidgets.QAction` undo action
+        ## `QtWidgets.QAction` undo action -- see utils::undo
         self.act_undo = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/undo.png"), _('Undo'))
         self.act_undo.setToolTip(_('Undo last action'))
         self.act_undo.setShortcut(QtGui.QKeySequence.Undo)
         self.act_undo.hovered.connect(self.on_act_undo_hovered)     
         self.act_undo.triggered.connect(self.on_act_undo)     
-        ## `QtWidgets.QAction` redo action
+        ## `QtWidgets.QAction` redo action -- see utils::undo
         self.act_redo = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/redo.png"), _('Redo'))
         self.act_redo.setToolTip(_('Redo last action'))
         self.act_redo.setShortcut(QtGui.QKeySequence.Redo)
@@ -380,6 +381,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_fitgrid.toggled.connect(self.on_act_fitgrid)
 
         # grid edit actions
+        ## `QtWidgets.QAction` toggle grid Multiselect mode action 
         self.act_grid_multiselect = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add-3.png"), _('Multiselect'))
         self.act_grid_multiselect.setToolTip(_('Toggle multiple cell selection'))
         self.act_grid_multiselect.setShortcut(QtGui.QKeySequence('F6'))
@@ -387,17 +389,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_grid_multiselect.setChecked(False)
         self.act_grid_multiselect.setEnabled(False)
         self.act_grid_multiselect.toggled.connect(self.on_act_grid_multiselect)
-
+        ## `QtWidgets.QAction` clear selected cells action (put crossword::BLANK)
         self.act_grid_blank = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cell-blank.png"), _('Blank'))
         self.act_grid_blank.setToolTip(_('Clear selected cells'))
         self.act_grid_blank.setEnabled(False)
         self.act_grid_blank.triggered.connect(self.on_act_grid_blank)
-
+        ## `QtWidgets.QAction` block selected cells action (put crossword::FILLER)
         self.act_grid_filler = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cell-filled.png"), _('Block'))
         self.act_grid_filler.setToolTip(_('Block (fill) selected cells'))
         self.act_grid_filler.setEnabled(False)
         self.act_grid_filler.triggered.connect(self.on_act_grid_filler)
-
+        ## `QtWidgets.QAction` grey out selected cells action (put crossword::FILLER2)
         self.act_grid_filler2 = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cell-greyed.png"), _('Grey out'))
         self.act_grid_filler2.setToolTip(_('Grey out selected cells (fill with surrounding area color)'))
         self.act_grid_filler2.setEnabled(False)
@@ -826,6 +828,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.undomgr.do(Operation({'func': do_}, {'func': undo_}, self.slider_cw_scale.toolTip()))        
 
+    ## On resize event handler for the crossword grid:
+    # fits the grid size into the available space extending all cells.
     @QtCore.pyqtSlot(int, int, int, int)
     @pluggable('general')
     def cw_resized(self, old_width, old_height, new_width, new_height):
@@ -1376,6 +1380,7 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 self.cw.wordfilter = lambda w: not any(w.lower() == pattern.lower() for pattern in CWSettings.settings['wordsrc']['excluded']['words'])
 
+    ## Helper method that returns the localized column names for the Clues panel.
     def _localize_colname(self, name):
         if name == 'Direction':
             return _('Direction')
@@ -2722,6 +2727,15 @@ class MainWindow(QtWidgets.QMainWindow):
     def wheelEvent(self, event: QtGui.QWheelEvent):
         event.ignore()
 
+    ## @brief Changes the cw grid using a key and modifiers as pressed on the keyboard.
+    # This helper method is internally called by MainWindow::on_cw_key().
+    # @param cell_item `QtWidgets.QTableWidgetItem` the currently selected grid cell 
+    # @param key `int` the pressed key
+    # @param text `str` translated character string (single character)
+    # @param modifiers `flags` set of keyboard modifiers (Ctrl, Shift, Alt)
+    # @param multiselect `bool` whether the Multiselect mode is on 
+    # (see MainWindow::act_grid_multiselect)
+    # @param fix_changes `bool` whether to reformat the grid according to the changes made
     @pluggable('general')
     def edit_cw_cell(self, cell_item, key, text, modifiers, multiselect, fix_changes=True):
 
@@ -2904,8 +2918,6 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     def on_norecent(self):
         MsgBox(_('No updates are available'), self)
-                        
-    # ----- Slots ----- #
     
     ## Slot for MainWindow::act_new: creates a new crossword from file, structure or parameters.
     @pluggable('general')
@@ -3430,6 +3442,9 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.twCw.resized.disconnect()
 
+    ## @brief Puts a given charactr into the currently selected crossword cells.
+    # @param character `str` the character (letter) to place
+    @pluggable('general')
     def _put_grid_char(self, character):
         selected_items = [(item.row(), item.column()) for item in self.twCw.selectedItems()]
 
@@ -4078,6 +4093,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
             self.undomgr.do(Operation({'func': do_}, {'func': undo_}, _('Edit clue')))
 
+    ## Writes the current interface language into the global settings.
     @pluggable('general')
     def set_selected_lang(self):
         CWSettings.settings['common']['lang'] = self.combo_lang.currentData()
@@ -4101,30 +4117,51 @@ class MainWindow(QtWidgets.QMainWindow):
         if reply == 'yes': 
             restart_app(self.close)
 
+    ## Undo pop event handler for MainWindow::undomgr.
+    # Fires when the last operation is removed from the Undo history.
+    # @param histmgr `utils::undo::CommandManager` pointer to the history manager
+    # @param cmd `utils::undo::Operation` pointer to the operation being removed
     @pluggable('general')
     def on_pop_undo(self, histmgr, cmd):
         self.menu_undo.clear()
         for cmd in reversed(histmgr._undo_commands):
             self.menu_undo.addAction(cmd.description)
 
+    ## Undo push event handler for MainWindow::undomgr.
+    # Fires when a new operation is added to the Undo history.
+    # @param histmgr `utils::undo::CommandManager` pointer to the history manager
+    # @param cmd `utils::undo::Operation` pointer to the operation being added
     @pluggable('general')
     def on_push_undo(self, histmgr, cmd):
         self.menu_undo.clear()
         for cmd in reversed(histmgr._undo_commands):
             self.menu_undo.addAction(cmd.description)
 
+    ## Redo pop event handler for MainWindow::undomgr.
+    # Fires when the last operation is removed from the Redo history.
+    # @param histmgr `utils::undo::CommandManager` pointer to the history manager
+    # @param cmd `utils::undo::Operation` pointer to the operation being removed
     @pluggable('general')
     def on_pop_redo(self, histmgr, cmd):
         self.menu_redo.clear()
         for cmd in reversed(histmgr._redo_commands):
             self.menu_redo.addAction(cmd.description)
 
+    ## Redo push event handler for MainWindow::undomgr.
+    # Fires when a new operation is added to the Redo history.
+    # @param histmgr `utils::undo::CommandManager` pointer to the history manager
+    # @param cmd `utils::undo::Operation` pointer to the operation being added
     @pluggable('general')
     def on_push_redo(self, histmgr, cmd):
         self.menu_redo.clear()
         for cmd in reversed(histmgr._redo_commands):
             self.menu_redo.addAction(cmd.description)
 
+    ## @brief On triggered event handler for the Undo action menu.
+    # Fires when the user clicks on an operation on the Undo history dropdown menu,
+    # ultimately undoing all previous operations and moving them from the Undo
+    # to the Redo history.
+    # @param action `QtWudgets.QAction` the triggered action (operation)
     @pluggable('general')
     @QtCore.pyqtSlot(QtWidgets.QAction)
     def on_menu_undo_triggered(self, action):
@@ -4133,6 +4170,11 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.undomgr.undo(i + 1)
                 break
 
+    ## @brief On triggered event handler for the Redo action menu.
+    # Fires when the user clicks on an operation on the Redo history dropdown menu,
+    # ultimately redoing all previous operations and moving them from the Redo
+    # back to the Undo history.
+    # @param action `QtWudgets.QAction` the triggered action (operation)
     @pluggable('general')
     @QtCore.pyqtSlot(QtWidgets.QAction)
     def on_menu_redo_triggered(self, action):

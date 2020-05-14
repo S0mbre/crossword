@@ -1,3 +1,3 @@
 import os, sys
 
-sys.path.append(os.path.abspath('../utils'))
+sys.path += [os.path.abspath(x) for x in ('..', '../utils')]

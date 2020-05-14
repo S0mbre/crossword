@@ -73,6 +73,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classpycross_1_1forms_1_1_cw_table-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">pycross.forms.CwTable Class Reference</div>  </div>
@@ -90,25 +91,42 @@ Inheritance diagram for pycross.forms.CwTable:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aafdd4ce6a3fc59400eeadf6d32b82bea"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#aafdd4ce6a3fc59400eeadf6d32b82bea">__init__</a> (self, <a class="el" href="classpycross_1_1forms_1_1_cw_table.html#a8b9aa75534c0634cd44b0e4848af66fd">on_key</a>=None, QtWidgets.QWidget parent=None)</td></tr>
-<tr class="memdesc:aafdd4ce6a3fc59400eeadf6d32b82bea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classpycross_1_1forms_1_1_cw_table.html#aafdd4ce6a3fc59400eeadf6d32b82bea">More...</a><br /></td></tr>
-<tr class="separator:aafdd4ce6a3fc59400eeadf6d32b82bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f717082bdacc9330d7e2bb656693003"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#a5f717082bdacc9330d7e2bb656693003">__init__</a> (self, <a class="el" href="classpycross_1_1forms_1_1_cw_table.html#a8b9aa75534c0634cd44b0e4848af66fd">on_key</a>=None, <a class="el" href="classpycross_1_1forms_1_1_cw_table.html#a8ea47ecfa88367692f6220623daf7012">on_deselect</a>=None, QtWidgets.QWidget parent=None)</td></tr>
+<tr class="memdesc:a5f717082bdacc9330d7e2bb656693003"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classpycross_1_1forms_1_1_cw_table.html#a5f717082bdacc9330d7e2bb656693003">More...</a><br /></td></tr>
+<tr class="separator:a5f717082bdacc9330d7e2bb656693003"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd5e6d4a82a3572b3295293d250cbef"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#abdd5e6d4a82a3572b3295293d250cbef">keyboardSearch</a> (self, search)</td></tr>
+<tr class="memdesc:abdd5e6d4a82a3572b3295293d250cbef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable keyboard search functionality to enable cell editing by keyboard.  <a href="classpycross_1_1forms_1_1_cw_table.html#abdd5e6d4a82a3572b3295293d250cbef">More...</a><br /></td></tr>
+<tr class="separator:abdd5e6d4a82a3572b3295293d250cbef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2d2805221951d06dfd5b68b22fe31ac"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#aa2d2805221951d06dfd5b68b22fe31ac">keyReleaseEvent</a> (self, QtGui.QKeyEvent event)</td></tr>
-<tr class="memdesc:aa2d2805221951d06dfd5b68b22fe31ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key release event handler: call the stored callback.  <a href="classpycross_1_1forms_1_1_cw_table.html#aa2d2805221951d06dfd5b68b22fe31ac">More...</a><br /></td></tr>
+<tr class="memdesc:aa2d2805221951d06dfd5b68b22fe31ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key release event handler: call the stored on_key callback.  <a href="classpycross_1_1forms_1_1_cw_table.html#aa2d2805221951d06dfd5b68b22fe31ac">More...</a><br /></td></tr>
 <tr class="separator:aa2d2805221951d06dfd5b68b22fe31ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa850419079f1e2aa61527d36c79ffdc0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#aa850419079f1e2aa61527d36c79ffdc0">mouseReleaseEvent</a> (self, QtGui.QMouseEvent event)</td></tr>
+<tr class="memdesc:aa850419079f1e2aa61527d36c79ffdc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mouse button release event handler: call the on_deselect callback to deselect all grid cells if pressed outside of the grid.  <a href="classpycross_1_1forms_1_1_cw_table.html#aa850419079f1e2aa61527d36c79ffdc0">More...</a><br /></td></tr>
+<tr class="separator:aa850419079f1e2aa61527d36c79ffdc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf08ea3e5962e53ba9ee4be50e041e56"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#abf08ea3e5962e53ba9ee4be50e041e56">resizeEvent</a> (self, QtGui.QResizeEvent event)</td></tr>
+<tr class="memdesc:abf08ea3e5962e53ba9ee4be50e041e56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resize event handler: emit custom <code>resized</code> signal to let the app handle the event.  <a href="classpycross_1_1forms_1_1_cw_table.html#abf08ea3e5962e53ba9ee4be50e041e56">More...</a><br /></td></tr>
+<tr class="separator:abf08ea3e5962e53ba9ee4be50e041e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a8b9aa75534c0634cd44b0e4848af66fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#a8b9aa75534c0634cd44b0e4848af66fd">on_key</a></td></tr>
-<tr class="memdesc:a8b9aa75534c0634cd44b0e4848af66fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stored callback for key release event.  <a href="classpycross_1_1forms_1_1_cw_table.html#a8b9aa75534c0634cd44b0e4848af66fd">More...</a><br /></td></tr>
+<tr class="memdesc:a8b9aa75534c0634cd44b0e4848af66fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stored callback for key release event (edit grid)  <a href="classpycross_1_1forms_1_1_cw_table.html#a8b9aa75534c0634cd44b0e4848af66fd">More...</a><br /></td></tr>
 <tr class="separator:a8b9aa75534c0634cd44b0e4848af66fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ea47ecfa88367692f6220623daf7012"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#a8ea47ecfa88367692f6220623daf7012">on_deselect</a></td></tr>
+<tr class="memdesc:a8ea47ecfa88367692f6220623daf7012"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for mouse release event (deselect cells)  <a href="classpycross_1_1forms_1_1_cw_table.html#a8ea47ecfa88367692f6220623daf7012">More...</a><br /></td></tr>
+<tr class="separator:a8ea47ecfa88367692f6220623daf7012"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ae617aad336ea0e238da42b8857deb2ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1forms_1_1_cw_table.html#ae617aad336ea0e238da42b8857deb2ef">resized</a> = QtCore.pyqtSignal(int, int, int, int)</td></tr>
+<tr class="separator:ae617aad336ea0e238da42b8857deb2ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Crossword grid class (based on <code>QtWidgets.QTableWidget</code>). </p>
-<p>Custom implementation handles key events (like Del, Backspace, etc.) </p>
+<p>Custom implementation handles key events (like Del, Backspace, etc.), mouse click events and the resize event. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aafdd4ce6a3fc59400eeadf6d32b82bea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafdd4ce6a3fc59400eeadf6d32b82bea">&#9670;&nbsp;</a></span>__init__()</h2>
+<a id="a5f717082bdacc9330d7e2bb656693003"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f717082bdacc9330d7e2bb656693003">&#9670;&nbsp;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -124,6 +142,12 @@ Public Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>on_key</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>on_deselect</em> = <code>None</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -151,6 +175,36 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="abdd5e6d4a82a3572b3295293d250cbef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdd5e6d4a82a3572b3295293d250cbef">&#9670;&nbsp;</a></span>keyboardSearch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.forms.CwTable.keyboardSearch </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>search</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disable keyboard search functionality to enable cell editing by keyboard. </p>
+
+</div>
+</div>
 <a id="aa2d2805221951d06dfd5b68b22fe31ac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa2d2805221951d06dfd5b68b22fe31ac">&#9670;&nbsp;</a></span>keyReleaseEvent()</h2>
 
@@ -177,11 +231,87 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Key release event handler: call the stored callback. </p>
+<p>Key release event handler: call the stored on_key callback. </p>
+
+</div>
+</div>
+<a id="aa850419079f1e2aa61527d36c79ffdc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa850419079f1e2aa61527d36c79ffdc0">&#9670;&nbsp;</a></span>mouseReleaseEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.forms.CwTable.mouseReleaseEvent </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QtGui.QMouseEvent&#160;</td>
+          <td class="paramname"><em>event</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Mouse button release event handler: call the on_deselect callback to deselect all grid cells if pressed outside of the grid. </p>
+
+</div>
+</div>
+<a id="abf08ea3e5962e53ba9ee4be50e041e56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf08ea3e5962e53ba9ee4be50e041e56">&#9670;&nbsp;</a></span>resizeEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.forms.CwTable.resizeEvent </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QtGui.QResizeEvent&#160;</td>
+          <td class="paramname"><em>event</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resize event handler: emit custom <code>resized</code> signal to let the app handle the event. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a8ea47ecfa88367692f6220623daf7012"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ea47ecfa88367692f6220623daf7012">&#9670;&nbsp;</a></span>on_deselect</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.forms.CwTable.on_deselect</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback for mouse release event (deselect cells) </p>
+
+</div>
+</div>
 <a id="a8b9aa75534c0634cd44b0e4848af66fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8b9aa75534c0634cd44b0e4848af66fd">&#9670;&nbsp;</a></span>on_key</h2>
 
@@ -194,7 +324,29 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Stored callback for key release event. </p>
+<p>Stored callback for key release event (edit grid) </p>
+
+</div>
+</div>
+<a id="ae617aad336ea0e238da42b8857deb2ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae617aad336ea0e238da42b8857deb2ef">&#9670;&nbsp;</a></span>resized</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.forms.CwTable.resized = QtCore.pyqtSignal(int, int, int, int)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

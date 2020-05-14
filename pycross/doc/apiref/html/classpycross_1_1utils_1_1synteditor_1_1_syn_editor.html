@@ -74,6 +74,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">pycross.utils.synteditor.SynEditor Class Reference</div>  </div>
@@ -91,8 +92,12 @@ Inheritance diagram for pycross.utils.synteditor.SynEditor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6a8c2a9761c6f84e87b24451d86c96a4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a6a8c2a9761c6f84e87b24451d86c96a4">__init__</a> (self, parent=None, <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#ad1883dac2729dbbfdbe9271d77875285">lexer</a>=Qsci.QsciLexerPython(), source=None)</td></tr>
-<tr class="separator:a6a8c2a9761c6f84e87b24451d86c96a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5b481572fb1f1bd4b770d49588e4d1e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#af5b481572fb1f1bd4b770d49588e4d1e">__init__</a> (self, parent=None, <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#ad1883dac2729dbbfdbe9271d77875285">lexer</a>=Qsci.QsciLexerPython(), source=None, <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a0eea262a6515acc2c5a4eae12c560ec6">autocomplete_source</a>=None)</td></tr>
+<tr class="separator:af5b481572fb1f1bd4b770d49588e4d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a975769a6598f96d81b21ed4888270995"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a975769a6598f96d81b21ed4888270995">keyPressEvent</a> (self, event)</td></tr>
+<tr class="separator:a975769a6598f96d81b21ed4888270995"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19c4ccc91ba0e5b0cc6460817f7f1efa"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a19c4ccc91ba0e5b0cc6460817f7f1efa">reset_autocomplete_source</a> (self)</td></tr>
+<tr class="separator:a19c4ccc91ba0e5b0cc6460817f7f1efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a052b09fb51e9868a0f8c5a12aa888415"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a052b09fb51e9868a0f8c5a12aa888415">on_margin_clicked</a> (self, nmargin, nline, modifiers)</td></tr>
 <tr class="separator:a052b09fb51e9868a0f8c5a12aa888415"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -100,18 +105,27 @@ Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ad1883dac2729dbbfdbe9271d77875285"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#ad1883dac2729dbbfdbe9271d77875285">lexer</a></td></tr>
 <tr class="separator:ad1883dac2729dbbfdbe9271d77875285"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0eea262a6515acc2c5a4eae12c560ec6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a0eea262a6515acc2c5a4eae12c560ec6">autocomplete_source</a></td></tr>
+<tr class="separator:a0eea262a6515acc2c5a4eae12c560ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f73d86d0170478ad98ff8d534e06ea7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a9f73d86d0170478ad98ff8d534e06ea7">autocomplete</a></td></tr>
+<tr class="separator:a9f73d86d0170478ad98ff8d534e06ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a05d026e4c2d1e6ef6d4bc321875ff548"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a05d026e4c2d1e6ef6d4bc321875ff548">ARROW_MARKER_NUM</a> = 8</td></tr>
 <tr class="separator:a05d026e4c2d1e6ef6d4bc321875ff548"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a37894ee7f34b046bfdbccc3736c04cc9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html#a37894ee7f34b046bfdbccc3736c04cc9">_config_autocomplete</a> (self)</td></tr>
+<tr class="separator:a37894ee7f34b046bfdbccc3736c04cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Scintilla-based Python editor Adapted from <a href="https://eli.thegreenplace.net/2011/04/01/sample-using-qscintilla-with-pyqt">this example</a> and <a href="https://stackoverflow.com/questions/40002373/qscintilla-based-text-editor-in-pyqt5-with-clickable-functions-and-variables">this addition</a> </p>
-<dl class="section see"><dt>See also</dt><dd><a href="https://qscintilla.com/">QScintilla docs</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://qscintilla.com/">QScintilla docs</a>, <a href="https://www.riverbankcomputing.com/static/Docs/QScintilla/classQsciScintilla.html">API reference</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6a8c2a9761c6f84e87b24451d86c96a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a8c2a9761c6f84e87b24451d86c96a4">&#9670;&nbsp;</a></span>__init__()</h2>
+<a id="af5b481572fb1f1bd4b770d49588e4d1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5b481572fb1f1bd4b770d49588e4d1e">&#9670;&nbsp;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -138,7 +152,13 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>source</em> = <code>None</code>&#160;</td>
+          <td class="paramname"><em>source</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>autocomplete_source</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -151,6 +171,60 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a37894ee7f34b046bfdbccc3736c04cc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37894ee7f34b046bfdbccc3736c04cc9">&#9670;&nbsp;</a></span>_config_autocomplete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.synteditor.SynEditor._config_autocomplete </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a975769a6598f96d81b21ed4888270995"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a975769a6598f96d81b21ed4888270995">&#9670;&nbsp;</a></span>keyPressEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.synteditor.SynEditor.keyPressEvent </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>event</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a052b09fb51e9868a0f8c5a12aa888415"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a052b09fb51e9868a0f8c5a12aa888415">&#9670;&nbsp;</a></span>on_margin_clicked()</h2>
 
@@ -191,6 +265,24 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a19c4ccc91ba0e5b0cc6460817f7f1efa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19c4ccc91ba0e5b0cc6460817f7f1efa">&#9670;&nbsp;</a></span>reset_autocomplete_source()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.utils.synteditor.SynEditor.reset_autocomplete_source </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a05d026e4c2d1e6ef6d4bc321875ff548"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a05d026e4c2d1e6ef6d4bc321875ff548">&#9670;&nbsp;</a></span>ARROW_MARKER_NUM</h2>
@@ -210,6 +302,34 @@ Static Public Attributes</h2></td></tr>
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9f73d86d0170478ad98ff8d534e06ea7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f73d86d0170478ad98ff8d534e06ea7">&#9670;&nbsp;</a></span>autocomplete</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.utils.synteditor.SynEditor.autocomplete</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0eea262a6515acc2c5a4eae12c560ec6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0eea262a6515acc2c5a4eae12c560ec6">&#9670;&nbsp;</a></span>autocomplete_source</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pycross.utils.synteditor.SynEditor.autocomplete_source</td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>

@@ -3,53 +3,78 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.globalvars
+# Most application globals are placed here for convenience. They are commonly
+# used in more than one module. Also some are used by external scripts like
+# setup.py (that generateds the PyPI-ready distro). There are also a number of
+# common functions here, but most are still defined in ::utils.
 import os, gettext
 
+## Returns the absolute path for a relative one, for a given root directory.
+# @param filename `str` relative path, e.g. '../setup.py'
+# @param root `str` root directory full path to calculate the abs path;
+# if empty (default), the 'pycross' directory in the installation dir will be used.
+# @returns `str` absolute path for `filename`
 def make_abspath(filename, root=''):
     # default root = pycross
     if not root: root = os.path.dirname(os.path.dirname(__file__))
     return os.path.abspath(os.path.join(root, filename) if filename else root)
 
-## toggle debug messages
+## toggle debug message printing
 DEBUGGING = False
 
 ## current app version
+# @warning This constant is used by setup.py to generate version-specific
+# Python distributions; so it must be checked and modified regularly!
 APP_VERSION = '0.3'
 
 ## app name
+# @warning This constant is used by setup.py to generate version-specific
+# Python distributions; so it must be checked and modified regularly!
 APP_NAME = 'pycrossword'
 
-# git repo
+## git repo hosting this app
 GIT_REPO = 'https://github.com/S0mbre/crossword.git'
 
-# app author
+## app author
 APP_AUTHOR = 'Iskander Shafikov (S0mbre)'
 
-# author's email
+## author's email
 APP_EMAIL = 's00mbre@gmail.com'
 
-# default encoding
+## default encoding (for file I/O mostly)
 ENCODING = 'utf-8'
 
+## path to the current app settings
 SETTINGS_FILE = make_abspath('settings.pxjson')
+## path to the default app settings
 DEFAULT_SETTINGS_FILE = make_abspath('defsettings.pxjson')
+## path to the Update file that stores info on the available update and
+# last update date
 UPDATE_FILE = make_abspath('update.json')
+## path to the auto-saved crossword file (in XPF format)
 SAVEDCW_FILE = make_abspath('autosaved.xpf')
+## path to the 'dic' folder containing word sources
 DICFOLDER = make_abspath('assets/dic')
+## path to the icons folder containing GUI icon resources
 ICONFOLDER = make_abspath('assets/icons')
+## path to the plugins folder containing user plugins
 PLUGINS_FOLDER = make_abspath('plugins')
+## app interface languages in brief and full notation
 LANG = {'en': 'English', 'ru': 'Russian', 'fr': 'French', 'es': 'Spanish', 'de': 'German', 'it': 'Italian'}
+## parts of speech in brief and full notation
 POS = [('N', 'noun'), ('V', 'verb'), ('ADV', 'adverb'), ('ADJ', 'adjective'), ('P', 'participle'), 
        ('PRON', 'pronoun'), ('I', 'interjection'), ('C', 'conjuction'), ('PREP', 'preposition'), 
        ('PROP', 'proposition'), ('MISC', 'miscellaneous / other'), ('NONE', 'no POS')]        
+## braces
 BRACES = "{}"
+## default SQLite DB table names for word sources
 SQL_TABLES = {'words': {'table': 'twords', 'fwords': 'word', 'fpos': 'idpos'},
               'pos':   {'table': 'tpos', 'fid': 'id', 'fpos': 'pos'} }
-        
-HTTP_PROXIES = None # or dict, e.g. {'http': 'http://ip:port', 'https': 'http://ip:port'}
-HTTP_TIMEOUT = 5                 # ожидание соединения и ответа (сек.) None = вечно
+## default max results for word source searches
 MAX_RESULTS = 500
+## user plugin file extension
 PLUGIN_EXTENSION = 'pxplugin'
+## user plugin template (for the 'general' category)
 PLUGIN_TEMPLATE_GENERAL = """\
 from utils.pluginbase import *
 
@@ -58,16 +83,16 @@ class Px{}(PxPluginGeneral):
     # >>> add code here <<<
     pass
 """
-
+## app interface languages
 APP_LANGUAGES = [('English (US)', '', '', 'united-states-of-america.png', "The application must be restarted to apply new language settings. Restart now?"), 
                  ('Russian', 'ru', 'Русский', 'russia.png', "Приложение должно быть перезапущено для применения новых настроек языка. Перезапустить сейчас?"), 
                  ('German', 'de', 'Deutsch', 'germany.png', "Die Anwendung muss neu gestartet werden, um neue Spracheinstellungen zu übernehmen. Jetzt neu starten?"), 
                  ('French', 'fr', 'Français', 'france.png', "L'application doit être redémarrée pour appliquer de nouveaux paramètres de langue. Redémarrer maintenant?"), 
                  ('Italian', 'it', 'Italiano', 'italy.png', "È necessario riavviare l'applicazione per applicare le nuove impostazioni della lingua. Riavvia ora?"), 
                  ('Spanish', 'es', 'Español', 'spain.png', "La aplicación debe reiniciarse para aplicar la nueva configuración de idioma. ¿Reiniciar ahora?")]
-
+## newline character
 NEWLINE = '\n'
-
+## string encodings
 ENCODINGS = \
 ['ascii', 'big5', 'big5hkscs', 'cp037', 'cp273', 'cp424', 'cp437', 'cp500',
  'cp720', 'cp737', 'cp775', 'cp850', 'cp852', 'cp855', 'cp856', 'cp857',
@@ -84,10 +109,11 @@ ENCODINGS = \
  'mac_latin2', 'mac_roman', 'mac_turkish', 'ptcp154', 'shift_jis', 'shift_jis_2004',
  'shift_jisx0213', 'utf_32', 'utf_32_be', 'utf_32_le', 'utf_16', 'utf_16_be',
  'utf_16_le', 'utf_7', 'utf_8', 'utf_8_sig']
-
+## CSS-to-Qt font weight conversion table
 FONT_WEIGHTS = {100: 0, 200: 12, 300: 25, 400: 50, 500: 57, 600: 63, 700: 75, 800: 81, 900: 87}
-
+## app path in Linux OS
 LINUX_APP_PATH = '~/.local/share/applications/{}.desktop'.format(APP_NAME.lower())
+## Linux MIME info for app (used for file associations)
 LINUX_MIME_APP = \
 """[Desktop Entry]
 Type=Application
@@ -96,6 +122,7 @@ StartupNotify=true
 Terminal=false
 MimeType=x-scheme-handler/{}
 Name={}"""
+## Linux MIME type description (used for file associations)
 LINUX_MIME_TYPES = \
 """<?xml version="1.0"?>
 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
@@ -104,22 +131,34 @@ LINUX_MIME_TYPES = \
     {}
   </mime-type>
 </mime-info>"""
+## Linux MIME XML file path (used for file associations)
 LINUX_MIME_XML = f'~/.local/share/applications/{APP_NAME.lower()}-{APP_NAME.lower()}.xml'
 
-MW_DIC_KEY = '71ae1f74-7edb-4683-be03-8e3d7348660d'            # MW Collegiate Dictionary & Audio API key
+## MW Collegiate Dictionary & Audio API key
+MW_DIC_KEY = '71ae1f74-7edb-4683-be03-8e3d7348660d'
+## MW Collegiate Dictionary API URL
 MW_DIC_HTTP = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/{}?key={}'
-MW_DAILY_REQ = 1000                                        # daily limit, see https://www.dictionaryapi.com/
+## MW Collegiate Dictionary daily request limit, see https://www.dictionaryapi.com/
+MW_DAILY_REQ = 1000
+## MW Collegiate Dictionary URL
 MW_WORD_URL = 'https://www.merriam-webster.com/dictionary/{}'
 
+## Yandex dictionary API key
 YAN_DICT_KEY = 'dict.1.1.20191120T032741Z.d541dffb1a55247b.b090f62ccd320c7e33f8d88eefde8c8e1ea0ba5b'
+## Yandex dictionary API URL
 YAN_DICT_HTTP = 'https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key={}&text={}&lang={}&ui=en'
+## Yandex dictionary daily request limit
 YAN_DAILY_REQ = 10000
 
-GOOGLE_KEY = 'AIzaSyAcc_B34Mv7Z4UoVuAMYCEiA9n14_SuEjU'        # Google Search JSON API key
-GOOGLE_CSE = '012413034625838642915:je3epsydo2r'              # Google CSE identifier
+## Google Search JSON API key
+GOOGLE_KEY = 'AIzaSyAcc_B34Mv7Z4UoVuAMYCEiA9n14_SuEjU'
+## Google CSE identifier
+GOOGLE_CSE = '012413034625838642915:je3epsydo2r'
+## Google API URL
 GOOGLE_HTTP = 'https://www.googleapis.com/customsearch/v1?key={}&cx={}&prettyPrint=true&q={}'
-GOOGLE_DAILY_REQ = 100                                        # daily limit, see https://developers.google.com/custom-search/v1/overview
-
+## Google daily limit, see https://developers.google.com/custom-search/v1/overview
+GOOGLE_DAILY_REQ = 100
+## Google document languages
 GOOGLE_LANG_LR = {'lang_ar': 'Arabic', 'lang_bg': 'Bulgarian', 'lang_ca': 'Catalan', 'lang_cs': 'Czech',
     'lang_da': 'Danish', 'lang_de': 'German', 'lang_el': 'Greek', 'lang_en': 'English',
     'lang_es': 'Spanish', 'lang_et': 'Estonian', 'lang_fi': 'Finnish', 'lang_fr': 'French',
@@ -129,6 +168,7 @@ GOOGLE_LANG_LR = {'lang_ar': 'Arabic', 'lang_bg': 'Bulgarian', 'lang_ca': 'Catal
     'lang_pl': 'Polish', 'lang_pt': 'Portuguese', 'lang_ro': 'Romanian', 'lang_ru': 'Russian',
     'lang_sk': 'Slovak', 'lang_sl': 'Slovenian', 'lang_sr': 'Serbian', 'lang_sv': 'Swedish',
     'lang_tr': 'Turkish', 'lang_zh-CN': 'Chinese (Simplified)', 'lang_zh-TW': 'Chinese (Traditional)'}
+## Google interface languages
 GOOGLE_LANG_HL = {'af': 'Afrikaans', 'sq': 'Albanian', 'sm': 'Amharic', 'ar': 'Arabic', 'az': 'Azerbaijani', 'eu': 'Basque', 
     'be': 'Belarusian', 'bn': 'Bengali', 'bh': 'Bihari', 'bs': 'Bosnian', 'bg': 'Bulgarian', 
     'ca': 'Catalan', 'zh-CN': 'Chinese (Simplified)', 'zh-TW': 'Chinese (Traditional)', 
@@ -144,6 +184,7 @@ GOOGLE_LANG_HL = {'af': 'Afrikaans', 'sq': 'Albanian', 'sm': 'Amharic', 'ar': 'A
     'sk': 'Slovak', 'sl': 'Slovenian', 'es': 'Spanish', 'su': 'Sudanese', 'sw': 'Swahili', 'sv': 'Swedish', 
     'tl': 'Tagalog', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai', 'ti': 'Tigrinya', 'tr': 'Turkish', 
     'uk': 'Ukrainian', 'ur': 'Urdu', 'uz': 'Uzbek', 'vi': 'Vietnamese', 'cy': 'Welsh', 'xh': 'Xhosa', 'zu': 'Zulu'}
+## Google document countries
 GOOGLE_COUNTRIES_CR = {'countryAF': 'Afghanistan', 'countryAL': 'Albania', 'countryDZ': 'Algeria',
     'countryAS': 'American Samoa', 'countryAD': 'Andorra', 'countryAO': 'Angola',
     'countryAI': 'Anguilla', 'countryAQ': 'Antarctica', 'countryAG': 'Antigua and Barbuda',
@@ -225,6 +266,7 @@ GOOGLE_COUNTRIES_CR = {'countryAF': 'Afghanistan', 'countryAL': 'Albania', 'coun
     'countryVE': 'Venezuela', 'countryVN': 'Vietnam', 'countryVG': 'Virgin Islands, British',
     'countryVI': 'Virgin Islands, U.S.', 'countryWF': 'Wallis and Futuna', 'countryEH': 'Western Sahara',
     'countryYE': 'Yemen', 'countryYU': 'Yugoslavia', 'countryZM': 'Zambia', 'countryZW': 'Zimbabwe'}
+## Google user search countries
 GOOGLE_COUNTRIES_GL = {'af': 'Afghanistan', 'al': 'Albania', 'dz': 'Algeria', 'as': 'American Samoa', 'ad': 'Andorra', 
     'ao': 'Angola', 'ai': 'Anguilla', 'aq': 'Antarctica', 'ag': 'Antigua and Barbuda', 
     'ar': 'Argentina', 'am': 'Armenia', 'aw': 'Aruba', 'au': 'Australia', 'at': 'Austria', 
@@ -279,14 +321,19 @@ GOOGLE_COUNTRIES_GL = {'af': 'Afghanistan', 'al': 'Albania', 'dz': 'Algeria', 'a
     've': 'Venezuela', 'vn': 'Viet Nam', 'vg': 'Virgin Islands, British', 'vi': 'Virgin Islands, U.S.', 
     'wf': 'Wallis and Futuna', 'eh': 'Western Sahara', 'ye': 'Yemen', 'zm': 'Zambia', 'zw': 'Zimbabwe'} 
 
+## flag that is set to `True` when the inerface language has been applied
 LANGAPPLIED = False    
 
+## @brief Loads the app settings from a settings file.
+# Checks if 'settings.pxjson' exists in the root directory.
+# If not, creates it with the default settings; otherwise, 
+# reads 'settings.pxjson' to the global `pycross::guisettings::CWSettings::settings` object.
+# @param settings_file `str` path to the settings file ('*.pxjson').
+# If left `None`, ::SETTINGS_FILE is used.
+# @param write_defaults_on_error `bool` whether to save the default settings
+# into the settings file on load error (default = `True`)
+# @returns `dict` pointer to global app settings `pycross::guisettings::CWSettings::settings`
 def readSettings(settings_file=None, write_defaults_on_error=True):
-    """
-    Checks if 'settings.pxjson' exists in the main directory.
-    If not, creates it with the default settings; otherwise, 
-    reads 'settings.pxjson' to the global CWSettings.settings object.
-    """
     from guisettings import CWSettings
     if not settings_file or not os.path.isfile(settings_file):
         settings_file = SETTINGS_FILE
@@ -299,6 +346,9 @@ def readSettings(settings_file=None, write_defaults_on_error=True):
             print(err)
     return CWSettings.settings
 
+## @brief Changes the app interface language by installing the specified translation.
+# It installs the global `_()` function used by `gettext` to get localized strings.
+# @param lang `str` short language name -- see ::APP_LANGUAGES
 def switch_lang(lang=''):
     global LANGAPPLIED    
     if not lang in ('', 'en', 'ru', 'fr', 'de', 'it', 'es'): return
@@ -308,4 +358,3 @@ def switch_lang(lang=''):
         except:
             gettext.translation('base', make_abspath('./locale'), languages=['en']).install()
         LANGAPPLIED = True
-        #print(LANGAPPLIED)
