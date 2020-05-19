@@ -1332,6 +1332,10 @@ class CustomPluginManager(QtWidgets.QWidget):
                     return item
         return None
 
+    ## Creates the source code editor dialog and optionally shows it.
+    # @param source `str` source text to place in the editor
+    # @param show `bool` `True` to execute (show) the dialog at once
+    # @param modal `bool` whether the dialog must be shown modally
     def create_syneditor(self, source=None, show=True, modal=False):
         from utils.synteditor import PluginSynEditorWidget
         if not hasattr(self, 'syneditor'):
@@ -4165,7 +4169,7 @@ class CrosswordMenu(QtWidgets.QMenu):
         self.addAction(self.mainwindow.act_reflect)
         self.addSeparator()
         def on_menu():
-            self.mainwindow.dia_settings.tree.setCurrentItem(self.dia_settings.tree.topLevelItem(3).child(1))
+            self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(3).child(1))
             self.mainwindow.on_act_config(False)
         self.addAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Configure grid...'), on_menu)
    

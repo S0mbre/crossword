@@ -3,6 +3,8 @@
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.synteditor
+# Scintilla-based Python editor and its customized version for user plugin
+# developers.
 from .globalvars import *
 from .utils import make_font, re, get_script_members
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -18,8 +20,14 @@ from PyQt5 import Qsci
 # @see [QScintilla docs](https://qscintilla.com/), [API reference](https://www.riverbankcomputing.com/static/Docs/QScintilla/classQsciScintilla.html)
 class SynEditor(Qsci.QsciScintilla):
     
+    ## arrow marker type to place on the left margin
     ARROW_MARKER_NUM = 8
 
+    ## @param parent `QtWidgets.QWidget` parent widget for the editor
+    # @param lexer `Qsci.QsciLexer` lexer object responsible for parsing / highlighting
+    # @param source `str`|`None` source code to place in the editor upon creation
+    # @param autocomplete_source `list`|`None` list of variables & functions serving
+    # as the autocompletion source (see utils::utils::get_script_members())
     def __init__(self, parent=None, lexer=Qsci.QsciLexerPython(), source=None, autocomplete_source=None):
         super(Qsci.QsciScintilla, self).__init__(parent)
 
@@ -59,40 +67,51 @@ class SynEditor(Qsci.QsciScintilla):
         self.setCaretLineVisible(True)
         self.setCaretLineBackgroundColor(QtGui.QColor("#f2f2f2"))
         
-        # Set Python lexer
-        # Set style for Python comments (style number 1) to a fixed-width font.
+        ## Python lexer        
         self.lexer = lexer
+        # Set style for Python comments (style number 1) to a fixed-width font
         self.lexer.setDefaultFont(font)
         self.setLexer(self.lexer)
         # set font
         self.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, bytearray(str.encode(font.family())))
         # tab guides
         self.setIndentationGuides(True)
-
+        ## `list`|`None` autocompletion source
         self.autocomplete_source = autocomplete_source
         self._config_autocomplete()
 
         # set source
         if source: self.setText(source)
 
+    ## Configures various autocompletion settings.
     def _config_autocomplete(self):
+        # if source is set, make use of all variables
         self.setAutoCompletionSource(Qsci.QsciScintilla.AcsAll if self.autocomplete_source else Qsci.QsciScintilla.AcsNone)
+        # invoke autocompletion when typed 1 character
         self.setAutoCompletionThreshold(1)
+        # autocompletion case-insensitive
         self.setAutoCompletionCaseSensitivity(False)
+        # don't replace typed text, but append
         self.setAutoCompletionReplaceWord(False)
+        # don't complete word even if there's only one suggestion
         self.setAutoCompletionUseSingle(Qsci.QsciScintilla.AcusNever)
+        # show calltips independent of context
         self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsNoContext)
         #self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsNoAutoCompletionContext)
         #self.setCallTipsStyle(Qsci.QsciScintilla.CallTipsContext)
+        # display all applicable calltips
         self.setCallTipsVisible(0)
+        # show calltips beneath the typed text
         self.setCallTipsPosition(Qsci.QsciScintilla.CallTipsBelowText)
+        # configure calltip colors
         self.setCallTipsBackgroundColor(QtGui.QColor('#fffff0'))
         self.setCallTipsForegroundColor(QtGui.QColor(QtCore.Qt.black))
         self.setCallTipsHighlightColor(QtGui.QColor(QtCore.Qt.blue))
-
+        ## `Qsci.QsciAPIs` internal autocomplete object
         self.autocomplete = Qsci.QsciAPIs(self.lexer)
         self.reset_autocomplete_source()
 
+    ## Handle key presses to show autocomplete options when pressed SPACE.
     def keyPressEvent(self, event):
         key = event.key()
         mod = event.modifiers()
@@ -103,6 +122,7 @@ class SynEditor(Qsci.QsciScintilla):
                 return
         super().keyPressEvent(event)
         
+    ## Refreshes the source words in `SynEditor::autocomplete`.
     @QtCore.pyqtSlot()
     def reset_autocomplete_source(self):
         self.autocomplete.clear()
@@ -110,7 +130,7 @@ class SynEditor(Qsci.QsciScintilla):
             self.autocomplete.add(ac)
         self.autocomplete.prepare()
 
-    # Toggle marker for the line the margin was clicked on
+    ## Toggle marker for the line the margin was clicked on.
     @QtCore.pyqtSlot(int, int, QtCore.Qt.KeyboardModifiers)
     def on_margin_clicked(self, nmargin, nline, modifiers):
         if self.markersAtLine(nline) != 0:
@@ -122,11 +142,20 @@ class SynEditor(Qsci.QsciScintilla):
 # *****          SynEditorWidget
 # ******************************************************************************** #            
 
+## Standalone syntax editor window with a SynEditor object as the main widget.
 class SynEditorWidget(QtWidgets.QDialog):
 
+    ## @param lexer `Qsci.QsciLexer` lexer object responsible for parsing / highlighting
+    # @param source `str`|`None` source code to place in the editor upon creation
+    # @param autocomplete_source `list`|`None` list of variables & functions serving
+    # as the autocompletion source (see utils::utils::get_script_members())
+    # @param minsize `tuple` minimum window size in pixels (width, height)
+    # @param icon `str` icon file to use in the window
+    # @param title `str` the window title (caption)
     def __init__(self, lexer=Qsci.QsciLexerPython(), source=None, autocomplete_source=None,
                 minsize=(600, 400), icon='file.png', title=':: Code Editor ::'):
         super().__init__()
+        ## `QtWidgets.QVBoxLayout` main window layout
         self.layout_main = QtWidgets.QVBoxLayout()
         self.add_elements(lexer, source, autocomplete_source)     
         self.setLayout(self.layout_main)
@@ -135,14 +164,26 @@ class SynEditorWidget(QtWidgets.QDialog):
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}"))
         self.setWindowTitle(title)
 
+    ## Constructs main layout blocks.
+    # @param lexer `Qsci.QsciLexer` lexer object responsible for parsing / highlighting
+    # @param source `str`|`None` source code to place in the editor upon creation
+    # @param autocomplete_source `list`|`None` list of variables & functions serving
+    # as the autocompletion source (see utils::utils::get_script_members())
     def add_elements(self, lexer, source, autocomplete_source):
         self.add_central(lexer, source, autocomplete_source)
         self.add_bottom()
 
+    ## Constructs the central widget (syntax editor).
+    # @param lexer `Qsci.QsciLexer` lexer object responsible for parsing / highlighting
+    # @param source `str`|`None` source code to place in the editor upon creation
+    # @param autocomplete_source `list`|`None` list of variables & functions serving
+    # as the autocompletion source (see utils::utils::get_script_members())
     def add_central(self, lexer, source, autocomplete_source):
+        ## `SynEditor` the syntax editor
         self.editor = SynEditor(self, lexer, source, autocomplete_source)
         self.layout_main.addWidget(self.editor)
 
+    ## Constructs the bottom layout with the OK and Cancel buttons.
     def add_bottom(self):
         self.layout_bottom = QtWidgets.QHBoxLayout()
         self.layout_bottom.setSpacing(10)
@@ -157,6 +198,8 @@ class SynEditorWidget(QtWidgets.QDialog):
         self.layout_bottom.addWidget(self.btn_cancel)
         self.layout_main.addLayout(self.layout_bottom)
 
+    ## Returns the current text in the syntax editor.
+    # @returns `str` current text in the syntax editor
     def currenttext(self):
         return self.editor.text()
 
@@ -164,16 +207,23 @@ class SynEditorWidget(QtWidgets.QDialog):
 # *****          PluginSynEditorWidget
 # ******************************************************************************** #            
 
+## @brief Extended syntax editor dialog based on SynEditorWidget.
+# Adds a left panel with available API methods exposed to custom plugins.
 class PluginSynEditorWidget(SynEditorWidget):
 
+    ## `regex pattern` pattern for a method start
     RESRCH = re.compile(r'\n[ ]{4}[\w"#@]')
 
+    ## @param methods `list` list of methods exposed to plugins in the format
+    # returned by utils::utils::collect_pluggables()
     def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None, 
                  minsize=(800, 500), icon='file.png', title=_(':: Code Editor ::')):
+        ## `list` list of methods exposed to plugins
         self.methods = methods
         super().__init__(lexer, source, self._get_autocomplete_source(source), minsize, icon, title)
         self._config_editor()
 
+    ## On show event handler: updates the left panel from the current source code.
     def showEvent(self, event):
         self.actn_filter_regex.setChecked(False)
         self.le_filter.clear()
@@ -181,11 +231,13 @@ class PluginSynEditorWidget(SynEditorWidget):
         event.accept()
 
     def add_central(self, lexer, source, autocomplete_source):
+        ## `SynEditor` the syntax editor widget
         self.editor = SynEditor(self, lexer, source, autocomplete_source)
-
+        ## `QtWidgets.QSplitter` horizontal splitter
         self.splitter1 = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
         self.splitter1.setChildrenCollapsible(False)
         self.lo_methods = QtWidgets.QVBoxLayout()
+        ## `QtWidgets.QListWidget` list of source methods (exposed to plugins)
         self.lw_methods = QtWidgets.QListWidget()
         self.lw_methods.setSortingEnabled(True)
         self.lw_methods.setSelectionMode(1)
@@ -194,11 +246,14 @@ class PluginSynEditorWidget(SynEditorWidget):
         self.lw_methods.itemDoubleClicked.connect(self.on_lw_methods_dblclicked)
         self.reset_methods()
     
+        ## `QtWidgets.QAction` clear filter action
         self.actn_clear_filter = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), _('Clear'))        
+        ## `QtWidgets.QAction` toggle regex filter action
         self.actn_filter_regex = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/asterisk1.png"), _('Regex'))   
         self.actn_filter_regex.setCheckable(True)
         self.actn_filter_regex.setChecked(False)
         
+        ## `QtWidgets.QLineEdit` filter field for the source methods
         self.le_filter = QtWidgets.QLineEdit('')
         self.le_filter.setStyleSheet('background-color: #fffff0;')
         self.le_filter.setPlaceholderText(_('Filter'))
@@ -218,12 +273,17 @@ class PluginSynEditorWidget(SynEditorWidget):
         self.splitter1.setStretchFactor(0, 0)
         self.layout_main.addWidget(self.splitter1)
 
+    ## Connects the syntax editor's `textChanged` signal to an internal handler.
     def _config_editor(self):
         self.editor.textChanged.connect(self.on_editor_text_changed)
 
+    ## Retrieves a list of variables referenced / created in the given source.
+    # @param source `str` source text to extract variables from
+    # @returns `list` list of variables -- see utils::utils::get_script_members()
     def _get_autocomplete_source(self, source):
         return get_script_members(source)
         
+    ## Fills the list of available API methods in the left panel from `PluginSynEditorWidget::methods`.
     def reset_methods(self):
         self.lw_methods.blockSignals(True)
         self.lw_methods.clear()
@@ -237,6 +297,11 @@ class PluginSynEditorWidget(SynEditorWidget):
             self.lw_methods.addItem(lwitem)
         self.lw_methods.blockSignals(False)
 
+    ## @brief Checks or unchecks the source methods in the left panel based on 
+    # the current editor text.
+    # The method searches the function signatures of the source methods in
+    # the current editor and if found, checks the corresponding method to mark
+    # it as used.
     def _update_checked_methods(self):
         txt = self.editor.text()
         try:
@@ -248,6 +313,10 @@ class PluginSynEditorWidget(SynEditorWidget):
             item.setCheckState(QtCore.Qt.Checked if f"    def {item.text()}:" in txt else QtCore.Qt.Unchecked)
         self.lw_methods.itemChanged.connect(self.on_lw_methods_changed)
 
+    ## @brief Filters the source methods in the left panel by a search expression.
+    # The filter can be simple or regex-based, depending on the Checked state
+    # of `PluginSynEditorWidget::actn_filter_regex`.
+    # @param text `str` the search expression used as the filter
     def _apply_filter(self, text):
         text = text.lower()
         try:
@@ -269,11 +338,15 @@ class PluginSynEditorWidget(SynEditorWidget):
                 item.setHidden(not matched)
         self.lw_methods.itemChanged.connect(self.on_lw_methods_changed)
 
+    ## On Toggle slot for the filter button (action): 
+    # re-applies the filter with / without regex.
     @QtCore.pyqtSlot(bool)
     def on_actn_filter_regex_toggled(self, checked):
         self.actn_filter_regex.setIcon(QtGui.QIcon(f"{ICONFOLDER}/asterisk{'' if checked else '1'}.png"))
         self._apply_filter(self.le_filter.text())
 
+    ## On Changed slot for the filter edit:
+    # re-applies the filter with the new expression.
     @QtCore.pyqtSlot(str)
     def on_filter_changed(self, text):
         if text:
@@ -282,18 +355,24 @@ class PluginSynEditorWidget(SynEditorWidget):
             self.le_filter.setStyleSheet('background-color: #fffff0;')
         self._apply_filter(text)
 
+    ## On Changed slot for the syntax editor:
+    # update the checked state of source methods, update autocomplete source.
     @QtCore.pyqtSlot()
     def on_editor_text_changed(self):
         self._update_checked_methods()
         self.editor.autocomplete_source = self._get_autocomplete_source(self.editor.text())
         self.editor.reset_autocomplete_source()
 
+    ## On Selection Changed slot for the source methods:
+    # scrolls to the selected method in the syntaxt editor.
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem, QtWidgets.QListWidgetItem)
     def on_lw_methods_select(self, current, previous):
         self.editor.cancelFind()
         self.editor.setSelection(0, 0, 0, 0)
         self.editor.findFirst(f"    def {current.text()}:", False, True, False, False, index=0)
 
+    ## On Changed slot for the source methods:
+    # adds or removes source method templates in the editor when checked/unchecked.
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_methods_changed(self, item):
         txt = self.editor.text()
@@ -319,6 +398,8 @@ class PluginSynEditorWidget(SynEditorWidget):
             self.editor.setText(txt)
             self._update_checked_methods()
 
+    ## On Double Clicked slot for the source methods:
+    # toggles the checked state of the dbl-clicked item.
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_methods_dblclicked(self, item):
         checked = bool(item.checkState())

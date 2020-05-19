@@ -79,49 +79,70 @@ $(function() {
 <div class="title">pycross.utils.update.Updater Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class responsible for application updating and checking new available releases.  
+ <a href="classpycross_1_1utils_1_1update_1_1_updater.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6cff64f366ac6f6ef3ba10d51662e36d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a6cff64f366ac6f6ef3ba10d51662e36d">__init__</a> (self, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aaaa66a2dffc809c4f4716424d133643a">app_name</a>, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#afd7e0d94fadbe15f4d5fd1b432d1b00f">app_version</a>, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a50cab0e5bacf8756177106776c17eb02">git_repo</a>, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a629d97ce11d559e7299fa5f500e779f6">update_file</a>, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aeadeb1039ab67b681d6881218676a3bd">log_file</a>, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ac5ed146bdc8fcbb616a24c2b5d49bf1b">check_every</a>=1, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ab83cb58c3d140294f8e52a3071b6ae63">check_major_versions</a>=True, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a02c55bde5bde880fc9fbc83a81a45d41">git_exe</a>=None, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a7b633e1d4f905ebb9b346c3b2d22970f">on_get_recent</a>=None, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a72f0b4a26bb268fce64d40c7ace24d71">on_before_update</a>=None, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a5d04512c1d6bf8c414e94c01f57447b4">on_norecent</a>=None, <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aacb74e2a5e6ace58dfd458f50190418f">print_to</a>=sys.stdout)</td></tr>
 <tr class="separator:a6cff64f366ac6f6ef3ba10d51662e36d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab9746186d75231cab804c04f8ae109d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aab9746186d75231cab804c04f8ae109d">update</a> (self, force=False)</td></tr>
+<tr class="memdesc:aab9746186d75231cab804c04f8ae109d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the application to the most recent version.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#aab9746186d75231cab804c04f8ae109d">More...</a><br /></td></tr>
 <tr class="separator:aab9746186d75231cab804c04f8ae109d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bdde9d8cdec81565217639c8df37bb7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a4bdde9d8cdec81565217639c8df37bb7">check_update</a> (self, force=False)</td></tr>
+<tr class="memdesc:a4bdde9d8cdec81565217639c8df37bb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks for the latest app version available on Github or PyPi.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a4bdde9d8cdec81565217639c8df37bb7">More...</a><br /></td></tr>
 <tr class="separator:a4bdde9d8cdec81565217639c8df37bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa60aa7d3fba3968e6396a86177cc911"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aaa60aa7d3fba3968e6396a86177cc911">get_recent_version</a> (self)</td></tr>
+<tr class="memdesc:aaa60aa7d3fba3968e6396a86177cc911"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves information on the latest app version available on Github or PyPi.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#aaa60aa7d3fba3968e6396a86177cc911">More...</a><br /></td></tr>
 <tr class="separator:aaa60aa7d3fba3968e6396a86177cc911"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aaaa66a2dffc809c4f4716424d133643a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aaaa66a2dffc809c4f4716424d133643a">app_name</a></td></tr>
+<tr class="memdesc:aaaa66a2dffc809c4f4716424d133643a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> this application name (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a4cc0300ee9dd5cabff3fde3d4207da39" title="app name">globalvars::APP_NAME</a></code>)  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#aaaa66a2dffc809c4f4716424d133643a">More...</a><br /></td></tr>
 <tr class="separator:aaaa66a2dffc809c4f4716424d133643a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd7e0d94fadbe15f4d5fd1b432d1b00f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#afd7e0d94fadbe15f4d5fd1b432d1b00f">app_version</a></td></tr>
+<tr class="memdesc:afd7e0d94fadbe15f4d5fd1b432d1b00f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> this application version (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a0b40af60d7fbc670feef9273bc67133d" title="current app version">globalvars::APP_VERSION</a></code>)  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#afd7e0d94fadbe15f4d5fd1b432d1b00f">More...</a><br /></td></tr>
 <tr class="separator:afd7e0d94fadbe15f4d5fd1b432d1b00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50cab0e5bacf8756177106776c17eb02"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a50cab0e5bacf8756177106776c17eb02">git_repo</a></td></tr>
+<tr class="memdesc:a50cab0e5bacf8756177106776c17eb02"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> the Git host (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a256e7faacdfbf93f0dc66d379e25d244" title="git repo hosting this app">globalvars::GIT_REPO</a></code>)  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a50cab0e5bacf8756177106776c17eb02">More...</a><br /></td></tr>
 <tr class="separator:a50cab0e5bacf8756177106776c17eb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a629d97ce11d559e7299fa5f500e779f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a629d97ce11d559e7299fa5f500e779f6">update_file</a></td></tr>
+<tr class="memdesc:a629d97ce11d559e7299fa5f500e779f6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> full path to the update log file (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#aad94ece579600388441a98db1e722143" title="path to the Update file that stores info on the available update and last update date">globalvars::UPDATE_FILE</a></code>)  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a629d97ce11d559e7299fa5f500e779f6">More...</a><br /></td></tr>
 <tr class="separator:a629d97ce11d559e7299fa5f500e779f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeadeb1039ab67b681d6881218676a3bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aeadeb1039ab67b681d6881218676a3bd">log_file</a></td></tr>
+<tr class="memdesc:aeadeb1039ab67b681d6881218676a3bd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> full path to the debug log file (to output messages)  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#aeadeb1039ab67b681d6881218676a3bd">More...</a><br /></td></tr>
 <tr class="separator:aeadeb1039ab67b681d6881218676a3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacb74e2a5e6ace58dfd458f50190418f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aacb74e2a5e6ace58dfd458f50190418f">print_to</a></td></tr>
+<tr class="memdesc:aacb74e2a5e6ace58dfd458f50190418f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>file</code> file-like object to output messages to  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#aacb74e2a5e6ace58dfd458f50190418f">More...</a><br /></td></tr>
 <tr class="separator:aacb74e2a5e6ace58dfd458f50190418f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5ed146bdc8fcbb616a24c2b5d49bf1b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ac5ed146bdc8fcbb616a24c2b5d49bf1b">check_every</a></td></tr>
+<tr class="memdesc:ac5ed146bdc8fcbb616a24c2b5d49bf1b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> interval in days to check for updates  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#ac5ed146bdc8fcbb616a24c2b5d49bf1b">More...</a><br /></td></tr>
 <tr class="separator:ac5ed146bdc8fcbb616a24c2b5d49bf1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab83cb58c3d140294f8e52a3071b6ae63"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ab83cb58c3d140294f8e52a3071b6ae63">check_major_versions</a></td></tr>
+<tr class="memdesc:ab83cb58c3d140294f8e52a3071b6ae63"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> whether to check only for major releases (e.g.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#ab83cb58c3d140294f8e52a3071b6ae63">More...</a><br /></td></tr>
 <tr class="separator:ab83cb58c3d140294f8e52a3071b6ae63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b633e1d4f905ebb9b346c3b2d22970f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a7b633e1d4f905ebb9b346c3b2d22970f">on_get_recent</a></td></tr>
+<tr class="memdesc:a7b633e1d4f905ebb9b346c3b2d22970f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback fired when a new release is detected  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a7b633e1d4f905ebb9b346c3b2d22970f">More...</a><br /></td></tr>
 <tr class="separator:a7b633e1d4f905ebb9b346c3b2d22970f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72f0b4a26bb268fce64d40c7ace24d71"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a72f0b4a26bb268fce64d40c7ace24d71">on_before_update</a></td></tr>
+<tr class="memdesc:a72f0b4a26bb268fce64d40c7ace24d71"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback fired before the app updating process starts  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a72f0b4a26bb268fce64d40c7ace24d71">More...</a><br /></td></tr>
 <tr class="separator:a72f0b4a26bb268fce64d40c7ace24d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d04512c1d6bf8c414e94c01f57447b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a5d04512c1d6bf8c414e94c01f57447b4">on_norecent</a></td></tr>
+<tr class="memdesc:a5d04512c1d6bf8c414e94c01f57447b4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callable</code> callback fired when no updates are available  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a5d04512c1d6bf8c414e94c01f57447b4">More...</a><br /></td></tr>
 <tr class="separator:a5d04512c1d6bf8c414e94c01f57447b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb885698e67351cdd2d66572b01363ed"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#adb885698e67351cdd2d66572b01363ed">update_info</a></td></tr>
+<tr class="memdesc:adb885698e67351cdd2d66572b01363ed"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dict</code> update info stored in the update file The items are as follows:  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#adb885698e67351cdd2d66572b01363ed">More...</a><br /></td></tr>
 <tr class="separator:adb885698e67351cdd2d66572b01363ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02c55bde5bde880fc9fbc83a81a45d41"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a02c55bde5bde880fc9fbc83a81a45d41">git_exe</a></td></tr>
+<tr class="memdesc:a02c55bde5bde880fc9fbc83a81a45d41"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> path to the Git executable  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a02c55bde5bde880fc9fbc83a81a45d41">More...</a><br /></td></tr>
 <tr class="separator:a02c55bde5bde880fc9fbc83a81a45d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4462b85342771885e5e49ad3cca8f04"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ab4462b85342771885e5e49ad3cca8f04">git_installed</a></td></tr>
+<tr class="memdesc:ab4462b85342771885e5e49ad3cca8f04"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> <code>True</code> if Git is installed in the current system  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#ab4462b85342771885e5e49ad3cca8f04">More...</a><br /></td></tr>
 <tr class="separator:ab4462b85342771885e5e49ad3cca8f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7320f6fc4f330304c9190d5e02c029d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a7320f6fc4f330304c9190d5e02c029d0">pkg_installed</a></td></tr>
+<tr class="memdesc:a7320f6fc4f330304c9190d5e02c029d0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> <code>True</code> if the app is currently installed via pip (from PyPi)  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a7320f6fc4f330304c9190d5e02c029d0">More...</a><br /></td></tr>
 <tr class="separator:a7320f6fc4f330304c9190d5e02c029d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -133,41 +154,63 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a1114fd7997eaf06ecb9cea5bd331b5b0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a1114fd7997eaf06ecb9cea5bd331b5b0">_git_check_repo</a> (self)</td></tr>
 <tr class="separator:a1114fd7997eaf06ecb9cea5bd331b5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5d427be6129dd29b74d3013ba8c0ae7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ac5d427be6129dd29b74d3013ba8c0ae7">_git_run</a> (self, *args, **kwargs)</td></tr>
+<tr class="memdesc:ac5d427be6129dd29b74d3013ba8c0ae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs a Git command with or without arguments and returns the result.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#ac5d427be6129dd29b74d3013ba8c0ae7">More...</a><br /></td></tr>
 <tr class="separator:ac5d427be6129dd29b74d3013ba8c0ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af88f29aca35f41ca046a1bd231385529"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#af88f29aca35f41ca046a1bd231385529">_git_update_from_branch</a> (self, branch_or_commit)</td></tr>
+<tr class="memdesc:af88f29aca35f41ca046a1bd231385529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the app from a remote Git branch or commit.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#af88f29aca35f41ca046a1bd231385529">More...</a><br /></td></tr>
 <tr class="separator:af88f29aca35f41ca046a1bd231385529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4892c83bb29cd5db349157260766360"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ab4892c83bb29cd5db349157260766360">_git_get_remote_branches</a> (self, exclude_starting_with=('master',), include_starting_with=('release',))</td></tr>
+<tr class="memdesc:ab4892c83bb29cd5db349157260766360"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the list of remote branches for the current Git repo.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#ab4892c83bb29cd5db349157260766360">More...</a><br /></td></tr>
 <tr class="separator:ab4892c83bb29cd5db349157260766360"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac586cc242f11c18573cb73e7cf73441e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ac586cc242f11c18573cb73e7cf73441e">_git_get_recent_version</a> (self)</td></tr>
+<tr class="memdesc:ac586cc242f11c18573cb73e7cf73441e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves information on the latest app version available on Github.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#ac586cc242f11c18573cb73e7cf73441e">More...</a><br /></td></tr>
 <tr class="separator:ac586cc242f11c18573cb73e7cf73441e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4e546771d8be02ec4d9702a9f3b7496"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ad4e546771d8be02ec4d9702a9f3b7496">_pip_run</a> (self, *args, **kwargs)</td></tr>
+<tr class="memdesc:ad4e546771d8be02ec4d9702a9f3b7496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs pip and returns the result.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#ad4e546771d8be02ec4d9702a9f3b7496">More...</a><br /></td></tr>
 <tr class="separator:ad4e546771d8be02ec4d9702a9f3b7496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24aae2a7edfc9c27cee4eef7092d90bb"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a24aae2a7edfc9c27cee4eef7092d90bb">_pip_list_packages</a> (self, outdated_only=False)</td></tr>
+<tr class="memdesc:a24aae2a7edfc9c27cee4eef7092d90bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the list of installed Python packages with pip.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a24aae2a7edfc9c27cee4eef7092d90bb">More...</a><br /></td></tr>
 <tr class="separator:a24aae2a7edfc9c27cee4eef7092d90bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad45d72866d32ac6bdaac37d8e1075e5f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ad45d72866d32ac6bdaac37d8e1075e5f">_pip_check_pkg_installed</a> (self)</td></tr>
 <tr class="separator:ad45d72866d32ac6bdaac37d8e1075e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ce47a15613edd0cc283f241d644fcb4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a7ce47a15613edd0cc283f241d644fcb4">_pip_update</a> (self)</td></tr>
+<tr class="memdesc:a7ce47a15613edd0cc283f241d644fcb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the app from PyPi with pip.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a7ce47a15613edd0cc283f241d644fcb4">More...</a><br /></td></tr>
 <tr class="separator:a7ce47a15613edd0cc283f241d644fcb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0524aea02e8d33027554898d9122a50c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a0524aea02e8d33027554898d9122a50c">_pip_get_recent_version</a> (self)</td></tr>
+<tr class="memdesc:a0524aea02e8d33027554898d9122a50c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the latest app version on PyPi with pip.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a0524aea02e8d33027554898d9122a50c">More...</a><br /></td></tr>
 <tr class="separator:a0524aea02e8d33027554898d9122a50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58938244d49f5200dfbe89a0b8f8b0b4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a58938244d49f5200dfbe89a0b8f8b0b4">_run_exe</a> (self, args, external=False, capture_output=True, stdout=subprocess.PIPE, encoding=<a class="el" href="namespacepycross_1_1utils_1_1update.html#a3be9aa21ae318fd3ab6c828e9890e224">ENCODING</a>, timeout=None, shell=False, **kwargs)</td></tr>
+<tr class="memdesc:a58938244d49f5200dfbe89a0b8f8b0b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs an executable and optionally returns the result.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a58938244d49f5200dfbe89a0b8f8b0b4">More...</a><br /></td></tr>
 <tr class="separator:a58938244d49f5200dfbe89a0b8f8b0b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2c0acffb3f70af6d7680ed184ae3040"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ad2c0acffb3f70af6d7680ed184ae3040">_datetime_to_str</a> (self, dt=None, strformat='%Y-%m-%d %H-%M-%S')</td></tr>
+<tr class="memdesc:ad2c0acffb3f70af6d7680ed184ae3040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a Python <code>datetime</code> object to a string.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#ad2c0acffb3f70af6d7680ed184ae3040">More...</a><br /></td></tr>
 <tr class="separator:ad2c0acffb3f70af6d7680ed184ae3040"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e1383412ad22b2d59e446e851746761"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a8e1383412ad22b2d59e446e851746761">_str_to_datetime</a> (self, text, strformat='%Y-%m-%d %H-%M-%S')</td></tr>
+<tr class="memdesc:a8e1383412ad22b2d59e446e851746761"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a string to a Python <code>datetime</code> object.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a8e1383412ad22b2d59e446e851746761">More...</a><br /></td></tr>
 <tr class="separator:a8e1383412ad22b2d59e446e851746761"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29952587e0a52c104fb719d8724a2110"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a29952587e0a52c104fb719d8724a2110">_init_update_info</a> (self)</td></tr>
+<tr class="memdesc:a29952587e0a52c104fb719d8724a2110"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#adb885698e67351cdd2d66572b01363ed" title="dict update info stored in the update file The items are as follows:">Updater::update_info</a> from the update.log file or creates that file.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a29952587e0a52c104fb719d8724a2110">More...</a><br /></td></tr>
 <tr class="separator:a29952587e0a52c104fb719d8724a2110"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae32f4d1352f0bd7e2cbcfdba9a437e99"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#ae32f4d1352f0bd7e2cbcfdba9a437e99">_write_update_info</a> (self)</td></tr>
+<tr class="memdesc:ae32f4d1352f0bd7e2cbcfdba9a437e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the update info from <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#adb885698e67351cdd2d66572b01363ed" title="dict update info stored in the update file The items are as follows:">Updater::update_info</a> to the update.log file.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#ae32f4d1352f0bd7e2cbcfdba9a437e99">More...</a><br /></td></tr>
 <tr class="separator:ae32f4d1352f0bd7e2cbcfdba9a437e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86fb7365f4b4c68f34f94f6ea2dc18ac"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a86fb7365f4b4c68f34f94f6ea2dc18ac">_strip_version_az</a> (self, version_str)</td></tr>
+<tr class="memdesc:a86fb7365f4b4c68f34f94f6ea2dc18ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strips unacceptable characters from a version string.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a86fb7365f4b4c68f34f94f6ea2dc18ac">More...</a><br /></td></tr>
 <tr class="separator:a86fb7365f4b4c68f34f94f6ea2dc18ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ed7ea0b67fcd50f1d73cfef19b0fd96"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a9ed7ea0b67fcd50f1d73cfef19b0fd96">_parse_version</a> (self, version_str, max_versions=-1)</td></tr>
+<tr class="memdesc:a9ed7ea0b67fcd50f1d73cfef19b0fd96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a version string into a tuple of version numbers.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a9ed7ea0b67fcd50f1d73cfef19b0fd96">More...</a><br /></td></tr>
 <tr class="separator:a9ed7ea0b67fcd50f1d73cfef19b0fd96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bc5accfac8576edccaff8ccef10b5be"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a7bc5accfac8576edccaff8ccef10b5be">_compare_versions</a> (self, v1, v2, max_versions=-1, major_only=False)</td></tr>
+<tr class="memdesc:a7bc5accfac8576edccaff8ccef10b5be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two version strings and checks if one is later than the other.  <a href="classpycross_1_1utils_1_1update_1_1_updater.html#a7bc5accfac8576edccaff8ccef10b5be">More...</a><br /></td></tr>
 <tr class="separator:a7bc5accfac8576edccaff8ccef10b5be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class responsible for application updating and checking new available releases. </p>
+<p>It allows for two checking / updating methods:</p><ol type="1">
+<li>From the Gihub repository using <a href="https://git-scm.com/">git</a>.</li>
+<li>From the PyPi repository using <a href="https://pip.pypa.io/en/stable/">pip</a>. The method is chosen automatically, depending on whether the app has been installed with pip as a Python package or is contained in a local Git repo. </li>
+</ol>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6cff64f366ac6f6ef3ba10d51662e36d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6cff64f366ac6f6ef3ba10d51662e36d">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -259,6 +302,37 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">app_name</td><td><code>str</code> this application name (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a4cc0300ee9dd5cabff3fde3d4207da39" title="app name">globalvars::APP_NAME</a></code>) </td></tr>
+    <tr><td class="paramname">app_version</td><td><code>str</code> this application version (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a0b40af60d7fbc670feef9273bc67133d" title="current app version">globalvars::APP_VERSION</a></code>) </td></tr>
+    <tr><td class="paramname">git_repo</td><td><code>str</code> the Git host (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a256e7faacdfbf93f0dc66d379e25d244" title="git repo hosting this app">globalvars::GIT_REPO</a></code>) </td></tr>
+    <tr><td class="paramname">update_file</td><td><code>str</code> path to the update log file (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#aad94ece579600388441a98db1e722143" title="path to the Update file that stores info on the available update and last update date">globalvars::UPDATE_FILE</a></code>) </td></tr>
+    <tr><td class="paramname">log_file</td><td><code>str</code> path to the debug log file (to output messages) </td></tr>
+    <tr><td class="paramname">check_every</td><td><code>int</code> interval in days to check for updates </td></tr>
+    <tr><td class="paramname">check_major_versions</td><td><code>bool</code> whether to check only for major releases (e.g. 1.0... 2.0...) or all (including minor) releases </td></tr>
+    <tr><td class="paramname">git_exe</td><td><code>str</code> path to the Git executable (<code>None</code> means the simple string 'git' will be used, i.e. Git must be in the system path) </td></tr>
+    <tr><td class="paramname">on_get_recent</td><td><code>callable</code> callback fired when a new release is detected. The callback takes one argument:<ul>
+<li><code>dict</code> the new version info (see <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a4bdde9d8cdec81565217639c8df37bb7" title="Checks for the latest app version available on Github or PyPi.">check_update()</a> return value) </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">on_before_update</td><td><code>callable</code> callback fired before the app updating process starts. Its prototype is as follows: <div class="fragment"><div class="line">(current_version: str, new_version: dict) -&gt; bool</div>
+</div><!-- fragment --></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Args:</p><ul>
+<li>current_version <code>str</code> the current app version, e.g. '2.0'</li>
+<li>new_version <code>dict</code> the new app version, e.g. &lsquo;{'version&rsquo;: '2.1', 'hash': '', 'branch': '', 'description': '', 'date': ''}` Returns:</li>
+<li><code>bool</code> <code>True</code> to continue update; <code>False</code> to abort <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">on_norecent</td><td><code>callable</code> callback fired when no updates are available; the callbacks takes no arguments and returns nothing </td></tr>
+    <tr><td class="paramname">print_to</td><td><code>file</code> file-like object to output messages to (default = <code>sys.stdout</code>, the system console output) </td></tr>
+  </table>
+  </dd>
+</dl>
+</li>
+</ul>
 
 </div>
 </div>
@@ -315,6 +389,23 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Compares two version strings and checks if one is later than the other. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v1</td><td><code>str</code> the first (left) version string </td></tr>
+    <tr><td class="paramname">v2</td><td><code>str</code> the second (right) version string </td></tr>
+    <tr><td class="paramname">max_versions</td><td><code>int</code> max version depth to parse (see <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a9ed7ea0b67fcd50f1d73cfef19b0fd96" title="Converts a version string into a tuple of version numbers.">_parse_version()</a>) </td></tr>
+    <tr><td class="paramname">major_only</td><td><code>bool</code> compare only major versions (first version number in each version string) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> comparison result:<ul>
+<li>'&gt;' if <code>v1</code> is <b>later</b> than <code>v2</code></li>
+<li>'&lt;' if <code>v1</code> is <b>older</b> than <code>v2</code></li>
+<li>'=' if <code>v1</code> is <b>the same</b> as <code>v2</code> </li>
+</ul>
+</dd></dl>
+
 </div>
 </div>
 <a id="ad2c0acffb3f70af6d7680ed184ae3040"></a>
@@ -357,6 +448,9 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Converts a Python <code>datetime</code> object to a string. </p>
+<p>See <a class="el" href="namespacepycross_1_1utils_1_1utils.html#a0d5b6724243e68c626c62b32d67fd95b" title="Converts a Python datetime object to a string.">utils::datetime_to_str()</a> </p>
+
 </div>
 </div>
 <a id="a9d3ded8753bdfa05bb302fe30268f9a4"></a>
@@ -382,6 +476,7 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if Git is installed (is accessible via <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a02c55bde5bde880fc9fbc83a81a45d41" title="str path to the Git executable">Updater::git_exe</a>); <code>False</code> otherwise </dd></dl>
 
 </div>
 </div>
@@ -408,6 +503,7 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if the current directory is in a Git local repository (this way we check that Git updates are possible by pulling from Github) </dd></dl>
 
 </div>
 </div>
@@ -434,6 +530,16 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Retrieves information on the latest app version available on Github. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> latest version info with the following items:<ul>
+<li>version <code>str</code> app version string (e.g. '3.0')</li>
+<li>hash <code>str</code> Git commit hash corresponding to the version</li>
+<li>branch <code>str</code> Git branch name corresponding to the version</li>
+<li>description <code>str</code> optional description of the latest release</li>
+<li>date <code>str</code> date and time of the Git commit </li>
+</ul>
+</dd></dl>
 
 </div>
 </div>
@@ -477,6 +583,18 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Retrieves the list of remote branches for the current Git repo. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">exclude_starting_with</td><td><code>tuple</code> starting strings for branch names that must be excluded from the result; if <code>None</code> or empty, no branches will be excluded </td></tr>
+    <tr><td class="paramname">include_starting_with</td><td><code>tuple</code> starting strings for branch names that must be included in the result; if <code>None</code> or empty, no branches will be included </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> remote branches found as a dictionary in the following format: <div class="fragment"><div class="line">{parsed_version: (branch_name, commit_hash), ...}</div>
+</div><!-- fragment --></dd></dl>
+<p>where <code>parsed_version</code> is a tuple returned by <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a9ed7ea0b67fcd50f1d73cfef19b0fd96" title="Converts a version string into a tuple of version numbers.">_parse_version()</a>, <code>branch_name</code> is the branch name and <code>commit_hash</code> is the commit hash to which the branch is attached </p>
+
 </div>
 </div>
 <a id="ac5d427be6129dd29b74d3013ba8c0ae7"></a>
@@ -519,6 +637,16 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Runs a Git command with or without arguments and returns the result. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td><code>positional arguments</code> positional arguments passed to Git </td></tr>
+    <tr><td class="paramname">kwargs</td><td><code>keyword arguments</code> keyword arguments passed to <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a58938244d49f5200dfbe89a0b8f8b0b4" title="Runs an executable and optionally returns the result.">_run_exe()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a href="https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess">subprocess.CompletedProcess</a> process result </dd></dl>
+
 </div>
 </div>
 <a id="af88f29aca35f41ca046a1bd231385529"></a>
@@ -555,6 +683,15 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Updates the app from a remote Git branch or commit. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">branch_or_commit</td><td><code>str</code> remote branch name or commit hash </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a href="https://docs.python.org/3/library/subprocess.html#subprocess.Popen">subprocess.Popen</a> process result </dd></dl>
+
 </div>
 </div>
 <a id="a29952587e0a52c104fb719d8724a2110"></a>
@@ -580,6 +717,8 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Initializes <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#adb885698e67351cdd2d66572b01363ed" title="dict update info stored in the update file The items are as follows:">Updater::update_info</a> from the update.log file or creates that file. </p>
 
 </div>
 </div>
@@ -623,6 +762,16 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Converts a version string into a tuple of version numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version_str</td><td><code>str</code> the version string to convert </td></tr>
+    <tr><td class="paramname">max_versions</td><td><code>int</code> max version depth to convert. For example, if <code>version_str</code> == '3.0.1.2' and <code>max_versions</code> == 2, the resulting tuple will be <code>(3, 0)</code> &ndash; only 2 version sections. The value of -1 (default) lifts this limitation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>tuple</code> | <code>None</code> tuple containing the version sections in their original order, e.g. '3.0.1.2' -&gt; <code>(3, 0, 1, 2)</code>; <code>None</code> on failure (incorrect input version string) </dd></dl>
+
 </div>
 </div>
 <a id="ad45d72866d32ac6bdaac37d8e1075e5f"></a>
@@ -648,6 +797,7 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if the <b>pycrossword</b> Python package is installed in the current Python environment (including virtualenv installation) </dd></dl>
 
 </div>
 </div>
@@ -674,6 +824,16 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets the latest app version on PyPi with pip. </p>
+<dl class="section return"><dt>Returns</dt><dd>latest version info. The version info dict contains the following items:<ul>
+<li>version <code>str</code> app version string (e.g. '3.0')</li>
+<li>hash <code>str</code> (EMPTY: see <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aaa60aa7d3fba3968e6396a86177cc911" title="Retrieves information on the latest app version available on Github or PyPi.">get_recent_version()</a>)</li>
+<li>branch <code>str</code> (EMPTY: see <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aaa60aa7d3fba3968e6396a86177cc911" title="Retrieves information on the latest app version available on Github or PyPi.">get_recent_version()</a>)</li>
+<li>description <code>str</code> (EMPTY: see <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aaa60aa7d3fba3968e6396a86177cc911" title="Retrieves information on the latest app version available on Github or PyPi.">get_recent_version()</a>)</li>
+<li>date <code>str</code> (EMPTY: see <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#aaa60aa7d3fba3968e6396a86177cc911" title="Retrieves information on the latest app version available on Github or PyPi.">get_recent_version()</a>) </li>
+</ul>
+</dd></dl>
 
 </div>
 </div>
@@ -710,6 +870,18 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets the list of installed Python packages with pip. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">outdated_only</td><td><code>bool</code> if <code>True</code>, only outdated packages will be included in the search result </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> Python packages as a list of dictionaries: <div class="fragment"><div class="line">[{<span class="stringliteral">&#39;name&#39;</span>: pk_name, <span class="stringliteral">&#39;version&#39;</span>: pk_version}, ...]</div>
+</div><!-- fragment --></dd></dl>
+<p>if <code>outdated_only</code> == <code>False</code>, each dict contains 2 elements: 'name' and 'version' if <code>outdated_only</code> == <code>True</code>, 2 additional keys are present: 'latest_version' and 'latest_filetype' <br  />
+ </p>
 
 </div>
 </div>
@@ -753,6 +925,16 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Runs pip and returns the result. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td><code>positional arguments</code> positional arguments passed to pip </td></tr>
+    <tr><td class="paramname">kwargs</td><td><code>keyword arguments</code> keyword arguments passed to <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#a58938244d49f5200dfbe89a0b8f8b0b4" title="Runs an executable and optionally returns the result.">_run_exe()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a href="https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess">subprocess.CompletedProcess</a> process result </dd></dl>
+
 </div>
 </div>
 <a id="a7ce47a15613edd0cc283f241d644fcb4"></a>
@@ -778,6 +960,9 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Updates the app from PyPi with pip. </p>
+<dl class="section return"><dt>Returns</dt><dd><a href="https://docs.python.org/3/library/subprocess.html#subprocess.Popen">subprocess.Popen</a> process result </dd></dl>
 
 </div>
 </div>
@@ -857,6 +1042,9 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Runs an executable and optionally returns the result. </p>
+<p>See <a class="el" href="namespacepycross_1_1utils_1_1utils.html#a2f4496ed66a4da47f66bdf73be5577f1" title="Runs an executable and optionally returns the result.">utils::run_exe()</a> </p>
+
 </div>
 </div>
 <a id="a8e1383412ad22b2d59e446e851746761"></a>
@@ -899,6 +1087,9 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Converts a string to a Python <code>datetime</code> object. </p>
+<p>See <a class="el" href="namespacepycross_1_1utils_1_1utils.html#ae7a4a7e65c62e1b44b5e5d90f5840255" title="Converts a string to a Python datetime object.">utils::str_to_datetime()</a> </p>
+
 </div>
 </div>
 <a id="a86fb7365f4b4c68f34f94f6ea2dc18ac"></a>
@@ -935,6 +1126,15 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Strips unacceptable characters from a version string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version_str</td><td><code>str</code> the version string to sanitize </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> sanitized version string (containing only numbers and dots) </dd></dl>
+
 </div>
 </div>
 <a id="aee692088e672f5503af79178afe78dfc"></a>
@@ -960,6 +1160,7 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if update checking is required (based on the update check interval stored in the app settings); <code>False</code> if not required (the app has been updated recently and the check interval hasn't yet elapsed since the last update) </dd></dl>
 
 </div>
 </div>
@@ -986,6 +1187,8 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Writes the update info from <a class="el" href="classpycross_1_1utils_1_1update_1_1_updater.html#adb885698e67351cdd2d66572b01363ed" title="dict update info stored in the update file The items are as follows:">Updater::update_info</a> to the update.log file. </p>
 
 </div>
 </div>
@@ -1015,6 +1218,22 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Checks for the latest app version available on Github or PyPi. </p>
+<p>This method also updates the update.log file so the application can read the release info on next startup. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force</td><td><code>bool</code> check regardless of the update check interval </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> | <code>None</code> latest version info or <code>None</code> on failure. The version info dict contains the following items:<ul>
+<li>version <code>str</code> app version string (e.g. '3.0')</li>
+<li>hash <code>str</code> Git commit hash corresponding to the version (only for Github updates)</li>
+<li>branch <code>str</code> Git branch name corresponding to the version (only for Github updates)</li>
+<li>description <code>str</code> optional description of the latest release (only for Github updates)</li>
+<li>date <code>str</code> date and time of the Git commit (only for Github updates) </li>
+</ul>
+</dd></dl>
+
 </div>
 </div>
 <a id="aaa60aa7d3fba3968e6396a86177cc911"></a>
@@ -1032,6 +1251,17 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Retrieves information on the latest app version available on Github or PyPi. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> latest version info. The version info dict contains the following items:<ul>
+<li>version <code>str</code> app version string (e.g. '3.0')</li>
+<li>hash <code>str</code> Git commit hash corresponding to the version (only for Github updates)</li>
+<li>branch <code>str</code> Git branch name corresponding to the version (only for Github updates)</li>
+<li>description <code>str</code> optional description of the latest release (only for Github updates)</li>
+<li>date <code>str</code> date and time of the Git commit (only for Github updates) If an error occurs the resulting dictionary contains a single item:</li>
+<li>error <code>str</code> the error message </li>
+</ul>
+</dd></dl>
 
 </div>
 </div>
@@ -1061,6 +1291,15 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Updates the application to the most recent version. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force</td><td><code>bool</code> if set to <code>True</code>, the update will proceed regardless of the update check interval </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>False</code> on failure, <code>None</code> on success </dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -1076,6 +1315,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>str</code> this application name (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a4cc0300ee9dd5cabff3fde3d4207da39" title="app name">globalvars::APP_NAME</a></code>) </p>
+
 </div>
 </div>
 <a id="afd7e0d94fadbe15f4d5fd1b432d1b00f"></a>
@@ -1089,6 +1330,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>str</code> this application version (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a0b40af60d7fbc670feef9273bc67133d" title="current app version">globalvars::APP_VERSION</a></code>) </p>
 
 </div>
 </div>
@@ -1104,6 +1347,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>int</code> interval in days to check for updates </p>
+
 </div>
 </div>
 <a id="ab83cb58c3d140294f8e52a3071b6ae63"></a>
@@ -1117,6 +1362,9 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>bool</code> whether to check only for major releases (e.g. </p>
+<p>1.0... 2.0...) or all (including minor) releases </p>
 
 </div>
 </div>
@@ -1132,6 +1380,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>str</code> path to the Git executable </p>
+<dl class="section warning"><dt>Warning</dt><dd><code>None</code> means the simple string 'git' will be used, i.e. Git must be in the system path </dd></dl>
+
 </div>
 </div>
 <a id="ab4462b85342771885e5e49ad3cca8f04"></a>
@@ -1145,6 +1396,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>bool</code> <code>True</code> if Git is installed in the current system </p>
 
 </div>
 </div>
@@ -1160,6 +1413,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>str</code> the Git host (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a256e7faacdfbf93f0dc66d379e25d244" title="git repo hosting this app">globalvars::GIT_REPO</a></code>) </p>
+
 </div>
 </div>
 <a id="aeadeb1039ab67b681d6881218676a3bd"></a>
@@ -1173,6 +1428,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>str</code> full path to the debug log file (to output messages) </p>
 
 </div>
 </div>
@@ -1188,6 +1445,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>callable</code> callback fired before the app updating process starts </p>
+
 </div>
 </div>
 <a id="a7b633e1d4f905ebb9b346c3b2d22970f"></a>
@@ -1201,6 +1460,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>callable</code> callback fired when a new release is detected </p>
 
 </div>
 </div>
@@ -1216,6 +1477,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>callable</code> callback fired when no updates are available </p>
+
 </div>
 </div>
 <a id="a7320f6fc4f330304c9190d5e02c029d0"></a>
@@ -1229,6 +1492,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>bool</code> <code>True</code> if the app is currently installed via pip (from PyPi) </p>
 
 </div>
 </div>
@@ -1244,6 +1509,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>file</code> file-like object to output messages to </p>
+
 </div>
 </div>
 <a id="a629d97ce11d559e7299fa5f500e779f6"></a>
@@ -1258,6 +1525,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>str</code> full path to the update log file (see <code><a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#aad94ece579600388441a98db1e722143" title="path to the Update file that stores info on the available update and last update date">globalvars::UPDATE_FILE</a></code>) </p>
+
 </div>
 </div>
 <a id="adb885698e67351cdd2d66572b01363ed"></a>
@@ -1271,6 +1540,20 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>dict</code> update info stored in the update file The items are as follows: </p>
+<ul>
+<li>last_update <code>str</code> date and time of the last update (as a string)</li>
+<li>last_check <code>str</code> date and time of the last update check (as a string)</li>
+<li>recent_version <code>dict</code> info on the latest available release:<ul>
+<li>version <code>str</code> app version string (e.g. '3.0')</li>
+<li>hash <code>str</code> Git commit hash corresponding to the version (only for Github updates)</li>
+<li>branch <code>str</code> Git branch name corresponding to the version (only for Github updates)</li>
+<li>description <code>str</code> optional description of the latest release (only for Github updates)</li>
+<li>date <code>str</code> date and time of the Git commit (only for Github updates) </li>
+</ul>
+</li>
+</ul>
 
 </div>
 </div>

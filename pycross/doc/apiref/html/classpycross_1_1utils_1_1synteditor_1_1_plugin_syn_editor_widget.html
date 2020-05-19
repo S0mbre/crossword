@@ -80,13 +80,16 @@ $(function() {
 <div class="title">pycross.utils.synteditor.PluginSynEditorWidget Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Extended syntax editor dialog based on <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html" title="Standalone syntax editor window with a SynEditor object as the main widget.">SynEditorWidget</a>.  
+ <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.utils.synteditor.PluginSynEditorWidget:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.png" usemap="#pycross.utils.synteditor.PluginSynEditorWidget_map" alt=""/>
   <map id="pycross.utils.synteditor.PluginSynEditorWidget_map" name="pycross.utils.synteditor.PluginSynEditorWidget_map">
-<area href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html" alt="pycross.utils.synteditor.SynEditorWidget" shape="rect" coords="0,56,274,80"/>
+<area href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html" title="Standalone syntax editor window with a SynEditor object as the main widget." alt="pycross.utils.synteditor.SynEditorWidget" shape="rect" coords="0,56,274,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -95,55 +98,76 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5148bfc43aa9f05e5e86528955d195b5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a5148bfc43aa9f05e5e86528955d195b5">__init__</a> (self, <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a485cce76d7741ac8874cacf32c4e024d">methods</a>, lexer=Qsci.QsciLexerPython(), source=None, minsize=(800, 500), icon='file.png', title=_('::Code Editor ::'))</td></tr>
 <tr class="separator:a5148bfc43aa9f05e5e86528955d195b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3de9bc505dd27abcc8d206be609b6adf"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a3de9bc505dd27abcc8d206be609b6adf">showEvent</a> (self, event)</td></tr>
+<tr class="memdesc:a3de9bc505dd27abcc8d206be609b6adf"><td class="mdescLeft">&#160;</td><td class="mdescRight">On show event handler: updates the left panel from the current source code.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a3de9bc505dd27abcc8d206be609b6adf">More...</a><br /></td></tr>
 <tr class="separator:a3de9bc505dd27abcc8d206be609b6adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80089e22deb0334cf4bf167e3ad84052"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a80089e22deb0334cf4bf167e3ad84052">add_central</a> (self, lexer, source, autocomplete_source)</td></tr>
+<tr class="memdesc:a80089e22deb0334cf4bf167e3ad84052"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the central widget (syntax editor).  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a80089e22deb0334cf4bf167e3ad84052">More...</a><br /></td></tr>
 <tr class="separator:a80089e22deb0334cf4bf167e3ad84052"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4006ff9eda985e42c8da6fb0b2a255e6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a4006ff9eda985e42c8da6fb0b2a255e6">reset_methods</a> (self)</td></tr>
+<tr class="memdesc:a4006ff9eda985e42c8da6fb0b2a255e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the list of available API methods in the left panel from <code><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a485cce76d7741ac8874cacf32c4e024d" title="list list of methods exposed to plugins">PluginSynEditorWidget::methods</a></code>.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a4006ff9eda985e42c8da6fb0b2a255e6">More...</a><br /></td></tr>
 <tr class="separator:a4006ff9eda985e42c8da6fb0b2a255e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a201cac2def0823d9d4a0a7497ced13b3"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a201cac2def0823d9d4a0a7497ced13b3">on_actn_filter_regex_toggled</a> (self, checked)</td></tr>
+<tr class="memdesc:a201cac2def0823d9d4a0a7497ced13b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Toggle slot for the filter button (action): re-applies the filter with / without regex.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a201cac2def0823d9d4a0a7497ced13b3">More...</a><br /></td></tr>
 <tr class="separator:a201cac2def0823d9d4a0a7497ced13b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a589f2e177c2ffcb1c6e3b92becf7bb06"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a589f2e177c2ffcb1c6e3b92becf7bb06">on_filter_changed</a> (self, text)</td></tr>
+<tr class="memdesc:a589f2e177c2ffcb1c6e3b92becf7bb06"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Changed slot for the filter edit: re-applies the filter with the new expression.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a589f2e177c2ffcb1c6e3b92becf7bb06">More...</a><br /></td></tr>
 <tr class="separator:a589f2e177c2ffcb1c6e3b92becf7bb06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3364df8ed65584ce71ab0f3c622e26fc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a3364df8ed65584ce71ab0f3c622e26fc">on_editor_text_changed</a> (self)</td></tr>
+<tr class="memdesc:a3364df8ed65584ce71ab0f3c622e26fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Changed slot for the syntax editor: update the checked state of source methods, update autocomplete source.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a3364df8ed65584ce71ab0f3c622e26fc">More...</a><br /></td></tr>
 <tr class="separator:a3364df8ed65584ce71ab0f3c622e26fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a814cd62b637ff1001bef382f8ed42c54"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a814cd62b637ff1001bef382f8ed42c54">on_lw_methods_select</a> (self, current, previous)</td></tr>
+<tr class="memdesc:a814cd62b637ff1001bef382f8ed42c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Selection Changed slot for the source methods: scrolls to the selected method in the syntaxt editor.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a814cd62b637ff1001bef382f8ed42c54">More...</a><br /></td></tr>
 <tr class="separator:a814cd62b637ff1001bef382f8ed42c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a621a3275be829b10e9be18f2fa3a1317"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a621a3275be829b10e9be18f2fa3a1317">on_lw_methods_changed</a> (self, item)</td></tr>
+<tr class="memdesc:a621a3275be829b10e9be18f2fa3a1317"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Changed slot for the source methods: adds or removes source method templates in the editor when checked/unchecked.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a621a3275be829b10e9be18f2fa3a1317">More...</a><br /></td></tr>
 <tr class="separator:a621a3275be829b10e9be18f2fa3a1317"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8c616be940eb721550d471c489d5f62"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#ac8c616be940eb721550d471c489d5f62">on_lw_methods_dblclicked</a> (self, item)</td></tr>
+<tr class="memdesc:ac8c616be940eb721550d471c489d5f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Double Clicked slot for the source methods: toggles the checked state of the dbl-clicked item.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#ac8c616be940eb721550d471c489d5f62">More...</a><br /></td></tr>
 <tr class="separator:ac8c616be940eb721550d471c489d5f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html">pycross.utils.synteditor.SynEditorWidget</a></td></tr>
 <tr class="memitem:ad39e9c682c88578d94870685f60b0a57 inherit pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#ad39e9c682c88578d94870685f60b0a57">add_elements</a> (self, lexer, source, autocomplete_source)</td></tr>
+<tr class="memdesc:ad39e9c682c88578d94870685f60b0a57 inherit pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs main layout blocks.  <a href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#ad39e9c682c88578d94870685f60b0a57">More...</a><br /></td></tr>
 <tr class="separator:ad39e9c682c88578d94870685f60b0a57 inherit pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d05263a4b17a2a1afa77bb1c5e9f58d inherit pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a3d05263a4b17a2a1afa77bb1c5e9f58d">add_bottom</a> (self)</td></tr>
+<tr class="memdesc:a3d05263a4b17a2a1afa77bb1c5e9f58d inherit pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the bottom layout with the OK and Cancel buttons.  <a href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a3d05263a4b17a2a1afa77bb1c5e9f58d">More...</a><br /></td></tr>
 <tr class="separator:a3d05263a4b17a2a1afa77bb1c5e9f58d inherit pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1766b45d240f60b6c3845edeacc87dff inherit pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a1766b45d240f60b6c3845edeacc87dff">currenttext</a> (self)</td></tr>
+<tr class="memdesc:a1766b45d240f60b6c3845edeacc87dff inherit pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current text in the syntax editor.  <a href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a1766b45d240f60b6c3845edeacc87dff">More...</a><br /></td></tr>
 <tr class="separator:a1766b45d240f60b6c3845edeacc87dff inherit pub_methods_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a485cce76d7741ac8874cacf32c4e024d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a485cce76d7741ac8874cacf32c4e024d">methods</a></td></tr>
+<tr class="memdesc:a485cce76d7741ac8874cacf32c4e024d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>list</code> list of methods exposed to plugins  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a485cce76d7741ac8874cacf32c4e024d">More...</a><br /></td></tr>
 <tr class="separator:a485cce76d7741ac8874cacf32c4e024d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d0d27ed00e47b0e3773e1a1080077af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a6d0d27ed00e47b0e3773e1a1080077af">editor</a></td></tr>
+<tr class="memdesc:a6d0d27ed00e47b0e3773e1a1080077af"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html" title="Scintilla-based Python editor Adapted from this example and this addition">SynEditor</a></code> the syntax editor widget  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a6d0d27ed00e47b0e3773e1a1080077af">More...</a><br /></td></tr>
 <tr class="separator:a6d0d27ed00e47b0e3773e1a1080077af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20c010a0b8476be85af5e83d2a5ebbdb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a20c010a0b8476be85af5e83d2a5ebbdb">splitter1</a></td></tr>
+<tr class="memdesc:a20c010a0b8476be85af5e83d2a5ebbdb"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QSplitter</code> horizontal splitter  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a20c010a0b8476be85af5e83d2a5ebbdb">More...</a><br /></td></tr>
 <tr class="separator:a20c010a0b8476be85af5e83d2a5ebbdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f6616980a3195287411f9a29cb85241"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a9f6616980a3195287411f9a29cb85241">lo_methods</a></td></tr>
 <tr class="separator:a9f6616980a3195287411f9a29cb85241"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cab0344ba846edc99588b3f59f8c605"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a4cab0344ba846edc99588b3f59f8c605">lw_methods</a></td></tr>
+<tr class="memdesc:a4cab0344ba846edc99588b3f59f8c605"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QListWidget</code> list of source methods (exposed to plugins)  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a4cab0344ba846edc99588b3f59f8c605">More...</a><br /></td></tr>
 <tr class="separator:a4cab0344ba846edc99588b3f59f8c605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81190372bd23b1f74293ca9a10abcec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#ab81190372bd23b1f74293ca9a10abcec">actn_clear_filter</a></td></tr>
+<tr class="memdesc:ab81190372bd23b1f74293ca9a10abcec"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QAction</code> clear filter action  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#ab81190372bd23b1f74293ca9a10abcec">More...</a><br /></td></tr>
 <tr class="separator:ab81190372bd23b1f74293ca9a10abcec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af548d3b1531819416e31e521490f8b94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#af548d3b1531819416e31e521490f8b94">actn_filter_regex</a></td></tr>
+<tr class="memdesc:af548d3b1531819416e31e521490f8b94"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QAction</code> toggle regex filter action  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#af548d3b1531819416e31e521490f8b94">More...</a><br /></td></tr>
 <tr class="separator:af548d3b1531819416e31e521490f8b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac39ccdce2806fafd63a43720ea9d757a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#ac39ccdce2806fafd63a43720ea9d757a">le_filter</a></td></tr>
+<tr class="memdesc:ac39ccdce2806fafd63a43720ea9d757a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QLineEdit</code> filter field for the source methods  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#ac39ccdce2806fafd63a43720ea9d757a">More...</a><br /></td></tr>
 <tr class="separator:ac39ccdce2806fafd63a43720ea9d757a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b074aa522c94ed8e8449948f6d3d1f7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a9b074aa522c94ed8e8449948f6d3d1f7">methods_widget</a></td></tr>
 <tr class="separator:a9b074aa522c94ed8e8449948f6d3d1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html">pycross.utils.synteditor.SynEditorWidget</a></td></tr>
 <tr class="memitem:a14cb84d03a451949601c2e5eb57df886 inherit pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a14cb84d03a451949601c2e5eb57df886">layout_main</a></td></tr>
+<tr class="memdesc:a14cb84d03a451949601c2e5eb57df886 inherit pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtWidgets.QVBoxLayout</code> main window layout  <a href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a14cb84d03a451949601c2e5eb57df886">More...</a><br /></td></tr>
 <tr class="separator:a14cb84d03a451949601c2e5eb57df886 inherit pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25d9a75d544ef76059e4ec8f2be3a363 inherit pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a25d9a75d544ef76059e4ec8f2be3a363">editor</a></td></tr>
+<tr class="memdesc:a25d9a75d544ef76059e4ec8f2be3a363 inherit pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html" title="Scintilla-based Python editor Adapted from this example and this addition">SynEditor</a></code> the syntax editor  <a href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a25d9a75d544ef76059e4ec8f2be3a363">More...</a><br /></td></tr>
 <tr class="separator:a25d9a75d544ef76059e4ec8f2be3a363 inherit pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c72f0f5a0bcff6dd7a0ab9f8a068501 inherit pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a9c72f0f5a0bcff6dd7a0ab9f8a068501">layout_bottom</a></td></tr>
 <tr class="separator:a9c72f0f5a0bcff6dd7a0ab9f8a068501 inherit pub_attribs_classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,20 +179,28 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a6c9730f1e550a086f46352bfd814d3ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a6c9730f1e550a086f46352bfd814d3ea">RESRCH</a> = re.compile(r'\n[ ]{4}[\w&quot;#@]')</td></tr>
+<tr class="memdesc:a6c9730f1e550a086f46352bfd814d3ea"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>regex pattern</code> pattern for a method start  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a6c9730f1e550a086f46352bfd814d3ea">More...</a><br /></td></tr>
 <tr class="separator:a6c9730f1e550a086f46352bfd814d3ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ae7816f7dcd1a59f0429829d2642547ce"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#ae7816f7dcd1a59f0429829d2642547ce">_config_editor</a> (self)</td></tr>
+<tr class="memdesc:ae7816f7dcd1a59f0429829d2642547ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects the syntax editor's <code>textChanged</code> signal to an internal handler.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#ae7816f7dcd1a59f0429829d2642547ce">More...</a><br /></td></tr>
 <tr class="separator:ae7816f7dcd1a59f0429829d2642547ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e33acbc1eb502e8404b4663bc458d0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#aa5e33acbc1eb502e8404b4663bc458d0">_get_autocomplete_source</a> (self, source)</td></tr>
+<tr class="memdesc:aa5e33acbc1eb502e8404b4663bc458d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a list of variables referenced / created in the given source.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#aa5e33acbc1eb502e8404b4663bc458d0">More...</a><br /></td></tr>
 <tr class="separator:aa5e33acbc1eb502e8404b4663bc458d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959220980dd05ea0b2ad9af64028d81f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a959220980dd05ea0b2ad9af64028d81f">_update_checked_methods</a> (self)</td></tr>
+<tr class="memdesc:a959220980dd05ea0b2ad9af64028d81f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks or unchecks the source methods in the left panel based on the current editor text.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a959220980dd05ea0b2ad9af64028d81f">More...</a><br /></td></tr>
 <tr class="separator:a959220980dd05ea0b2ad9af64028d81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4da52247ad8e415e0728082a81bab0d1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a4da52247ad8e415e0728082a81bab0d1">_apply_filter</a> (self, text)</td></tr>
+<tr class="memdesc:a4da52247ad8e415e0728082a81bab0d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filters the source methods in the left panel by a search expression.  <a href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a4da52247ad8e415e0728082a81bab0d1">More...</a><br /></td></tr>
 <tr class="separator:a4da52247ad8e415e0728082a81bab0d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Extended syntax editor dialog based on <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html" title="Standalone syntax editor window with a SynEditor object as the main widget.">SynEditorWidget</a>. </p>
+<p>Adds a left panel with available API methods exposed to custom plugins. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5148bfc43aa9f05e5e86528955d195b5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5148bfc43aa9f05e5e86528955d195b5">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -224,6 +256,12 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">methods</td><td><code>list</code> list of methods exposed to plugins in the format returned by <a class="el" href="namespacepycross_1_1utils_1_1utils.html#af73df113cf56cc0482b2f318a576ca78" title="Collects the names and signatures of wrapped methods from a class instance.">utils::utils::collect_pluggables()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Reimplemented from <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#ab5c03264a64748b1684da024d96172db">pycross.utils.synteditor.SynEditorWidget</a>.</p>
 
@@ -264,6 +302,14 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Filters the source methods in the left panel by a search expression. </p>
+<p>The filter can be simple or regex-based, depending on the Checked state of <code><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#af548d3b1531819416e31e521490f8b94" title="QtWidgets.QAction toggle regex filter action">PluginSynEditorWidget::actn_filter_regex</a></code>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td><code>str</code> the search expression used as the filter </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ae7816f7dcd1a59f0429829d2642547ce"></a>
@@ -289,6 +335,8 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Connects the syntax editor's <code>textChanged</code> signal to an internal handler. </p>
 
 </div>
 </div>
@@ -326,6 +374,15 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Retrieves a list of variables referenced / created in the given source. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td><code>str</code> source text to extract variables from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> list of variables &ndash; see <a class="el" href="namespacepycross_1_1utils_1_1utils.html#a0f7b7699b63d66756fff593198603b61" title="Retrieves the names of all variables in the given Python script.">utils::utils::get_script_members()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a959220980dd05ea0b2ad9af64028d81f"></a>
@@ -351,6 +408,9 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Checks or unchecks the source methods in the left panel based on the current editor text. </p>
+<p>The method searches the function signatures of the source methods in the current editor and if found, checks the corresponding method to mark it as used. </p>
 
 </div>
 </div>
@@ -392,6 +452,16 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructs the central widget (syntax editor). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lexer</td><td><code>Qsci.QsciLexer</code> lexer object responsible for parsing / highlighting </td></tr>
+    <tr><td class="paramname">source</td><td><code>str</code>|<code>None</code> source code to place in the editor upon creation </td></tr>
+    <tr><td class="paramname">autocomplete_source</td><td><code>list</code>|<code>None</code> list of variables &amp; functions serving as the autocompletion source (see <a class="el" href="namespacepycross_1_1utils_1_1utils.html#a0f7b7699b63d66756fff593198603b61" title="Retrieves the names of all variables in the given Python script.">utils::utils::get_script_members()</a>) </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Reimplemented from <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a6163b91af4e9247de8740ffed0dc3881">pycross.utils.synteditor.SynEditorWidget</a>.</p>
 
 </div>
@@ -422,6 +492,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>On Toggle slot for the filter button (action): re-applies the filter with / without regex. </p>
+
 </div>
 </div>
 <a id="a3364df8ed65584ce71ab0f3c622e26fc"></a>
@@ -439,6 +511,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>On Changed slot for the syntax editor: update the checked state of source methods, update autocomplete source. </p>
 
 </div>
 </div>
@@ -468,6 +542,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>On Changed slot for the filter edit: re-applies the filter with the new expression. </p>
+
 </div>
 </div>
 <a id="a621a3275be829b10e9be18f2fa3a1317"></a>
@@ -496,6 +572,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>On Changed slot for the source methods: adds or removes source method templates in the editor when checked/unchecked. </p>
+
 </div>
 </div>
 <a id="ac8c616be940eb721550d471c489d5f62"></a>
@@ -523,6 +601,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>On Double Clicked slot for the source methods: toggles the checked state of the dbl-clicked item. </p>
 
 </div>
 </div>
@@ -558,6 +638,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>On Selection Changed slot for the source methods: scrolls to the selected method in the syntaxt editor. </p>
+
 </div>
 </div>
 <a id="a4006ff9eda985e42c8da6fb0b2a255e6"></a>
@@ -575,6 +657,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Fills the list of available API methods in the left panel from <code><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_plugin_syn_editor_widget.html#a485cce76d7741ac8874cacf32c4e024d" title="list list of methods exposed to plugins">PluginSynEditorWidget::methods</a></code>. </p>
 
 </div>
 </div>
@@ -604,6 +688,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>On show event handler: updates the left panel from the current source code. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -619,6 +705,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>QtWidgets.QAction</code> clear filter action </p>
+
 </div>
 </div>
 <a id="af548d3b1531819416e31e521490f8b94"></a>
@@ -632,6 +720,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>QtWidgets.QAction</code> toggle regex filter action </p>
 
 </div>
 </div>
@@ -647,6 +737,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code><a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor.html" title="Scintilla-based Python editor Adapted from this example and this addition">SynEditor</a></code> the syntax editor widget </p>
+
 </div>
 </div>
 <a id="ac39ccdce2806fafd63a43720ea9d757a"></a>
@@ -660,6 +752,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>QtWidgets.QLineEdit</code> filter field for the source methods </p>
 
 </div>
 </div>
@@ -689,6 +783,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>QtWidgets.QListWidget</code> list of source methods (exposed to plugins) </p>
+
 </div>
 </div>
 <a id="a485cce76d7741ac8874cacf32c4e024d"></a>
@@ -702,6 +798,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>list</code> list of methods exposed to plugins </p>
 
 </div>
 </div>
@@ -739,6 +837,8 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p><code>regex pattern</code> pattern for a method start </p>
+
 </div>
 </div>
 <a id="a20c010a0b8476be85af5e83d2a5ebbdb"></a>
@@ -752,6 +852,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>QtWidgets.QSplitter</code> horizontal splitter </p>
 
 </div>
 </div>

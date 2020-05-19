@@ -289,7 +289,7 @@ class Wordgrid:
         if isinstance(grid, str):
             grid = grid.split('\n')
             if len(grid) < 2:
-                raise CWError(_('Grid appears incorrect, for in contains less than 2 rows!'))
+                raise CWError(_('Grid appears incorrect, for it contains less than 2 rows!'))
                 
         if isinstance(grid, list):
             for row in grid:

@@ -1771,8 +1771,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def share_url(self, url, headers={'Content-Type': 'application/json'}, error_keymap=Share.ERRMAP):
         if not hasattr(self, 'browser'):
             self.browser = Browser()
+            self.browser.navigate('about:blank')
         try:
-            self.browser.navigate(url)
+            self.browser.navigate(url, False)
         except:
             traceback.print_exc(limit=None) 
 
@@ -3774,7 +3775,6 @@ class MainWindow(QtWidgets.QMainWindow):
             if not hasattr(self, 'browser'):
                 ## inbuilt web browser
                 self.browser = Browser()
-                self.browser.navigate(url)
             try:
                 self.browser.navigate(url, False)
             except:
