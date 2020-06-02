@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .vega-actions a {
+        margin-right: 12px;
+        color: #757575;
+        font-weight: normal;
+        font-size: 13px;
+    }
+    .error {
+        color: red;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@3.4.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@4"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"width": 400, "height": 300}, "mark": {"tooltip": null}}, "layer": [{"mark": "bar", "encoding": {"color": {"type": "nominal", "field": "x", "legend": null}, "shape": {"type": "nominal", "field": "x"}, "x": {"type": "quantitative", "field": "y", "scale": {"domain": [0, 16]}, "title": null}, "y": {"type": "nominal", "field": "x", "sort": ["Words", "Complete", "Blank", "Across", "Down", "With clues"], "title": null}}}, {"mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 3}, "encoding": {"color": {"type": "nominal", "field": "x", "legend": null}, "shape": {"type": "nominal", "field": "x"}, "text": {"type": "nominal", "field": "labels"}, "x": {"type": "quantitative", "field": "y", "scale": {"domain": [0, 16]}, "title": null}, "y": {"type": "nominal", "field": "x", "sort": ["Words", "Complete", "Blank", "Across", "Down", "With clues"], "title": null}}}], "data": {"name": "data-18918ddd5ef9581daa7b272973f18378"}, "$schema": "https://vega.github.io/schema/vega-lite/v3.4.0.json", "datasets": {"data-18918ddd5ef9581daa7b272973f18378": [{"x": "Words", "y": 6, "labels": "100 %"}, {"x": "Complete", "y": 6, "labels": "100 %"}, {"x": "Blank", "y": 0, "labels": "0 %"}, {"x": "Across", "y": 3, "labels": "50 %"}, {"x": "Down", "y": 3, "labels": "50 %"}, {"x": "With clues", "y": 0, "labels": "0 %"}]}};
+      var embedOpt = {"renderer": "svg", "mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div class="error" style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

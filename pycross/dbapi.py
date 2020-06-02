@@ -7,7 +7,8 @@
 # to create the default DB structure to use as a word source, import words from 
 # [Hunspell](https://hunspell.github.io/) open-source dictionaries, etc.
 from utils.globalvars import *
-import sqlite3, os, re, codecs
+import sqlite3, os, re, codecs, requests
+from multiprocessing import Pool
 
 # ******************************************************************************** #
 
@@ -30,7 +31,12 @@ f"insert into {SQL_TABLES['pos']['table']}({SQL_TABLES['pos']['fpos']}, posdesc)
 SQL_INSERT_WORD = \
 f"insert or replace into {SQL_TABLES['words']['table']} ({SQL_TABLES['words']['fwords']}, {SQL_TABLES['words']['fpos']})\n" \
 f"values('{BRACES}', (select {SQL_TABLES['pos']['fid']} from {SQL_TABLES['pos']['table']} where {SQL_TABLES['pos']['fpos']} = '{BRACES}'));"
-
+## SQL query to clear words
+SQL_CLEAR_WORDS = f"delete from {SQL_TABLES['words']['table']};"
+## SQL query to count entries (words)
+SQL_COUNT_WORDS = f"select count(*) from {SQL_TABLES['words']['table']};"
+## Hunspell dic repo URL
+HUNSPELL_REPO = 'https://raw.githubusercontent.com/wooorm/dictionaries/master'
 
 # ******************************************************************************** #
 
@@ -152,14 +158,101 @@ class Sqlitedb:
             return False
         except:
             self.disconnect()
-            return False
+            return False   
     
+# ******************************************************************************** #
+
+class HunspellImport:
+
+    def __init__(self, settings, dbmanager=None, dicfolder=DICFOLDER):
+        self.timeout_ = settings['common']['web']['req_timeout'] * 1000
+        self.proxies_ = {'http': settings['common']['web']['proxy']['http'], 'https': settings['common']['web']['proxy']['https']} if not settings['common']['web']['proxy']['use_system'] else None        
+        self.db = dbmanager or Sqlitedb()
+        self.dicfolder = dicfolder
+
+    def get_installed_info(self, lang):
+        filepath = os.path.join(self.dicfolder, f"{lang}.dic")
+        if not os.path.exists(filepath) or not self.db.setpath(filepath): 
+            return None
+        cur = self.db.conn.cursor()
+        res = cur.execute(SQL_COUNT_WORDS)
+        if not res: return None
+        return {'entries': int(res[0]), 'path': filepath}
+    
+    ## Retrieves the list of Hunspell dictionaries available for
+    # download from the [public Github repo](https://github.com/wooorm/dictionaries/).
+    def list_hunspell(self):
+        readme = f"{HUNSPELL_REPO}/readme.md"
+        dics = []
+        res = requests.get(readme, allow_redirects=True, timeout=self.timeout_, proxies=self.proxies_)
+        if not res: return []
+        res = res.text
+        print(res)
+        regex = re.compile(r'(\(dictionaries/[\w]+\))(\s*\|\s*)([\w\s]+)(\s*\|\s*)(\[.*?\])(\(.*?\))', re.I)
+        try:
+            for match in regex.finditer(res):
+                entry = {}
+                m = match[1][1:-2]
+                entry['dic_url'] = f"{HUNSPELL_REPO}/{m}/index.dic"
+                entry['lang'] = m.split('/')[1]
+                entry['lang_full'] = match[3]
+                entry['license'] = match[5][1:-2]
+                entry['license_url'] = f"{HUNSPELL_REPO}/{match[6][1:-2]}"
+                dics.append(entry)
+                print(entry)
+        except Exception as err:
+            print(err)
+        return dics
+
+    def list_all_dics(self):
+        dics = self.list_hunspell()
+        for dic in dics:
+            info = self.get_installed_info(dic['lang']) or {'entries': 0, 'path': ''}
+            dic.update(info)
+        return dics
+
+    def download_hunspell(self, url, lang, overwrite=True, 
+        on_progress=None, on_complete=None, on_error=None):
+        filepath = os.path.join(self.dicfolder, f"{lang}.dic")
+        if os.path.exists(filepath) and not overwrite:
+            return filepath
+        with requests.get(url, stream=True, allow_redirects=True, 
+            timeout=self.timeout_, proxies=self.proxies_) as res:
+            if not res:
+                if on_error: on_error(res.status_code)
+                return None
+            file_length = 0
+            try:
+                file_length = int(res.headers['content-length'])
+            except:
+                pass
+            try:
+                with open(filepath, 'wb') as f:
+                    for chunk in res.iter_content(None):
+                        f.write(chunk)
+                        if on_progress: on_progress(url, lang, filepath, f.tell(), file_length)
+            except Exception as err:
+                if on_error: on_error(str(err))
+                return None
+            if on_complete: on_complete(url, lang, filepath)
+        return filepath
+
+    def download_hunspell_all(self, dics, on_progress=None,
+        on_complete=None, on_error=None):
+        if not dics: return None
+        pool = Pool(min(5, len(dics)))
+        args = [(entry['dic_url'], entry['lang'], True,  
+                 on_progress, on_complete, on_error) for entry in dics]
+        return pool.starmap_async(self.download_hunspell, args, 
+            error_callback=lambda err: on_error(str(err)) if on_error else None)
+
     ## Retrieves the list of parts of speech present in the DB.
     # @returns `list` parts of speech in the short form, e.g. ['N', 'V']
     def get_pos(self):
-        self.connect()
-        cur = self.conn.cursor()
-        return [res[0] for res in cur.execute(f"select {SQL_TABLES['pos']['fpos']} from {SQL_TABLES['pos']['table']}").fetchall()]
+        if self.db.connect():
+            cur = self.db.conn.cursor()
+            return [res[0] for res in cur.execute(f"select {SQL_TABLES['pos']['fpos']} from {SQL_TABLES['pos']['table']}").fetchall()]
+        return []
     
     ## @brief Returns the default Hunspell-formatted metadata patterns for the three common
     # parts of speech (noun, verb, adjective).
@@ -215,6 +308,8 @@ class Sqlitedb:
     #     'C' [conjuction], 'PREP' [preposition], 'PROP' [proposition], 
     #     'MISC' [miscellaneous / other], 'NONE' [no POS]
     # </pre>
+    # @param cur `SQLite cursor object` pointer to DB cursor or `None` to
+    # retrieve a new one
     # @param posrules_strict `bool` if `True` (default), only the parts of speech present in posrules dict
     # will be imported [all other words will be skipped]. If `False`, such words
     # will be imported with 'MISC' and 'NONE' POS markers.
@@ -248,7 +343,7 @@ class Sqlitedb:
     # @endcode
     # @returns `int` number of words imported from the dictionary
     # @see add_all_from_hunspell()
-    def add_from_hunspell(self, dicfile, posrules, posrules_strict=True, 
+    def add_from_hunspell(self, dicfile, posrules, cur=None, posrules_strict=True, 
                           posdelim='/', lcase=True, replacements=None, remove_hyphens=True,
                           filter_out=None, commit_each=1000, on_word=None, on_commit=None):
         poses = self.get_pos()
@@ -256,12 +351,14 @@ class Sqlitedb:
             if not pos in poses:
                 raise Exception(_("Part of speech '{}' is absent from the DB!").format(pos))
                 
-        if not self.connect(): return 0
-        cur = self.conn.cursor()
+        if cur is None:
+            if not self.db.connect(): return 0
+            cur = self.db.conn.cursor()
+        
         cnt = 0
         
         try:            
-            with codecs.open(dicfile, 'r', encoding='utf-8', errors='ignore') as dic:
+            with codecs.open(dicfile, 'r', encoding=ENCODING, errors='ignore') as dic:
                 for row in dic:
                     # split the next row to extract the word and part-of-speech
                     w = row.split(posdelim)
@@ -299,7 +396,7 @@ class Sqlitedb:
                                     cnt += 1
                                     # commit if necessary
                                     if cnt >= commit_each and cnt % commit_each == 0:
-                                        self.conn.commit()
+                                        self.db.conn.commit()
                                         if on_commit: on_commit(cnt, dicfile)
                                     # call on_word
                                     if on_word: on_word(word, pos, cnt)
@@ -327,7 +424,7 @@ class Sqlitedb:
                             cnt += 1
                             # commit if necessary
                             if cnt >= commit_each and cnt % commit_each == 0:
-                                self.conn.commit()
+                                self.db.conn.commit()
                                 if on_commit: on_commit(cnt, dicfile)
                             # call on_word
                             if on_word: on_word(word, pos, cnt)
@@ -337,7 +434,7 @@ class Sqlitedb:
                     
         finally:   
             # commit outstanding updates
-            self.conn.commit()
+            self.db.conn.commit()
             cur.close()
             
         return cnt
@@ -357,29 +454,39 @@ class Sqlitedb:
     # @code
     # on_dict_add(dic_file: str, lang: str, records_from_file: int, total_records: int) -> None
     # @endcode
+    # @param kwargs `keyword arguments` keyword arguments passed to add_from_hunspell()
     # @returns `int` number of words imported from the dictionaries (aggregate)
     # @see add_from_hunspell()
-    def add_all_from_hunspell(self, languages=None, on_commit=None, on_dict_add=None):
-        old_dbpath = getattr(self, 'dbpath', None)
+    def add_all_from_hunspell(self, languages=None, on_commit=None, 
+        on_dict_add=None, **kwargs):
+        
+        old_dbpath = getattr(self.db, 'dbpath', None)
         cnt = 0
+
         for r, _, f in os.walk(DICFOLDER):
             for file in f:
                 if file.lower().endswith('.dic'):                    
                     dicfile = os.path.abspath(os.path.join(r, file))
                     lang = file[:2].lower()
                     if (not lang in LANG) or (languages and not lang in languages): continue
-                    if not self.setpath(lang, recreate=True): continue
+                    if not self.db.setpath(lang, recreate=True): continue
                     try:
+                        kwargs.pop('dicfile', None)
+                        kwargs.pop('on_commit', None)
+                        kwargs.pop('cur', None)
+                        posrules_ = kwargs.pop('posrules', self.standard_posrules(lang))
+                        replacements_ = kwargs.pop('replacements', self.standard_replacements(lang))
                         k = self.add_from_hunspell(dicfile=dicfile, 
-                                                      posrules=self.standard_posrules(lang),
-                                                      replacements=self.standard_replacements(lang),
-                                                      on_commit=on_commit)
+                                                   posrules=posrules_,
+                                                   cur=self.db.conn.cursor(),
+                                                   replacements=replacements_,
+                                                   on_commit=on_commit,
+                                                   **kwargs)
                         cnt += k
                         if on_dict_add: on_dict_add(dicfile, lang, k, cnt)
                     except Exception as err:
                         print(str(err))
                         break
                     
-        self.setpath(old_dbpath, fullpath=True)
+        self.db.setpath(old_dbpath, fullpath=True)
         return cnt
-    

@@ -15,6 +15,7 @@ from utils.utils import *
 from utils.onlineservices import MWDict, YandexDict, GoogleSearch, Share
 from crossword import BLANK, CWInfo
 from guisettings import CWSettings
+from dbapi import HunspellImport
 
 # ******************************************************************************** #
 # *****          BrowseEdit
@@ -1590,7 +1591,153 @@ class CustomPluginManager(QtWidgets.QWidget):
                 break
         self.reload_plugins()
         self.select_plugin(plcat, plname)
-        
+
+# ******************************************************************************** #
+# *****          WordDBManager
+# ******************************************************************************** #
+
+## @brief Manager for the inbuilt SQLite word source database.
+# Lets the user download and import Hunspell dictionaries for any language,
+# with flexible part-of-speech / blacklisting / replacement settings.
+class WordDBManager(QtWidgets.QMainWindow):
+
+    sigEnableInstall = QtCore.pyqtSignal(bool)
+
+    def __init__(self, settings, parent=None, flags=QtCore.Qt.WindowFlags()):
+        super().__init__(parent, flags)
+        self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"))
+        self.setWindowTitle(_('Database Manager'))
+        #self.settings = settings
+        self.hunspellmgr = HunspellImport(settings)
+        self.initUI()
+        self.sigEnableInstall.emit(False)
+
+    ## Implemented method to make the browser window half the screen size.
+    def sizeHint(self):
+        desktopRect = QtWidgets.QApplication.primaryScreen().geometry()
+        return desktopRect.size() * 0.5
+    
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.update_dic_model()
+
+    def initUI(self):
+        self.lo_main = QtWidgets.QVBoxLayout()
+        self.tabw = QtWidgets.QTabWidget()
+        self.tabw.setUpdatesEnabled(False)
+        self.createTabs()
+        self.tabw.setUpdatesEnabled(True)
+        self.lo_main.addWidget(self.tabw)
+
+        ## `QtWidgets.QStatusBar` main status bar
+        self.statusbar = QtWidgets.QStatusBar()        
+        self.statusbar.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed) 
+        ## `QtWidgets.QProgressBar` progress bar inside status bar (hidden by default)
+        self.statusbar_pbar = QtWidgets.QProgressBar(self.statusbar)
+        self.statusbar_pbar.setTextVisible(True)
+        self.statusbar_pbar.setRange(0, 100)
+        self.statusbar_pbar.setValue(0)
+        self.statusbar_pbar.setVisible(False)
+        self.statusbar.addPermanentWidget(self.statusbar_pbar)
+        self.setStatusBar(self.statusbar)
+
+        self.wcentral = QtWidgets.QWidget()
+        self.wcentral.setLayout(self.lo_main)
+        self.setCentralWidget(self.wcentral)
+
+    def createTabs(self):
+        # tab 1: installed dictionaries table
+        w1 = QtWidgets.QWidget()
+        lo_w1 = QtWidgets.QVBoxLayout()
+        self.tvDics = QtWidgets.QTableView()
+        self.tvDics.setSortingEnabled(True)
+        self.tvDics.setWordWrap(True)
+        lo_w1.addWidget(self.tvDics)
+        self.btn_install = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('Install checked'), None)
+        self.btn_install.setToolTip(_('Install / update checked dictionaries in the DB'))
+        self.btn_install.setMaximumWidth(200)
+        self.btn_install.setDefault(True)
+        self.btn_install.clicked.connect(self.on_btn_install_clicked)
+        self.sigEnableInstall.connect(self.btn_install.setEnabled)
+        lo_w1.addWidget(self.btn_install)
+
+        w1.setLayout(lo_w1)
+        self.tabw.addTab(w1, _('Install'))
+
+        # tab 2: DB editor
+        w2 = QtWidgets.QWidget()
+        lo_w2 = QtWidgets.QVBoxLayout()
+        lo_w2top = QtWidgets.QFormLayout()
+        lo_w2top.setSpacing(10)
+        self.combo_selectdb = QtWidgets.QComboBox()
+        self.combo_selectdb.setEditable(False)
+        self.combo_selectdb.setMaximumWidth(250)
+        lo_w2top.addRow(_('Select database:'), self.combo_selectdb)
+        lo_w2.addLayout(lo_w2top)
+
+        self.tb_dbactions = QtWidgets.QToolBar()
+        self.act_addwd = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/add.png"), _('Add'))
+        self.act_addwd.setToolTip(_('Add a new record'))
+        self.act_delwd = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/multiply.png"), _('Delete'))
+        self.act_delwd.setToolTip(_('Delete selected records'))
+        self.tb_dbactions.addSeparator()
+        self.act_commit = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), _('Commit'))
+        self.act_commit.setToolTip(_('Save changes to DB'))
+        self.act_rollback = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/undo.png"), _('Undo'))
+        self.act_rollback.setToolTip(_('Undo (rollback) pending changes'))
+        lo_w2.addWidget(self.tb_dbactions)
+
+        self.tvDB = QtWidgets.QTableView()
+        self.tvDB.setSortingEnabled(True)
+        lo_w2.addWidget(self.tvDB)
+        w2.setLayout(lo_w2)
+        self.tabw.addTab(w2, _('Words'))
+
+    @QtCore.pyqtSlot()
+    def on_btn_install_clicked(self): 
+        self.install_dics()
+
+    def update_dic_model(self):
+        self.dics_model = QtGui.QStandardItemModel()
+        self.dics_model.setHorizontalHeaderLabels([_('Language'), _('Status'),
+            _('Entries'), _('POS rules'), _('Strict POS'),
+            _('POS delimiter'), _('Replacements'), _('Exclude POS'),
+            _('Exclude words')])
+
+        dics = self.hunspellmgr.list_all_dics()
+        for dic in dics:
+            item_lang = QtGui.QStandardItem(dic['lang_full'])
+            item_lang.setData(dic, QtCore.Qt.UserRole + 1)            
+            item_lang.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_lang.setCheckable(True)
+            item_lang.setUserTristate(True)
+            item_status = QtGui.QStandardItem(_('Installed') if dic['path'] else _('Not installed'))
+            item_status.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_entries = QtGui.QStandardItem(str(dic['entries']) if dic['entries'] else '')
+            item_entries.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_posrules = QtGui.QStandardItem('')
+            item_posrules.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_posstrict = QtGui.QStandardItem('')
+            item_posstrict.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_posstrict.setCheckable(True)
+            item_posdelim = QtGui.QStandardItem('/')
+            item_posdelim.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
+            item_replace = QtGui.QStandardItem('')
+            item_replace.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_exclpos = QtGui.QStandardItem('')
+            item_exclpos.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_exclwd = QtGui.QStandardItem('')
+            item_exclwd.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.dics_model.appendRow([item_lang, item_status, item_entries,
+                                       item_posrules, item_posstrict, item_posdelim,
+                                       item_replace, item_exclpos, item_exclwd])
+
+        self.tvDics.setModel(self.dics_model)
+        self.tvDics.horizontalHeader().setSectionsMovable(True)
+        self.tvDics.show()
+
+    def install_dics(self):
+        pass
             
 # ******************************************************************************** #
 # *****          SettingsDialog
@@ -1795,20 +1942,28 @@ class SettingsDialog(BasicDialog):
         self.tb_src_mgmt = QtWidgets.QToolBar()
         self.tb_src_mgmt.setOrientation(QtCore.Qt.Vertical)
         self.act_src_up = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
+        self.act_src_up.setToolTip(_('Move source up (higher priority)'))
         self.act_src_up.triggered.connect(self.on_act_src_up)
-        self.act_src_down = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), 
-                                                        # NOTE: arrow button
-                                                        _('Down'))
+        self.act_src_down = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), _('Down'))
+        self.act_src_down.setToolTip(_('Move source down (lower priority)'))
         self.act_src_down.triggered.connect(self.on_act_src_down)        
         self.tb_src_mgmt.addSeparator()
         self.act_src_add = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/plus.png"), _('Add'))
+        self.act_src_add.setToolTip(_('Add new word source'))
         self.act_src_add.triggered.connect(self.on_act_src_add)
         self.act_src_remove = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/minus.png"), _('Remove'))
+        self.act_src_remove.setToolTip(_('Remove selected word source'))
         self.act_src_remove.triggered.connect(self.on_act_src_remove)
         self.act_src_edit = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), _('Edit'))
+        self.act_src_edit.setToolTip(_('Edit selected word source'))
         self.act_src_edit.triggered.connect(self.on_act_src_edit)
         self.act_src_clear = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), _('Clear'))
+        self.act_src_clear.setToolTip(_('Delete all word sources'))
         self.act_src_clear.triggered.connect(self.on_act_src_clear)
+        self.tb_src_mgmt.addSeparator()
+        self.act_src_manage = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"), _('Manage'))
+        self.act_src_manage.setToolTip(_('Manage inbuilt database sources'))
+        self.act_src_manage.triggered.connect(self.on_act_src_manage)
         self.layout_gb_src.addWidget(self.tb_src_mgmt)
         self.gb_src.setLayout(self.layout_gb_src)
         
@@ -3860,6 +4015,13 @@ class SettingsDialog(BasicDialog):
     def on_act_src_clear(self, checked):
         self.lw_sources.clear()
 
+    ## Launches the DB Manager -- WordDBManager.
+    @QtCore.pyqtSlot(bool)        
+    def on_act_src_manage(self, checked):
+        mgr = WordDBManager(self.mainwindow.options(), self)
+        mgr.setWindowModality(QtCore.Qt.WindowModal)
+        mgr.show()
+
     ## Moves selected clues column up one position.
     @QtCore.pyqtSlot(bool)        
     def on_act_cluecol_up(self, checked):
@@ -5312,8 +5474,9 @@ class AboutDialog(QtWidgets.QDialog):
         #self.te_thanks.setReadOnly(True)
         self.te_thanks.setFixedHeight(50)
         self.te_thanks.setOpenLinks(False)
-        html = '<html><body><b>Icons</b> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>'
-        html += ' made by: <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>, '
+        tr_parts = (_('Icons'), _('from'), _('made by'))
+        html = f'<html><body><b>{tr_parts[0]}</b> {tr_parts[1]} <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>'
+        html += f' {tr_parts[2]}: <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>, '
         html += '<a href="https://www.flaticon.com/authors/srip" title="srip">srip</a>, '
         html += '<a href="https://www.flaticon.com/authors/google" title="Google">Google</a>, '
         html += '<a href="https://www.flaticon.com/authors/roundicons" title="Roundicons">Roundicons</a>, '

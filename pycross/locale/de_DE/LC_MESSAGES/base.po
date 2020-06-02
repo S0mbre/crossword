@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-25 15:22+1100\n"
+"POT-Creation-Date: 2020-05-28 08:54+1100\n"
 "PO-Revision-Date: 2020-01-18 23:53+1100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: de_DE <LL@li.org>\n"
 "Language: de_DE\n"
+"Language-Team: de_DE <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "Generated-By: Babel 2.7.0\n"
 
 #: pycross/browser.py:46 pycross/browser.py:49
@@ -122,7 +122,7 @@ msgstr "& Reload Tab"
 msgid "Reload &All Tabs"
 msgstr "Reload & All Tabs"
 
-#: pycross/browser.py:649 pycross/forms.py:224 pycross/forms.py:5360
+#: pycross/browser.py:649 pycross/forms.py:224 pycross/forms.py:5361
 #: pycross/utils/synteditor.py:194 pycross/utils/utils.py:587
 msgid "Cancel"
 msgstr "Stornieren"
@@ -320,8 +320,8 @@ msgstr "Offene Web-Ressource"
 #: pycross/browser.py:1175
 msgid "Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)"
 msgstr ""
-"Web-Ressourcen (* .html * .htm * .svg * .png * .gif * .svgz) ;; Alle Dateien"
-" (*. *)"
+"Web-Ressourcen (* .html * .htm * .svg * .png * .gif * .svgz) ;; Alle "
+"Dateien (*. *)"
 
 #: pycross/browser.py:1183
 msgid "Find"
@@ -381,18 +381,17 @@ msgstr "Gitter erscheint falsch, denn es ist weniger als 2 Zeilen enthält!"
 
 #: pycross/crossword.py:297
 msgid ""
-"Grid contains invalid characters! Must contain only [a-z], '{}', '{}' and "
-"'{}'."
-msgstr ""
-"Gitter enthält ungültige Zeichen! Muss nur enthalten [a-z], {}, {} und {}."
+"Grid contains invalid characters! Must contain only [a-z], '{}', '{}' and"
+" '{}'."
+msgstr "Gitter enthält ungültige Zeichen! Muss nur enthalten [a-z], {}, {} und {}."
 
 #: pycross/crossword.py:300
 msgid ""
-"Grid must be passed either as a list of strings or a single string of rows "
-"delimited by new-line symbols!"
+"Grid must be passed either as a list of strings or a single string of "
+"rows delimited by new-line symbols!"
 msgstr ""
-"Gitter muss entweder als Liste von Strings oder einer einzelnen Reihe von "
-"Zeilen, die von new-line Zeichen begrenzt weitergegeben werden!"
+"Gitter muss entweder als Liste von Strings oder einer einzelnen Reihe von"
+" Zeilen, die von new-line Zeichen begrenzt weitergegeben werden!"
 
 #: pycross/crossword.py:315
 msgid "Cannot call reset() on a null grid!"
@@ -400,10 +399,11 @@ msgstr "Kann nicht zurückgesetzt () auf einem Null-Gitter rufen!"
 
 #: pycross/crossword.py:399
 msgid ""
-"\"words\" argument must be a non-empty collection of Word / Coords objects!"
+"\"words\" argument must be a non-empty collection of Word / Coords "
+"objects!"
 msgstr ""
-"„Worte“ Argument muss eine nicht-leere Sammlung von Word / Coords Objekten "
-"sein!"
+"„Worte“ Argument muss eine nicht-leere Sammlung von Word / Coords "
+"Objekten sein!"
 
 #: pycross/crossword.py:519 pycross/crossword.py:538
 msgid "Unable to parse '{}' as IPUZ file!"
@@ -549,8 +549,7 @@ msgstr "{} Generiert für Cross '{}'"
 
 #: pycross/crossword.py:1839
 msgid "{}Failed to generate for cross '{}', restoring grid..."
-msgstr ""
-"{} Fehlgeschlagen für Quer {}, die Wiederherstellung Gitter erzeugen ..."
+msgstr "{} Fehlgeschlagen für Quer {}, die Wiederherstellung Gitter erzeugen ..."
 
 #: pycross/crossword.py:1906
 msgid "No valid word source for crossword generation!"
@@ -558,11 +557,11 @@ msgstr "Keine gültige Wort Quelle für Kreuzwort Generation!"
 
 #: pycross/crossword.py:1939
 msgid ""
-"'method' argument ({}) is not valid! Must be one of: 'iter', 'recurse', or "
-"None / empty string."
+"'method' argument ({}) is not valid! Must be one of: 'iter', 'recurse', "
+"or None / empty string."
 msgstr ""
-"'Methode' Argument ({}) ist ungültig! Muss einer der folgenden sein: ‚iter‘,"
-" ‚recurse‘ oder Keine / leere Zeichenkette."
+"'Methode' Argument ({}) ist ungültig! Muss einer der folgenden sein: "
+"‚iter‘, ‚recurse‘ oder Keine / leere Zeichenkette."
 
 #: pycross/crossword.py:1942
 msgid "TIMED OUT AT {} SEC!"
@@ -586,8 +585,7 @@ msgstr "CHECK OK"
 
 #: pycross/cwordg.py:67
 msgid "Cannot install QT translator for locale '{}' and domain '{}'!"
-msgstr ""
-"Kann nicht QT Übersetzer für locale '{}' und Domain '{}' installieren!"
+msgstr "Kann nicht QT Übersetzer für locale '{}' und Domain '{}' installieren!"
 
 #: pycross/dbapi.py:150 pycross/dbapi.py:313 pycross/dbapi.py:335
 msgid "DATABASE ERROR: {}"
@@ -611,7 +609,7 @@ msgstr "Datei aussuchen"
 msgid "All files (*.*)"
 msgstr "Alle Dateien (*.*)"
 
-#: pycross/forms.py:219 pycross/forms.py:5270 pycross/forms.py:5355
+#: pycross/forms.py:219 pycross/forms.py:5270 pycross/forms.py:5356
 #: pycross/utils/synteditor.py:190 pycross/utils/utils.py:586
 msgid "OK"
 msgstr "OK"
@@ -654,8 +652,7 @@ msgstr "Kreuzwortdatei"
 
 #: pycross/forms.py:306
 msgid "Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)"
-msgstr ""
-"Kreuzwortdateien (* .xpf * .xml * .puz * .ipuz) ;; Alle Dateien (*. *)"
+msgstr "Kreuzwortdateien (* .xpf * .xml * .puz * .ipuz) ;; Alle Dateien (*. *)"
 
 #: pycross/forms.py:313
 msgid "Grid dimensions"
@@ -834,21 +831,24 @@ msgid "Text file delimiter must not be empty!"
 msgstr "Textdatei Trennzeichen dürfen nicht leer sein!"
 
 #: pycross/forms.py:688
-msgid "Text file delimiter must be either \"SPACE\" or \"TAB\" or a single character!"
+msgid ""
+"Text file delimiter must be either \"SPACE\" or \"TAB\" or a single "
+"character!"
 msgstr ""
-"Textdatei Trennzeichen muss entweder „SPACE“ oder „TAB“ oder ein einzelnes "
-"Zeichen sein!"
+"Textdatei Trennzeichen muss entweder „SPACE“ oder „TAB“ oder ein "
+"einzelnes Zeichen sein!"
 
 #: pycross/forms.py:695
 msgid "Word list delimiter must not be empty if is has parts of speech!"
-msgstr ""
-"Wortliste Trennzeichen darf nicht leer sein, wenn ist, hat Teile der Rede!"
+msgstr "Wortliste Trennzeichen darf nicht leer sein, wenn ist, hat Teile der Rede!"
 
 #: pycross/forms.py:698
-msgid "Word list delimiter must be either \"SPACE\" or \"TAB\" or a single character!"
+msgid ""
+"Word list delimiter must be either \"SPACE\" or \"TAB\" or a single "
+"character!"
 msgstr ""
-"Wortliste Trennzeichen muss entweder „SPACE“ oder „TAB“ oder ein einzelnes "
-"Zeichen sein!"
+"Wortliste Trennzeichen muss entweder „SPACE“ oder „TAB“ oder ein "
+"einzelnes Zeichen sein!"
 
 #: pycross/forms.py:701
 msgid "Word list is empty or invalid!"
@@ -865,7 +865,8 @@ msgstr ""
 #: pycross/forms.py:786
 msgid "Null action source or toolbar pointers passed to ToolbarCustomizer!"
 msgstr ""
-"Null Aktion Quelle oder Symbolleiste Zeiger auf ToolbarCustomizer bestanden!"
+"Null Aktion Quelle oder Symbolleiste Zeiger auf ToolbarCustomizer "
+"bestanden!"
 
 #: pycross/forms.py:822 pycross/forms.py:1804
 msgid "Add"
@@ -1022,11 +1023,11 @@ msgstr "Bearbeiten: {}"
 #: pycross/forms.py:1495
 msgid ""
 "Reload plugins from folder? Click YES to soft-update currently loaded "
-"plugins and add new ones, NO to hard-reload plugins (current plugin config "
-"will be lost!)."
+"plugins and add new ones, NO to hard-reload plugins (current plugin "
+"config will be lost!)."
 msgstr ""
-"Reload-Plug-In aus dem Ordner? Klicken Sie auf JA, um die Software-Update "
-"zur Zeit Plugins geladen und neue hinzufügen, NO zu hart Reload-Plugins "
+"Reload-Plug-In aus dem Ordner? Klicken Sie auf JA, um die Software-Update"
+" zur Zeit Plugins geladen und neue hinzufügen, NO zu hart Reload-Plugins "
 "(aktuelle Plugin Config verloren!)."
 
 #: pycross/forms.py:1496 pycross/forms.py:1511 pycross/forms.py:1548
@@ -1039,7 +1040,8 @@ msgid ""
 "Are you sure you would like to PERMANENTLY delete the selected plugins?\n"
 "You can deactivate a plugin by unchecking it."
 msgstr ""
-"Sind Sie sicher, dass Sie möchten, dass DAUERHAFT, um die ausgewählten Plugins löschen?\n"
+"Sind Sie sicher, dass Sie möchten, dass DAUERHAFT, um die ausgewählten "
+"Plugins löschen?\n"
 "Sie können unchecking es ein Plugin deaktivieren."
 
 #: pycross/forms.py:1547
@@ -1107,7 +1109,7 @@ msgstr "Drucken"
 msgid "Updating"
 msgstr "Aktualisierung"
 
-#: pycross/forms.py:1605 pycross/forms.py:1662 pycross/forms.py:5413
+#: pycross/forms.py:1605 pycross/forms.py:1662 pycross/forms.py:5414
 msgid "Sharing"
 msgstr "Sharing"
 
@@ -1171,8 +1173,8 @@ msgstr "Dateizuordnungen registrieren"
 
 #: pycross/forms.py:1715
 msgid ""
-"Associate crossword files (*.xpf, *.ipuz) and settings files (*.pxjson) with"
-" {}"
+"Associate crossword files (*.xpf, *.ipuz) and settings files (*.pxjson) "
+"with {}"
 msgstr ""
 "Associate Kreuzwortdateien (* .xpf, * .ipuz) und Einstellungsdateien (* "
 ".pxjson) mit {}"
@@ -1263,11 +1265,11 @@ msgstr "Manage Quellen"
 
 #: pycross/forms.py:1791
 msgid ""
-"Higher sources in this list take higher precedence (use UP and DOWN buttons "
-"to move items)"
+"Higher sources in this list take higher precedence (use UP and DOWN "
+"buttons to move items)"
 msgstr ""
-"Höhere Quellen in dieser Liste nehmen höhere Priorität (Verwendung Tasten "
-"AUF und AB Artikel zu bewegen)"
+"Höhere Quellen in dieser Liste nehmen höhere Priorität (Verwendung Tasten"
+" AUF und AB Artikel zu bewegen)"
 
 #: pycross/forms.py:1817
 msgid "Constrain max results:"
@@ -1279,11 +1281,11 @@ msgstr "Teile der Rede"
 
 #: pycross/forms.py:1838
 msgid ""
-"Check / uncheck items to include in search (valid only for sources with POS "
-"data)"
+"Check / uncheck items to include in search (valid only for sources with "
+"POS data)"
 msgstr ""
-"Aktivieren / Deaktivieren Elemente in die Suche einbeziehen (gilt nur für "
-"Quellen mit POS-Daten)"
+"Aktivieren / Deaktivieren Elemente in die Suche einbeziehen (gilt nur für"
+" Quellen mit POS-Daten)"
 
 #: pycross/forms.py:1849
 msgid "Excluded words"
@@ -1568,8 +1570,8 @@ msgstr "Säulen"
 #: pycross/forms.py:2138
 msgid "Check / uncheck items to show or hide columns, drag to reorder"
 msgstr ""
-"Überprüfen Sie, / uncheck Elemente anzeigen oder ausblenden Spalten ziehen, "
-"um Neuordnungs"
+"Überprüfen Sie, / uncheck Elemente anzeigen oder ausblenden Spalten "
+"ziehen, um Neuordnungs"
 
 #: pycross/forms.py:2185
 msgid "Default language:"
@@ -1591,8 +1593,7 @@ msgstr ""
 
 #: pycross/forms.py:2198
 msgid "Yandex Dictionary API key (empty string to use default)"
-msgstr ""
-"Yandex Wörterbuch API-Schlüssel (leere Zeichenfolge Verwendung default)"
+msgstr "Yandex Wörterbuch API-Schlüssel (leere Zeichenfolge Verwendung default)"
 
 #: pycross/forms.py:2199 pycross/forms.py:2270
 msgid "Show:"
@@ -1648,8 +1649,7 @@ msgstr "Limit zurückgegebenen Ergebnisse für Seite (-1 = keine Begrenzung)"
 
 #: pycross/forms.py:2266
 msgid "Google Custom Search API key (empty string to use default)"
-msgstr ""
-"Google Custom Search API-Schlüssel (leere Zeichenfolge Verwendung default)"
+msgstr "Google Custom Search API-Schlüssel (leere Zeichenfolge Verwendung default)"
 
 #: pycross/forms.py:2268
 msgid "Google Custom Search CSE ID (empty string to use default)"
@@ -1703,7 +1703,7 @@ msgstr "Google Custom Search API-Schlüssel:"
 msgid "Google Custom Search CSE ID:"
 msgstr "Google Custom Search CSE-ID:"
 
-#: pycross/forms.py:2300 pycross/forms.py:5439
+#: pycross/forms.py:2300 pycross/forms.py:5440
 msgid "Export"
 msgstr "Export"
 
@@ -1923,17 +1923,19 @@ msgstr "Kloudless Benutzername (leer neue Benutzer automatisch erstellen)"
 
 #: pycross/forms.py:2609
 msgid ""
-"Check this to use one single API key for authentication (WARNING! NOT SAFE!)"
+"Check this to use one single API key for authentication (WARNING! NOT "
+"SAFE!)"
 msgstr ""
 "Aktivieren Sie diese Option einen einzigen API-Schlüssel für die "
 "Authentifizierung verwendet wird (ACHTUNG! NICHT SICHER!)"
 
 #: pycross/forms.py:2611
 msgid ""
-"Use app inbuilt browser to open share links (otherwise, use system browser)"
+"Use app inbuilt browser to open share links (otherwise, use system "
+"browser)"
 msgstr ""
-"Verwenden App eingebauter Browser zu öffnen Anteil Links (sonst Verwendung "
-"System-Browser)"
+"Verwenden App eingebauter Browser zu öffnen Anteil Links (sonst "
+"Verwendung System-Browser)"
 
 #: pycross/forms.py:2613
 msgid "Kloudless account ID"
@@ -1972,16 +1974,17 @@ msgid ""
 "Press YES to restore defaults only for current page and YES TO ALL to "
 "restore all default settings"
 msgstr ""
-"Drücken Sie YES, um die Standardeinstellungen wiederherzustellen nur für die"
-" aktuelle Seite und YES TO ALL alle Standardeinstellungen wiederherstellen"
+"Drücken Sie YES, um die Standardeinstellungen wiederherzustellen nur für "
+"die aktuelle Seite und YES TO ALL alle Standardeinstellungen "
+"wiederherstellen"
 
 #: pycross/forms.py:3761
 msgid ""
-"Press YES to load settings only for current page and YES TO ALL to load all "
-"settings"
+"Press YES to load settings only for current page and YES TO ALL to load "
+"all settings"
 msgstr ""
-"Drücken Sie JA zum Laden von Einstellungen nur für die aktuelle Seite und "
-"YES TO ALL alle Einstellungen laden"
+"Drücken Sie JA zum Laden von Einstellungen nur für die aktuelle Seite und"
+" YES TO ALL alle Einstellungen laden"
 
 #: pycross/forms.py:3762
 msgid "Load defaults"
@@ -2147,7 +2150,7 @@ msgstr "Kreuzwort Info"
 msgid "Title:"
 msgstr "Titel:"
 
-#: pycross/forms.py:4689 pycross/forms.py:5327
+#: pycross/forms.py:4689 pycross/forms.py:5328
 msgid "Author:"
 msgstr "Autor:"
 
@@ -2284,71 +2287,83 @@ msgstr "Sende eine Mail an {}"
 msgid "Visit {}"
 msgstr "Besuch {}"
 
-#: pycross/forms.py:5325
+#: pycross/forms.py:5315
+msgid "Icons"
+msgstr ""
+
+#: pycross/forms.py:5315
+msgid "from"
+msgstr ""
+
+#: pycross/forms.py:5315
+msgid "made by"
+msgstr ""
+
+#: pycross/forms.py:5326
 msgid "App name:"
 msgstr "App Name:"
 
-#: pycross/forms.py:5326
+#: pycross/forms.py:5327
 msgid "Version:"
 msgstr "Ausführung:"
 
-#: pycross/forms.py:5328
+#: pycross/forms.py:5329
 msgid "Email:"
 msgstr "Email:"
 
-#: pycross/forms.py:5329
+#: pycross/forms.py:5330
 msgid "Website:"
 msgstr "Webseite:"
 
-#: pycross/forms.py:5330
+#: pycross/forms.py:5331
 msgid "Acknowledgements:"
 msgstr "Anerkennungen:"
 
-#: pycross/forms.py:5348
+#: pycross/forms.py:5349
 msgid "Bearer Token required"
 msgstr "Bearer Token erforderlich"
 
-#: pycross/forms.py:5364
+#: pycross/forms.py:5365
 msgid "Get token..."
 msgstr "Bekomme Token..."
 
-#: pycross/forms.py:5391
+#: pycross/forms.py:5392
 msgid "Your Bearer Token:"
 msgstr "Ihr Bearer Token:"
 
-#: pycross/forms.py:5407 pycross/gui.py:223
+#: pycross/forms.py:5408 pycross/gui.py:223
 msgid "Share"
 msgstr "Teilen"
 
-#: pycross/forms.py:5420
+#: pycross/forms.py:5421
 msgid "My new crossword"
 msgstr "Mein neues Kreuzwort"
 
-#: pycross/forms.py:5422
+#: pycross/forms.py:5423
 msgid "pycrossword,crossword,python"
 msgstr "pycrossword, Kreuzwort, Python"
 
-#: pycross/forms.py:5427 pycross/forms.py:5448
+#: pycross/forms.py:5428 pycross/forms.py:5449
 msgid "Settings..."
 msgstr "Die Einstellungen..."
 
-#: pycross/forms.py:5430
+#: pycross/forms.py:5431
 msgid "Target"
 msgstr "Ziel"
 
-#: pycross/forms.py:5431
+#: pycross/forms.py:5432
 msgid "Title"
 msgstr "Titel"
 
-#: pycross/forms.py:5432
+#: pycross/forms.py:5433
 msgid "Tags"
 msgstr "Stichworte"
 
-#: pycross/forms.py:5433
+#: pycross/forms.py:5434
 msgid "Source"
 msgstr "Quelle"
 
-#: pycross/forms.py:5434
+#: pycross/forms.py:5435
 msgid "Notes"
 msgstr "Anmerkungen"
 
@@ -2692,8 +2707,8 @@ msgstr "Geben Sie Ihren API-Schlüssel"
 #: pycross/gui.py:1594
 msgid "Authorize your app on the webpage and paste the access token here."
 msgstr ""
-"Autorisieren Sie Ihre App auf der Webseite und fügen Sie den Zugriff hier "
-"Token."
+"Autorisieren Sie Ihre App auf der Webseite und fügen Sie den Zugriff hier"
+" Token."
 
 #: pycross/gui.py:1633
 msgid "Opening share link..."
@@ -2718,10 +2733,13 @@ msgstr "Fertig"
 #: pycross/gui.py:1731
 msgid ""
 "You don't have a registered user name for uploading and sharing files.\n"
-"Would you like to set a new user name yourself (YES) or let {} assign the name for you (NO)?"
+"Would you like to set a new user name yourself (YES) or let {} assign the"
+" name for you (NO)?"
 msgstr ""
-"Sie haben keinen registrierten Benutzernamen für das Hochladen und den Austausch von Dateien.\n"
-"Möchten Sie einen neuen Benutzernamen selbst festlegen (YES) oder lassen {} weisen Sie den Namen für Sie (NO)?"
+"Sie haben keinen registrierten Benutzernamen für das Hochladen und den "
+"Austausch von Dateien.\n"
+"Möchten Sie einen neuen Benutzernamen selbst festlegen (YES) oder lassen "
+"{} weisen Sie den Namen für Sie (NO)?"
 
 #: pycross/gui.py:1733 pycross/gui.py:1737 pycross/gui.py:1739
 #: pycross/gui.py:1743
@@ -2851,11 +2869,11 @@ msgstr "Aktualisieren Sie bereit: v {}."
 
 #: pycross/gui.py:2461
 msgid ""
-"You have unsaved changes in your current crossword. Would you like to save "
-"them?"
+"You have unsaved changes in your current crossword. Would you like to "
+"save them?"
 msgstr ""
-"Sie haben nicht gespeicherte Änderungen in Ihrem aktuellen Kreuzworträtsel. "
-"Möchten Sie sie retten?"
+"Sie haben nicht gespeicherte Änderungen in Ihrem aktuellen "
+"Kreuzworträtsel. Möchten Sie sie retten?"
 
 #: pycross/gui.py:2480
 msgid "v. {}"
@@ -2887,12 +2905,12 @@ msgstr "Kreuzwortdateien (* .xpf * .ipuz) ;; Alle Dateien (*. *)"
 
 #: pycross/gui.py:3057
 msgid ""
-"You have unsaved changes in your current crossword. Are you sure to reload "
-"it from the file (all changes will be lost)?"
+"You have unsaved changes in your current crossword. Are you sure to "
+"reload it from the file (all changes will be lost)?"
 msgstr ""
-"Sie haben nicht gespeicherte Änderungen in Ihrem aktuellen Kreuzworträtsel. "
-"Sind Sie sicher, dass es aus der Datei neu zu laden (alle Änderungen gehen "
-"verloren)?"
+"Sie haben nicht gespeicherte Änderungen in Ihrem aktuellen "
+"Kreuzworträtsel. Sind Sie sicher, dass es aus der Datei neu zu laden "
+"(alle Änderungen gehen verloren)?"
 
 #: pycross/gui.py:3138
 msgid "Undo {}"
@@ -2997,7 +3015,8 @@ msgid ""
 "to use a different authentication method."
 msgstr ""
 "Kein gültiger API-Schlüssel zur Verfügung gestellt!\n"
-"Geben Sie einen gültigen API-Schlüssel oder ändern Sie Ihre „use_api_key“ Einstellungen\n"
+"Geben Sie einen gültigen API-Schlüssel oder ändern Sie Ihre „use_api_key“"
+" Einstellungen\n"
 "eine andere Authentifizierungsmethode zu verwenden."
 
 #: pycross/utils/onlineservices.py:428
@@ -3007,7 +3026,8 @@ msgid ""
 "to use a different authentication method."
 msgstr ""
 "Keine gültige Bearer-Token zur Verfügung gestellt!\n"
-"Geben Sie eine gültige Bearer-Token oder Ihre „use_api_key“ Einstellungen ändern\n"
+"Geben Sie eine gültige Bearer-Token oder Ihre „use_api_key“ Einstellungen"
+" ändern\n"
 "eine andere Authentifizierungsmethode zu verwenden."
 
 #: pycross/utils/onlineservices.py:431
@@ -3050,19 +3070,17 @@ msgstr "Weder der Ordner-ID nicht der Benutzer-ID ist gültig!"
 
 #: pycross/utils/onlineservices.py:796
 msgid "You can delete other users only with a valid API key!"
-msgstr ""
-"Sie können andere Benutzer löschen nur mit einem gültigen API-Schlüssel!"
+msgstr "Sie können andere Benutzer löschen nur mit einem gültigen API-Schlüssel!"
 
 #: pycross/utils/onlineservices.py:802
 msgid "No current user present!"
 msgstr "Keine aktuellen Benutzer vorhanden!"
 
 #: pycross/utils/onlineservices.py:825 pycross/utils/onlineservices.py:864
-msgid ""
-"You cannot clear folders created by other users without a valid API key!"
+msgid "You cannot clear folders created by other users without a valid API key!"
 msgstr ""
-"Sie können keine Ordner von anderen Benutzern ohne gültigen API-Schlüssel "
-"erstellt klar!"
+"Sie können keine Ordner von anderen Benutzern ohne gültigen API-Schlüssel"
+" erstellt klar!"
 
 #: pycross/utils/onlineservices.py:857
 msgid "No folder ID provided"
@@ -3100,11 +3118,11 @@ msgstr "Leere Link-ID übergeben delete_file_link ()!"
 
 #: pycross/utils/onlineservices.py:1099
 msgid ""
-"Share object must be given a valid instance of Cloudstorage as the \"cloud\""
-" argument!"
+"Share object must be given a valid instance of Cloudstorage as the "
+"\"cloud\" argument!"
 msgstr ""
-"Teile Objekt muss eine gültige Instanz von Cloudstorage als „Wolke“ Argument"
-" gegeben werden!"
+"Teile Objekt muss eine gültige Instanz von Cloudstorage als „Wolke“ "
+"Argument gegeben werden!"
 
 #: pycross/utils/onlineservices.py:1121
 msgid "See my new crossword"
@@ -3154,16 +3172,16 @@ msgstr "Filter"
 
 #: pycross/utils/undo.py:35
 msgid ""
-"command must be a dictionary type with \"func\" and optional \"args\" and "
-"\"kwargs\" keys!"
+"command must be a dictionary type with \"func\" and optional \"args\" and"
+" \"kwargs\" keys!"
 msgstr ""
-"Befehl muss ein Wörterbuchtyp mit „Func“ und optional „args“ und „kwargs“ "
-"Schlüssel sein!"
+"Befehl muss ein Wörterbuchtyp mit „Func“ und optional „args“ und „kwargs“"
+" Schlüssel sein!"
 
 #: pycross/utils/undo.py:40
 msgid ""
-"undocommand must be a dictionary type with \"func\" and optional \"args\" "
-"and \"kwargs\" keys!"
+"undocommand must be a dictionary type with \"func\" and optional \"args\""
+" and \"kwargs\" keys!"
 msgstr ""
 "undocommand muss ein Wörterbuchtyp mit „Func“ und optional „args“ und "
 "„kwargs“ Schlüssel sein!"
@@ -3304,3 +3322,4 @@ msgstr "Kann nicht zu db verbinden!"
 
 #~ msgid "Grid appears incorrect, for in contains less than 2 rows!"
 #~ msgstr ""
+

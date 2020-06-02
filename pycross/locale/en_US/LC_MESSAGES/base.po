@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-25 15:22+1100\n"
+"POT-Creation-Date: 2020-05-28 08:54+1100\n"
 "PO-Revision-Date: 2020-05-25 14:51+1100\n"
 "Last-Translator: \n"
 "Language: en_US\n"
@@ -120,7 +120,7 @@ msgstr ""
 msgid "Reload &All Tabs"
 msgstr ""
 
-#: pycross/browser.py:649 pycross/forms.py:224 pycross/forms.py:5360
+#: pycross/browser.py:649 pycross/forms.py:224 pycross/forms.py:5361
 #: pycross/utils/synteditor.py:194 pycross/utils/utils.py:587
 msgid "Cancel"
 msgstr ""
@@ -590,7 +590,7 @@ msgstr ""
 msgid "All files (*.*)"
 msgstr ""
 
-#: pycross/forms.py:219 pycross/forms.py:5270 pycross/forms.py:5355
+#: pycross/forms.py:219 pycross/forms.py:5270 pycross/forms.py:5356
 #: pycross/utils/synteditor.py:190 pycross/utils/utils.py:586
 msgid "OK"
 msgstr ""
@@ -1074,7 +1074,7 @@ msgstr ""
 msgid "Updating"
 msgstr ""
 
-#: pycross/forms.py:1605 pycross/forms.py:1662 pycross/forms.py:5413
+#: pycross/forms.py:1605 pycross/forms.py:1662 pycross/forms.py:5414
 msgid "Sharing"
 msgstr ""
 
@@ -1658,7 +1658,7 @@ msgstr ""
 msgid "Google Custom Search CSE ID:"
 msgstr ""
 
-#: pycross/forms.py:2300 pycross/forms.py:5439
+#: pycross/forms.py:2300 pycross/forms.py:5440
 msgid "Export"
 msgstr ""
 
@@ -2096,7 +2096,7 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: pycross/forms.py:4689 pycross/forms.py:5327
+#: pycross/forms.py:4689 pycross/forms.py:5328
 msgid "Author:"
 msgstr ""
 
@@ -2231,71 +2231,83 @@ msgstr ""
 msgid "Visit {}"
 msgstr ""
 
-#: pycross/forms.py:5325
-msgid "App name:"
+#: pycross/forms.py:5315
+msgid "Icons"
+msgstr ""
+
+#: pycross/forms.py:5315
+msgid "from"
+msgstr ""
+
+#: pycross/forms.py:5315
+msgid "made by"
 msgstr ""
 
 #: pycross/forms.py:5326
+msgid "App name:"
+msgstr ""
+
+#: pycross/forms.py:5327
 msgid "Version:"
 msgstr ""
 
-#: pycross/forms.py:5328
+#: pycross/forms.py:5329
 msgid "Email:"
 msgstr ""
 
-#: pycross/forms.py:5329
+#: pycross/forms.py:5330
 msgid "Website:"
 msgstr ""
 
-#: pycross/forms.py:5330
+#: pycross/forms.py:5331
 msgid "Acknowledgements:"
 msgstr ""
 
-#: pycross/forms.py:5348
+#: pycross/forms.py:5349
 msgid "Bearer Token required"
 msgstr ""
 
-#: pycross/forms.py:5364
+#: pycross/forms.py:5365
 msgid "Get token..."
 msgstr ""
 
-#: pycross/forms.py:5391
+#: pycross/forms.py:5392
 msgid "Your Bearer Token:"
 msgstr ""
 
-#: pycross/forms.py:5407 pycross/gui.py:223
+#: pycross/forms.py:5408 pycross/gui.py:223
 msgid "Share"
 msgstr ""
 
-#: pycross/forms.py:5420
+#: pycross/forms.py:5421
 msgid "My new crossword"
 msgstr ""
 
-#: pycross/forms.py:5422
+#: pycross/forms.py:5423
 msgid "pycrossword,crossword,python"
 msgstr ""
 
-#: pycross/forms.py:5427 pycross/forms.py:5448
+#: pycross/forms.py:5428 pycross/forms.py:5449
 msgid "Settings..."
 msgstr ""
 
-#: pycross/forms.py:5430
+#: pycross/forms.py:5431
 msgid "Target"
 msgstr ""
 
-#: pycross/forms.py:5431
+#: pycross/forms.py:5432
 msgid "Title"
 msgstr ""
 
-#: pycross/forms.py:5432
+#: pycross/forms.py:5433
 msgid "Tags"
 msgstr ""
 
-#: pycross/forms.py:5433
+#: pycross/forms.py:5434
 msgid "Source"
 msgstr ""
 
-#: pycross/forms.py:5434
+#: pycross/forms.py:5435
 msgid "Notes"
 msgstr ""
 
