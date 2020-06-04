@@ -1593,6 +1593,216 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.select_plugin(plcat, plname)
 
 # ******************************************************************************** #
+# *****          ParamValueEditor
+# ******************************************************************************** #
+
+## Tiny login/password authentication dialog used by the inbuilt web browser (see pycross::browser).
+class ParamValueEditor(BasicDialog):
+    
+    # @param title `str` dialog title
+    # @param icon `str` dialog icon file
+    # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
+    def __init__(self, data=None, params_editable=False, 
+                 can_add=False, can_delete=False, can_reorder=True,
+                 unique_params=True,
+                 header_labels=[_('Parameter'), _('Value')], on_validate=None,
+                 title=_('Value Editor'), icon='table.png',
+                 parent=None, flags=QtCore.Qt.WindowFlags()):
+        self.params_editable = params_editable
+        self.can_add = can_add
+        self.can_delete = can_delete
+        self.can_reorder = can_reorder
+        self.unique_params = unique_params
+        self.on_validate = on_validate
+        self.header_labels = header_labels
+        super().__init__(None, title, icon, parent, flags)
+        self.fill_table(data)
+
+    def resizeEvent(self, event):
+        self.twParams.resizeColumnsToContents()
+        
+    def addMainLayout(self):
+        self.layout_controls = QtWidgets.QVBoxLayout()
+
+        self.tbMain = QtWidgets.QToolBar()
+
+        self.act_addrow = self.tbMain.addAction(QtGui.QIcon(f"{ICONFOLDER}/add.png"), _('Add'))
+        self.act_addrow.setToolTip(_('Add row'))
+        self.act_addrow.setShortcut(QtGui.QKeySequence('Ins'))
+        self.act_addrow.setEnabled(self.can_add)
+        self.act_addrow.triggered.connect(self.on_act_addrow)
+
+        self.act_delrow = self.tbMain.addAction(QtGui.QIcon(f"{ICONFOLDER}/multiply.png"), _('Delete'))
+        self.act_delrow.setToolTip(_('Delete row'))
+        self.act_delrow.setShortcut(QtGui.QKeySequence('Ctrl+Del'))
+        self.act_delrow.setEnabled(self.can_delete)
+        self.act_delrow.triggered.connect(self.on_act_delrow)
+
+        self.tbMain.addSeparator()
+
+        self.act_moverowup = self.tbMain.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-L.png"), _('Up'))
+        self.act_moverowup.setToolTip(_('Move up'))
+        self.act_moverowup.setShortcut(QtGui.QKeySequence('Ctrl+Up'))
+        self.act_moverowup.setEnabled(self.can_reorder)
+        self.act_moverowup.triggered.connect(self.on_act_moverowup)
+
+        self.act_moverowdown = self.tbMain.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), _('Down'))
+        self.act_moverowdown.setToolTip(_('Move down'))
+        self.act_moverowdown.setShortcut(QtGui.QKeySequence('Ctrl+Down'))
+        self.act_moverowdown.setEnabled(self.can_reorder)
+        self.act_moverowdown.triggered.connect(self.on_act_moverowdown)
+
+        self.layout_controls.addWidget(self.tbMain)
+
+        self.twParams = QtWidgets.QTableWidget(None)
+        self.twParams.setColumnCount(2)
+        self.twParams.setSortingEnabled(False)
+        self.twParams.itemChanged.connect(self.table_itemChanged)
+        self.twParams.itemSelectionChanged.connect(self.table_itemSelectionChanged)
+
+        self.layout_controls.addWidget(self.twParams)
+
+    def validate(self):
+        if self.unique_params:
+            params = self.list_params()
+            if len(params) > len(set(params)):
+                MsgBox(_('Please check that parameter names are unique.'), self, _('Error'), 'error')
+                return False
+        return self.on_validate() if self.on_validate else True
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_addrow(self, checked):
+        rows = self.twParams.rowCount()
+        if not rows and self.header_labels:
+            self.twParams.setHorizontalHeaderLabels(self.header_labels)
+        self.twParams.setRowCount(rows + 1)
+        if rows > 0 and self.twParams.cellWidget(rows - 1, 0):
+            combo = self.twParams.cellWidget(rows - 1, 0)
+            cell_combo = QtWidgets.QComboBox()
+            cell_combo.setEditable(self.params_editable)
+            cell_combo.addItems([combo.itemText(i) for i in range(combo.count())])
+            cell_combo.setCurrentIndex(combo.currentIndex())
+            self.twParams.setCellWidget(rows, 0, cell_combo)
+        else:
+            param = QtWidgets.QTableWidgetItem(_('Parameter {}').format(rows + 1))
+            param.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable if self.params_editable else \
+                            QtCore.Qt.ItemIsEnabled)
+            self.twParams.setItem(rows, 0, param)
+        self.twParams.setCurrentCell(rows, 1)
+        self.update_actions()
+
+    def copyrow(self, row_from, row_to):
+        combo = self.twParams.cellWidget(row_from, 0)
+        if combo:
+            cell_combo = QtWidgets.QComboBox()
+            cell_combo.setEditable(self.params_editable)
+            cell_combo.addItems([combo.itemText(i) for i in range(combo.count())])
+            cell_combo.setCurrentIndex(combo.currentIndex())
+            self.twParams.setCellWidget(row_to, 0, cell_combo)
+        else:
+            from_item = self.twParams.item(row_from, 0)
+            param = QtWidgets.QTableWidgetItem(from_item.text())
+            param.setFlags(from_item.flags())
+            self.twParams.setItem(row_to, 0, param)
+        self.twParams.setItem(row_to, 1, QtWidgets.QTableWidgetItem(self.twParams.item(row_from, 1).text()))
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_delrow(self, checked):
+        row = self.twParams.currentRow()
+        if row >= 0:
+            self.twParams.removeRow(row)
+            self.update_actions()
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_moverowup(self, checked):
+        row = self.twParams.currentRow()
+        if row > 0:
+            self.twParams.insertRow(row - 1)
+            self.copyrow(row + 1, row - 1)
+            self.twParams.setCurrentCell(row - 1, 1)
+            self.twParams.removeRow(row + 1)
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_moverowdown(self, checked):
+        row = self.twParams.currentRow()
+        last_row = self.twParams.rowCount() - 1
+        if row < last_row:
+            if row < (last_row - 1):
+                self.twParams.insertRow(row + 2)
+            else:
+                self.twParams.setRowCount(self.twParams.rowCount() + 1)
+            self.copyrow(row, row + 2)
+            self.twParams.setCurrentCell(row + 2, 1)
+            self.twParams.removeRow(row)
+
+    def fill_table(self, data):
+        self.data = data
+        if not self.data: return
+        if self.header_labels:
+            self.twParams.setHorizontalHeaderLabels(self.header_labels)
+        lrows = len(self.data)
+        self.twParams.setRowCount(lrows)
+        for r in range(lrows):
+            if not is_iterable(self.data[r]) or len(self.data[r]) < 2:
+                continue
+            if is_iterable(self.data[r][0]):
+                # make combobox
+                try:
+                    index = int(self.data[r][2])
+                except:
+                    index = 0
+                cell_combo = QtWidgets.QComboBox()
+                cell_combo.setEditable(self.params_editable)
+                cell_combo.addItems([str(x) for x in self.data[r][0]])
+                cell_combo.setCurrentIndex(index)
+                self.twParams.setCellWidget(r, 0, cell_combo)
+            else:
+                # make regular param
+                param = QtWidgets.QTableWidgetItem(str(self.data[r][0]))
+                param.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable if self.params_editable else \
+                               QtCore.Qt.ItemIsEnabled)
+                self.twParams.setItem(r, 0, param)
+            self.twParams.setItem(r, 1, QtWidgets.QTableWidgetItem(str(self.data[r][1])))
+        self.twParams.show()
+        self.update_actions()
+        self.adjustSize()
+
+    @QtCore.pyqtSlot(QtWidgets.QTableWidgetItem)
+    def table_itemChanged(self, item):
+        self.twParams.resizeColumnsToContents()
+
+    @QtCore.pyqtSlot()
+    def table_itemSelectionChanged(self):
+        self.update_actions()
+
+    def update_actions(self):
+        row = self.twParams.currentRow()
+        self.act_delrow.setEnabled(self.can_delete and row >= 0)
+        self.act_moverowup.setEnabled(self.can_reorder and row > 0)
+        self.act_moverowdown.setEnabled(self.can_reorder and row < (self.twParams.rowCount() - 1))
+    
+    def serialize_table(self):
+        data = []
+        for r in range(self.twParams.rowCount()):
+            combo = self.twParams.cellWidget(r, 0)
+            if combo:
+                data.append((combo.currentText(), self.twParams.item(r, 1).text(), combo.currentIndex()))
+            else:
+                data.append((self.twParams.item(r, 0).text(), self.twParams.item(r, 1).text()))
+        return data
+
+    def list_values(self):
+        return [self.twParams.item(r, 1).text() for r in range(self.twParams.rowCount())]
+
+    def list_params(self):
+        res = []
+        for r in range(self.twParams.rowCount()):
+            combo = self.twParams.cellWidget(r, 0)
+            res.append(combo.currentText() if combo else self.twParams.item(r, 0).text())
+        return res
+
+# ******************************************************************************** #
 # *****          WordDBManager
 # ******************************************************************************** #
 
@@ -1602,13 +1812,22 @@ class CustomPluginManager(QtWidgets.QWidget):
 class WordDBManager(QtWidgets.QMainWindow):
 
     sigEnableInstall = QtCore.pyqtSignal(bool)
+    pos_list = (_('Noun'), _('Verb'), _('Adverb'), _('Adjective'),
+                _('Participle'), _('Pronoun'), _('Interjection'), _('Conjuction'), 
+                _('Preposition'), _('Proposition'), _('Miscellaneous / other'), _('None'))
 
     def __init__(self, settings, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(parent, flags)
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"))
         self.setWindowTitle(_('Database Manager'))
-        #self.settings = settings
+        self.dics_model = None        
+        self.dics = {}
+        self.dics_model_thread = QThreadStump(on_start=self.on_repopulate_dic_model_start,
+            on_finish=self.on_repopulate_dic_model_finish,
+            on_run=self.on_repopulate_dic_model_run)
         self.hunspellmgr = HunspellImport(settings)
+        self.loadermovie = QtGui.QMovie(f"{ICONFOLDER}/ajax-loader.gif")
+        
         self.initUI()
         self.sigEnableInstall.emit(False)
 
@@ -1619,7 +1838,7 @@ class WordDBManager(QtWidgets.QMainWindow):
     
     def showEvent(self, event):
         super().showEvent(event)
-        self.update_dic_model()
+        self.dics_model_thread.start()
 
     def initUI(self):
         self.lo_main = QtWidgets.QVBoxLayout()
@@ -1649,13 +1868,28 @@ class WordDBManager(QtWidgets.QMainWindow):
         # tab 1: installed dictionaries table
         w1 = QtWidgets.QWidget()
         lo_w1 = QtWidgets.QVBoxLayout()
+        self.tb_dicactions = QtWidgets.QToolBar()
+        self.act_refreshdics = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Refresh'))
+        self.act_refreshdics.setToolTip(_('Refresh dictionary information'))
+        self.act_refreshdics.triggered.connect(self.on_act_refreshdics)
+        self.act_refreshdics.changed.connect(self.on_act_refreshdics_changed)
+        self.dics_model_thread.started.connect(QtCore.pyqtSlot()(lambda: self.act_refreshdics.setEnabled(False)))
+        self.dics_model_thread.finished.connect(QtCore.pyqtSlot()(lambda: self.act_refreshdics.setEnabled(True)))
+        lo_w1.addWidget(self.tb_dicactions)
         self.tvDics = QtWidgets.QTableView()
         self.tvDics.setSortingEnabled(True)
         self.tvDics.setWordWrap(True)
+        self.tvDics.activated.connect(self.on_tvDics_activated)
+        self.l_gif = QtWidgets.QLabel()
+        self.l_gif.setMovie(self.loadermovie)
+        self.l_gif.move(300, 300)
+        lo_w1.addWidget(self.l_gif, alignment=QtCore.Qt.AlignCenter)
+        self.l_gif.hide()
+        self._default_bgcolor = color_from_stylesheet(self.tvDics.styleSheet(), default='white')
         lo_w1.addWidget(self.tvDics)
-        self.btn_install = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('Install checked'), None)
-        self.btn_install.setToolTip(_('Install / update checked dictionaries in the DB'))
-        self.btn_install.setMaximumWidth(200)
+        self.btn_install = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), _('Execute pending operations'), None)
+        self.btn_install.setToolTip(_('Execute the pending installation / uninstallation operations'))
+        self.btn_install.setMaximumWidth(300)
         self.btn_install.setDefault(True)
         self.btn_install.clicked.connect(self.on_btn_install_clicked)
         self.sigEnableInstall.connect(self.btn_install.setEnabled)
@@ -1697,47 +1931,197 @@ class WordDBManager(QtWidgets.QMainWindow):
     def on_btn_install_clicked(self): 
         self.install_dics()
 
-    def update_dic_model(self):
+    def repopulate_dic_model(self, refresh_from_server=True):
+        if not self.dics or refresh_from_server:
+            self.dics = self.hunspellmgr.list_all_dics()
+
+        r = 0
+        for dic in self.dics:
+            isinstalled = bool(dic['path'])
+            item_lang = QtGui.QStandardItem(dic['lang_full'])
+            item_lang.setData(dic, QtCore.Qt.UserRole + 1)            
+            item_lang.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_lang.setCheckable(True)
+            item_lang.setUserTristate(isinstalled)
+            item_lang.setCheckState(QtCore.Qt.PartiallyChecked if isinstalled else QtCore.Qt.Unchecked)
+            item_status = QtGui.QStandardItem(_('Installed') if isinstalled else _('Not installed'))
+            item_status.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_entries = QtGui.QStandardItem(str(dic['entries']) if dic['entries'] else '')
+            item_entries.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            item_posrules = QtGui.QStandardItem('')
+            item_posrules.setFlags(QtCore.Qt.ItemIsSelectable)
+            item_posstrict = QtGui.QStandardItem('')
+            item_posstrict.setFlags(QtCore.Qt.ItemIsSelectable)
+            item_posstrict.setCheckable(True)
+            item_posdelim = QtGui.QStandardItem('/')
+            item_posdelim.setFlags(QtCore.Qt.ItemIsSelectable)
+            item_replace = QtGui.QStandardItem('')
+            item_replace.setFlags(QtCore.Qt.ItemIsSelectable)
+            item_exclpos = QtGui.QStandardItem('')
+            item_exclpos.setFlags(QtCore.Qt.ItemIsSelectable)
+            item_exclwd = QtGui.QStandardItem('')
+            item_exclwd.setFlags(QtCore.Qt.ItemIsSelectable)
+            self.dics_model.appendRow([item_lang, item_status, item_entries,
+                                       item_posrules, item_posstrict, item_posdelim,
+                                       item_replace, item_exclpos, item_exclwd])
+            self.reformat_dic_model_row(r)
+            r += 1
+
+    @QtCore.pyqtSlot()
+    def on_repopulate_dic_model_run(self):
+        self.repopulate_dic_model(True)
+
+    @QtCore.pyqtSlot()
+    def on_repopulate_dic_model_start(self):
+        self.statusBar().showMessage(_('Populating dictionaries...'))
         self.dics_model = QtGui.QStandardItemModel()
         self.dics_model.setHorizontalHeaderLabels([_('Language'), _('Status'),
             _('Entries'), _('POS rules'), _('Strict POS'),
             _('POS delimiter'), _('Replacements'), _('Exclude POS'),
             _('Exclude words')])
+        self.tvDics.hide()
+        self.l_gif.show()
+        self.loadermovie.start()
 
-        dics = self.hunspellmgr.list_all_dics()
-        for dic in dics:
-            item_lang = QtGui.QStandardItem(dic['lang_full'])
-            item_lang.setData(dic, QtCore.Qt.UserRole + 1)            
-            item_lang.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_lang.setCheckable(True)
-            item_lang.setUserTristate(True)
-            item_status = QtGui.QStandardItem(_('Installed') if dic['path'] else _('Not installed'))
-            item_status.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_entries = QtGui.QStandardItem(str(dic['entries']) if dic['entries'] else '')
-            item_entries.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_posrules = QtGui.QStandardItem('')
-            item_posrules.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_posstrict = QtGui.QStandardItem('')
-            item_posstrict.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_posstrict.setCheckable(True)
-            item_posdelim = QtGui.QStandardItem('/')
-            item_posdelim.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
-            item_replace = QtGui.QStandardItem('')
-            item_replace.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_exclpos = QtGui.QStandardItem('')
-            item_exclpos.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_exclwd = QtGui.QStandardItem('')
-            item_exclwd.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            self.dics_model.appendRow([item_lang, item_status, item_entries,
-                                       item_posrules, item_posstrict, item_posdelim,
-                                       item_replace, item_exclpos, item_exclwd])
-
+    @QtCore.pyqtSlot()
+    def on_repopulate_dic_model_finish(self):
+        self.loadermovie.stop()
+        self.l_gif.hide()
+        self.dics_model.itemChanged.connect(self.dics_model_item_changed)
         self.tvDics.setModel(self.dics_model)
+        self.tvDics.sortByColumn(1, int(_('Installed') > _('Not installed')))
         self.tvDics.horizontalHeader().setSectionsMovable(True)
         self.tvDics.show()
+        self.statusBar().clearMessage()
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_refreshdics(self, checked):
+        if not self.dics_model_thread.isRunning():
+            self.dics_model_thread.start()
+
+    @QtCore.pyqtSlot()
+    def on_act_refreshdics_changed(self):
+        self.tvDics.setEnabled(self.act_refreshdics.isEnabled())
+        self.btn_install.setEnabled(self.btn_install.isEnabled() and self.act_refreshdics.isEnabled())
+
+    def reformat_dic_model_row(self, r):
+        txt = self.dics_model.item(r, 1).text()            
+        for c in range(self.dics_model.columnCount()):
+            item = self.dics_model.item(r, c)
+            if txt == _('Installed'):                    
+                item.setBackground(QtGui.QBrush(QtCore.Qt.green))
+            elif txt == _('Pending'):
+                item.setBackground(QtGui.QBrush(QtCore.Qt.darkYellow))
+            else:
+                item.setBackground(QtGui.QBrush(self._default_bgcolor))
 
     def install_dics(self):
         pass
+
+    @QtCore.pyqtSlot(QtGui.QStandardItem)
+    def dics_model_item_changed(self, item):
+        c = item.column()
+        r = item.row()
+        dic = self.dics_model.item(r, 0).data(QtCore.Qt.UserRole + 1)
+        if not dic: return
+        if c == 0:
+            # language checked / unchecked by user
+            ch = item.checkState()
+            if ch == QtCore.Qt.Checked or (ch == QtCore.Qt.Unchecked and dic['path']):
+                self.dics_model.item(r, 1).setText(_('Pending'))
+            elif ch == QtCore.Qt.PartiallyChecked:
+                self.dics_model.item(r, 1).setText(_('Installed'))
+            else:
+                self.dics_model.item(r, 1).setText(_('Not installed'))
+
+            if self.dics_model.item(r, 1).text() == _('Pending'):
+                self.dics_model.item(r, 3).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+                self.dics_model.item(r, 4).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable)
+                self.dics_model.item(r, 5).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
+                self.dics_model.item(r, 6).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+                self.dics_model.item(r, 7).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+                self.dics_model.item(r, 8).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            else:
+                self.dics_model.item(r, 3).setFlags(QtCore.Qt.ItemIsSelectable)
+                self.dics_model.item(r, 4).setFlags(QtCore.Qt.ItemIsSelectable)
+                self.dics_model.item(r, 5).setFlags(QtCore.Qt.ItemIsSelectable)
+                self.dics_model.item(r, 6).setFlags(QtCore.Qt.ItemIsSelectable)
+                self.dics_model.item(r, 7).setFlags(QtCore.Qt.ItemIsSelectable)
+                self.dics_model.item(r, 8).setFlags(QtCore.Qt.ItemIsSelectable)
+
+            self.reformat_dic_model_row(r)
+            pending_items = self.dics_model.findItems(_('Pending'), column=1)
+            self.sigEnableInstall.emit(bool(pending_items))
+
+    def _get_pos_index(self, pos):
+        for i in range(len(POS)):
+            if POS[i][0] == pos: return i
+        return 0
+
+    @QtCore.pyqtSlot(QtCore.QModelIndex)
+    def on_tvDics_activated(self, index):
+        c = index.column()
+        item = self.dics_model.itemFromIndex(index)
+        if c == 3:
+            # POS rules
+            data = None
+            txt = item.text()
+            if txt:                
+                try:
+                    data = json.loads(txt, encoding=ENCODING)                    
+                except:
+                    pass
+                if data and isinstance(data, dict):
+                    ldata = []
+                    for pos in data:                        
+                        ldata.append((WordDBManager.pos_list, data[pos], self._get_pos_index(pos)))
+                    data = ldata
+            else:
+                data = [(WordDBManager.pos_list, '')]
+            dia_editor = ParamValueEditor(data, can_add=True, can_delete=True,
+                                          header_labels=[_('Part of speech'), _('Regex pattern')],
+                                          title=_('Part-of-speech rules'), parent=self)
+            if not dia_editor.exec(): return
+            ldata = dia_editor.serialize_table()
+            data = {POS[el[2]][0]: el[1] for el in ldata}
+            item.setText(json.dumps(data) if data else '')
+        
+        elif c == 6:
+            # Replacements
+            data = None
+            txt = item.text()
+            if txt:                
+                try:
+                    data = json.loads(txt, encoding=ENCODING)                    
+                except:
+                    pass
+                if data and isinstance(data, dict):
+                    data = list(data.items())
+            dia_editor = ParamValueEditor(data, True, can_add=True, can_delete=True,
+                                          header_labels=[_('Find'), _('Replace')],
+                                          title=_('Replacement rules'), parent=self)
+            if not dia_editor.exec(): return
+            data = dict(dia_editor.serialize_table())
+            item.setText(json.dumps(data) if data else '')
+
+        elif c == 7 or c == 8:
+            # Exclude POS / words
+            data = None
+            txt = item.text()
+            if txt:                
+                try:
+                    data = json.loads(txt, encoding=ENCODING)
+                    assert(isinstance(data, list))
+                    data = [(_('Parameter {}').format(i), el) for i, el in enumerate(data)]
+                except:
+                    pass                
+            dia_editor = ParamValueEditor(data, can_add=True, can_delete=True,
+                                          header_labels=['', _('Regex')],
+                                          title=_('Exclude'), parent=self)
+            if not dia_editor.exec(): return
+            data = dia_editor.list_values()
+            item.setText(json.dumps(data) if data else '')
+
             
 # ******************************************************************************** #
 # *****          SettingsDialog
@@ -5480,6 +5864,7 @@ class AboutDialog(QtWidgets.QDialog):
         html += '<a href="https://www.flaticon.com/authors/srip" title="srip">srip</a>, '
         html += '<a href="https://www.flaticon.com/authors/google" title="Google">Google</a>, '
         html += '<a href="https://www.flaticon.com/authors/roundicons" title="Roundicons">Roundicons</a>, '
+        html += '<a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a>, '
         html += '<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a>.</body></html>'
         self.te_thanks.setHtml(html)
         self.te_thanks.anchorClicked.connect(QtCore.pyqtSlot(QtCore.QUrl)(lambda url: QtGui.QDesktopServices.openUrl(url)))

@@ -171,11 +171,11 @@ class HunspellImport:
         self.dicfolder = dicfolder
 
     def get_installed_info(self, lang):
-        filepath = os.path.join(self.dicfolder, f"{lang}.dic")
-        if not os.path.exists(filepath) or not self.db.setpath(filepath): 
+        filepath = os.path.join(self.dicfolder, f"{lang}.db")
+        if not os.path.exists(filepath) or not self.db.setpath(filepath, True): 
             return None
         cur = self.db.conn.cursor()
-        res = cur.execute(SQL_COUNT_WORDS)
+        res = cur.execute(SQL_COUNT_WORDS).fetchone()
         if not res: return None
         return {'entries': int(res[0]), 'path': filepath}
     
@@ -187,19 +187,19 @@ class HunspellImport:
         res = requests.get(readme, allow_redirects=True, timeout=self.timeout_, proxies=self.proxies_)
         if not res: return []
         res = res.text
-        print(res)
         regex = re.compile(r'(\(dictionaries/[\w]+\))(\s*\|\s*)([\w\s]+)(\s*\|\s*)(\[.*?\])(\(.*?\))', re.I)
         try:
             for match in regex.finditer(res):
                 entry = {}
-                m = match[1][1:-2]
+                m = match[1][1:-1]
                 entry['dic_url'] = f"{HUNSPELL_REPO}/{m}/index.dic"
                 entry['lang'] = m.split('/')[1]
-                entry['lang_full'] = match[3]
-                entry['license'] = match[5][1:-2]
-                entry['license_url'] = f"{HUNSPELL_REPO}/{match[6][1:-2]}"
+                entry['lang_full'] = match[3].strip()
+                entry['license'] = match[5][1:-1]
+                if entry['license'].startswith('(') and entry['license'].endswith(')'):
+                    entry['license'] = entry['license'][1:-1]
+                entry['license_url'] = f"{HUNSPELL_REPO}/{match[6][1:-1]}"
                 dics.append(entry)
-                print(entry)
         except Exception as err:
             print(err)
         return dics
@@ -207,7 +207,8 @@ class HunspellImport:
     def list_all_dics(self):
         dics = self.list_hunspell()
         for dic in dics:
-            info = self.get_installed_info(dic['lang']) or {'entries': 0, 'path': ''}
+            info = self.get_installed_info(dic['lang'])
+            if not info: info = {'entries': 0, 'path': ''}
             dic.update(info)
         return dics
 
@@ -215,11 +216,12 @@ class HunspellImport:
         on_progress=None, on_complete=None, on_error=None):
         filepath = os.path.join(self.dicfolder, f"{lang}.dic")
         if os.path.exists(filepath) and not overwrite:
+            if on_complete: on_complete(url, lang, filepath)
             return filepath
         with requests.get(url, stream=True, allow_redirects=True, 
             timeout=self.timeout_, proxies=self.proxies_) as res:
             if not res:
-                if on_error: on_error(res.status_code)
+                if on_error: on_error(url, lang, filepath, f"{getattr(res, 'text', 'HTTP error')} - status code {res.status_code}")
                 return None
             file_length = 0
             try:
@@ -232,7 +234,7 @@ class HunspellImport:
                         f.write(chunk)
                         if on_progress: on_progress(url, lang, filepath, f.tell(), file_length)
             except Exception as err:
-                if on_error: on_error(str(err))
+                if on_error: on_error(url, lang, filepath, str(err))
                 return None
             if on_complete: on_complete(url, lang, filepath)
         return filepath
@@ -243,16 +245,16 @@ class HunspellImport:
         pool = Pool(min(5, len(dics)))
         args = [(entry['dic_url'], entry['lang'], True,  
                  on_progress, on_complete, on_error) for entry in dics]
-        return pool.starmap_async(self.download_hunspell, args, 
-            error_callback=lambda err: on_error(str(err)) if on_error else None)
+        return pool.starmap_async(self.download_hunspell, args)
 
     ## Retrieves the list of parts of speech present in the DB.
     # @returns `list` parts of speech in the short form, e.g. ['N', 'V']
-    def get_pos(self):
-        if self.db.connect():
-            cur = self.db.conn.cursor()
-            return [res[0] for res in cur.execute(f"select {SQL_TABLES['pos']['fpos']} from {SQL_TABLES['pos']['table']}").fetchall()]
-        return []
+    def get_pos(self, cur=None):
+        if cur is None:
+            if not self.db.connect(): return []
+            cur = self.db.conn.cursor()        
+        return [res[0] for res in cur.execute(f"select {SQL_TABLES['pos']['fpos']} from {SQL_TABLES['pos']['table']}").fetchall()]
+        
     
     ## @brief Returns the default Hunspell-formatted metadata patterns for the three common
     # parts of speech (noun, verb, adjective).
@@ -297,6 +299,7 @@ class HunspellImport:
     # from [LibreOffice](https://cgit.freedesktop.org/libreoffice/dictionaries/tree/)
     # or [Github](https://github.com/wooorm/dictionaries). Default dictionaries and
     # prebuilt SQLite databases are found in assets/dic.
+    # @param lang `str` short name of the imported dictionary language, e.g. 'en', 'de' etc.
     # @param dicfile `str` path to imported dictionary file (*.dic).
     # @warning The file must be in _plain text_ format, with each word on a new line,
     # optionally followed by a slash (see 'posdelim' argument) and meta-data (parts of speech etc.)
@@ -308,8 +311,6 @@ class HunspellImport:
     #     'C' [conjuction], 'PREP' [preposition], 'PROP' [proposition], 
     #     'MISC' [miscellaneous / other], 'NONE' [no POS]
     # </pre>
-    # @param cur `SQLite cursor object` pointer to DB cursor or `None` to
-    # retrieve a new one
     # @param posrules_strict `bool` if `True` (default), only the parts of speech present in posrules dict
     # will be imported [all other words will be skipped]. If `False`, such words
     # will be imported with 'MISC' and 'NONE' POS markers.
@@ -334,32 +335,48 @@ class HunspellImport:
     # @param on_word `callable` callback function to be called when a word is imported into the DB.           
     # Callback prototype is: 
     # @code
-    # on_word([word: str, part_of_speech: str, records_committed: int]) -> None
+    # on_word(lang: str, dicfile: str, word: str, part_of_speech: str, records_committed: int) -> None
     # @endcode
-    # @param on_commit `callable`: callback function to be called when a next portion of records 
+    # @param on_commit `callable` callback function to be called when a next portion of records 
     # is written to the DB. Callback prototype is: 
     # @code
-    # on_commit(records_committed: int, dic_file: str) -> None
+    # on_commit(lang: str, dicfile: str, records_committed: int, dic_file: str) -> None
     # @endcode
     # @returns `int` number of words imported from the dictionary
     # @see add_all_from_hunspell()
-    def add_from_hunspell(self, dicfile, posrules, cur=None, posrules_strict=True, 
+    # @param on_error `callable` callback function to be called when an exception
+    # occurs
+    # Callback prototype is: 
+    # @code
+    # on_error(lang: str, dicfile: str, error_message: str) -> None
+    # @endcode
+    def add_from_hunspell(self, lang, dicfile, posrules=None, posrules_strict=False, 
                           posdelim='/', lcase=True, replacements=None, remove_hyphens=True,
-                          filter_out=None, commit_each=1000, on_word=None, on_commit=None):
-        poses = self.get_pos()
-        for pos in posrules:
-            if not pos in poses:
-                raise Exception(_("Part of speech '{}' is absent from the DB!").format(pos))
-                
-        if cur is None:
-            if not self.db.connect(): return 0
-            cur = self.db.conn.cursor()
-        
-        cnt = 0
-        
+                          filter_out=None, commit_each=1000, on_checkstop=None,
+                          on_word=None, on_commit=None, on_finish=None, on_error=None):
+        db = Sqlitedb()
+        if not db.setpath(lang):
+            if on_error: on_error(lang, dicfile, _('Unable to connect to database {}!').format(lang))
+            return 0
+
+        stopped = False
+        cur = db.conn.cursor()
+
+        if posrules:
+            poses = self.get_pos(cur)
+            for pos in posrules:
+                if not pos in poses:
+                    if on_error: on_error(lang, dicfile, _("Part of speech '{}' is absent from the DB!").format(pos))
+                    return 0
+       
+        cnt = 0        
         try:            
             with codecs.open(dicfile, 'r', encoding=ENCODING, errors='ignore') as dic:
                 for row in dic:
+                    # check stop request
+                    if stopped or (on_checkstop and on_checkstop(lang, dicfile)):
+                        stopped = True
+                        break
                     # split the next row to extract the word and part-of-speech
                     w = row.split(posdelim)
                     # extract the word (convert to lowercase if specified)
@@ -388,6 +405,10 @@ class HunspellImport:
                     if pos and posrules:
                         try:
                             for rex in posrules:
+                                # check stop request
+                                if stopped or (on_checkstop and on_checkstop(lang, dicfile)):
+                                    stopped = True
+                                    break
                                 if re.match(posrules[rex], pos):
                                     pos = rex
                                     # insert into db
@@ -396,10 +417,10 @@ class HunspellImport:
                                     cnt += 1
                                     # commit if necessary
                                     if cnt >= commit_each and cnt % commit_each == 0:
-                                        self.db.conn.commit()
-                                        if on_commit: on_commit(cnt, dicfile)
+                                        db.conn.commit()
+                                        if on_commit: on_commit(lang, dicfile, cnt, dicfile)                                    
                                     # call on_word
-                                    if on_word: on_word(word, pos, cnt)
+                                    if on_word: on_word(lang, dicfile, word, pos, cnt)
                                 else:
                                     if posrules_strict: 
                                         continue
@@ -407,7 +428,8 @@ class HunspellImport:
                                         pos = 'MISC'
                                         
                         except Exception as err:
-                            print(_('DATABASE ERROR: {}').format(str(err)))
+                            if on_error: 
+                                on_error(lang, dicfile, _('DATABASE ERROR: {}').format(str(err)))
                             break
                         
                     else:
@@ -416,7 +438,7 @@ class HunspellImport:
                         else: 
                             pos = 'NONE'
                         
-                    if pos in ('MISC', 'NONE'):
+                    if not stopped and (pos in ('MISC', 'NONE')):
                         # insert into db
                         try:
                             cur.execute(SQL_INSERT_WORD.format(word, pos))                    
@@ -424,18 +446,20 @@ class HunspellImport:
                             cnt += 1
                             # commit if necessary
                             if cnt >= commit_each and cnt % commit_each == 0:
-                                self.db.conn.commit()
-                                if on_commit: on_commit(cnt, dicfile)
+                                db.conn.commit()
+                                if on_commit: on_commit(lang, dicfile, cnt, dicfile)
                             # call on_word
-                            if on_word: on_word(word, pos, cnt)
+                            if on_word: on_word(lang, dicfile, word, pos, cnt)
                         except Exception as err:
-                            print(_('DATABASE ERROR: {}').format(str(err)))
+                            if on_error: 
+                                on_error(lang, dicfile, _('DATABASE ERROR: {}').format(str(err)))
                             break
                     
         finally:   
             # commit outstanding updates
-            self.db.conn.commit()
+            db.conn.commit()
             cur.close()
+            if on_finish: on_finish(lang, dicfile)
             
         return cnt
     
@@ -443,50 +467,32 @@ class HunspellImport:
     # @warning All imported dictionary files must have the '.dic' extension.
     # @param languages `iterable` list of languages to import, e.g. ['en', 'fr']
     # (others found will be skipped).
-    # Default = `None` (import all found dictionaries)
-    # @param on_commit `callable` callback function to be called when a next portion of records is written to the DB.\n 
-    # Callback prototype is:
-    # @code
-    # on_commit(records_committed: int, dic_file: str) -> None
-    # @endcode
-    # @param on_dict_add `callable` callback function to be called when a next dictionary has been imported.\n 
-    # Callback prototype is: 
-    # @code
-    # on_dict_add(dic_file: str, lang: str, records_from_file: int, total_records: int) -> None
-    # @endcode
-    # @param kwargs `keyword arguments` keyword arguments passed to add_from_hunspell()
-    # @returns `int` number of words imported from the dictionaries (aggregate)
+    # Default = `None` (import all found dictionaries)  
     # @see add_from_hunspell()
-    def add_all_from_hunspell(self, languages=None, on_commit=None, 
-        on_dict_add=None, **kwargs):
+    def add_all_from_hunspell(self, languages=None, on_prepare_import=None,
+                            posrules=None, posrules_strict=True, 
+                            posdelim='/', lcase=True, replacements=None, remove_hyphens=True,
+                            filter_out=None, commit_each=1000, on_checkstop=None, 
+                            on_word=None, on_commit=None, on_finish=None, on_error=None):
         
-        old_dbpath = getattr(self.db, 'dbpath', None)
-        cnt = 0
+        #old_dbpath = getattr(self.db, 'dbpath', None)
+        self.db.disconnect()
 
+        args = []
         for r, _, f in os.walk(DICFOLDER):
             for file in f:
                 if file.lower().endswith('.dic'):                    
                     dicfile = os.path.abspath(os.path.join(r, file))
                     lang = file[:2].lower()
                     if (not lang in LANG) or (languages and not lang in languages): continue
-                    if not self.db.setpath(lang, recreate=True): continue
-                    try:
-                        kwargs.pop('dicfile', None)
-                        kwargs.pop('on_commit', None)
-                        kwargs.pop('cur', None)
-                        posrules_ = kwargs.pop('posrules', self.standard_posrules(lang))
-                        replacements_ = kwargs.pop('replacements', self.standard_replacements(lang))
-                        k = self.add_from_hunspell(dicfile=dicfile, 
-                                                   posrules=posrules_,
-                                                   cur=self.db.conn.cursor(),
-                                                   replacements=replacements_,
-                                                   on_commit=on_commit,
-                                                   **kwargs)
-                        cnt += k
-                        if on_dict_add: on_dict_add(dicfile, lang, k, cnt)
-                    except Exception as err:
-                        print(str(err))
-                        break
-                    
-        self.db.setpath(old_dbpath, fullpath=True)
-        return cnt
+                    args.append((lang, dicfile, posrules, posrules_strict,
+                                 posdelim, lcase, replacements, remove_hyphens,
+                                 filter_out, commit_each, on_checkstop, 
+                                 on_word, on_commit, on_finish, on_error))
+        
+        if on_prepare_import and not on_prepare_import(args):
+            return None
+
+        pool = Pool(min(5, len(args)))
+        return pool.starmap_async(self.add_from_hunspell, args)                  
+        
