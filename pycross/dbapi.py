@@ -181,15 +181,17 @@ class HunspellImport:
     
     ## Retrieves the list of Hunspell dictionaries available for
     # download from the [public Github repo](https://github.com/wooorm/dictionaries/).
-    def list_hunspell(self):
+    def list_hunspell(self, stopcheck=None):
         readme = f"{HUNSPELL_REPO}/readme.md"
         dics = []
         res = requests.get(readme, allow_redirects=True, timeout=self.timeout_, proxies=self.proxies_)
         if not res: return []
+        if stopcheck and stopcheck(): return []
         res = res.text
         regex = re.compile(r'(\(dictionaries/[\w]+\))(\s*\|\s*)([\w\s]+)(\s*\|\s*)(\[.*?\])(\(.*?\))', re.I)
         try:
             for match in regex.finditer(res):
+                if stopcheck and stopcheck(): break
                 entry = {}
                 m = match[1][1:-1]
                 entry['dic_url'] = f"{HUNSPELL_REPO}/{m}/index.dic"
@@ -200,16 +202,17 @@ class HunspellImport:
                     entry['license'] = entry['license'][1:-1]
                 entry['license_url'] = f"{HUNSPELL_REPO}/{match[6][1:-1]}"
                 dics.append(entry)
-        except Exception as err:
-            print(err)
+        except Exception:
+            return []
         return dics
 
-    def list_all_dics(self):
-        dics = self.list_hunspell()
-        for dic in dics:
+    def list_all_dics(self, stopcheck=None):
+        dics = self.list_hunspell(stopcheck)
+        for dic in dics:            
             info = self.get_installed_info(dic['lang'])
             if not info: info = {'entries': 0, 'path': ''}
             dic.update(info)
+            if stopcheck and stopcheck(): return dics
         return dics
 
     def download_hunspell(self, url, lang, overwrite=True, 

@@ -1840,6 +1840,10 @@ class WordDBManager(QtWidgets.QMainWindow):
         super().showEvent(event)
         self.dics_model_thread.start()
 
+    def closeEvent(self, event):
+        self.stop_operations()
+        super().closeEvent(event)
+
     def initUI(self):
         self.lo_main = QtWidgets.QVBoxLayout()
         self.tabw = QtWidgets.QTabWidget()
@@ -1868,18 +1872,36 @@ class WordDBManager(QtWidgets.QMainWindow):
         # tab 1: installed dictionaries table
         w1 = QtWidgets.QWidget()
         lo_w1 = QtWidgets.QVBoxLayout()
+
         self.tb_dicactions = QtWidgets.QToolBar()
+
         self.act_refreshdics = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Refresh'))
         self.act_refreshdics.setToolTip(_('Refresh dictionary information'))
         self.act_refreshdics.triggered.connect(self.on_act_refreshdics)
         self.act_refreshdics.changed.connect(self.on_act_refreshdics_changed)
+        
+        self.tb_dicactions.addSeparator()
+        
+        self.act_installdics = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), _('Install'))
+        self.act_installdics.setToolTip(_('Execute the pending installation / uninstallation operations'))
+        self.act_installdics.setEnabled(False)
+        self.act_installdics.triggered.connect(self.on_act_installdics)        
+        self.sigEnableInstall.connect(self.act_installdics.setEnabled)
+
+        self.act_stopdics = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), _('Stop'))
+        self.act_stopdics.setToolTip(_('Stop operation'))
+        self.act_stopdics.setCheckable(True)
+        self.act_stopdics.triggered.connect(self.on_act_stopdics)
+
         self.dics_model_thread.started.connect(QtCore.pyqtSlot()(lambda: self.act_refreshdics.setEnabled(False)))
         self.dics_model_thread.finished.connect(QtCore.pyqtSlot()(lambda: self.act_refreshdics.setEnabled(True)))
         lo_w1.addWidget(self.tb_dicactions)
+        
         self.tvDics = QtWidgets.QTableView()
         self.tvDics.setSortingEnabled(True)
         self.tvDics.setWordWrap(True)
         self.tvDics.activated.connect(self.on_tvDics_activated)
+
         self.l_gif = QtWidgets.QLabel()
         self.l_gif.setMovie(self.loadermovie)
         self.l_gif.move(300, 300)
@@ -1887,14 +1909,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.l_gif.hide()
         self._default_bgcolor = color_from_stylesheet(self.tvDics.styleSheet(), default='white')
         lo_w1.addWidget(self.tvDics)
-        self.btn_install = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), _('Execute pending operations'), None)
-        self.btn_install.setToolTip(_('Execute the pending installation / uninstallation operations'))
-        self.btn_install.setMaximumWidth(300)
-        self.btn_install.setDefault(True)
-        self.btn_install.clicked.connect(self.on_btn_install_clicked)
-        self.sigEnableInstall.connect(self.btn_install.setEnabled)
-        lo_w1.addWidget(self.btn_install)
-
+        
         w1.setLayout(lo_w1)
         self.tabw.addTab(w1, _('Install'))
 
@@ -1927,16 +1942,14 @@ class WordDBManager(QtWidgets.QMainWindow):
         w2.setLayout(lo_w2)
         self.tabw.addTab(w2, _('Words'))
 
-    @QtCore.pyqtSlot()
-    def on_btn_install_clicked(self): 
-        self.install_dics()
-
-    def repopulate_dic_model(self, refresh_from_server=True):
+    def repopulate_dic_model(self, refresh_from_server=True, stopcheck=None):
         if not self.dics or refresh_from_server:
-            self.dics = self.hunspellmgr.list_all_dics()
+            self.dics = self.hunspellmgr.list_all_dics(stopcheck)
+
+        if stopcheck and stopcheck(): return
 
         r = 0
-        for dic in self.dics:
+        for dic in self.dics:            
             isinstalled = bool(dic['path'])
             item_lang = QtGui.QStandardItem(dic['lang_full'])
             item_lang.setData(dic, QtCore.Qt.UserRole + 1)            
@@ -1966,13 +1979,17 @@ class WordDBManager(QtWidgets.QMainWindow):
                                        item_replace, item_exclpos, item_exclwd])
             self.reformat_dic_model_row(r)
             r += 1
+            if stopcheck and stopcheck(): break
 
     @QtCore.pyqtSlot()
     def on_repopulate_dic_model_run(self):
-        self.repopulate_dic_model(True)
+        self.repopulate_dic_model(True, self.act_stopdics.isChecked)
 
     @QtCore.pyqtSlot()
     def on_repopulate_dic_model_start(self):
+        self.act_stopdics.setChecked(False)
+        self.act_stopdics.setEnabled(True)
+        self.sigEnableInstall.emit(False)
         self.statusBar().showMessage(_('Populating dictionaries...'))
         self.dics_model = QtGui.QStandardItemModel()
         self.dics_model.setHorizontalHeaderLabels([_('Language'), _('Status'),
@@ -1993,6 +2010,8 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.tvDics.horizontalHeader().setSectionsMovable(True)
         self.tvDics.show()
         self.statusBar().clearMessage()
+        self.act_stopdics.setChecked(False)
+        self.act_stopdics.setEnabled(False)
 
     @QtCore.pyqtSlot(bool)
     def on_act_refreshdics(self, checked):
@@ -2002,7 +2021,28 @@ class WordDBManager(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot()
     def on_act_refreshdics_changed(self):
         self.tvDics.setEnabled(self.act_refreshdics.isEnabled())
-        self.btn_install.setEnabled(self.btn_install.isEnabled() and self.act_refreshdics.isEnabled())
+        self.act_installdics.setEnabled(self.act_installdics.isEnabled() and self.act_refreshdics.isEnabled())
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_installdics(self, checked):
+        self.install_dics()
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_stopdics(self, checked):
+        if self.act_stopdics.isEnabled() and checked:
+            self.stop_operations()     
+
+    def stop_operations(self):
+        if self.dics_model_thread.isRunning():
+            self.sigEnableInstall.emit(False)
+            self.dics_model_thread.quit()
+            if not self.dics_model_thread.wait(5000):
+                try:
+                    self.dics_model_thread.terminate()
+                except:
+                    pass
+        self.act_stopdics.setChecked(False)
+        self.act_stopdics.setEnabled(False)
 
     def reformat_dic_model_row(self, r):
         txt = self.dics_model.item(r, 1).text()            
@@ -2015,8 +2055,51 @@ class WordDBManager(QtWidgets.QMainWindow):
             else:
                 item.setBackground(QtGui.QBrush(self._default_bgcolor))
 
-    def install_dics(self):
+    @QtCore.pyqtSlot(str, str, str, int, int)
+    def on_download_dics_run(self, url, lang, filepath, bytes_written, total_bytes):
         pass
+
+    @QtCore.pyqtSlot(str, str, str)
+    def on_download_dics_finish(self, url, lang, filepath):
+        pass
+
+    @QtCore.pyqtSlot(str, str, str, str)
+    def on_download_dics_error(self, url, lang, filepath, message):
+        pass
+
+    def install_dics(self):
+        # find pending items
+        items = self.dics_model.findItems(_('Pending'), column=1)
+        if not items: return
+        
+        to_install = []
+        to_uninstall = []
+
+        # loop        
+        for item in items:
+            item_lang = self.dics_model.item(item.row(), 0)
+            dic = item_lang.data(QtCore.Qt.UserRole + 1)
+            ch = item_lang.checkState()
+            if ch == QtCore.Qt.Checked:
+                to_install.append((item, dic))
+            elif ch == QtCore.Qt.Unchecked:
+                to_uninstall.append((item, dic))
+
+        # uninstall (delete) unchecked dictionaries
+        if to_uninstall:
+            self.statusbar_pbar.setRange(0, len(to_uninstall))
+            self.statusbar_pbar.setValue(0)
+            self.statusbar_pbar.setVisible(True)
+            self.statusbar.showMessage(_('Uninstalling...'))
+            for item_status, dic in to_uninstall:
+                if not 'path' in dic: continue
+                if not os.path.exists(dic['path']): continue
+                try:
+                    os.remove(dic['path'])
+                except:
+                    continue
+                else:
+                    item_status.setText(_('Not installed'))
 
     @QtCore.pyqtSlot(QtGui.QStandardItem)
     def dics_model_item_changed(self, item):
