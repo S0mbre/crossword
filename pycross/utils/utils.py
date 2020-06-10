@@ -554,6 +554,43 @@ class QThreadStump(QtCore.QThread):
 
 # ------------------------------------------------------------------------ #
 
+class TaskSignals(QtCore.QObject):
+
+    sigstart = QtCore.pyqtSignal(int)
+    sigfinish = QtCore.pyqtSignal(int, 'PyQt_PyObject')
+    sigerror = QtCore.pyqtSignal(int, tuple)
+    sigprogress = QtCore.pyqtSignal(int, 'PyQt_PyObject')
+
+class Task(QtCore.QRunnable):
+
+    def __init__(self, on_run, run_args=(), run_kwargs={}, id=0):
+        super().__init__()
+        #self.setAutoDelete(False)
+        self.signals = TaskSignals()
+        self.id = id
+        self.on_run = on_run
+        self.run_args = run_args
+        self.run_kwargs = run_kwargs
+        
+    def run(self):
+        self.signals.sigstart.emit(self.id)
+        if not self.on_run: return
+        res = None
+        try:
+            res = self.on_run(*self.run_args, **self.run_kwargs)
+        except Exception as err:
+            #traceback.print_exc()
+            exctype, value = sys.exc_info()[:2]
+            self.signals.sigerror.emit(self.id, (exctype, value, str(err)))
+        except:
+            #traceback.print_exc()
+            exctype, value = sys.exc_info()[:2]
+            self.signals.sigerror.emit(self.id, (exctype, value, traceback.format_exc()))
+        else:
+            self.signals.sigfinish.emit(self.id, res)
+
+# ------------------------------------------------------------------------ #            
+
 ## Constructs a `QtGui.QFont` object from given font parameters.
 # @param family `str` font familty name, e.g. 'Arial'
 # @param size `int` font size in points or pixels (default = -1: default size)

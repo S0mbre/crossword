@@ -68,7 +68,7 @@ def main():
         # create main window (passing all found command-line args)
         MainWindow(**vars(args))        
         # run app's event loop
-        sys.exit(app.exec())
+        sys.exit(app.exec_())
                 
     except SystemExit as err:        
         if str(err) != '0':
