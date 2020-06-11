@@ -7,8 +7,9 @@
 # to create the default DB structure to use as a word source, import words from 
 # [Hunspell](https://hunspell.github.io/) open-source dictionaries, etc.
 from utils.globalvars import *
-from utils.utils import Task
+from utils.utils import Task, is_iterable
 import sqlite3, os, re, codecs, requests, traceback
+from urllib.request import urlopen
 from PyQt5 import QtCore
 
 # ******************************************************************************** #
@@ -165,7 +166,9 @@ class Sqlitedb:
 
 class HunspellDownloadSignals(QtCore.QObject):
 
-    sigProgress = QtCore.pyqtSignal(int, str, str, str, int)
+    sigStart = QtCore.pyqtSignal(int, str, str, str)
+    sigGetFilesize = QtCore.pyqtSignal(int, str, str, str, int)
+    sigProgress = QtCore.pyqtSignal(int, str, str, str, int, int)
     sigComplete = QtCore.pyqtSignal(int, str, str, str)
     sigError = QtCore.pyqtSignal(int, str, str, str, str)
 
@@ -183,15 +186,31 @@ class HunspellDownloadTask(QtCore.QRunnable):
         self.timeout_ = settings['common']['web']['req_timeout'] * 500
         self.proxies_ = {'http': settings['common']['web']['proxy']['http'], 'https': settings['common']['web']['proxy']['https']} if not settings['common']['web']['proxy']['use_system'] else None
 
+    def get_filesize_url(self, url):
+        try:
+            site = urlopen(url)
+            meta = site.info()
+            return int(meta.get('Content-Length', -1))
+        except:
+            return -1
+    
     def run(self):
+        
         filepath = os.path.join(self.dicfolder, f"{self.lang}.dic")
+        if self.on_stopcheck and self.on_stopcheck(self.id, self.url, self.lang, filepath):
+            return
+
+        self.signals.sigStart.emit(self.id, self.url, self.lang, filepath)
 
         if os.path.exists(filepath) and not self.overwrite:
             self.signals.sigComplete.emit(self.id, self.url, self.lang, filepath)      
             return
 
         try:
-            with requests.get(url, stream=True, allow_redirects=True, 
+            total_bytes = self.get_filesize_url(self.url)
+            self.signals.sigGetFilesize.emit(self.id, self.url, self.lang, filepath, total_bytes)
+
+            with requests.get(self.url, stream=True, allow_redirects=True, 
                             headers={'content-type': 'text/plain; charset=utf-8'},
                             timeout=self.timeout_, proxies=self.proxies_) as res:
                 if not res or res.status_code != 200:
@@ -205,13 +224,16 @@ class HunspellDownloadTask(QtCore.QRunnable):
                                 f.close()
                                 return
                             f.write(chunk)
-                            self.signals.sigProgress.emit(self.id, self.url, self.lang, filepath, f.tell())
+                            self.signals.sigProgress.emit(self.id, self.url, self.lang, filepath, f.tell(), total_bytes)
                 except Exception as err:
                     self.signals.sigError.emit(self.id, self.url, self.lang, filepath, str(err))
                     return
                 except:
                     f.close()
                     raise
+        except Exception as err:
+            self.signals.sigError.emit(self.id, self.url, self.lang, filepath, str(err))
+            return
         except:
             self.signals.sigError.emit(self.id, self.url, self.lang, filepath, traceback.format_exc())
             return
@@ -222,6 +244,7 @@ class HunspellDownloadTask(QtCore.QRunnable):
 
 class HunspellImportSignals(QtCore.QObject):
 
+    sigStart = QtCore.pyqtSignal(int, str, str)
     sigWordWritten = QtCore.pyqtSignal(int, str, str, str, str, int)
     sigCommit = QtCore.pyqtSignal(int, str, str, int)
     sigComplete = QtCore.pyqtSignal(int, str, str, int)
@@ -229,14 +252,14 @@ class HunspellImportSignals(QtCore.QObject):
 
 class HunspellImportTask(QtCore.QRunnable):
 
-    def __init__(self, lang, dicfile, posrules=None, posrules_strict=False, 
+    def __init__(self, lang, dicfile=None, posrules=None, posrules_strict=False, 
                 posdelim='/', lcase=True, replacements=None, remove_hyphens=True,
                 filter_out=None, commit_each=1000, on_stopcheck=None, id=0):
         super().__init__()
         self.signals = HunspellImportSignals()
 
         self.lang = lang
-        self.dicfile = dicfile
+        self.dicfile = dicfile or os.path.join(DICFOLDER, f"{lang}.dic")
         self.posrules = posrules
         self.posrules_strict = posrules_strict
         self.posdelim = posdelim
@@ -249,6 +272,12 @@ class HunspellImportTask(QtCore.QRunnable):
         self.id = id
 
     def run(self):
+        
+        if self.on_stopcheck and self.on_stopcheck(self.id, self.lang, self.dicfile):
+            return
+
+        self.signals.sigStart.emit(self.id, self.lang, self.dicfile)
+
         db = Sqlitedb()
         if not db.setpath(self.lang):
             self.signals.sigError.emit(self.id, self.lang, self.dicfile, _('Unable to connect to database {}!').format(self.lang))
@@ -269,7 +298,9 @@ class HunspellImportTask(QtCore.QRunnable):
             with codecs.open(self.dicfile, 'r', encoding=ENCODING, errors='ignore') as dic:
                 for row in dic:
                     # check stop request
-                    if stopped or (self.on_stopcheck and self.on_stopcheck(self.lang, self.dicfile)):
+                    if stopped or \
+                            (self.on_stopcheck and \
+                             self.on_stopcheck(self.id, self.lang, self.dicfile)):
                         stopped = True
                         break
                     # split the next row to extract the word and part-of-speech
@@ -301,7 +332,9 @@ class HunspellImportTask(QtCore.QRunnable):
                         try:
                             for rex in self.posrules:
                                 # check stop request
-                                if stopped or (self.on_stopcheck and self.on_stopcheck(self.lang, self.dicfile)):
+                                if stopped or \
+                                        (self.on_stopcheck and \
+                                         self.on_stopcheck(self.id, self.lang, self.dicfile)):
                                     stopped = True
                                     break
                                 if re.match(self.posrules[rex], pos):
@@ -363,6 +396,18 @@ class HunspellImport:
         self.db = dbmanager or Sqlitedb()
         self.dicfolder = dicfolder
         self.pool = QtCore.QThreadPool()
+        self.timeout_ = settings['common']['web']['req_timeout'] * 500
+        self.proxies_ = {'http': settings['common']['web']['proxy']['http'], 'https': settings['common']['web']['proxy']['https']} if not settings['common']['web']['proxy']['use_system'] else None
+
+    def pool_running(self):
+        return bool(self.pool.activeThreadCount())
+
+    def pool_threadcount(self):
+        return self.pool.activeThreadCount()
+
+    def pool_wait(self):
+        if self.pool_running():
+            self.pool.waitForDone()
 
     def get_installed_info(self, lang):
         filepath = os.path.join(self.dicfolder, f"{lang}.db")
@@ -388,7 +433,7 @@ class HunspellImport:
                 if stopcheck and stopcheck(): break
                 entry = {}
                 m = match[1][1:-1]
-                entry['dic_url'] = f"{HUNSPELL_REPO}/dictionaries/{m}/index.dic"
+                entry['dic_url'] = f"{HUNSPELL_REPO}/{m}/index.dic"
                 entry['lang'] = m.split('/')[1]
                 entry['lang_full'] = match[3].strip()
                 entry['license'] = match[5][1:-1]
@@ -410,9 +455,14 @@ class HunspellImport:
         return dics
 
     def download_hunspell(self, url, lang, overwrite=True, on_stopcheck=None,
-                          on_progress=None, on_complete=None, on_error=None):
+                          on_start=None, on_getfilesize=None, on_progress=None, 
+                          on_complete=None, on_error=None):
         task = HunspellDownloadTask(self.settings, self.dicfolder,
                                     url, lang, overwrite, on_stopcheck)
+        if on_start:
+            task.signals.sigStart.connect(on_start)
+        if on_getfilesize:
+            task.signals.sigGetFilesize.connect(on_getfilesize)
         if on_progress:
             task.signals.sigProgress.connect(on_progress)
         if on_complete:
@@ -422,14 +472,19 @@ class HunspellImport:
         self.pool.start(task)
         self.pool.waitForDone()
 
-    def download_hunspell_all(self, dics, on_stopcheck=None,
-                              on_progress=None, on_complete=None, on_error=None):
+    def download_hunspell_all(self, dics, on_stopcheck=None, on_start=None,
+                              on_getfilesize=None, on_progress=None,
+                              on_complete=None, on_error=None):
         if not dics: return
 
         for i, entry in enumerate(dics):
             task = HunspellDownloadTask(self.settings, self.dicfolder, 
                         entry['dic_url'], entry['lang'], True,  
                         on_stopcheck, i)
+            if on_start:
+                task.signals.sigStart.connect(on_start)
+            if on_getfilesize:
+                task.signals.sigGetFilesize.connect(on_getfilesize)
             if on_progress:
                 task.signals.sigProgress.connect(on_progress)
             if on_complete:
@@ -491,7 +546,6 @@ class HunspellImport:
     # or [Github](https://github.com/wooorm/dictionaries). Default dictionaries and
     # prebuilt SQLite databases are found in assets/dic.
     # @param lang `str` short name of the imported dictionary language, e.g. 'en', 'de' etc.
-    # @param dicfile `str` path to imported dictionary file (*.dic).
     # @warning The file must be in _plain text_ format, with each word on a new line,
     # optionally followed by a slash (see 'posdelim' argument) and meta-data (parts of speech etc.)
     # @param posrules `dict` part-of-speech regular expression parsing rules in the format:
@@ -541,13 +595,16 @@ class HunspellImport:
     # @code
     # on_error(lang: str, dicfile: str, error_message: str) -> None
     # @endcode
-    def add_from_hunspell(self, lang, dicfile, posrules=None, posrules_strict=False, 
+    def add_from_hunspell(self, lang, posrules=None, posrules_strict=False, 
                           posdelim='/', lcase=True, replacements=None, remove_hyphens=True,
                           filter_out=None, commit_each=1000, on_checkstop=None,
-                          on_word=None, on_commit=None, on_finish=None, on_error=None):
+                          on_start=None, on_word=None, on_commit=None, on_finish=None, on_error=None):
+        dicfile = os.path.join(self.dicfolder, f"{lang}.dic")
         task = HunspellImportTask(lang, dicfile, posrules, posrules_strict,
                                   posdelim, lcase, replacements, remove_hyphens,
                                   filter_out, commit_each, on_checkstop)
+        if on_start:
+            task.signals.sigStart.connect(on_start)
         if on_word:
             task.signals.sigWordWritten.connect(on_word)
         if on_commit:
@@ -562,36 +619,66 @@ class HunspellImport:
     
     ## @brief Imports all Hunspell-formatted dictionaries found in 'assets/dic'.
     # @warning All imported dictionary files must have the '.dic' extension.
-    # @param langs `iterable` list of languages to import, e.g. ['en', 'fr']
+    # @param dics `iterable` list of dict containing language info
     # (others found will be skipped).
     # Default = `None` (import all found dictionaries)  
     # @see add_from_hunspell()
-    def add_all_from_hunspell(self, langs=None, 
+    def add_all_from_hunspell(self, dics, 
                             posrules=None, posrules_strict=True, 
                             posdelim='/', lcase=True, replacements=None, remove_hyphens=True,
                             filter_out=None, commit_each=1000, on_stopcheck=None, 
-                            on_word=None, on_commit=None, on_finish=None, on_error=None):
+                            on_start=None, on_word=None, on_commit=None, on_finish=None, on_error=None):
+        
+        if not dics: return
+
+        if isinstance(posrules, list) and len(posrules) != len(dics):
+            print('ERROR! Number of elements in "posrules" must be equal to "dics"!')
+            return
+        if isinstance(posrules_strict, list) and len(posrules_strict) != len(dics):
+            print('ERROR! Number of elements in "posrules_strict" must be equal to "dics"!')
+            return
+        if isinstance(posdelim, list) and len(posdelim) != len(dics):
+            print('ERROR! Number of elements in "posdelim" must be equal to "dics"!')
+            return
+        if isinstance(lcase, list) and len(lcase) != len(dics):
+            print('ERROR! Number of elements in "lcase" must be equal to "dics"!')
+            return
+        if isinstance(replacements, list) and len(replacements) != len(dics):
+            print('ERROR! Number of elements in "replacements" must be equal to "dics"!')
+            return
+        if isinstance(remove_hyphens, list)and len(remove_hyphens) != len(dics):
+            print('ERROR! Number of elements in "remove_hyphens" must be equal to "dics"!')
+            return
+        if isinstance(filter_out, list) and len(filter_out) != len(dics):
+            print('ERROR! Number of elements in "filter_out" must be equal to "dics"!')
+            return
+        if isinstance(commit_each, list) and len(commit_each) != len(dics):
+            print('ERROR! Number of elements in "commit_each" must be equal to "dics"!')
+            return
         
         #old_dbpath = getattr(self.db, 'dbpath', None)
         self.db.disconnect()
 
-        i = -1
-        for r, _, f in os.walk(DICFOLDER):
-            for file in f:
-                if file.lower().endswith('.dic'):                    
-                    dicfile = os.path.abspath(os.path.join(r, file))
-                    lang = file[:2].lower()
-                    if (not lang in LANG) or (langs and not lang in langs): continue
-                    i += 1
-                    task = HunspellImportTask(lang, dicfile, posrules, posrules_strict,
-                                  posdelim, lcase, replacements, remove_hyphens,
-                                  filter_out, commit_each, on_stopcheck, i)
-                    if on_word:
-                        task.signals.sigWordWritten.connect(on_word)
-                    if on_commit:
-                        task.signals.sigCommit.connect(on_commit)
-                    if on_finish:
-                        task.signals.sigComplete.connect(on_finish)
-                    if on_error:
-                        task.signals.sigError.connect(on_error)
-                    self.pool.start(task)
+        for i, entry in enumerate(dics):
+            task = HunspellImportTask(entry['lang'], 
+                            os.path.join(self.dicfolder, f"{entry['lang']}.dic"), 
+                            posrules[i] if isinstance(posrules, list) else posrules, 
+                            posrules_strict[i] if isinstance(posrules_strict, list) else posrules_strict,
+                            posdelim[i] if isinstance(posdelim, list) else posdelim, 
+                            lcase[i] if isinstance(lcase, list) else lcase, 
+                            replacements[i] if isinstance(replacements, list) else replacements,  
+                            remove_hyphens[i] if isinstance(remove_hyphens, list) else remove_hyphens,  
+                            filter_out[i] if isinstance(filter_out, list) else filter_out,  
+                            commit_each[i] if isinstance(commit_each, list) else commit_each, 
+                            on_stopcheck, i)
+            if on_start:
+                task.signals.sigStart.connect(on_start)
+            if on_word:
+                task.signals.sigWordWritten.connect(on_word)
+            if on_commit:
+                task.signals.sigCommit.connect(on_commit)
+            if on_finish:
+                task.signals.sigComplete.connect(on_finish)
+            if on_error:
+                task.signals.sigError.connect(on_error)
+            self.pool.start(task)
