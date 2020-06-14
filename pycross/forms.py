@@ -194,7 +194,7 @@ class ProgressbarDelegate(QtWidgets.QStyledItemDelegate):
             opt.textVisible = True
             if not text:
                 perc = (value / total) if total > 0 else 0.0
-                opt.text = f"{perc:.0f}% [{value} / {total}]" if total > 0 else f"--> {value}"
+                opt.text = f"{perc:.0f}%" if total > 0 else f"--> {value}"
             else:
                 opt.text = text
             QtWidgets.QApplication.style().drawControl(QtWidgets.QStyle.CE_ProgressBar, opt, painter)
@@ -1854,7 +1854,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.dics = {}
         self.dics_model_thread = QThreadStump(on_start=self.on_repopulate_dic_model_start,
             on_finish=self.on_repopulate_dic_model_finish,
-            on_run=self.on_repopulate_dic_model_run)
+            on_run=self.on_repopulate_dic_model_run_fromserver)
         self.hunspellmgr = HunspellImport(settings)
         self.to_install = []
         self.loadermovie = QtGui.QMovie(f"{ICONFOLDER}/ajax-loader.gif")
@@ -2013,8 +2013,12 @@ class WordDBManager(QtWidgets.QMainWindow):
             if stopcheck and stopcheck(): break
 
     @QtCore.pyqtSlot()
-    def on_repopulate_dic_model_run(self):
+    def on_repopulate_dic_model_run_fromserver(self):
         self.repopulate_dic_model(True, self.act_stopdics.isChecked)
+
+    @QtCore.pyqtSlot()
+    def on_repopulate_dic_model_run_local(self):
+        self.repopulate_dic_model(False, self.act_stopdics.isChecked)
 
     @QtCore.pyqtSlot()
     def on_repopulate_dic_model_start(self):
@@ -2022,7 +2026,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_stopdics.setEnabled(True)
         self.sigEnableInstall.emit(False)
         self.statusBar().showMessage(_('Populating dictionaries...'))
-        self.dics_model = QtGui.QStandardItemModel()
+        self.dics_model = QtGui.QStandardItemModel()        
         self.dics_model.setHorizontalHeaderLabels([_('Language'), _('Status'),
             _('Entries'), _('POS rules'), _('Strict POS'),
             _('POS delimiter'), _('Replacements'), _('Exclude POS'),
@@ -2047,6 +2051,7 @@ class WordDBManager(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(bool)
     def on_act_refreshdics(self, checked):
         if not self.dics_model_thread.isRunning():
+            self.dics_model_thread.on_run = self.on_repopulate_dic_model_run_fromserver
             self.dics_model_thread.start()
 
     @QtCore.pyqtSlot()
@@ -2089,12 +2094,13 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_refreshdics.setEnabled(True)
         self.statusbar.clearMessage()
         self.statusbar_pbar.setVisible(False)
-        self.tvDics.sortByColumn(1, 1)
+        self.on_act_refreshdics(True)
 
     def reformat_dic_model_row(self, r):
-        txt = self.dics_model.item(r, 1).text()            
+        txt = self.dics_model.item(r, 1).text()
         for c in range(self.dics_model.columnCount()):
             item = self.dics_model.item(r, c)
+            if not item: continue
             if txt == _('Installed'):                    
                 item.setBackground(QtGui.QBrush(QtCore.Qt.green))
             elif txt == _('Pending'):
@@ -2118,18 +2124,21 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(int, str, str, str)
     def on_download_dics_start(self, id, url, lang, filepath):
-        print(f"Downloading '{lang}' from {url}")
+        #print(f"Downloading '{lang}' from {url}")
+        pass
 
     @QtCore.pyqtSlot(int, str, str, str, int)
     def on_download_dics_getfilesize(self, id, url, lang, filepath, total_bytes):
-        self.to_install[id][0].setData((0, total_bytes, None), QtCore.Qt.UserRole + 1)
+        if self.to_install:
+            self.to_install[id][0].setData((0, total_bytes, None), QtCore.Qt.UserRole + 1)
         
     @QtCore.pyqtSlot(int, str, str, str, int, int)
     def on_download_dics_run(self, id, url, lang, filepath, bytes_written, total_bytes):
         if self.act_stopdics.isChecked():
             self.stop_operations()
             return
-        self.to_install[id][0].setData((bytes_written, total_bytes, None), QtCore.Qt.UserRole + 1)
+        if self.to_install:
+            self.to_install[id][0].setData((bytes_written, total_bytes, None), QtCore.Qt.UserRole + 1)
         
     @QtCore.pyqtSlot(int, str, str, str)
     def on_download_dics_finish(self, id, url, lang, filepath):
@@ -2137,13 +2146,14 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.statusbar_pbar.setFormat('%p% [%v / %m]')
 
         # mark item as downloaded
-        self.to_install[id][2] = 1
-        item = self.to_install[id][0]
-        txt = _('Awaiting install')
-        item.setText(txt)
-        item.setData((1, 1, txt), QtCore.Qt.UserRole + 1)
-        self.reformat_dic_model_row(item.row())
-        #self.tvDics.sortByColumn(1, 1)
+        if self.to_install:
+            self.to_install[id][2] = 1
+            item = self.to_install[id][0]
+            txt = _('Awaiting install')
+            item.setText(txt)
+            item.setData((1, 1, txt), QtCore.Qt.UserRole + 1)
+            self.reformat_dic_model_row(item.row())
+            #self.tvDics.sortByColumn(1, 1)
 
         if self.act_stopdics.isChecked():
             self.stop_operations()
@@ -2157,12 +2167,13 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.statusbar_pbar.setFormat('%p% [%v / %m]')
 
         # remove progress bar and update item status in table
-        item = self.to_install[id][0]
-        txt = _('Error') + f": {message}"
-        item.setText(txt)
-        item.setData((0, 0, txt), QtCore.Qt.UserRole + 1)
-        self.reformat_dic_model_row(item.row())
-        #self.tvDics.sortByColumn(1, 1)
+        if self.to_install:
+            item = self.to_install[id][0]
+            txt = _('Error') + f": {message}"
+            item.setText(txt)
+            item.setData((0, 0, txt), QtCore.Qt.UserRole + 1)
+            self.reformat_dic_model_row(item.row())
+            #self.tvDics.sortByColumn(1, 1)
 
         if self.act_stopdics.isChecked():
             self.stop_operations()
@@ -2172,7 +2183,13 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(int, str, str, str)
     def on_download_dics_stopcheck(self, id, url, lang, filepath):
-        return self.act_stopdics.isChecked()
+        if self.act_stopdics.isChecked():
+            try:
+                os.remove(filepath)
+            except:
+                pass
+            return True
+        return False
 
     def execute_pending_dics(self):
         # find pending items
@@ -2182,8 +2199,11 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.to_install.clear()
         to_uninstall = []        
 
-        self.dics_model.itemChanged.disconnect()
-        self.act_refreshdics.changed.disconnect()
+        try:
+            self.dics_model.itemChanged.disconnect()
+            self.act_refreshdics.changed.disconnect()
+        except:
+            pass
         self.sigEnableInstall.emit(False)
         self.act_stopdics.setChecked(False)
         self.act_stopdics.setEnabled(True)
@@ -2214,17 +2234,21 @@ class WordDBManager(QtWidgets.QMainWindow):
                     os.remove(dic['path'])
                 except:
                     continue
-                else:                    
+                else:
+                    dic['path'] = ''       
+                    dic['entries'] = 0       
                     item_status.setText(_('Not installed'))
                     self.dics_model.item(item_status.row(), 0).setCheckState(QtCore.Qt.Unchecked)
                     self.dics_model.item(item_status.row(), 2).setText('')
                     self.reformat_dic_model_row(item_status.row())
 
-        self.tvDics.sortByColumn(1, int(_('Installed') > _('Not installed')))
+        self.tvDics.sortByColumn(1, int(_('Installed') < _('Not installed')))
         self.statusbar.clearMessage()
         self.statusbar_pbar.setVisible(False)
 
-        if not self.to_install: return
+        if not self.to_install: 
+            self.on_act_refreshdics(True)
+            return
 
         self.statusbar_pbar.setRange(0, len(self.to_install))
         self.statusbar_pbar.setValue(0)
@@ -2247,70 +2271,73 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(int, str, str)
     def on_install_dics_start(self, id, lang, filepath):
-        item = self.to_install[id][0]    
-        item.setText(_('Installing...'))
-        self.reformat_dic_model_row(item.row())
-        #self.tvDics.sortByColumn(1, 1)
+        if self.to_install:
+            item = self.to_install[id][0]    
+            item.setText(_('Installing...'))
+            self.reformat_dic_model_row(item.row())
+            #self.tvDics.sortByColumn(1, 1)
 
     @QtCore.pyqtSlot(int, str, str, int)
     def on_install_dics_commit(self, id, lang, filepath, records):
         if self.act_stopdics.isChecked():
             self.stop_operations()
             return
-        self.to_install[id][1]['entries'] = records
-        item = self.to_install[id][0] 
-        self.dics_model.item(item.row(), 2).setText(str(records))
-        self.reformat_dic_model_row(item.row())
-        #self.tvDics.sortByColumn(1, 1)
+        if self.to_install:
+            self.to_install[id][1]['entries'] = records
+            item = self.to_install[id][0] 
+            self.dics_model.item(item.row(), 2).setText(str(records))
+            self.reformat_dic_model_row(item.row())
+            #self.tvDics.sortByColumn(1, 1)
 
     @QtCore.pyqtSlot(int, str, str, int)
     def on_install_dics_finish(self, id, lang, filepath, records):
         self.statusbar_pbar.setValue(self.statusbar_pbar.value() + 1)
         self.statusbar_pbar.setFormat('%p% [%v / %m]')
 
-        self.to_install[id][1]['path'] = os.path.join(DICFOLDER, f"{lang}.db")
-        self.to_install[id][1]['entries'] = records
-        item = self.to_install[id][0]        
-        item.setText(_('Installed'))
-        self.dics_model.item(item.row(), 0).setCheckState(QtCore.Qt.PartiallyChecked)
-        self.reformat_dic_model_row(item.row())
-        #self.tvDics.sortByColumn(1, 1)
+        if self.to_install:
+            self.to_install[id][1]['path'] = os.path.join(DICFOLDER, f"{lang}.db")
+            self.to_install[id][1]['entries'] = records
+            item = self.to_install[id][0]        
+            item.setText(_('Installed'))
+            self.dics_model.item(item.row(), 0).setCheckState(QtCore.Qt.PartiallyChecked)
+            self.reformat_dic_model_row(item.row())
+            #self.tvDics.sortByColumn(1, 1)
 
         # delete DIC file
         try:
             os.remove(filepath)
         except:
             pass
-        
-        if self.act_stopdics.isChecked():
-            self.stop_operations()
-        elif not self.hunspellmgr.pool_running():
+
+        if not self.hunspellmgr.pool_running():
             # refresh dics           
             self.stop_operations()
-            self.on_act_refreshdics(True)
 
     @QtCore.pyqtSlot(int, str, str, str)
     def on_install_dics_error(self, id, lang, filepath, message):
         self.statusbar_pbar.setValue(self.statusbar_pbar.value() + 1)
         self.statusbar_pbar.setFormat('%p% [%v / %m]')
         
-        self.to_install[id][1]['path'] = ''
-        item = self.to_install[id][0]        
-        item.setText(_('Error') + f": {message}")
-        self.dics_model.item(item.row(), 0).setCheckState(QtCore.Qt.Unchecked)
-        self.reformat_dic_model_row(item.row())
-        #self.tvDics.sortByColumn(1, 1)
+        if self.to_install:
+            self.to_install[id][1]['path'] = ''
+            item = self.to_install[id][0]        
+            item.setText(_('Error') + f": {message}")
+            self.dics_model.item(item.row(), 0).setCheckState(QtCore.Qt.Unchecked)
+            self.reformat_dic_model_row(item.row())
+            #self.tvDics.sortByColumn(1, 1)
         
-        if self.act_stopdics.isChecked():
+        if self.act_stopdics.isChecked() or not self.hunspellmgr.pool_running():
             self.stop_operations()
-        elif not self.hunspellmgr.pool_running():
-            # refresh dics
-            self.stop_operations()
-            self.repopulate_dic_model(False)
-
+        
     @QtCore.pyqtSlot(int, str, str)
     def on_install_dics_stopcheck(self, id, lang, filepath):
-        return self.act_stopdics.isChecked()
+        if self.act_stopdics.isChecked():
+            try:
+                os.remove(os.path.join(DICFOLDER, f"{lang}.db"))
+            except:
+                pass
+            return True
+        return False
 
     def do_install_dics(self):
         if self.hunspellmgr.pool_running(): return
@@ -4765,6 +4792,7 @@ class SettingsDialog(BasicDialog):
         mgr = WordDBManager(self.mainwindow.options(), self)
         mgr.setWindowModality(QtCore.Qt.WindowModal)
         mgr.show()
+        mgr.move(self.width() // 2 - mgr.width() // 2, self.height() // 2 - mgr.height() // 2)
 
     ## Moves selected clues column up one position.
     @QtCore.pyqtSlot(bool)        

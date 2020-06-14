@@ -198,6 +198,7 @@ class HunspellDownloadTask(QtCore.QRunnable):
         
         filepath = os.path.join(self.dicfolder, f"{self.lang}.dic")
         if self.on_stopcheck and self.on_stopcheck(self.id, self.url, self.lang, filepath):
+            #print(f"Остановили загрузку файла '{self.lang}' (id={self.id})")
             return
 
         self.signals.sigStart.emit(self.id, self.url, self.lang, filepath)
@@ -221,6 +222,7 @@ class HunspellDownloadTask(QtCore.QRunnable):
                     with open(filepath, 'wb') as f:
                         for chunk in res.iter_content(1024):
                             if self.on_stopcheck and self.on_stopcheck(self.id, self.url, self.lang, filepath):
+                                #print(f"Остановили загрузку файла '{self.lang}' (id={self.id})")
                                 f.close()
                                 return
                             f.write(chunk)
@@ -238,6 +240,7 @@ class HunspellDownloadTask(QtCore.QRunnable):
             self.signals.sigError.emit(self.id, self.url, self.lang, filepath, traceback.format_exc())
             return
 
+        #print(f"Завершили загрузку файла '{self.lang}' (id={self.id})")
         self.signals.sigComplete.emit(self.id, self.url, self.lang, filepath)
 
 # ******************************************************************************** #
@@ -274,8 +277,10 @@ class HunspellImportTask(QtCore.QRunnable):
     def run(self):
         
         if self.on_stopcheck and self.on_stopcheck(self.id, self.lang, self.dicfile):
+            #print(f"Остановили импорт файла '{self.lang}' (id={self.id})")
             return
 
+        #print(f"Стартовали импорт файла '{self.lang}' (id={self.id})")
         self.signals.sigStart.emit(self.id, self.lang, self.dicfile)
 
         db = Sqlitedb()
@@ -301,6 +306,7 @@ class HunspellImportTask(QtCore.QRunnable):
                     if stopped or \
                             (self.on_stopcheck and \
                              self.on_stopcheck(self.id, self.lang, self.dicfile)):
+                        #print(f"Остановили импорт файла '{self.lang}' (id={self.id})")
                         stopped = True
                         break
                     # split the next row to extract the word and part-of-speech
@@ -335,6 +341,7 @@ class HunspellImportTask(QtCore.QRunnable):
                                 if stopped or \
                                         (self.on_stopcheck and \
                                          self.on_stopcheck(self.id, self.lang, self.dicfile)):
+                                    #print(f"Остановили импорт файла '{self.lang}' (id={self.id})")
                                     stopped = True
                                     break
                                 if re.match(self.posrules[rex], pos):
@@ -357,6 +364,7 @@ class HunspellImportTask(QtCore.QRunnable):
                                         
                         except Exception as err:
                             self.signals.sigError.emit(self.id, self.lang, self.dicfile, _('DATABASE ERROR: {}').format(str(err)))
+                            stopped = True
                             break
                         
                     else:
@@ -379,13 +387,26 @@ class HunspellImportTask(QtCore.QRunnable):
                             self.signals.sigWordWritten.emit(self.id, self.lang, self.dicfile, word, pos, cnt)
                         except Exception as err:
                             self.signals.sigError.emit(self.id, self.lang, self.dicfile, _('DATABASE ERROR: {}').format(str(err)))
+                            stopped = True
                             break
+
+        except Exception as err:
+            self.signals.sigError.emit(self.id, self.lang, self.dicfile, str(err))
+            stopped = True
+
+        except:
+            self.signals.sigError.emit(self.id, self.lang, self.dicfile, traceback.format_exc())
+            stopped = True
                     
         finally:   
             # commit outstanding updates
-            db.conn.commit()
-            cur.close()
-            self.signals.sigComplete.emit(self.id, self.lang, self.dicfile, cnt)
+            try:
+                db.conn.commit()
+                cur.close()
+            except:
+                pass
+            if not stopped:
+                self.signals.sigComplete.emit(self.id, self.lang, self.dicfile, cnt)
 
 # ******************************************************************************** #
 
@@ -492,6 +513,7 @@ class HunspellImport:
             if on_error:
                 task.signals.sigError.connect(on_error)
             self.pool.start(task)
+            #print(f"СТАРТ ЗАКАЧКИ '{entry['lang']}' (ID={i})")
 
     ## Retrieves the list of parts of speech present in the DB.
     # @returns `list` parts of speech in the short form, e.g. ['N', 'V']
@@ -681,4 +703,5 @@ class HunspellImport:
                 task.signals.sigComplete.connect(on_finish)
             if on_error:
                 task.signals.sigError.connect(on_error)
+            #print(f"СТАРТ ИМПОРТА '{entry['lang']}' (ID={i})")
             self.pool.start(task)
