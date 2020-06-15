@@ -193,6 +193,12 @@ class HunspellDownloadTask(QtCore.QRunnable):
             return int(meta.get('Content-Length', -1))
         except:
             return -1
+
+    def _delete_file(self, filepath):
+        try:
+            os.remove(filepath)
+        except:
+            pass
     
     def run(self):
         
@@ -224,20 +230,28 @@ class HunspellDownloadTask(QtCore.QRunnable):
                             if self.on_stopcheck and self.on_stopcheck(self.id, self.url, self.lang, filepath):
                                 #print(f"Остановили загрузку файла '{self.lang}' (id={self.id})")
                                 f.close()
+                                self._delete_file(filepath)
                                 return
                             f.write(chunk)
                             self.signals.sigProgress.emit(self.id, self.url, self.lang, filepath, f.tell(), total_bytes)
                 except Exception as err:
+                    f.close()
                     self.signals.sigError.emit(self.id, self.url, self.lang, filepath, str(err))
+                    self._delete_file(filepath)
                     return
                 except:
                     f.close()
+                    self._delete_file(filepath)
                     raise
+
         except Exception as err:
             self.signals.sigError.emit(self.id, self.url, self.lang, filepath, str(err))
+            self._delete_file(filepath)
             return
+
         except:
             self.signals.sigError.emit(self.id, self.url, self.lang, filepath, traceback.format_exc())
+            self._delete_file(filepath)
             return
 
         #print(f"Завершили загрузку файла '{self.lang}' (id={self.id})")
@@ -257,7 +271,7 @@ class HunspellImportTask(QtCore.QRunnable):
 
     def __init__(self, lang, dicfile=None, posrules=None, posrules_strict=False, 
                 posdelim='/', lcase=True, replacements=None, remove_hyphens=True,
-                filter_out=None, commit_each=1000, on_stopcheck=None, id=0):
+                filter_out=None, rows=None, commit_each=1000, on_stopcheck=None, id=0):
         super().__init__()
         self.signals = HunspellImportSignals()
 
@@ -270,9 +284,22 @@ class HunspellImportTask(QtCore.QRunnable):
         self.replacements = replacements
         self.remove_hyphens = remove_hyphens
         self.filter_out = filter_out
+        self.rows = rows
         self.commit_each = commit_each
         self.on_stopcheck = on_stopcheck
         self.id = id
+
+    def _delete_db(self, db):
+        try:
+            db.disconnect()
+            os.remove(db.dbpath)
+        except:
+            pass
+
+    ## Retrieves the list of parts of speech present in the DB.
+    # @returns `list` parts of speech in the short form, e.g. ['N', 'V']
+    def _get_pos(self, cur):     
+        return [res[0] for res in cur.execute(f"select {SQL_TABLES['pos']['fpos']} from {SQL_TABLES['pos']['table']}").fetchall()]
 
     def run(self):
         
@@ -292,16 +319,25 @@ class HunspellImportTask(QtCore.QRunnable):
         cur = db.conn.cursor()
 
         if self.posrules:
-            poses = self.get_pos(cur)
+            poses = self._get_pos(cur)
             for pos in self.posrules:
                 if not pos in poses:
                     self.signals.sigError.emit(self.id, self.lang, self.dicfile, _("Part of speech '{}' is absent from the DB!").format(pos))
+                    self._delete_db(db)
                     return
        
-        cnt = 0        
+        cnt = 0
         try:            
             with codecs.open(self.dicfile, 'r', encoding=ENCODING, errors='ignore') as dic:
-                for row in dic:
+                if not self.rows:
+                    dic_iterate = dic 
+                else:
+                    if self.rows[1] >= self.rows[0]:
+                        dic_iterate = (row for i, row in enumerate(dic) if i in range(self.rows[0], self.rows[1] + 1))
+                    else:
+                        dic_iterate = (row for i, row in enumerate(dic) if i >= self.rows[0])
+                                
+                for row in dic_iterate:
                     # check stop request
                     if stopped or \
                             (self.on_stopcheck and \
@@ -327,11 +363,11 @@ class HunspellImportTask(QtCore.QRunnable):
                     if self.filter_out:
                         if 'word' in self.filter_out:
                             for rex in self.filter_out['word']:
-                                if re.match(self.filter_out['word'][rex], word, flags=re.I):
+                                if re.match(rex, word, flags=re.I):
                                     continue
                         if 'pos' in self.filter_out and pos:
                             for rex in self.filter_out['pos']:
-                                if re.match(self.filter_out['pos'][rex], pos, flags=re.I):
+                                if re.match(rex, pos, flags=re.I):
                                     continue
                     # determine the POS
                     if pos and self.posrules:
@@ -372,8 +408,10 @@ class HunspellImportTask(QtCore.QRunnable):
                             continue
                         else: 
                             pos = 'NONE'
-                        
-                    if not stopped and (pos in ('MISC', 'NONE')):
+
+                    if stopped:
+                        break                        
+                    elif pos in ('MISC', 'NONE'):
                         # insert into db
                         try:
                             cur.execute(SQL_INSERT_WORD.format(word, pos))                    
@@ -390,6 +428,9 @@ class HunspellImportTask(QtCore.QRunnable):
                             stopped = True
                             break
 
+                if stopped:
+                    self._delete_db(db)
+
         except Exception as err:
             self.signals.sigError.emit(self.id, self.lang, self.dicfile, str(err))
             stopped = True
@@ -400,13 +441,16 @@ class HunspellImportTask(QtCore.QRunnable):
                     
         finally:   
             # commit outstanding updates
-            try:
-                db.conn.commit()
-                cur.close()
-            except:
-                pass
-            if not stopped:
-                self.signals.sigComplete.emit(self.id, self.lang, self.dicfile, cnt)
+            if stopped:
+                self._delete_db(db)
+            else:
+                try:
+                    db.conn.commit()
+                    cur.close()
+                except:
+                    pass
+                else:
+                    self.signals.sigComplete.emit(self.id, self.lang, self.dicfile, cnt)                
 
 # ******************************************************************************** #
 
@@ -477,7 +521,7 @@ class HunspellImport:
 
     def download_hunspell(self, url, lang, overwrite=True, on_stopcheck=None,
                           on_start=None, on_getfilesize=None, on_progress=None, 
-                          on_complete=None, on_error=None):
+                          on_complete=None, on_error=None, wait=False):
         task = HunspellDownloadTask(self.settings, self.dicfolder,
                                     url, lang, overwrite, on_stopcheck)
         if on_start:
@@ -491,7 +535,8 @@ class HunspellImport:
         if on_error:
             task.signals.sigError.connect(on_error)
         self.pool.start(task)
-        self.pool.waitForDone()
+        if wait:
+            self.pool.waitForDone()
 
     def download_hunspell_all(self, dics, on_stopcheck=None, on_start=None,
                               on_getfilesize=None, on_progress=None,
@@ -515,14 +560,6 @@ class HunspellImport:
             self.pool.start(task)
             #print(f"СТАРТ ЗАКАЧКИ '{entry['lang']}' (ID={i})")
 
-    ## Retrieves the list of parts of speech present in the DB.
-    # @returns `list` parts of speech in the short form, e.g. ['N', 'V']
-    def get_pos(self, cur=None):
-        if cur is None:
-            if not self.db.connect(): return []
-            cur = self.db.conn.cursor()        
-        return [res[0] for res in cur.execute(f"select {SQL_TABLES['pos']['fpos']} from {SQL_TABLES['pos']['table']}").fetchall()]
-        
     
     ## @brief Returns the default Hunspell-formatted metadata patterns for the three common
     # parts of speech (noun, verb, adjective).
@@ -619,12 +656,13 @@ class HunspellImport:
     # @endcode
     def add_from_hunspell(self, lang, posrules=None, posrules_strict=False, 
                           posdelim='/', lcase=True, replacements=None, remove_hyphens=True,
-                          filter_out=None, commit_each=1000, on_checkstop=None,
-                          on_start=None, on_word=None, on_commit=None, on_finish=None, on_error=None):
+                          filter_out=None, rows=None, commit_each=1000, on_checkstop=None,
+                          on_start=None, on_word=None, on_commit=None, 
+                          on_finish=None, on_error=None, wait=False):
         dicfile = os.path.join(self.dicfolder, f"{lang}.dic")
         task = HunspellImportTask(lang, dicfile, posrules, posrules_strict,
                                   posdelim, lcase, replacements, remove_hyphens,
-                                  filter_out, commit_each, on_checkstop)
+                                  filter_out, rows, commit_each, on_checkstop)
         if on_start:
             task.signals.sigStart.connect(on_start)
         if on_word:
@@ -637,7 +675,8 @@ class HunspellImport:
             task.signals.sigError.connect(on_error)
 
         self.pool.start(task)
-        self.pool.waitForDone()
+        if wait:
+            self.pool.waitForDone()
     
     ## @brief Imports all Hunspell-formatted dictionaries found in 'assets/dic'.
     # @warning All imported dictionary files must have the '.dic' extension.
@@ -648,7 +687,7 @@ class HunspellImport:
     def add_all_from_hunspell(self, dics, 
                             posrules=None, posrules_strict=True, 
                             posdelim='/', lcase=True, replacements=None, remove_hyphens=True,
-                            filter_out=None, commit_each=1000, on_stopcheck=None, 
+                            filter_out=None, rows=None, commit_each=1000, on_stopcheck=None, 
                             on_start=None, on_word=None, on_commit=None, on_finish=None, on_error=None):
         
         if not dics: return
@@ -674,6 +713,9 @@ class HunspellImport:
         if isinstance(filter_out, list) and len(filter_out) != len(dics):
             print('ERROR! Number of elements in "filter_out" must be equal to "dics"!')
             return
+        if isinstance(rows, list) and len(rows) != len(dics):
+            print('ERROR! Number of elements in "rows" must be equal to "dics"!')
+            return
         if isinstance(commit_each, list) and len(commit_each) != len(dics):
             print('ERROR! Number of elements in "commit_each" must be equal to "dics"!')
             return
@@ -691,6 +733,7 @@ class HunspellImport:
                             replacements[i] if isinstance(replacements, list) else replacements,  
                             remove_hyphens[i] if isinstance(remove_hyphens, list) else remove_hyphens,  
                             filter_out[i] if isinstance(filter_out, list) else filter_out,  
+                            rows[i] if isinstance(rows, list) else rows,
                             commit_each[i] if isinstance(commit_each, list) else commit_each, 
                             on_stopcheck, i)
             if on_start:

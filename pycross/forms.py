@@ -193,10 +193,9 @@ class ProgressbarDelegate(QtWidgets.QStyledItemDelegate):
             opt.progress = value
             opt.textVisible = True
             if not text:
-                perc = (value / total) if total > 0 else 0.0
-                opt.text = f"{perc:.0f}%" if total > 0 else f"--> {value}"
+                opt.text = f"{(value * 100.0 / total):.0f}%" if total > 0 else f"--> {value}"  
             else:
-                opt.text = text
+                opt.text = text            
             QtWidgets.QApplication.style().drawControl(QtWidgets.QStyle.CE_ProgressBar, opt, painter)
         except:
             super().paint(painter, option, index)
@@ -1928,6 +1927,8 @@ class WordDBManager(QtWidgets.QMainWindow):
         
         self.act_peekdic = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/binoculars.png"), _('Peek'))
         self.act_peekdic.setToolTip(_('See the raw content on the selected dictionary'))
+        self.act_peekdic.setCheckable(True)
+        self.act_peekdic.setChecked(False)
         self.act_peekdic.setEnabled(False)
         self.act_peekdic.triggered.connect(self.on_act_peekdic) 
 
@@ -1947,17 +1948,20 @@ class WordDBManager(QtWidgets.QMainWindow):
         
         self.l_gif = QtWidgets.QLabel()
         self.l_gif.setMovie(self.loadermovie)
-        self.l_gif.move(300, 300)
-        lo_w1.addWidget(self.l_gif, alignment=QtCore.Qt.AlignCenter)
         self.l_gif.hide()
+        self.splitter_dics.addWidget(self.l_gif)        
         self._default_bgcolor = color_from_stylesheet(self.tvDics.styleSheet(), default='white')
         self.splitter_dics.addWidget(self.tvDics)
 
-        self.te_dic = QtWidgets.QPlainTextEdit()
-        self.te_dic.setReadOnly(True)
-        self.te_dic.setWordWrapMode(0)
-        self.te_dic.hide()
-        self.splitter_dics.addWidget(self.te_dic)
+        self.tvDicPreview = QtWidgets.QTableView()
+        self.tvDicPreview.setSortingEnabled(False)
+        self.tvDicPreview.setWordWrap(False)
+        self.tvDicPreview.hide()
+        self.splitter_dics.addWidget(self.tvDicPreview)
+        self.l_gif2 = QtWidgets.QLabel()
+        self.l_gif2.setMovie(self.loadermovie)
+        self.l_gif2.hide()
+        self.splitter_dics.addWidget(self.l_gif2)
         
         lo_w1.addWidget(self.splitter_dics)
         w1.setLayout(lo_w1)
@@ -2024,9 +2028,16 @@ class WordDBManager(QtWidgets.QMainWindow):
             item_exclpos.setFlags(QtCore.Qt.ItemIsSelectable)
             item_exclwd = QtGui.QStandardItem('')
             item_exclwd.setFlags(QtCore.Qt.ItemIsSelectable)
+            item_startrow = QtGui.QStandardItem('')
+            item_startrow.setFlags(QtCore.Qt.ItemIsSelectable)
+            item_startrow.setData(0, QtCore.Qt.UserRole + 1)
+            item_endrow = QtGui.QStandardItem('')
+            item_endrow.setFlags(QtCore.Qt.ItemIsSelectable)
+            item_endrow.setData(-1, QtCore.Qt.UserRole + 1)
             self.dics_model.appendRow([item_lang, item_status, item_entries,
                                        item_posrules, item_posstrict, item_posdelim,
-                                       item_replace, item_exclpos, item_exclwd])
+                                       item_replace, item_exclpos, item_exclwd, 
+                                       item_startrow, item_endrow])
             self.reformat_dic_model_row(r)
             r += 1
             if stopcheck and stopcheck(): break
@@ -2049,7 +2060,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.dics_model.setHorizontalHeaderLabels([_('Language'), _('Status'),
             _('Entries'), _('POS rules'), _('Strict POS'),
             _('POS delimiter'), _('Replacements'), _('Exclude POS'),
-            _('Exclude words')])
+            _('Exclude words'), _('Start row'), _('End row')])
         self.tvDics.hide()
         self.l_gif.show()
         self.loadermovie.start()
@@ -2091,17 +2102,80 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(bool)
     def on_act_peekdic(self, checked):
-        index = self.tvDics.currentIndex()
-        if not index.isValid(): return
-        item = self.dics_model.itemFromIndex(index)
+        if checked:
+            index = self.tvDics.currentIndex()
+            if not index.isValid(): return
+            self.download_dic(self.dics_model.itemFromIndex(index), False)
+        else:
+            self.tvDicPreview.hide()
+
+    def show_dic_content(self, filepath):
+        tvDicPreview_model = QtGui.QStandardItemModel()
+        with open(filepath, 'r', encoding=ENCODING) as fin:
+            for ln in fin:
+                item = QtGui.QStandardItem(ln.strip())
+                item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+                tvDicPreview_model.appendRow(item)
+        self.tvDicPreview.setModel(tvDicPreview_model)
+        self.tvDicPreview.horizontalHeader().hide()
+        self.tvDicPreview.show()
+        self.tvDicPreview.setColumnWidth(0, self.tvDicPreview.width() - self.tvDicPreview.verticalHeader().sectionSize(0))
+
+    @QtCore.pyqtSlot(int, str, str, str)
+    def on_start_download_preview(self, id, url, lang, filepath):
+        self.tvDicPreview.hide()
+        self.l_gif2.show()
+        self.loadermovie.start()
+        self.dic_preview_item = self.locate_dic_item(lang)
+
+    @QtCore.pyqtSlot(int, str, str, str)
+    def stopcheck_download_preview(self, id, url, lang, filepath):
+        if not self.act_peekdic.isChecked():
+            self.loadermovie.stop()
+            self.l_gif2.hide()
+            items = getattr(self, 'dic_preview_item', None)
+            if items:
+                items[1].setData(None, QtCore.Qt.UserRole + 1)
+            self.tvDics.setItemDelegateForColumn(1, None)
+            #self.tvDics.show()
+            return True
+        return False
+    
+    @QtCore.pyqtSlot(int, str, str, str, int)
+    def on_getfilesize_download_preview(self, id, url, lang, filepath, total_bytes):
+        items = getattr(self, 'dic_preview_item', None)
+        if items:
+            items[1].setData((0, total_bytes, None), QtCore.Qt.UserRole + 1)
+
+    @QtCore.pyqtSlot(int, str, str, str, int, int)
+    def on_run_download_preview(self, id, url, lang, filepath, bytes_written, total_bytes):
+        items = getattr(self, 'dic_preview_item', None)
+        if items:
+            items[1].setData((bytes_written, total_bytes, None), QtCore.Qt.UserRole + 1)
+
+    @QtCore.pyqtSlot(int, str, str, str)
+    def on_complete_download_preview(self, id, url, lang, filepath):
+        self.loadermovie.stop()
+        self.l_gif2.hide()
+        items = getattr(self, 'dic_preview_item', None)
+        if items:
+            items[1].setData(None, QtCore.Qt.UserRole + 1)
+        self.tvDics.setItemDelegateForColumn(1, None)
+        #self.tvDics.show()
+        if os.path.exists(filepath):
+            self.show_dic_content(filepath)
+
+    @QtCore.pyqtSlot(int, str, str, str, str)
+    def on_error_download_preview(self, id, url, lang, filepath, message):
+        self.loadermovie.stop()
+        self.l_gif2.hide()
+        items = getattr(self, 'dic_preview_item', None)
+        if items:
+            items[1].setData(None, QtCore.Qt.UserRole + 1)
+        self.tvDics.setItemDelegateForColumn(1, None)
+        #self.tvDics.show()
+        MsgBox(_("Error downloading '{}' from '{}'").format(lang, url), self, _('Error'), 'error')
         
-        fpath = self.download_dic(item, False)
-        if not fpath: return
-
-        with open(fpath, 'r', encoding=ENCODING) as fin:
-            self.te_dic.setPlainText(fin.read())
-        self.te_dic.show()
-
     def download_dic(self, lang, overwrite=False):
 
         if isinstance(lang, str):
@@ -2109,34 +2183,21 @@ class WordDBManager(QtWidgets.QMainWindow):
             if not item: return ''
             item = item[1]
         elif isinstance(lang, QtGui.QStandardItem):
-            r = lang.row()
-            item = self.dics_model.item(r, 1)
+            item = self.dics_model.item(lang.row(), 1)
         else:
             return ''
 
-        dic = self.dics_model.item(r, 0).data(QtCore.Qt.UserRole + 1)
+        dic = self.dics_model.item(item.row(), 0).data(QtCore.Qt.UserRole + 1)
         if not dic: return ''
-        
-        @QtCore.pyqtSlot(int, str, str, str, int)
-        def on_getfilesize(id, url, lang, filepath, total_bytes):
-            item.setData((0, total_bytes, None), QtCore.Qt.UserRole + 1)
-
-        @QtCore.pyqtSlot(int, str, str, str, int, int)
-        def on_run(id, url, lang, filepath, bytes_written, total_bytes):
-            item.setData((bytes_written, total_bytes, None), QtCore.Qt.UserRole + 1)
-
-        @QtCore.pyqtSlot(int, str, str, str, str)
-        def on_error(id, url, lang, filepath, message):
-            item.setText(_('Error') + f": {message}")
-            self.reformat_dic_model_row(item[1].row())
             
         self.tvDics.setItemDelegateForColumn(1, ProgressbarDelegate())
-        self.hunspellmgr.download_hunspell(dic['dic_url'], dic['lang'], overwrite, None,
-                                           None, on_getfilesize, on_run, None, on_error)
-        self.tvDics.setItemDelegateForColumn(1, None)
-
-        fpath = os.path.join(DICFOLDER, f"{dic['lang']}.dic")
-        return fpath if os.path.exists(fpath) else ''
+        self.hunspellmgr.download_hunspell(dic['dic_url'], dic['lang'], overwrite, 
+                                           self.stopcheck_download_preview,
+                                           self.on_start_download_preview,
+                                           self.on_getfilesize_download_preview, 
+                                           self.on_run_download_preview,
+                                           self.on_complete_download_preview, 
+                                           self.on_error_download_preview)
     
     def stop_operations(self):
 
@@ -2220,7 +2281,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             item = self.to_install[id][0]
             txt = _('Awaiting install')
             item.setText(txt)
-            item.setData((1, 1, txt), QtCore.Qt.UserRole + 1)
+            item.setData(None, QtCore.Qt.UserRole + 1)
             self.reformat_dic_model_row(item.row())
             #self.tvDics.sortByColumn(1, 1)
 
@@ -2240,7 +2301,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             item = self.to_install[id][0]
             txt = _('Error') + f": {message}"
             item.setText(txt)
-            item.setData((0, 0, txt), QtCore.Qt.UserRole + 1)
+            item.setData(None, QtCore.Qt.UserRole + 1)
             self.reformat_dic_model_row(item.row())
             #self.tvDics.sortByColumn(1, 1)
 
@@ -2429,6 +2490,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         posdelim = []
         replacements = []
         filter_out = []
+        rowrange = []
         for d in self.to_install:
             row = d[0].row()
             # langs
@@ -2460,6 +2522,10 @@ class WordDBManager(QtWidgets.QMainWindow):
                 filter_['pos'] = json.loads(txt, encoding=ENCODING)
             if not filter_: filter_ = None
             filter_out.append(filter_)
+            # row range
+            rows = (self.dics_model.item(row, 9).data(QtCore.Qt.UserRole + 1),
+                         self.dics_model.item(row, 10).data(QtCore.Qt.UserRole + 1))
+            rowrange.append(rows if rows != (0, -1) else None)
 
         self.statusbar_pbar.setRange(0, len(self.to_install))
         self.statusbar_pbar.setValue(0)
@@ -2469,7 +2535,8 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.hunspellmgr.add_all_from_hunspell(
             dics=langs, posrules=posrules, posrules_strict=posrules_strict,
             posdelim=posdelim, lcase=True, replacements=replacements,
-            remove_hyphens=True, filter_out=filter_out, commit_each=1000, 
+            remove_hyphens=True, filter_out=filter_out, 
+            rows=rowrange, commit_each=1000, 
             on_stopcheck=self.on_install_dics_stopcheck,
             on_start=self.on_install_dics_start,
             on_commit=self.on_install_dics_commit,
@@ -2480,11 +2547,13 @@ class WordDBManager(QtWidgets.QMainWindow):
     def dics_model_item_changed(self, item):
         c = item.column()
         r = item.row()
-        dic = self.dics_model.item(r, 0).data(QtCore.Qt.UserRole + 1)
-        if not dic: return
+        
         if c == 0:
             # language checked / unchecked by user
+            dic = self.dics_model.item(r, 0).data(QtCore.Qt.UserRole + 1)
+            if not dic: return
             ch = item.checkState()
+
             if ch == QtCore.Qt.Checked or (ch == QtCore.Qt.Unchecked and dic['path']):
                 self.dics_model.item(r, 1).setText(_('Pending'))
             elif ch == QtCore.Qt.PartiallyChecked:
@@ -2499,17 +2568,39 @@ class WordDBManager(QtWidgets.QMainWindow):
                 self.dics_model.item(r, 6).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
                 self.dics_model.item(r, 7).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
                 self.dics_model.item(r, 8).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+                self.dics_model.item(r, 9).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
+                self.dics_model.item(r, 10).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
             else:
-                self.dics_model.item(r, 3).setFlags(QtCore.Qt.ItemIsSelectable)
-                self.dics_model.item(r, 4).setFlags(QtCore.Qt.ItemIsSelectable)
-                self.dics_model.item(r, 5).setFlags(QtCore.Qt.ItemIsSelectable)
-                self.dics_model.item(r, 6).setFlags(QtCore.Qt.ItemIsSelectable)
-                self.dics_model.item(r, 7).setFlags(QtCore.Qt.ItemIsSelectable)
-                self.dics_model.item(r, 8).setFlags(QtCore.Qt.ItemIsSelectable)
+                for i in range(3, 11):
+                    self.dics_model.item(r, i).setFlags(QtCore.Qt.ItemIsSelectable)
 
             self.reformat_dic_model_row(r)
             pending_items = self.dics_model.findItems(_('Pending'), column=1)
             self.sigEnableInstall.emit(bool(pending_items))
+        
+        elif c == 9 or c == 10:
+            # start row / end row
+            self.dics_model.itemChanged.disconnect()
+            txt = item.text()
+            defvalue = 0 if c == 9 else -1
+            if txt:
+                try:
+                    value = int(txt)
+                    if value < 1: 
+                        value = defvalue
+                    else:
+                        value -= 1
+                    if value == defvalue:
+                        item.setText('')
+                    else:
+                        item.setText(f"{value + 1 if value >= 0 else value}")
+                    item.setData(value, QtCore.Qt.UserRole + 1)
+                except:
+                    item.setText('')
+                    item.setData(defvalue, QtCore.Qt.UserRole + 1)
+            else:
+                item.setData(defvalue, QtCore.Qt.UserRole + 1)
+            self.dics_model.itemChanged.connect(self.dics_model_item_changed)
 
     def _get_pos_index(self, pos):
         for i in range(len(POS)):
@@ -2581,9 +2672,12 @@ class WordDBManager(QtWidgets.QMainWindow):
             item.setText(json.dumps(data) if data else '')
 
     @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
-    def on_tvDics_selectionchanged(self, current, previous):
-        self.te_dic.hide()
+    def on_tvDics_selectionchanged(self, current, previous):  
         self.act_peekdic.setEnabled(current.isValid())
+        if self.act_peekdic.isChecked() and current.row() != previous.row():     
+            self.act_peekdic.setChecked(False)
+            self.tvDicPreview.hide()
+            self.l_gif2.hide()
             
 # ******************************************************************************** #
 # *****          SettingsDialog
@@ -4867,7 +4961,8 @@ class SettingsDialog(BasicDialog):
         mgr = WordDBManager(self.mainwindow.options(), self)
         mgr.setWindowModality(QtCore.Qt.WindowModal)
         mgr.show()
-        mgr.move(self.width() // 2 - mgr.width() // 2, self.height() // 2 - mgr.height() // 2)
+        mgr.move(self.x() + self.width() // 2 - mgr.width() // 2, 
+                 self.y() + self.height() // 2 - mgr.height() // 2)
 
     ## Moves selected clues column up one position.
     @QtCore.pyqtSlot(bool)        
