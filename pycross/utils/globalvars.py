@@ -68,8 +68,8 @@ POS = [('N', 'noun'), ('V', 'verb'), ('ADV', 'adverb'), ('ADJ', 'adjective'), ('
 ## braces
 BRACES = "{}"
 ## default SQLite DB table names for word sources
-SQL_TABLES = {'words': {'table': 'twords', 'fwords': 'word', 'fpos': 'idpos'},
-              'pos':   {'table': 'tpos', 'fid': 'id', 'fpos': 'pos'} }
+SQL_TABLES = {'words': {'table': 'twords', 'fid': 'id', 'fwords': 'word', 'fpos': 'idpos'},
+              'pos':   {'table': 'tpos', 'fid': 'id', 'fpos': 'pos', 'fposdesc': 'posdesc'} }
 ## default max results for word source searches
 MAX_RESULTS = 500
 ## user plugin file extension

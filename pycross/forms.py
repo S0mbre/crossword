@@ -15,7 +15,7 @@ from utils.utils import *
 from utils.onlineservices import MWDict, YandexDict, GoogleSearch, Share
 from crossword import BLANK, CWInfo
 from guisettings import CWSettings
-from dbapi import HunspellImport
+from dbapi import HunspellImport, Sqlitedb
 
 # ******************************************************************************** #
 # *****          BrowseEdit
@@ -170,6 +170,65 @@ class BrowseEditDelegate(QtWidgets.QStyledItemDelegate):
     def updateEditorGeometry(self, editor, option: QtWidgets.QStyleOptionViewItem,
         index: QtCore.QModelIndex):
         editor.setGeometry(option.rect)        
+
+# ******************************************************************************** #
+# *****          ComboboxDelegate
+# ******************************************************************************** #        
+
+## Delegate class for table and tree-like widgets implementing an in-cell combobox
+class ComboboxDelegate(QtWidgets.QStyledItemDelegate):
+
+    ## Constructor.
+    # @param model_indices `list` list of indices in underlying model that must contain the 
+    # BrowseEdit fields
+    # @param thisparent `QtWidgets.QWidget` parent widget for this instance
+    # @param browse_edit_kwargs `keyword arguments` keyword arguments passed to BrowseEdit constructor
+    def __init__(self, editable=False, data_role=QtCore.Qt.UserRole + 1, parent=None):
+        super().__init__(parent)
+        self.data_role = data_role
+        self.editable = editable        
+        
+    ## Overridden method of QtWidgets.QStyledItemDelegate:
+    # creates the underlying delegate (editor widget).
+    def createEditor(self, parent: QtWidgets.QWidget, option: QtWidgets.QStyleOptionViewItem,
+                    index: QtCore.QModelIndex) -> QtWidgets.QWidget:        
+        try:
+            data = index.data(self.data_role)
+            if not data: raise Exception
+            editor = QtWidgets.QComboBox(parent)
+            editor.setEditable(self.editable)
+            editor.addItems([str(x) for x in data])
+            editor.setFrame(False)
+            return editor
+        except Exception:
+            return super().createEditor(parent, option, index)
+
+    ## Overridden method of QtWidgets.QStyledItemDelegate:
+    # updates the editor data (text) from the underlying model.
+    def setEditorData(self, editor, index: QtCore.QModelIndex):
+        if not index.isValid(): return
+        try:
+            txt = index.data(QtCore.Qt.EditRole)
+            if not self.editable:
+                data = index.data(self.data_role)
+                if not data or not txt in data: raise Exception
+            editor.setCurrentText(txt)
+        except:
+            super().setEditorData(editor, index)
+
+    ## Overridden method of QtWidgets.QStyledItemDelegate:
+    # updates the underlying model from the editor data (text).
+    def setModelData(self, editor, model: QtCore.QAbstractItemModel, index: QtCore.QModelIndex):
+        try:
+            model.setData(index, editor.currentText(), QtCore.Qt.EditRole)
+        except:
+            super().setModelData(editor, model, index)
+
+    ## Overridden method of QtWidgets.QStyledItemDelegate:
+    # updates the editor position and size for a given model index.
+    def updateEditorGeometry(self, editor, option: QtWidgets.QStyleOptionViewItem,
+        index: QtCore.QModelIndex):
+        editor.setGeometry(option.rect)          
 
 # ******************************************************************************** #
 # *****          ProgressbarDelegate
@@ -1847,6 +1906,7 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     def __init__(self, settings, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(parent, flags)
+        self.mainwindow = getattr(parent, 'mainwindow', None)
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"))
         self.setWindowTitle(_('Database Manager'))
         self.dics_model = None        
@@ -1857,6 +1917,12 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.hunspellmgr = HunspellImport(settings)
         self.to_install = []
         self.loadermovie = QtGui.QMovie(f"{ICONFOLDER}/ajax-loader.gif")
+        self.db_model = None
+        self.db_model_thread = QThreadStump(on_start=self.on_repopulate_db_model_start,
+            on_finish=self.on_repopulate_db_model_finish,
+            on_run=self.on_repopulate_db_model_run,
+            on_error=self.on_repopulate_db_model_error)
+        self.db_model_changed_indices = set()
         
         self.initUI()
         self.sigEnableInstall.emit(False)
@@ -1872,7 +1938,12 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         self.stop_operations()
+        self.check_commit_db(False, True)
         super().closeEvent(event)
+
+    def resizeEvent(self, event):
+        if  self.tvDicPreview.isVisible(): 
+            self.tvDicPreview.setColumnWidth(0, self.tvDicPreview.width() - self.tvDicPreview.verticalHeader().sectionSize(0))
 
     def initUI(self):
         self.lo_main = QtWidgets.QVBoxLayout()
@@ -1926,7 +1997,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.tb_dicactions.addSeparator()
         
         self.act_peekdic = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/binoculars.png"), _('Peek'))
-        self.act_peekdic.setToolTip(_('See the raw content on the selected dictionary'))
+        self.act_peekdic.setToolTip(_('See the raw content of the selected dictionary'))
         self.act_peekdic.setCheckable(True)
         self.act_peekdic.setChecked(False)
         self.act_peekdic.setEnabled(False)
@@ -1956,7 +2027,11 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.tvDicPreview = QtWidgets.QTableView()
         self.tvDicPreview.setSortingEnabled(False)
         self.tvDicPreview.setWordWrap(False)
+        self.tvDicPreview.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.create_tvDicPreview_menu()
+        self.tvDicPreview.customContextMenuRequested.connect(self.on_tvDicPreview_contextmenu)
         self.tvDicPreview.hide()
+
         self.splitter_dics.addWidget(self.tvDicPreview)
         self.l_gif2 = QtWidgets.QLabel()
         self.l_gif2.setMovie(self.loadermovie)
@@ -1975,32 +2050,73 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.combo_selectdb = QtWidgets.QComboBox()
         self.combo_selectdb.setEditable(False)
         self.combo_selectdb.setMaximumWidth(250)
+        self.combo_selectdb.currentIndexChanged.connect(self.on_combo_selectdb)
         lo_w2top.addRow(_('Select database:'), self.combo_selectdb)
         lo_w2.addLayout(lo_w2top)
 
         self.tb_dbactions = QtWidgets.QToolBar()
+        self.act_refreshdb = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Refresh'))
+        self.act_refreshdb.setToolTip(_('Refresh view'))
+        self.act_refreshdb.triggered.connect(self.on_act_refreshdb)
+        self.act_stopdb = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), _('Stop'))
+        self.act_stopdb.setToolTip(_('Stop refreshing'))
+        self.act_stopdb.setCheckable(True)
+        self.act_stopdb.triggered.connect(self.on_act_stopdb)
+        self.tb_dbactions.addSeparator()
         self.act_addwd = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/add.png"), _('Add'))
         self.act_addwd.setToolTip(_('Add a new record'))
+        self.act_addwd.triggered.connect(self.on_act_addwd)
         self.act_delwd = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/multiply.png"), _('Delete'))
         self.act_delwd.setToolTip(_('Delete selected records'))
+        self.act_delwd.triggered.connect(self.on_act_delwd)
         self.tb_dbactions.addSeparator()
         self.act_commit = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), _('Commit'))
         self.act_commit.setToolTip(_('Save changes to DB'))
-        self.act_rollback = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/undo.png"), _('Undo'))
-        self.act_rollback.setToolTip(_('Undo (rollback) pending changes'))
+        self.act_commit.triggered.connect(self.on_act_commit)      
         lo_w2.addWidget(self.tb_dbactions)
+
+        self.l_gif3 = QtWidgets.QLabel()
+        self.l_gif3.setMovie(self.loadermovie)
+        self.l_gif3.hide()
+        lo_w2.addWidget(self.l_gif3, QtCore.Qt.AlignCenter)
 
         self.tvDB = QtWidgets.QTableView()
         self.tvDB.setSortingEnabled(True)
+        self.tvDB.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.tvDB.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         lo_w2.addWidget(self.tvDB)
+
         w2.setLayout(lo_w2)
         self.tabw.addTab(w2, _('Words'))
+
+    def create_tvDicPreview_menu(self):
+        @QtCore.pyqtSlot(bool)
+        def on_act_selectall(checked):
+            self.tvDicPreview.selectAll()
+
+        @QtCore.pyqtSlot(bool)
+        def on_act_copy(checked):
+            data_model = self.tvDicPreview.model()
+            sel_model =  self.tvDicPreview.selectionModel()
+            if not data_model or not sel_model or not sel_model.hasSelection(): 
+                return
+            txt = NEWLINE.join(data_model.itemFromIndex(ind).text() for ind in sel_model.selectedRows())
+            clipboard_copy(txt)
+
+        self.tvDicPreview_menu = QtWidgets.QMenu(self)
+        act_selectall = self.tvDicPreview_menu.addAction(_('Select All'))
+        act_selectall.triggered.connect(on_act_selectall)
+        act_copy = self.tvDicPreview_menu.addAction(_('Copy'))
+        act_copy.triggered.connect(on_act_copy)
 
     def repopulate_dic_model(self, refresh_from_server=True, stopcheck=None):
         if not self.dics or refresh_from_server:
             self.dics = self.hunspellmgr.list_all_dics(stopcheck)
 
         if stopcheck and stopcheck(): return
+
+        if self.db_model: self.db_model.clear()
+        self.combo_selectdb.clear()
 
         r = 0
         for dic in self.dics:            
@@ -2039,6 +2155,10 @@ class WordDBManager(QtWidgets.QMainWindow):
                                        item_replace, item_exclpos, item_exclwd, 
                                        item_startrow, item_endrow])
             self.reformat_dic_model_row(r)
+
+            if isinstalled:
+                self.combo_selectdb.addItem(dic['lang_full'], dic)
+
             r += 1
             if stopcheck and stopcheck(): break
 
@@ -2101,6 +2221,10 @@ class WordDBManager(QtWidgets.QMainWindow):
             self.stop_operations()
 
     @QtCore.pyqtSlot(bool)
+    def on_act_addwd(self, checked):
+        pass
+
+    @QtCore.pyqtSlot(bool)
     def on_act_peekdic(self, checked):
         if checked:
             index = self.tvDics.currentIndex()
@@ -2136,7 +2260,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             items = getattr(self, 'dic_preview_item', None)
             if items:
                 items[1].setData(None, QtCore.Qt.UserRole + 1)
-            self.tvDics.setItemDelegateForColumn(1, None)
+            #self.tvDics.setItemDelegateForColumn(1, None)
             #self.tvDics.show()
             return True
         return False
@@ -2160,9 +2284,10 @@ class WordDBManager(QtWidgets.QMainWindow):
         items = getattr(self, 'dic_preview_item', None)
         if items:
             items[1].setData(None, QtCore.Qt.UserRole + 1)
-        self.tvDics.setItemDelegateForColumn(1, None)
+        #self.tvDics.setItemDelegateForColumn(1, None)
         #self.tvDics.show()
         if os.path.exists(filepath):
+            self.mainwindow.garbage.append(filepath)
             self.show_dic_content(filepath)
 
     @QtCore.pyqtSlot(int, str, str, str, str)
@@ -2172,7 +2297,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         items = getattr(self, 'dic_preview_item', None)
         if items:
             items[1].setData(None, QtCore.Qt.UserRole + 1)
-        self.tvDics.setItemDelegateForColumn(1, None)
+        #self.tvDics.setItemDelegateForColumn(1, None)
         #self.tvDics.show()
         MsgBox(_("Error downloading '{}' from '{}'").format(lang, url), self, _('Error'), 'error')
         
@@ -2198,6 +2323,174 @@ class WordDBManager(QtWidgets.QMainWindow):
                                            self.on_run_download_preview,
                                            self.on_complete_download_preview, 
                                            self.on_error_download_preview)
+
+    def show_db(self, dic_lang, stopcheck=None):
+        if not dic_lang: return
+        db = Sqlitedb()
+        if not db.setpath(dic_lang['lang']):
+            MsgBox(_("Unable to connect to database '{}'").format(dic_lang['lang']), self, _('Error'), 'error')
+            return
+
+        pos_all = {pos_full: pos_short for (_, pos_short, pos_full) in db.get_pos()}
+
+        try:
+            for (wd_id, wd, pos_short, pos_full) in db.get_words():
+                if stopcheck and stopcheck(): break
+                item_word = QtGui.QStandardItem(wd)
+                item_word.setData(wd_id)
+                item_word.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable) 
+                item_pos = QtGui.QStandardItem(pos_full)
+                item_pos.setData(pos_all)
+                item_pos.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
+                self.db_model.appendRow([item_word, item_pos])
+        finally:
+            db.disconnect()
+
+    def update_db_actions(self):
+        refresh_running = self.db_model_thread.isRunning()
+        self.act_stopdb.setEnabled(refresh_running)
+        self.act_addwd.setEnabled(not refresh_running and not self.db_model is None)
+        self.act_delwd.setEnabled(not refresh_running and not self.db_model is None and self.tvDB.currentIndex().isValid())
+        self.act_commit.setEnabled(len(self.db_model_changed_indices) > 0)
+
+    @QtCore.pyqtSlot(int)
+    def on_combo_selectdb(self, index):
+        self.on_act_refreshdb(True)
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_refreshdb(self, checked):
+        self.on_act_stopdb(True)
+        self.check_commit_db(False, True)
+        self.db_model_thread.start()
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_stopdb(self, checked):
+        if checked and self.db_model_thread.isRunning():
+            self.db_model_thread.wait()
+            self.update_db_actions()
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_commit(self, checked):
+        self.commit_db()
+
+    def check_commit_db(self, refresh=True, ignore_errors=False):
+        if len(self.db_model_changed_indices) == 0: return
+        reply = MsgBox(_("You have unsaved changes in database '{}'. Commit them?").format(self.combo_selectdb.currentText()), 
+                        self, _('Unsaved database'), 'ask')
+        if reply == 'yes':
+            self.commit_db(refresh, ignore_errors)
+
+    def commit_db(self, refresh=True, ignore_errors=False):
+        if len(self.db_model_changed_indices) == 0: return
+
+        dic_lang = self.combo_selectdb.currentData()
+        if not dic_lang: return
+
+        db = Sqlitedb()
+        if not db.setpath(dic_lang['lang']):
+            MsgBox(_("Unable to connect to database '{}'").format(dic_lang['lang']), self, _('Error'), 'error')
+            return
+
+        pos_all = {pos_full: pos_short for (_, pos_short, pos_full) in db.get_pos()}
+        cur = db.conn.cursor()
+
+        ok_indices = set()
+        r = -1
+        for ind in self.db_model_changed_indices:            
+            if r == ind.row(): 
+                ok_indices.add(ind)
+                continue
+
+            r = ind.row()
+            c = ind.column()
+            if c == 0:
+                wd_item = self.db_model.itemFromIndex(ind)
+                pos_item = self.db_model.itemFromIndex(ind.siblingAtColumn(1))           
+            elif c == 1:                
+                wd_item = self.db_model.itemFromIndex(ind.siblingAtColumn(0))
+                pos_item = self.db_model.itemFromIndex(ind)
+            else:
+                continue
+
+            SQL_INSERT = "insert or replace into twords(word, idpos)\n" \
+                         "values('{}', (select distinct id from tpos where " \
+                         "posdesc = '{}'));".format(wd_item.text(), pos_item.text())
+
+            data = wd_item.data()
+            if data:
+                SQL = "update twords set word = '{}', " \
+                      "idpos = (select distinct id from tpos where posdesc = '{}')\n" \
+                      "where id = {};".format(wd_item.text(), pos_item.text(), data)
+            else:
+                SQL = SQL_INSERT
+
+            try:
+                cur.execute(SQL)
+                db.conn.commit()
+                ok_indices.add(ind)
+            except Exception as err:
+                if 'UNIQUE constraint failed' in str(err):
+                    try:
+                        cur.execute(SQL_INSERT)
+                    except:
+                        if not ignore_errors: 
+                            MsgBox(str(err), self, _('Error'), 'error')
+                            break
+                else:
+                    if not ignore_errors: 
+                        MsgBox(str(err), self, _('Error'), 'error')
+                        break
+        
+        if ignore_errors:
+            self.db_model_changed_indices.clear()
+        else:
+            self.db_model_changed_indices -= ok_indices
+
+        if refresh: 
+            self.on_act_refreshdb(True)
+        else:
+            self.update_db_actions()
+        
+    @QtCore.pyqtSlot()
+    def on_repopulate_db_model_start(self):        
+        self.db_model_changed_indices.clear()
+        self.act_stopdb.setChecked(False)
+        #self.statusBar().showMessage(_('Refreshing database view...'))
+        self.db_model = QtGui.QStandardItemModel()
+        self.db_model.setHorizontalHeaderLabels([_('Entry'), _('Part of speech')])
+        self.tvDB.hide()
+        self.l_gif3.show()
+        self.loadermovie.start()
+        self.update_db_actions()
+
+    @QtCore.pyqtSlot()
+    def on_repopulate_db_model_run(self):
+        self.show_db(self.combo_selectdb.currentData(), self.act_stopdb.isChecked)
+
+    @QtCore.pyqtSlot()
+    def on_repopulate_db_model_finish(self):
+        self.loadermovie.stop()
+        self.l_gif3.hide()
+        self.db_model.itemChanged.connect(self.db_model_item_changed)
+        #self.db_model.dataChanged.connect(self.db_model_data_changed)
+        self.db_model.modelReset.connect(self.db_model_reset)
+        self.tvDB.setModel(self.db_model)
+        self.tvDB.selectionModel().currentChanged.connect(self.on_tvDb_selectionchanged)
+        self.tvDB.setItemDelegateForColumn(1, ComboboxDelegate())
+        self.tvDB.horizontalHeader().setSectionsMovable(True)
+        self.tvDB.show()
+        #self.statusBar().clearMessage()
+        self.act_stopdb.setChecked(False)
+        self.update_db_actions()
+
+    @QtCore.pyqtSlot(QtCore.QThread, str)
+    def on_repopulate_db_model_error(self, thread, message):
+        MsgBox(message, self, _('Error'), 'error')
+        self.loadermovie.stop()
+        self.l_gif3.hide()
+        self.db_model = None
+        self.act_stopdb.setChecked(False)
+        self.on_act_stopdb(True)
     
     def stop_operations(self):
 
@@ -2212,6 +2505,15 @@ class WordDBManager(QtWidgets.QMainWindow):
                 except:
                     pass
 
+        if self.db_model_thread.isRunning():
+            self.act_stopdb.setChecked(True)
+            self.db_model_thread.quit()
+            if not self.db_model_thread.wait(5000):
+                try:
+                    self.db_model_thread.terminate()
+                except:
+                    pass
+
         self.hunspellmgr.pool_wait()
         self.tvDics.setItemDelegateForColumn(1, None)
 
@@ -2222,6 +2524,8 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_stopdics.setChecked(False)
         self.act_stopdics.setEnabled(False)
         self.act_refreshdics.setEnabled(True)
+        self.act_stopdb.setChecked(False)
+        self.update_db_actions()
         self.statusbar.clearMessage()
         self.statusbar_pbar.setVisible(False)
         self.on_act_refreshdics(True)
@@ -2544,6 +2848,16 @@ class WordDBManager(QtWidgets.QMainWindow):
             on_error=self.on_install_dics_error)
 
     @QtCore.pyqtSlot(QtGui.QStandardItem)
+    def db_model_item_changed(self, item):
+        self.db_model_changed_indices.add(item.index())
+        self.update_db_actions()
+
+    @QtCore.pyqtSlot()
+    def db_model_reset(self):
+        self.db_model_changed_indices.clear()
+        self.update_db_actions()
+
+    @QtCore.pyqtSlot(QtGui.QStandardItem)
     def dics_model_item_changed(self, item):
         c = item.column()
         r = item.row()
@@ -2678,6 +2992,14 @@ class WordDBManager(QtWidgets.QMainWindow):
             self.act_peekdic.setChecked(False)
             self.tvDicPreview.hide()
             self.l_gif2.hide()
+
+    @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
+    def on_tvDb_selectionchanged(self, current, previous):  
+        self.update_db_actions()
+
+    @QtCore.pyqtSlot(QtCore.QPoint)
+    def on_tvDicPreview_contextmenu(self, pos):
+        self.tvDicPreview_menu.exec(self.tvDicPreview.mapToGlobal(pos))
             
 # ******************************************************************************** #
 # *****          SettingsDialog

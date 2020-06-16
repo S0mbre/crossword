@@ -14,29 +14,39 @@ from PyQt5 import QtCore
 
 # ******************************************************************************** #
 
+NEWLINE = '\n'
 ## SQL query to create default table structure
 SQL_CREATE_TABLES = \
-f"create table if not exists {SQL_TABLES['pos']['table']} (\n" \
-f"{SQL_TABLES['pos']['fid']} integer primary key autoincrement,\n" \
-f"{SQL_TABLES['pos']['fpos']} text not null,\n" \
-f"posdesc text default '');\n" \
-f"create table if not exists {SQL_TABLES['words']['table']} (\n" \
-f"id integer primary key autoincrement,\n" \
-f"{SQL_TABLES['words']['fwords']} text not null,\n" \
-f"{SQL_TABLES['words']['fpos']} integer,\n" \
-f"foreign key ({SQL_TABLES['words']['fpos']}) references {SQL_TABLES['pos']['table']}({SQL_TABLES['pos']['fid']}) on delete set null on update no action);\n" \
+f"create table if not exists {SQL_TABLES['pos']['table']} ({NEWLINE}" \
+f"{SQL_TABLES['pos']['fid']} integer primary key autoincrement,{NEWLINE}" \
+f"{SQL_TABLES['pos']['fpos']} text not null,{NEWLINE}" \
+f"{SQL_TABLES['pos']['fposdesc']} text default '');{NEWLINE}" \
+f"create table if not exists {SQL_TABLES['words']['table']} ({NEWLINE}" \
+f"{SQL_TABLES['words']['fid']} integer primary key autoincrement,{NEWLINE}" \
+f"{SQL_TABLES['words']['fwords']} text not null,{NEWLINE}" \
+f"{SQL_TABLES['words']['fpos']} integer,{NEWLINE}" \
+f"foreign key ({SQL_TABLES['words']['fpos']}) references {SQL_TABLES['pos']['table']}({SQL_TABLES['pos']['fid']}) on delete set null on update no action);{NEWLINE}" \
 f"create unique index word_idx on {SQL_TABLES['words']['table']}({SQL_TABLES['words']['fwords']}, {SQL_TABLES['words']['fpos']});"
 ## SQL query to insert part of speech data
 SQL_INSERT_POS = \
-f"insert into {SQL_TABLES['pos']['table']}({SQL_TABLES['pos']['fpos']}, posdesc) values (?, ?);"
+f"insert into {SQL_TABLES['pos']['table']}({SQL_TABLES['pos']['fpos']}, {SQL_TABLES['pos']['fposdesc']}) values (?, ?);"
 ## SQL query to insert words and part of speech data
 SQL_INSERT_WORD = \
-f"insert or replace into {SQL_TABLES['words']['table']} ({SQL_TABLES['words']['fwords']}, {SQL_TABLES['words']['fpos']})\n" \
+f"insert or replace into {SQL_TABLES['words']['table']} ({SQL_TABLES['words']['fwords']}, {SQL_TABLES['words']['fpos']}){NEWLINE}" \
 f"values('{BRACES}', (select {SQL_TABLES['pos']['fid']} from {SQL_TABLES['pos']['table']} where {SQL_TABLES['pos']['fpos']} = '{BRACES}'));"
 ## SQL query to clear words
 SQL_CLEAR_WORDS = f"delete from {SQL_TABLES['words']['table']};"
 ## SQL query to count entries (words)
 SQL_COUNT_WORDS = f"select count(*) from {SQL_TABLES['words']['table']};"
+## SQL query to display all words
+SQL_GET_WORDS = f"select {SQL_TABLES['words']['table']}.{SQL_TABLES['words']['fid']}, " \
+f"{SQL_TABLES['words']['table']}.{SQL_TABLES['words']['fwords']}, " \
+f"{SQL_TABLES['pos']['table']}.{SQL_TABLES['pos']['fpos']}, " \
+f"{SQL_TABLES['pos']['table']}.{SQL_TABLES['pos']['fposdesc']} " \
+f"from {SQL_TABLES['words']['table']}{NEWLINE}" \
+f"join {SQL_TABLES['pos']['table']} on {SQL_TABLES['words']['table']}.{SQL_TABLES['words']['fpos']} = {SQL_TABLES['pos']['table']}.{SQL_TABLES['pos']['fid']};"
+## SQL query to display all POS
+SQL_GET_POS = f"select * from {SQL_TABLES['pos']['table']};"
 ## Hunspell dic repo URL
 HUNSPELL_REPO = 'https://raw.githubusercontent.com/wooorm/dictionaries/master'
 
@@ -51,8 +61,9 @@ class Sqlitedb:
     ## Constructor initializes DB driver connection.
     # @param dbname `str` path to database file (*.db) or an abbreviated language name
     # for preinstalled DB files stored in 'assets/dic', e.g. 'en' (='assets/dic/en.db')
-    def __init__(self, dbname=None):
-        if dbname: self.setpath(dbname) 
+    def __init__(self, dbname=None, fullpath=False, recreate=False, connect=True):
+        if dbname: 
+            self.setpath(dbname, fullpath, recreate, connect) 
         
     ## Destructor disconnects from DB.
     def __del__(self):
@@ -160,7 +171,13 @@ class Sqlitedb:
             return False
         except:
             self.disconnect()
-            return False   
+            return False
+
+    def get_words(self):
+        return self.conn.cursor().execute(SQL_GET_WORDS)
+
+    def get_pos(self):
+        return self.conn.cursor().execute(SQL_GET_POS)
     
 # ******************************************************************************** #
 
