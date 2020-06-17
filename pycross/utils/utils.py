@@ -48,7 +48,7 @@ def copy_file(path_from, path_to):
 ## Iterates the files and folder in a given folder, performing some operations
 # on the found files / folders.
 # @param root_path `str` the starting (root) directory path to start searching from
-# @param abs_path `bool` if `True` (default), the given root path will be made absolute 
+# @param abs_path `bool` if `True` (default), the given root path will be made absolute
 # (relative to the current working directory); if `False`, it will be left as it is
 # @param recurse `bool` whether to recurse into the found subdirectories (default = `True`)
 # @param dir_process_function `callable` callback function for found subdirectories.
@@ -83,7 +83,7 @@ def walk_dir(root_path, abs_path=True, recurse=True, dir_process_function=None,
 # @param stdout `file-like` file / stream to channel the STDOUT and STDERR streams to;
 # the default value is subprocess.PIPE, meaning that the output will be returned by the method
 # @param encoding `str` the string encoding to use for the executable's output (default = UTF8)
-# @param timeout `float` number of seconds to wait until timeout 
+# @param timeout `float` number of seconds to wait until timeout
 # (default = `None`, i.e. wait infinitely)
 # @param shell `bool` whether the executable must be called via the system shell (default = `False`)
 # @param kwargs `keyword arguments` additional keyword arguments passed to subprocess.Popen
@@ -152,7 +152,7 @@ def str_to_timestamp(text, strformat='%Y-%m-%d %H-%M-%S'):
 def get_tempdir():
     return os.path.abspath(tempfile.gettempdir())
 
-## Returns a human-formatted file size as a string, 
+## Returns a human-formatted file size as a string,
 # e.g. "1Mi" (1 megabyte), "15GBi" (15 gigabytes) etc.
 # @param value `float` the file size value to convert
 # @param suffix `str` the size suffix, default = 'B' (bytes)
@@ -330,18 +330,18 @@ def register_file_types(filetypes=('xpf', 'ipuz', 'pxjson'), register=True):
 ## @brief Plugin decorator for custom plugins.
 # Searches the Plugin manager for methods (function) in the given category
 # having the same name as the wrapped method and calls the plugin methods in
-# the order as stored in the Plugin manager for that category. 
+# the order as stored in the Plugin manager for that category.
 # Plugin methods can be called:
 #   * _before_ the original method
 #   * _after_ the original method
 #   * _instead of_ the original method,
-# depending on the `wraptype` attribute of the plugin method ('before', 'after' or 'replace'). 
+# depending on the `wraptype` attribute of the plugin method ('before', 'after' or 'replace').
 # @param category `str` name of the plugin category (e.g. 'general')
 # @see utils.pluginmanager, utils.pluginbase
 def pluggable(category):
     def plugin_general(func):
         @wraps(func)
-        def wrapped(self, *args, **kwargs):            
+        def wrapped(self, *args, **kwargs):
             plugin_methods = self.plugin_mgr.get_plugin_methods(category, func.__name__)
             cnt = len(plugin_methods)
             for i in range(cnt):
@@ -383,30 +383,30 @@ def pluggable(category):
 # @param indent `str` indentation for method docs, if present
 # @returns `list of str` list of wrapped method signatures, e.g.:
 # ```
-# ['def foo(arg1, arg2):', 
-#  'def bar():', 
+# ['def foo(arg1, arg2):',
+#  'def bar():',
 #  'def commentedfunc():\n    This is comment']
 # ```
 def collect_pluggables(parent_object, indent='    '):
     methods = []
     for itemname in dir(parent_object):
         if itemname.startswith('_'): continue
-        obj = getattr(parent_object, itemname, None)            
+        obj = getattr(parent_object, itemname, None)
         obj = getattr(obj, '__wrapped__', None)
         if not obj or not callable(obj): continue
-        m = 'def ' + itemname            
+        m = 'def ' + itemname
         try:
             sig = str(inspect.signature(obj))
-            if sig: m += sig + ':' 
+            if sig: m += sig + ':'
         except:
             m += '():'
         comments = inspect.getcomments(obj)
-        if comments: 
+        if comments:
             for row in [comment.strip().replace('##', '#') for comment in comments.split('\n')]:
                 m += '\n' + indent + row
         else:
             if not m.endswith('\n'): m += '\n'
-            m += indent        
+            m += indent
         m += 'return None'
         methods.append(m)
     methods.sort()
@@ -432,15 +432,15 @@ def get_builtins():
 # This function collects all variables (builtin, global, local) that the given
 # script references or creates using the [Jedi autocompletion package](https://jedi.readthedocs.io/en/latest/).
 # The resulting list of names can be then used for autocompletion. This app uses
-# this function in the user plugin script editor. 
+# this function in the user plugin script editor.
 # @param script `str` source script in Python
-# @returns `list of str` list of referenced variables (functions also have signatures, 
+# @returns `list of str` list of referenced variables (functions also have signatures,
 # i.e. arguments in brackets)
 def get_script_members(script):
     #jscript = jedi.Script(script, _project=jedi.api.Project(os.path.abspath('utils')))
     jscript = jedi.Script(script, sys_path=sys.path + [os.path.abspath(os.path.dirname(__file__))])
     res = get_builtins()
-    for d in jscript.get_names(all_scopes=True, definitions=True, references=True):        
+    for d in jscript.get_names(all_scopes=True, definitions=True, references=True):
         if d.type == 'function':
             for ds in d.get_signatures():
                 res.append(ds.to_string().replace('(self)', '()').replace('(self, ', '('))
@@ -450,7 +450,7 @@ def get_script_members(script):
 
 # ---------------------------- GUI ---------------------------- #
 
-## Customized thread class (based on QThread) that adds 
+## Customized thread class (based on QThread) that adds
 # progress, error etc. signals and mutex locking to avoid thread racing.
 class QThreadStump(QtCore.QThread):
 
@@ -467,9 +467,9 @@ class QThreadStump(QtCore.QThread):
     # operation (callback has no args or returned result)
     # @param on_error `callable` callback function to handle exceptions
     # raised during the thread operation (see QThreadStump::sig_error)
-    # @param start_signal `QtCore.pyqtSignal` signal that can be connected to 
+    # @param start_signal `QtCore.pyqtSignal` signal that can be connected to
     # the `start` slot (if not `None`)
-    # @param stop_signal `QtCore.pyqtSignal` signal that can be connected to 
+    # @param stop_signal `QtCore.pyqtSignal` signal that can be connected to
     # the `terminate` slot (if not `None`)
     # @param free_on_finish `bool` whether the thread instance will be deleted
     # from memory after it completes its operation (default = `False`)
@@ -501,9 +501,9 @@ class QThreadStump(QtCore.QThread):
     # operation (callback has no args or returned result)
     # @param on_error `callable` callback function to handle exceptions
     # raised during the thread operation (see QThreadStump::sig_error)
-    # @param start_signal `QtCore.pyqtSignal` signal that can be connected to 
+    # @param start_signal `QtCore.pyqtSignal` signal that can be connected to
     # the `start` slot (if not `None`)
-    # @param stop_signal `QtCore.pyqtSignal` signal that can be connected to 
+    # @param stop_signal `QtCore.pyqtSignal` signal that can be connected to
     # the `terminate` slot (if not `None`)
     # @param free_on_finish `bool` whether the thread instance will be deleted
     # from memory after it completes its operation (default = `False`)
@@ -529,7 +529,7 @@ class QThreadStump(QtCore.QThread):
         if on_error: self.sig_error.connect(on_error)
         ## `int` thread default priority (default = normal)
         self.default_priority = default_priority if default_priority != QtCore.QThread.InheritPriority else QtCore.QThread.NormalPriority
-        ## `callable` callback function for the main operation 
+        ## `callable` callback function for the main operation
         self.on_run = on_run
         ## `QtCore.QMutex` mutex lock used by QThreadStump::lock() and QThreadStump::unlock()
         self.mutex = QtCore.QMutex()
@@ -571,7 +571,7 @@ class Task(QtCore.QRunnable):
         self.on_run = on_run
         self.run_args = run_args
         self.run_kwargs = run_kwargs
-        
+
     def run(self):
         self.signals.sigstart.emit(self.id)
         if not self.on_run: return
@@ -589,7 +589,7 @@ class Task(QtCore.QRunnable):
         else:
             self.signals.sigfinish.emit(self.id, res)
 
-# ------------------------------------------------------------------------ #            
+# ------------------------------------------------------------------------ #
 
 ## Constructs a `QtGui.QFont` object from given font parameters.
 # @param family `str` font familty name, e.g. 'Arial'
@@ -634,7 +634,7 @@ MSGBOX_TYPES = {'error': (QtWidgets.QMessageBox.Critical, ['ok']), 'warn': (QtWi
                 'info': (QtWidgets.QMessageBox.Information, ['ok']), '-': (QtWidgets.QMessageBox.NoIcon, ['ok'])}
 
 ## Displays a GUI message dialog and returns the user's reply.
-# @param what `str` message dialog text (body) 
+# @param what `str` message dialog text (body)
 # @param parent `QtWidgets.QWidget` parent widget for the dialog or `None` if no parent is required
 # @param title `str` dialog title (caption)
 # @param msgtype `str` dialog type affecting the icon: 'error', 'info', 'ask', 'warn' or '-' (no icon)
@@ -645,7 +645,7 @@ MSGBOX_TYPES = {'error': (QtWidgets.QMessageBox.Critical, ['ok']), 'warn': (QtWi
 # @returns `str` | `QtWidgets.QMessageBox` user's reply (if `execnow` is `True`) as
 # the name of the clicked button or an empty string if cancelled; or the dialog object
 # if `execnow` is `False`
-def MsgBox(what, parent=None, title='pyCross', msgtype='info', btn=None, 
+def MsgBox(what, parent=None, title='pyCross', msgtype='info', btn=None,
            detailedText='', infoText='', execnow=True):
     msgtype = MSGBOX_TYPES.get(msgtype, MSGBOX_TYPES['-'])
     msgbox = QtWidgets.QMessageBox(parent)
@@ -690,7 +690,7 @@ def MsgBox(what, parent=None, title='pyCross', msgtype='info', btn=None,
 # @param decimals `int` number of decimals after the floating point, default = 1
 # @param step `int` step value for the int / float spinbox, default = 1
 # @param comboeditable `bool` if `True`, the item selection combobox for the 'item' mode
-# will be editable, otherwise non-editable 
+# will be editable, otherwise non-editable
 # @param comboitems `list` list of items to choose from in the 'item' input mode
 # @returns `str` | `int` | `float` the user's input
 def UserInput(dialogtype='text', parent=None, title='pyCross', label='', value=None, textmode='normal',
@@ -757,12 +757,12 @@ def clipboard_get(valtype='text'):
 def clipboard_clear():
     QtWidgets.qApp.clipboard().clear()
 
-## @brief Returns a Qt widget's [stylesheet](https://doc.qt.io/qt-5/stylesheet-reference.html) 
+## @brief Returns a Qt widget's [stylesheet](https://doc.qt.io/qt-5/stylesheet-reference.html)
 # as a Python dictionary.
 # This is the reverse of stylesheet_dump().
 # @param style `str` the widget style sheet that is retrieved with the styleSheet() method
 # of `QtWidgets.QWidget` derived classes
-# @param dequote `bool` whether to dequote (strip quotation symbols from) values 
+# @param dequote `bool` whether to dequote (strip quotation symbols from) values
 # found in the style sheet (default = `True`)
 # @param strip_sz `bool` whether to drop size units like 'pt' or 'px' and return just
 # the numerical values (default = `True`)
@@ -818,7 +818,7 @@ def stylesheet_dump(d, quoted_keys=('font-family',), add_units={'font-size': 'pt
 
 ## Converts CSS font weight constants to Qt font weight constants.
 # @param weight `int` font weight in CSS style sheet
-# @param default `int` default Qt font weight used on failure to get the 
+# @param default `int` default Qt font weight used on failure to get the
 # corresponding Qt weight value
 # @returns `int` Qt font weight constant, such as `QtGui.QFont.Normal` or `QtGui.QFont.Bold`
 # @see globalvars::FONT_WEIGHTS, font_weight_qt2css()
@@ -833,7 +833,7 @@ def font_weight_css2qt(weight, default=0):
 
 ## Converts Qt font weight constants to CSS font weight constants.
 # @param weight `int` font weight Qt constant, such as `QtGui.QFont.Normal` or `QtGui.QFont.Bold`
-# @param default `int` default CSS stylesheet font weight used on failure to get the 
+# @param default `int` default CSS stylesheet font weight used on failure to get the
 # corresponding CSS weight value
 # @returns `int` CSS font weight constant
 # @see globalvars::FONT_WEIGHTS, font_weight_css2qt()
@@ -943,7 +943,7 @@ class JsonHiliter(QtGui.QSyntaxHighlighter):
     ## @brief Regex-based patterns and their corresponding color values.
     # Each record has 3 elements:
     #   1. `Python regex object` compiled regex pattern
-    #   2. `int` group number in regex match results to highlight 
+    #   2. `int` group number in regex match results to highlight
     #   (0 = whole match, 1 = first expression in parentheses, etc...)
     #   3. `QtGui.QColor` color to apply to matched text
     PATTERNS = [
@@ -970,10 +970,10 @@ class JsonHiliter(QtGui.QSyntaxHighlighter):
         (re.compile(r'([\s,\:\[\(])(\".*?\")'), 2, QtGui.QColor(QtCore.Qt.darkCyan)),
         (re.compile(r'(^\".*?\")'), 1, QtGui.QColor(QtCore.Qt.darkCyan)),
         # key names
-        (re.compile(r'(\".*?\")(\s*\:)'), 1, QtGui.QColor(QtCore.Qt.darkGreen))        
+        (re.compile(r'(\".*?\")(\s*\:)'), 1, QtGui.QColor(QtCore.Qt.darkGreen))
     ]
 
-    ## @brief Qt signal emitted on a syntax parser error. 
+    ## @brief Qt signal emitted on a syntax parser error.
     # Arguments:
     #   * `QtGui.QSyntaxHighlighter` this instance
     #   * `str` error message string
@@ -982,7 +982,7 @@ class JsonHiliter(QtGui.QSyntaxHighlighter):
     #   * `int` line number in the source code
     #   * `int` column number in the source code
     sig_parse_error = QtCore.pyqtSignal(QtGui.QSyntaxHighlighter, str, str, int, int, int)
-    ## @brief Qt signal emitted on a syntax parser success. 
+    ## @brief Qt signal emitted on a syntax parser success.
     # Arguments:
     #   * `QtGui.QSyntaxHighlighter` this instance
     sig_parse_success = QtCore.pyqtSignal(QtGui.QSyntaxHighlighter)
@@ -991,7 +991,7 @@ class JsonHiliter(QtGui.QSyntaxHighlighter):
     # @param decode_errors `bool` whether to highlight and process JSON decode errors
     # @param on_decode_error `QtCore.pyQtSlot` slot for the `JsonHiliter::sig_parse_error` signal
     # @param on_decode_success `QtCore.pyQtSlot` slot for the `JsonHiliter::sig_parse_success` signal
-    def __init__(self, parent: QtGui.QTextDocument, decode_errors=False, 
+    def __init__(self, parent: QtGui.QTextDocument, decode_errors=False,
         on_decode_error=None, on_decode_success=None):
         super().__init__(parent)
         ## `bool` whether to highlight and process JSON decode errors
@@ -1022,9 +1022,9 @@ class JsonHiliter(QtGui.QSyntaxHighlighter):
         # error highlighting
         if not self.decode_errors: return
         doc = self.document()
-        offset = self.currentBlock().position()        
+        offset = self.currentBlock().position()
         try:
-            self.decoder.decode(doc.toPlainText())            
+            self.decoder.decode(doc.toPlainText())
         except json.JSONDecodeError as err:
             if err.pos >= offset and err.pos < (offset + length):
                 self.setFormat(err.pos - offset, 1, self._error_format)

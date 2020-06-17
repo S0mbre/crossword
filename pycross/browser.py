@@ -5,12 +5,12 @@
 # ******************************************************************************** #
 
 ## @package pycross.browser
-# Implementation of Qt web browser based on the 
+# Implementation of Qt web browser based on the
 # [Qt Simple Browser example](https://doc.qt.io/qt-5/qtwebengine-webenginewidgets-simplebrowser-example.html)
-from PyQt5 import (QtGui, QtCore, QtWidgets, QtNetwork, 
+from PyQt5 import (QtGui, QtCore, QtWidgets, QtNetwork,
                     QtWebEngineWidgets, QtWebEngineCore)
 
-from utils.globalvars import * 
+from utils.globalvars import *
 from utils.utils import *
 from forms import (PasswordDialog, AboutDialog)
 
@@ -45,14 +45,14 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
             if not deferredError.deferred():
                 MsgBox(deferredError.errorDescription(), mainwindow, _('Certificate Error'), 'error')
             else:
-                reply = MsgBox(_("{}\nPress YES to ignore certificate or NO to reject certificate.").format(deferredError.errorDescription()), 
+                reply = MsgBox(_("{}\nPress YES to ignore certificate or NO to reject certificate.").format(deferredError.errorDescription()),
                                 mainwindow, _('Certificate Error'), 'warn', ['yes', 'no'])
                 if reply == 'yes':
                     deferredError.ignoreCertificateError()
                 else:
                     deferredError.rejectCertificate()
 
-        QtCore.QTimer.singleShot(0, mainwindow, handle_error)        
+        QtCore.QTimer.singleShot(0, mainwindow, handle_error)
         return True
 
     ## @brief Handler called when user authentication is required.
@@ -91,8 +91,8 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
                      QtWebEngineWidgets.QWebEnginePage.MouseLock: _('Allow {} to lock your mouse cursor?'),
                      QtWebEngineWidgets.QWebEnginePage.DesktopVideoCapture: _('Allow {} to capture video of your desktop?'),
                      QtWebEngineWidgets.QWebEnginePage.DesktopAudioVideoCapture: _('Allow {} to capture audio and video of your desktop?'),
-                     QtWebEngineWidgets.QWebEnginePage.Notifications: _('Allow {} to show notification on your desktop?')} 
-        mainwindow = self.view().window()        
+                     QtWebEngineWidgets.QWebEnginePage.Notifications: _('Allow {} to show notification on your desktop?')}
+        mainwindow = self.view().window()
         if feature in questions and MsgBox(questions[feature].format(securityOrigin.host()), mainwindow, _('Permission Request'), 'ask') == 'yes':
             self.setFeaturePermission(securityOrigin, feature, QtWebEngineWidgets.QWebEnginePage.PermissionGrantedByUser)
         else:
@@ -106,8 +106,8 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
     @QtCore.pyqtSlot('QUrl, QAuthenticator*, QString')
     def on_proxyAuthenticationRequired(self, requestUrl, authenticator, proxyHost):
         mainwindow = self.view().window()
-        dia = PasswordDialog(title=f"{_('Authentication')}: {proxyHost}", 
-                             user_label=_('Proxy user'), 
+        dia = PasswordDialog(title=f"{_('Authentication')}: {proxyHost}",
+                             user_label=_('Proxy user'),
                              password_label=_('Proxy password'), parent=mainwindow)
         if not dia.exec():
             authenticator = None
@@ -219,7 +219,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
             return popup.view()
         return None
 
-    ## Handles the context (right-click) menu for the page 
+    ## Handles the context (right-click) menu for the page
     # showing a menu with available web actions.
     # @param event `QtGui.QContextMenuEvent` the context menu event
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent):
@@ -289,7 +289,7 @@ class WebPopupWindow(QtWidgets.QWidget):
     def __init__(self, profile: QtWebEngineWidgets.QWebEngineProfile, parent=None):
         super().__init__(parent)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum) 
+        self.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         ## `QtWidgets.QLineEdit` current URL address
         self.le_url = QtWidgets.QLineEdit()
         ## `QtWidgets.QAction` current webpage favicon
@@ -413,7 +413,7 @@ class TabWidget(QtWidgets.QTabWidget):
                 self.setTabToolTip(index, title)
             if self.currentIndex() == index:
                 self.titleChanged.emit(title)
-        
+
         @QtCore.pyqtSlot(QtCore.QUrl)
         def on_webview_urlchanged(url):
             index = self.indexOf(webView)
@@ -449,12 +449,12 @@ class TabWidget(QtWidgets.QTabWidget):
         def on_webview_windowcloserequested():
             index = self.indexOf(webView)
             if index >= 0:
-                self.closeTab(index)         
+                self.closeTab(index)
 
         @QtCore.pyqtSlot(QtWebEngineCore.QWebEngineFindTextResult)
         def on_webview_findtextfinished(result):
             if self.currentIndex() == self.indexOf(webView):
-                self.findTextFinished.emit(result)   
+                self.findTextFinished.emit(result)
 
         webPage = webView.page()
         webView.titleChanged.connect(on_webview_titlechanged)
@@ -527,7 +527,7 @@ class TabWidget(QtWidgets.QTabWidget):
         tab = self.createTab()
         tab.setUrl(view.url())
 
-    ## Navigates to the given URL in the active tab (overrides parent method) 
+    ## Navigates to the given URL in the active tab (overrides parent method)
     # @param url `QtCore.QUrl` new URL to navigate to
     @QtCore.pyqtSlot(QtCore.QUrl)
     def setUrl(self, url):
@@ -684,7 +684,7 @@ class DownloadWidget(QtWidgets.QFrame):
             self.btn_cancel.setToolTip(_('Stop download'))
             self.pb.setDisabled(False)
             if totalBytes > 0:
-                self.pb.setValue(int(100 * receivedBytes / totalBytes))                
+                self.pb.setValue(int(100 * receivedBytes / totalBytes))
                 self.pb.setFormat(_("%p% - {} of {} - {}/s").format(receivedBytes, totalBytes, bytesPerSecond))
             else:
                 self.pb.setValue(0)
@@ -692,17 +692,17 @@ class DownloadWidget(QtWidgets.QFrame):
 
         elif state == QtWebEngineWidgets.QWebEngineDownloadItem.DownloadCompleted:
             self.pb.setDisabled(True)
-            self.pb.setValue(100)                
+            self.pb.setValue(100)
             self.pb.setFormat(_("Completed - {} downloaded - {}/s").format(receivedBytes, bytesPerSecond))
 
         elif state == QtWebEngineWidgets.QWebEngineDownloadItem.DownloadCancelled:
             self.pb.setDisabled(True)
-            self.pb.setValue(0)                
+            self.pb.setValue(0)
             self.pb.setFormat(_("Cancelled - {} downloaded - {}/s").format(receivedBytes, bytesPerSecond))
 
         elif state == QtWebEngineWidgets.QWebEngineDownloadItem.DownloadInterrupted:
             self.pb.setDisabled(True)
-            self.pb.setValue(100)                
+            self.pb.setValue(100)
             self.pb.setFormat(_("Interrupted - {}").format(self.m_download.interruptReasonString()))
 
 
@@ -770,7 +770,7 @@ class DownloadManagerWidget(QtWidgets.QWidget):
         self.layout_items.insertWidget(0, wdownload, 0, QtCore.Qt.AlignTop)
         self.m_numDownloads += 1
         if self.m_numDownloads == 0:
-            self.l_zeroitems.hide() 
+            self.l_zeroitems.hide()
 
     ## Removes a download item.
     # @param wdownload `DownloadWidget` download item to remove
@@ -1117,13 +1117,13 @@ class BrowserWindow(QtWidgets.QMainWindow):
     def on_fullscreenAction(self, checked):
         tb = self.tb_main
         sb = self.statusBar()
-        if checked:       
-            self.viewToolbarAction.setEnabled(False)     
-            self.viewStatusbarAction.setEnabled(False)     
+        if checked:
+            self.viewToolbarAction.setEnabled(False)
+            self.viewStatusbarAction.setEnabled(False)
             tb.close()
             sb.close()
             self.showFullScreen()
-        else:            
+        else:
             self.showNormal()
             if self.viewToolbarAction.text().startswith(_('Hide')):
                 tb.show()
@@ -1133,7 +1133,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
                 sb.show()
             else:
                 sb.close()
-            self.viewToolbarAction.setEnabled(True)     
+            self.viewToolbarAction.setEnabled(True)
             self.viewStatusbarAction.setEnabled(True)
 
     ## Called when a given web action (e.g. Back) is enabled or disabled.
@@ -1173,7 +1173,7 @@ class BrowserWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot()
     def on_fileopen(self):
         (url, _) = QtWidgets.QFileDialog.getOpenFileUrl(self, _('Open web resource'), filter=_('Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)'))
-        if not url.isEmpty(): 
+        if not url.isEmpty():
             self.navigate(url, False)
 
     ## Searches for a string in the active page.
@@ -1297,4 +1297,4 @@ class Browser:
     def downloadManagerWidget(self):
         return self.m_downloadManagerWidget
 
-        
+

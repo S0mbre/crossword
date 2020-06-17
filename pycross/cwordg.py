@@ -25,35 +25,35 @@ def main():
 
     from utils.globalvars import readSettings, switch_lang, DEBUGGING
 
-    # read settings      
+    # read settings
     if args.settings:
         settings_file = args.settings
     elif args.open and os.path.splitext(args.open)[1][1:].lower() == 'pxjson':
         settings_file = args.open
         args.open = None
     else:
-        settings_file = None    
+        settings_file = None
     settings = readSettings(settings_file)
-    
+
     # switch language
-    switch_lang(settings['common']['lang']) 
+    switch_lang(settings['common']['lang'])
 
     from PyQt5 import QtWebEngineWidgets
     from gui import QtCore, QtWidgets, MainWindow
 
-    try:        
+    try:
         # change working dir to current for correct calls to git
-        os.chdir(os.path.dirname(os.path.abspath(__file__)))           
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
         # initialize Qt Core App settings
         QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
         # create QApplication instance
-        app = QtWidgets.QApplication(sys.argv)  
+        app = QtWidgets.QApplication(sys.argv)
         # initialize core web engine settings
         QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
         QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.DnsPrefetchEnabled, True)
         QtWebEngineWidgets.QWebEngineProfile.defaultProfile().setUseForGlobalCertificateVerification()
         # localize Qt widgets
-        lang = settings['common']['lang'] or 'en' 
+        lang = settings['common']['lang'] or 'en'
         locale = QtCore.QLocale(lang)
         locale_name = locale.name()
         #print(locale_name)
@@ -66,24 +66,24 @@ def main():
                     if not app.installTranslator(translator) and DEBUGGING:
                         print(_("Cannot install QT translator for locale '{}' and domain '{}'!").format(locale_name, qt))
         # create main window (passing all found command-line args)
-        MainWindow(**vars(args))        
+        MainWindow(**vars(args))
         # run app's event loop
         sys.exit(app.exec_())
-                
-    except SystemExit as err:        
+
+    except SystemExit as err:
         if str(err) != '0':
             traceback.print_exc(limit=None)
-        
+
     except Exception as err:
-        traceback.print_exc(limit=None)     
+        traceback.print_exc(limit=None)
         sys.exit(1)
-        
+
     except:
         traceback.print_exc(limit=None)
         sys.exit(1)
-    
+
 # ******************************************************************************** #
 
 ## Program entry point.
-if __name__ == '__main__':  
-    main() 
+if __name__ == '__main__':
+    main()

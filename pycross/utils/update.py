@@ -52,7 +52,7 @@ class Updater:
     # @param print_to `file` file-like object to output messages to
     # (default = `sys.stdout`, the system console output)
     def __init__(self, app_name, app_version, git_repo, update_file, log_file,
-                 check_every=1, check_major_versions=True, git_exe=None,  
+                 check_every=1, check_major_versions=True, git_exe=None,
                  on_get_recent=None, on_before_update=None, on_norecent=None,
                  print_to=sys.stdout):
 
@@ -95,11 +95,11 @@ class Updater:
         #       * branch `str` Git branch name corresponding to the version (only for Github updates)
         #       * description `str` optional description of the latest release (only for Github updates)
         #       * date `str` date and time of the Git commit (only for Github updates)
-        self.update_info = {'last_update': '', 'last_check': '', 
+        self.update_info = {'last_update': '', 'last_check': '',
                             'recent_version': {'version': '', 'hash': '', 'branch': '',
                                                'description': '', 'date': ''}}
-        ## `str` path to the Git executable 
-        # @warning `None` means the simple string 'git' will be used, 
+        ## `str` path to the Git executable
+        # @warning `None` means the simple string 'git' will be used,
         # i.e. Git must be in the system path
         self.git_exe = git_exe or 'git'
         ## `bool` `True` if Git is installed in the current system
@@ -109,7 +109,7 @@ class Updater:
         self._init_update_info()
 
     ## Updates the application to the most recent version.
-    # @param force `bool` if set to `True`, the update will proceed 
+    # @param force `bool` if set to `True`, the update will proceed
     # regardless of the update check interval
     # @returns `bool` `False` on failure, `None` on success
     def update(self, force=False):
@@ -118,15 +118,15 @@ class Updater:
             return False
 
         vers = self.check_update(force)
-        if not vers: 
+        if not vers:
             if self.on_norecent: self.on_norecent()
             return False
 
-        if self.on_before_update and not self.on_before_update(self.app_version, vers): 
+        if self.on_before_update and not self.on_before_update(self.app_version, vers):
             return False
 
         #self.update_info['last_update'] = self._datetime_to_str()
-        #self._write_update_info()   
+        #self._write_update_info()
         if self.git_installed:
             self._git_update_from_branch(vers['hash'])
         else:
@@ -157,7 +157,7 @@ class Updater:
             return None
 
         res = None
-        if self._compare_versions(self.app_version, recent_vers['version'], 
+        if self._compare_versions(self.app_version, recent_vers['version'],
                                  self.check_major_versions) == '<':
             res = recent_vers
 
@@ -188,17 +188,17 @@ class Updater:
         else:
             return {'error': NOTHING_INSTALLED_ERROR}
 
-    ## @returns `bool` `True` if update checking is required (based on the 
+    ## @returns `bool` `True` if update checking is required (based on the
     # update check interval stored in the app settings); `False` if not
     # required (the app has been updated recently and the check interval
     # hasn't yet elapsed since the last update)
-    def _update_check_required(self):        
+    def _update_check_required(self):
         dt_now = datetime.now()
         dt_lastcheck = self._str_to_datetime(self.update_info['last_check']) if self.update_info['last_check'] else None
         return dt_lastcheck is None or \
                (self.check_every > 0 and (dt_now - dt_lastcheck).days >= self.check_every)
 
-    ## @returns `bool` `True` if Git is installed 
+    ## @returns `bool` `True` if Git is installed
     # (is accessible via Updater::git_exe); `False` otherwise
     def _git_check_installed(self):
         try:
@@ -211,7 +211,7 @@ class Updater:
     # (this way we check that Git updates are possible by pulling from Github)
     def _git_check_repo(self):
         try:
-            res = self._git_run('status')            
+            res = self._git_run('status')
             return res.returncode == 0
         except:
             return False
@@ -219,7 +219,7 @@ class Updater:
     ## Runs a Git command with or without arguments and returns the result.
     # @param args `positional arguments` positional arguments passed to Git
     # @param kwargs `keyword arguments` keyword arguments passed to _run_exe()
-    # @returns [subprocess.CompletedProcess](https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess) process result 
+    # @returns [subprocess.CompletedProcess](https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess) process result
     def _git_run(self, *args, **kwargs):
         gitargs = [self.git_exe] + list(args)
         if DEBUGGING:
@@ -243,7 +243,7 @@ class Updater:
     # that must be excluded from the result; if `None` or empty, no
     # branches will be excluded
     # @param include_starting_with `tuple` starting strings for branch names
-    # that must be included in the result; if `None` or empty, no 
+    # that must be included in the result; if `None` or empty, no
     # branches will be included
     # @returns `dict` remote branches found as a dictionary in the following format:
     # ```
@@ -254,7 +254,7 @@ class Updater:
     # to which the branch is attached
     def _git_get_remote_branches(self, exclude_starting_with=('master',), include_starting_with=('release',)):
         if not self.git_installed: return None
-        res = self._git_run('ls-remote', '--heads')        
+        res = self._git_run('ls-remote', '--heads')
         res = res.stdout.strip().splitlines()
         #print(res, file=self.print_to)
         branches = {}
@@ -295,22 +295,22 @@ class Updater:
             return {'error': _('No release branches in repository!')}
 
         # make sorted list, where latest version will be at top
-        branches = sorted(branches.items(), key=lambda t: t[0], reverse=True)        
+        branches = sorted(branches.items(), key=lambda t: t[0], reverse=True)
         # get latest
         recent_br = branches[0]
         # get date
         res = self._git_run('log', '-1', '--format=%at', recent_br[1][1])
         date_ts = res.stdout.strip()
 
-        return {'version': self._strip_version_az(recent_br[1][0]), 
-                'hash': recent_br[1][1], 
-                'branch': recent_br[1][0], 'description': '', 
+        return {'version': self._strip_version_az(recent_br[1][0]),
+                'hash': recent_br[1][1],
+                'branch': recent_br[1][0], 'description': '',
                 'date': self._datetime_to_str(datetime.fromtimestamp(int(date_ts))) if date_ts else ''}
 
     ## Runs pip and returns the result.
     # @param args `positional arguments` positional arguments passed to pip
     # @param kwargs `keyword arguments` keyword arguments passed to _run_exe()
-    # @returns [subprocess.CompletedProcess](https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess) process result 
+    # @returns [subprocess.CompletedProcess](https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess) process result
     def _pip_run(self, *args, **kwargs):
         pipargs = ['python', '-m', 'pip'] + list(args)
         if DEBUGGING:
@@ -320,12 +320,12 @@ class Updater:
     ## Gets the list of installed Python packages with pip.
     # @param outdated_only `bool` if `True`, only outdated packages will be
     # included in the search result
-    # @returns `list` Python packages as a list of dictionaries: 
+    # @returns `list` Python packages as a list of dictionaries:
     # ```
     # [{'name': pk_name, 'version': pk_version}, ...]
     # ```
     # if `outdated_only` == `False`, each dict contains 2 elements: 'name' and 'version'
-    # if `outdated_only` == `True`, 2 additional keys are present: 'latest_version' and 'latest_filetype'        
+    # if `outdated_only` == `True`, 2 additional keys are present: 'latest_version' and 'latest_filetype'
     def _pip_list_packages(self, outdated_only=False):
         if outdated_only:
             args = ('list', '--format=json', '-o')
@@ -342,8 +342,8 @@ class Updater:
             print(_('{}\nat line {}, column {}').format(err.msg, err.lineno, err.colno), file=self.print_to)
             return []
 
-    ## @returns `bool` `True` if the **pycrossword** Python package 
-    # is installed in the current Python environment 
+    ## @returns `bool` `True` if the **pycrossword** Python package
+    # is installed in the current Python environment
     # (including virtualenv installation)
     def _pip_check_pkg_installed(self):
         pkg_list = self._pip_list_packages()
@@ -362,7 +362,7 @@ class Updater:
         args = f'{str(shellfile)} {logfile}'
         #print(args, file=self.print_to)
         self._run_exe(args, external=True, capture_output=False, shell=True)
-    
+
     ## Gets the latest app version on PyPi with pip.
     # @returns latest version info.
     # The version info dict contains the following items:
@@ -383,27 +383,27 @@ class Updater:
 
     ## Runs an executable and optionally returns the result.
     # See utils::run_exe()
-    def _run_exe(self, args, external=False, capture_output=True, stdout=subprocess.PIPE, encoding=ENCODING, 
+    def _run_exe(self, args, external=False, capture_output=True, stdout=subprocess.PIPE, encoding=ENCODING,
                 timeout=None, shell=False, **kwargs):
         try:
-            osname = platform.system()        
+            osname = platform.system()
             if external:
                 if osname == 'Windows':
                     creationflags=subprocess.CREATE_NO_WINDOW | subprocess.DETACHED_PROCESS
-                    return subprocess.Popen(args, 
-                        creationflags=creationflags, 
-                        stdout=stdout if capture_output else None, 
+                    return subprocess.Popen(args,
+                        creationflags=creationflags,
+                        stdout=stdout if capture_output else None,
                         stderr=subprocess.STDOUT if capture_output else None,
                         encoding=encoding, shell=shell, **kwargs)
                 else: # assume Unix
-                    return subprocess.Popen('nohup ' + (args if isinstance(args, str) else ' '.join(args)), 
-                        stdout=stdout if capture_output else None, 
+                    return subprocess.Popen('nohup ' + (args if isinstance(args, str) else ' '.join(args)),
+                        stdout=stdout if capture_output else None,
                         stderr=subprocess.STDOUT if capture_output else None,
                         encoding=encoding, shell=shell, preexec_fn=os.setpgrp,
                         **kwargs)
             else:
-                return subprocess.run(args, 
-                    capture_output=capture_output, encoding=encoding, 
+                return subprocess.run(args,
+                    capture_output=capture_output, encoding=encoding,
                     timeout=timeout, shell=shell, **kwargs)
         except Exception as err:
             traceback.print_exc(limit=None)
@@ -427,7 +427,7 @@ class Updater:
                 self.update_info.update(json.load(infile))
         else:
             self._write_update_info()
-            
+
     ## Writes the update info from Updater::update_info to the update.log file.
     def _write_update_info(self):
         with open(str(self.update_file), 'w', encoding=ENCODING) as outfile:
@@ -471,14 +471,14 @@ class Updater:
     #   * '=' if `v1` is **the same** as `v2`
     def _compare_versions(self, v1, v2, max_versions=-1, major_only=False):
         tv1 = self._parse_version(v1, max_versions)
-        tv2 = self._parse_version(v2, max_versions)        
+        tv2 = self._parse_version(v2, max_versions)
         l = min(len(tv1), len(tv2))
         if major_only: l = min(l, 1)
-        tv1 = tv1[:l] 
-        tv2 = tv2[:l] 
+        tv1 = tv1[:l]
+        tv2 = tv2[:l]
         if tv1 < tv2: return '<'
         if tv1 > tv2: return '>'
         return '='
-    
+
 
 

@@ -62,9 +62,9 @@ PLUGINS_FOLDER = make_abspath('plugins')
 ## app interface languages in brief and full notation
 LANG = {'en': 'English', 'ru': 'Russian', 'fr': 'French', 'es': 'Spanish', 'de': 'German', 'it': 'Italian'}
 ## parts of speech in brief and full notation
-POS = [('N', 'noun'), ('V', 'verb'), ('ADV', 'adverb'), ('ADJ', 'adjective'), ('P', 'participle'), 
-       ('PRON', 'pronoun'), ('I', 'interjection'), ('C', 'conjuction'), ('PREP', 'preposition'), 
-       ('PROP', 'proposition'), ('MISC', 'miscellaneous / other'), ('NONE', 'no POS')]        
+POS = [('N', 'noun'), ('V', 'verb'), ('ADV', 'adverb'), ('ADJ', 'adjective'), ('P', 'participle'),
+       ('PRON', 'pronoun'), ('I', 'interjection'), ('C', 'conjuction'), ('PREP', 'preposition'),
+       ('PROP', 'proposition'), ('MISC', 'miscellaneous / other'), ('NONE', 'no POS')]
 ## braces
 BRACES = "{}"
 ## default SQLite DB table names for word sources
@@ -84,11 +84,11 @@ class Px{}(PxPluginGeneral):
     pass
 """
 ## app interface languages
-APP_LANGUAGES = [('English (US)', '', '', 'united-states-of-america.png', "The application must be restarted to apply new language settings. Restart now?"), 
-                 ('Russian', 'ru', 'Русский', 'russia.png', "Приложение должно быть перезапущено для применения новых настроек языка. Перезапустить сейчас?"), 
-                 ('German', 'de', 'Deutsch', 'germany.png', "Die Anwendung muss neu gestartet werden, um neue Spracheinstellungen zu übernehmen. Jetzt neu starten?"), 
-                 ('French', 'fr', 'Français', 'france.png', "L'application doit être redémarrée pour appliquer de nouveaux paramètres de langue. Redémarrer maintenant?"), 
-                 ('Italian', 'it', 'Italiano', 'italy.png', "È necessario riavviare l'applicazione per applicare le nuove impostazioni della lingua. Riavvia ora?"), 
+APP_LANGUAGES = [('English (US)', '', '', 'united-states-of-america.png', "The application must be restarted to apply new language settings. Restart now?"),
+                 ('Russian', 'ru', 'Русский', 'russia.png', "Приложение должно быть перезапущено для применения новых настроек языка. Перезапустить сейчас?"),
+                 ('German', 'de', 'Deutsch', 'germany.png', "Die Anwendung muss neu gestartet werden, um neue Spracheinstellungen zu übernehmen. Jetzt neu starten?"),
+                 ('French', 'fr', 'Français', 'france.png', "L'application doit être redémarrée pour appliquer de nouveaux paramètres de langue. Redémarrer maintenant?"),
+                 ('Italian', 'it', 'Italiano', 'italy.png', "È necessario riavviare l'applicazione per applicare le nuove impostazioni della lingua. Riavvia ora?"),
                  ('Spanish', 'es', 'Español', 'spain.png', "La aplicación debe reiniciarse para aplicar la nueva configuración de idioma. ¿Reiniciar ahora?")]
 ## newline character
 NEWLINE = '\n'
@@ -169,20 +169,20 @@ GOOGLE_LANG_LR = {'lang_ar': 'Arabic', 'lang_bg': 'Bulgarian', 'lang_ca': 'Catal
     'lang_sk': 'Slovak', 'lang_sl': 'Slovenian', 'lang_sr': 'Serbian', 'lang_sv': 'Swedish',
     'lang_tr': 'Turkish', 'lang_zh-CN': 'Chinese (Simplified)', 'lang_zh-TW': 'Chinese (Traditional)'}
 ## Google interface languages
-GOOGLE_LANG_HL = {'af': 'Afrikaans', 'sq': 'Albanian', 'sm': 'Amharic', 'ar': 'Arabic', 'az': 'Azerbaijani', 'eu': 'Basque', 
-    'be': 'Belarusian', 'bn': 'Bengali', 'bh': 'Bihari', 'bs': 'Bosnian', 'bg': 'Bulgarian', 
-    'ca': 'Catalan', 'zh-CN': 'Chinese (Simplified)', 'zh-TW': 'Chinese (Traditional)', 
-    'hr': 'Croatian', 'cs': 'Czech', 'da': 'Danish', 'nl': 'Dutch', 'en': 'English', 'eo': 'Esperanto', 
-    'et': 'Estonian', 'fo': 'Faroese', 'fi': 'Finnish', 'fr': 'French', 'fy': 'Frisian', 'gl': 'Galician', 
-    'ka': 'Georgian', 'de': 'German', 'el': 'Greek', 'gu': 'Gujarati', 'iw': 'Hebrew', 'hi': 'Hindi', 
-    'hu': 'Hungarian', 'is': 'Icelandic', 'id': 'Indonesian', 'ia': 'Interlingua', 'ga': 'Irish', 'it': 'Italian', 
-    'ja': 'Japanese', 'jw': 'Javanese', 'kn': 'Kannada', 'ko': 'Korean', 'la': 'Latin', 'lv': 'Latvian', 
-    'lt': 'Lithuanian', 'mk': 'Macedonian', 'ms': 'Malay', 'ml': 'Malayam', 'mt': 'Maltese', 'mr': 'Marathi', 
-    'ne': 'Nepali', 'no': 'Norwegian', 'nn': 'Norwegian (Nynorsk)', 'oc': 'Occitan', 'fa': 'Persian', 
-    'pl': 'Polish', 'pt-BR': 'Portuguese (Brazil)', 'pt-PT': 'Portuguese (Portugal)', 'pa': 'Punjabi', 
-    'ro': 'Romanian', 'ru': 'Russian', 'gd': 'Scots Gaelic', 'sr': 'Serbian', 'si': 'Sinhalese', 
-    'sk': 'Slovak', 'sl': 'Slovenian', 'es': 'Spanish', 'su': 'Sudanese', 'sw': 'Swahili', 'sv': 'Swedish', 
-    'tl': 'Tagalog', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai', 'ti': 'Tigrinya', 'tr': 'Turkish', 
+GOOGLE_LANG_HL = {'af': 'Afrikaans', 'sq': 'Albanian', 'sm': 'Amharic', 'ar': 'Arabic', 'az': 'Azerbaijani', 'eu': 'Basque',
+    'be': 'Belarusian', 'bn': 'Bengali', 'bh': 'Bihari', 'bs': 'Bosnian', 'bg': 'Bulgarian',
+    'ca': 'Catalan', 'zh-CN': 'Chinese (Simplified)', 'zh-TW': 'Chinese (Traditional)',
+    'hr': 'Croatian', 'cs': 'Czech', 'da': 'Danish', 'nl': 'Dutch', 'en': 'English', 'eo': 'Esperanto',
+    'et': 'Estonian', 'fo': 'Faroese', 'fi': 'Finnish', 'fr': 'French', 'fy': 'Frisian', 'gl': 'Galician',
+    'ka': 'Georgian', 'de': 'German', 'el': 'Greek', 'gu': 'Gujarati', 'iw': 'Hebrew', 'hi': 'Hindi',
+    'hu': 'Hungarian', 'is': 'Icelandic', 'id': 'Indonesian', 'ia': 'Interlingua', 'ga': 'Irish', 'it': 'Italian',
+    'ja': 'Japanese', 'jw': 'Javanese', 'kn': 'Kannada', 'ko': 'Korean', 'la': 'Latin', 'lv': 'Latvian',
+    'lt': 'Lithuanian', 'mk': 'Macedonian', 'ms': 'Malay', 'ml': 'Malayam', 'mt': 'Maltese', 'mr': 'Marathi',
+    'ne': 'Nepali', 'no': 'Norwegian', 'nn': 'Norwegian (Nynorsk)', 'oc': 'Occitan', 'fa': 'Persian',
+    'pl': 'Polish', 'pt-BR': 'Portuguese (Brazil)', 'pt-PT': 'Portuguese (Portugal)', 'pa': 'Punjabi',
+    'ro': 'Romanian', 'ru': 'Russian', 'gd': 'Scots Gaelic', 'sr': 'Serbian', 'si': 'Sinhalese',
+    'sk': 'Slovak', 'sl': 'Slovenian', 'es': 'Spanish', 'su': 'Sudanese', 'sw': 'Swahili', 'sv': 'Swedish',
+    'tl': 'Tagalog', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai', 'ti': 'Tigrinya', 'tr': 'Turkish',
     'uk': 'Ukrainian', 'ur': 'Urdu', 'uz': 'Uzbek', 'vi': 'Vietnamese', 'cy': 'Welsh', 'xh': 'Xhosa', 'zu': 'Zulu'}
 ## Google document countries
 GOOGLE_COUNTRIES_CR = {'countryAF': 'Afghanistan', 'countryAL': 'Albania', 'countryDZ': 'Algeria',
@@ -267,66 +267,66 @@ GOOGLE_COUNTRIES_CR = {'countryAF': 'Afghanistan', 'countryAL': 'Albania', 'coun
     'countryVI': 'Virgin Islands, U.S.', 'countryWF': 'Wallis and Futuna', 'countryEH': 'Western Sahara',
     'countryYE': 'Yemen', 'countryYU': 'Yugoslavia', 'countryZM': 'Zambia', 'countryZW': 'Zimbabwe'}
 ## Google user search countries
-GOOGLE_COUNTRIES_GL = {'af': 'Afghanistan', 'al': 'Albania', 'dz': 'Algeria', 'as': 'American Samoa', 'ad': 'Andorra', 
-    'ao': 'Angola', 'ai': 'Anguilla', 'aq': 'Antarctica', 'ag': 'Antigua and Barbuda', 
-    'ar': 'Argentina', 'am': 'Armenia', 'aw': 'Aruba', 'au': 'Australia', 'at': 'Austria', 
-    'az': 'Azerbaijan', 'bs': 'Bahamas', 'bh': 'Bahrain', 'bd': 'Bangladesh', 'bb': 'Barbados', 
-    'by': 'Belarus', 'be': 'Belgium', 'bz': 'Belize', 'bj': 'Benin', 'bm': 'Bermuda', 'bt': 'Bhutan', 
-    'bo': 'Bolivia', 'ba': 'Bosnia and Herzegovina', 'bw': 'Botswana', 'bv': 'Bouvet Island', 'br': 'Brazil', 
-    'io': 'British Indian Ocean Territory', 'bn': 'Brunei Darussalam', 'bg': 'Bulgaria', 'bf': 'Burkina Faso', 
-    'bi': 'Burundi', 'kh': 'Cambodia', 'cm': 'Cameroon', 'ca': 'Canada', 'cv': 'Cape Verde', 
-    'ky': 'Cayman Islands', 'cf': 'Central African Republic', 'td': 'Chad', 'cl': 'Chile', 
-    'cn': 'China', 'cx': 'Christmas Island', 'cc': 'Cocos (Keeling) Islands', 'co': 'Colombia', 
-    'km': 'Comoros', 'cg': 'Congo', 'cd': 'Congo, the Democratic Republic of the', 'ck': 'Cook Islands', 
-    'cr': 'Costa Rica', 'ci': "Cote D'ivoire", 'hr': 'Croatia', 'cu': 'Cuba', 'cy': 'Cyprus', 
-    'cz': 'Czech Republic', 'dk': 'Denmark', 'dj': 'Djibouti', 'dm': 'Dominica', 'do': 'Dominican Republic', 
-    'ec': 'Ecuador', 'eg': 'Egypt', 'sv': 'El Salvador', 'gq': 'Equatorial Guinea', 'er': 'Eritrea', 
-    'ee': 'Estonia', 'et': 'Ethiopia', 'fk': 'Falkland Islands (Malvinas)', 'fo': 'Faroe Islands', 
-    'fj': 'Fiji', 'fi': 'Finland', 'fr': 'France', 'gf': 'French Guiana', 'pf': 'French Polynesia', 
-    'tf': 'French Southern Territories', 'ga': 'Gabon', 'gm': 'Gambia', 'ge': 'Georgia', 
-    'de': 'Germany', 'gh': 'Ghana', 'gi': 'Gibraltar', 'gr': 'Greece', 'gl': 'Greenland', 
-    'gd': 'Grenada', 'gp': 'Guadeloupe', 'gu': 'Guam', 'gt': 'Guatemala', 'gn': 'Guinea', 
-    'gw': 'Guinea-Bissau', 'gy': 'Guyana', 'ht': 'Haiti', 'hm': 'Heard Island and Mcdonald Islands', 
-    'va': 'Holy See (Vatican City State)', 'hn': 'Honduras', 'hk': 'Hong Kong', 'hu': 'Hungary', 
-    'is': 'Iceland', 'in': 'India', 'id': 'Indonesia', 'ir': 'Iran, Islamic Republic of', 
-    'iq': 'Iraq', 'ie': 'Ireland', 'il': 'Israel', 'it': 'Italy', 'jm': 'Jamaica', 'jp': 'Japan', 
-    'jo': 'Jordan', 'kz': 'Kazakhstan', 'ke': 'Kenya', 'ki': 'Kiribati', 'kp': "Korea, Democratic People's Republic of", 
-    'kr': 'Korea, Republic of', 'kw': 'Kuwait', 'kg': 'Kyrgyzstan', 'la': "Lao People's Democratic Republic", 
-    'lv': 'Latvia', 'lb': 'Lebanon', 'ls': 'Lesotho', 'lr': 'Liberia', 'ly': 'Libyan Arab Jamahiriya', 
-    'li': 'Liechtenstein', 'lt': 'Lithuania', 'lu': 'Luxembourg', 'mo': 'Macao', 
-    'mk': 'Macedonia, the Former Yugosalv Republic of', 'mg': 'Madagascar', 'mw': 'Malawi', 
-    'my': 'Malaysia', 'mv': 'Maldives', 'ml': 'Mali', 'mt': 'Malta', 'mh': 'Marshall Islands', 
-    'mq': 'Martinique', 'mr': 'Mauritania', 'mu': 'Mauritius', 'yt': 'Mayotte', 'mx': 'Mexico', 
-    'fm': 'Micronesia, Federated States of', 'md': 'Moldova, Republic of', 'mc': 'Monaco', 
-    'mn': 'Mongolia', 'ms': 'Montserrat', 'ma': 'Morocco', 'mz': 'Mozambique', 'mm': 'Myanmar', 
-    'na': 'Namibia', 'nr': 'Nauru', 'np': 'Nepal', 'nl': 'Netherlands', 'an': 'Netherlands Antilles', 
-    'nc': 'New Caledonia', 'nz': 'New Zealand', 'ni': 'Nicaragua', 'ne': 'Niger', 'ng': 'Nigeria', 
-    'nu': 'Niue', 'nf': 'Norfolk Island', 'mp': 'Northern Mariana Islands', 'no': 'Norway', 
-    'om': 'Oman', 'pk': 'Pakistan', 'pw': 'Palau', 'ps': 'Palestinian Territory', 'pa': 'Panama', 
-    'pg': 'Papua New Guinea', 'py': 'Paraguay', 'pe': 'Peru', 'ph': 'Philippines', 'pn': 'Pitcairn', 
-    'pl': 'Poland', 'pt': 'Portugal', 'pr': 'Puerto Rico', 'qa': 'Qatar', 're': 'Reunion', 'ro': 'Romania', 
-    'ru': 'Russian Federation', 'rw': 'Rwanda', 'sh': 'Saint Helena', 'kn': 'Saint Kitts and Nevis', 
-    'lc': 'Saint Lucia', 'pm': 'Saint Pierre and Miquelon', 'vc': 'Saint Vincent and the Grenadines', 
-    'ws': 'Samoa', 'sm': 'San Marino', 'st': 'Sao Tome and Principe', 'sa': 'Saudi Arabia', 'sn': 'Senegal', 
-    'cs': 'Serbia and Montenegro', 'sc': 'Seychelles', 'sl': 'Sierra Leone', 'sg': 'Singapore', 
-    'sk': 'Slovakia', 'si': 'Slovenia', 'sb': 'Solomon Islands', 'so': 'Somalia', 'za': 'South Africa', 
-    'gs': 'South Georgia and the South Sandwich Islands', 'es': 'Spain', 'lk': 'Sri Lanka', 'sd': 'Sudan', 
-    'sr': 'Suriname', 'sj': 'Svalbard and Jan Mayen', 'sz': 'Swaziland', 'se': 'Sweden', 'ch': 'Switzerland', 
-    'sy': 'Syrian Arab Republic', 'tw': 'Taiwan, Province of China', 'tj': 'Tajikistan', 
-    'tz': 'Tanzania, United Republic of', 'th': 'Thailand', 'tl': 'Timor-Leste', 'tg': 'Togo', 
-    'tk': 'Tokelau', 'to': 'Tonga', 'tt': 'Trinidad and Tobago', 'tn': 'Tunisia', 'tr': 'Turkey', 
-    'tm': 'Turkmenistan', 'tc': 'Turks and Caicos Islands', 'tv': 'Tuvalu', 'ug': 'Uganda', 
-    'ua': 'Ukraine', 'ae': 'United Arab Emirates', 'uk': 'United Kingdom', 'us': 'United States', 
-    'um': 'United States Minor Outlying Islands', 'uy': 'Uruguay', 'uz': 'Uzbekistan', 'vu': 'Vanuatu', 
-    've': 'Venezuela', 'vn': 'Viet Nam', 'vg': 'Virgin Islands, British', 'vi': 'Virgin Islands, U.S.', 
-    'wf': 'Wallis and Futuna', 'eh': 'Western Sahara', 'ye': 'Yemen', 'zm': 'Zambia', 'zw': 'Zimbabwe'} 
+GOOGLE_COUNTRIES_GL = {'af': 'Afghanistan', 'al': 'Albania', 'dz': 'Algeria', 'as': 'American Samoa', 'ad': 'Andorra',
+    'ao': 'Angola', 'ai': 'Anguilla', 'aq': 'Antarctica', 'ag': 'Antigua and Barbuda',
+    'ar': 'Argentina', 'am': 'Armenia', 'aw': 'Aruba', 'au': 'Australia', 'at': 'Austria',
+    'az': 'Azerbaijan', 'bs': 'Bahamas', 'bh': 'Bahrain', 'bd': 'Bangladesh', 'bb': 'Barbados',
+    'by': 'Belarus', 'be': 'Belgium', 'bz': 'Belize', 'bj': 'Benin', 'bm': 'Bermuda', 'bt': 'Bhutan',
+    'bo': 'Bolivia', 'ba': 'Bosnia and Herzegovina', 'bw': 'Botswana', 'bv': 'Bouvet Island', 'br': 'Brazil',
+    'io': 'British Indian Ocean Territory', 'bn': 'Brunei Darussalam', 'bg': 'Bulgaria', 'bf': 'Burkina Faso',
+    'bi': 'Burundi', 'kh': 'Cambodia', 'cm': 'Cameroon', 'ca': 'Canada', 'cv': 'Cape Verde',
+    'ky': 'Cayman Islands', 'cf': 'Central African Republic', 'td': 'Chad', 'cl': 'Chile',
+    'cn': 'China', 'cx': 'Christmas Island', 'cc': 'Cocos (Keeling) Islands', 'co': 'Colombia',
+    'km': 'Comoros', 'cg': 'Congo', 'cd': 'Congo, the Democratic Republic of the', 'ck': 'Cook Islands',
+    'cr': 'Costa Rica', 'ci': "Cote D'ivoire", 'hr': 'Croatia', 'cu': 'Cuba', 'cy': 'Cyprus',
+    'cz': 'Czech Republic', 'dk': 'Denmark', 'dj': 'Djibouti', 'dm': 'Dominica', 'do': 'Dominican Republic',
+    'ec': 'Ecuador', 'eg': 'Egypt', 'sv': 'El Salvador', 'gq': 'Equatorial Guinea', 'er': 'Eritrea',
+    'ee': 'Estonia', 'et': 'Ethiopia', 'fk': 'Falkland Islands (Malvinas)', 'fo': 'Faroe Islands',
+    'fj': 'Fiji', 'fi': 'Finland', 'fr': 'France', 'gf': 'French Guiana', 'pf': 'French Polynesia',
+    'tf': 'French Southern Territories', 'ga': 'Gabon', 'gm': 'Gambia', 'ge': 'Georgia',
+    'de': 'Germany', 'gh': 'Ghana', 'gi': 'Gibraltar', 'gr': 'Greece', 'gl': 'Greenland',
+    'gd': 'Grenada', 'gp': 'Guadeloupe', 'gu': 'Guam', 'gt': 'Guatemala', 'gn': 'Guinea',
+    'gw': 'Guinea-Bissau', 'gy': 'Guyana', 'ht': 'Haiti', 'hm': 'Heard Island and Mcdonald Islands',
+    'va': 'Holy See (Vatican City State)', 'hn': 'Honduras', 'hk': 'Hong Kong', 'hu': 'Hungary',
+    'is': 'Iceland', 'in': 'India', 'id': 'Indonesia', 'ir': 'Iran, Islamic Republic of',
+    'iq': 'Iraq', 'ie': 'Ireland', 'il': 'Israel', 'it': 'Italy', 'jm': 'Jamaica', 'jp': 'Japan',
+    'jo': 'Jordan', 'kz': 'Kazakhstan', 'ke': 'Kenya', 'ki': 'Kiribati', 'kp': "Korea, Democratic People's Republic of",
+    'kr': 'Korea, Republic of', 'kw': 'Kuwait', 'kg': 'Kyrgyzstan', 'la': "Lao People's Democratic Republic",
+    'lv': 'Latvia', 'lb': 'Lebanon', 'ls': 'Lesotho', 'lr': 'Liberia', 'ly': 'Libyan Arab Jamahiriya',
+    'li': 'Liechtenstein', 'lt': 'Lithuania', 'lu': 'Luxembourg', 'mo': 'Macao',
+    'mk': 'Macedonia, the Former Yugosalv Republic of', 'mg': 'Madagascar', 'mw': 'Malawi',
+    'my': 'Malaysia', 'mv': 'Maldives', 'ml': 'Mali', 'mt': 'Malta', 'mh': 'Marshall Islands',
+    'mq': 'Martinique', 'mr': 'Mauritania', 'mu': 'Mauritius', 'yt': 'Mayotte', 'mx': 'Mexico',
+    'fm': 'Micronesia, Federated States of', 'md': 'Moldova, Republic of', 'mc': 'Monaco',
+    'mn': 'Mongolia', 'ms': 'Montserrat', 'ma': 'Morocco', 'mz': 'Mozambique', 'mm': 'Myanmar',
+    'na': 'Namibia', 'nr': 'Nauru', 'np': 'Nepal', 'nl': 'Netherlands', 'an': 'Netherlands Antilles',
+    'nc': 'New Caledonia', 'nz': 'New Zealand', 'ni': 'Nicaragua', 'ne': 'Niger', 'ng': 'Nigeria',
+    'nu': 'Niue', 'nf': 'Norfolk Island', 'mp': 'Northern Mariana Islands', 'no': 'Norway',
+    'om': 'Oman', 'pk': 'Pakistan', 'pw': 'Palau', 'ps': 'Palestinian Territory', 'pa': 'Panama',
+    'pg': 'Papua New Guinea', 'py': 'Paraguay', 'pe': 'Peru', 'ph': 'Philippines', 'pn': 'Pitcairn',
+    'pl': 'Poland', 'pt': 'Portugal', 'pr': 'Puerto Rico', 'qa': 'Qatar', 're': 'Reunion', 'ro': 'Romania',
+    'ru': 'Russian Federation', 'rw': 'Rwanda', 'sh': 'Saint Helena', 'kn': 'Saint Kitts and Nevis',
+    'lc': 'Saint Lucia', 'pm': 'Saint Pierre and Miquelon', 'vc': 'Saint Vincent and the Grenadines',
+    'ws': 'Samoa', 'sm': 'San Marino', 'st': 'Sao Tome and Principe', 'sa': 'Saudi Arabia', 'sn': 'Senegal',
+    'cs': 'Serbia and Montenegro', 'sc': 'Seychelles', 'sl': 'Sierra Leone', 'sg': 'Singapore',
+    'sk': 'Slovakia', 'si': 'Slovenia', 'sb': 'Solomon Islands', 'so': 'Somalia', 'za': 'South Africa',
+    'gs': 'South Georgia and the South Sandwich Islands', 'es': 'Spain', 'lk': 'Sri Lanka', 'sd': 'Sudan',
+    'sr': 'Suriname', 'sj': 'Svalbard and Jan Mayen', 'sz': 'Swaziland', 'se': 'Sweden', 'ch': 'Switzerland',
+    'sy': 'Syrian Arab Republic', 'tw': 'Taiwan, Province of China', 'tj': 'Tajikistan',
+    'tz': 'Tanzania, United Republic of', 'th': 'Thailand', 'tl': 'Timor-Leste', 'tg': 'Togo',
+    'tk': 'Tokelau', 'to': 'Tonga', 'tt': 'Trinidad and Tobago', 'tn': 'Tunisia', 'tr': 'Turkey',
+    'tm': 'Turkmenistan', 'tc': 'Turks and Caicos Islands', 'tv': 'Tuvalu', 'ug': 'Uganda',
+    'ua': 'Ukraine', 'ae': 'United Arab Emirates', 'uk': 'United Kingdom', 'us': 'United States',
+    'um': 'United States Minor Outlying Islands', 'uy': 'Uruguay', 'uz': 'Uzbekistan', 'vu': 'Vanuatu',
+    've': 'Venezuela', 'vn': 'Viet Nam', 'vg': 'Virgin Islands, British', 'vi': 'Virgin Islands, U.S.',
+    'wf': 'Wallis and Futuna', 'eh': 'Western Sahara', 'ye': 'Yemen', 'zm': 'Zambia', 'zw': 'Zimbabwe'}
 
 ## flag that is set to `True` when the inerface language has been applied
-LANGAPPLIED = False    
+LANGAPPLIED = False
 
 ## @brief Loads the app settings from a settings file.
 # Checks if 'settings.pxjson' exists in the root directory.
-# If not, creates it with the default settings; otherwise, 
+# If not, creates it with the default settings; otherwise,
 # reads 'settings.pxjson' to the global `pycross::guisettings::CWSettings::settings` object.
 # @param settings_file `str` path to the settings file ('*.pxjson').
 # If left `None`, ::SETTINGS_FILE is used.
@@ -350,7 +350,7 @@ def readSettings(settings_file=None, write_defaults_on_error=True):
 # It installs the global `_()` function used by `gettext` to get localized strings.
 # @param lang `str` short language name -- see ::APP_LANGUAGES
 def switch_lang(lang=''):
-    global LANGAPPLIED    
+    global LANGAPPLIED
     if not lang in ('', 'en', 'ru', 'fr', 'de', 'it', 'es'): return
     if not LANGAPPLIED:
         try:

@@ -4,7 +4,7 @@
 
 ## @package utils.pluginmanager
 # User plugin platform to extend pyCrossword functionality based on [Yapsy](http://yapsy.sourceforge.net/).
-# @see [example 1](http://yapsy.sourceforge.net/FilteredPluginManager.html), 
+# @see [example 1](http://yapsy.sourceforge.net/FilteredPluginManager.html),
 # [example 2](https://stackoverflow.com/questions/5333128/yapsy-minimal-example)
 from yapsy.PluginManager import PluginManager
 from PyQt5 import QtWidgets
@@ -20,13 +20,13 @@ class PxAPI:
     ## Constructor takes a single parameter - the instance of pycross::gui::MainWindow (main window).
     def __init__(self, mainwindow):
         ## `pycross::gui::MainWindow` internal pointer to app main window instance
-        self.__mainwindow = mainwindow        
+        self.__mainwindow = mainwindow
         # iterate and add 'safe' methods to this wrapper class
         for objname in dir(self.__mainwindow):
             obj = getattr(self.__mainwindow, objname)
             if callable(obj) and not objname.startswith('_'):
                 setattr(self, objname, obj)
-        
+
     ## Triggers an action of the app main window.
     # @param action_name `str` object name or display text of the action to be called
     # @param display_name `bool` True if the display text is passed, otherwise, the action will be
@@ -36,7 +36,7 @@ class PxAPI:
         if not display_name:
             actn = self.get_prop(action_name)
             if not actn or not isinstance(actn, QtWidgets.QAction):
-                raise AttributeError(_("MainWindow has no '{}' action!").format(action_name))            
+                raise AttributeError(_("MainWindow has no '{}' action!").format(action_name))
             actn.trigger()
         else:
             for objname in dir(self.__mainwindow):
@@ -48,8 +48,8 @@ class PxAPI:
                 raise AttributeError(_("MainWindow has no '{}' action!").format(action_name))
 
     ## Returns a pointer to the global options dict guisettings::CWSettings::settings.
-    def global_options(self, option=None, option_sep='/'):       
-        return self.__mainwindow.options()        
+    def global_options(self, option=None, option_sep='/'):
+        return self.__mainwindow.options()
 
     ## Getter method for the main window members by their name.
     # @param propname `str` member name (property or method)
@@ -91,7 +91,7 @@ class PxPluginManager(PluginManager):
 
     ## Calls a given method from a given plugin by its name.
     # @param plugin_name `str` name of plugin
-    # @param plugin_category `str` name of plugin category 
+    # @param plugin_category `str` name of plugin category
     # @param method_name `str` name of method to call
     # @param *args `positional args` positional args passed to the method
     # @param *kwargs `keyword args` keyword args passed to the method
@@ -114,7 +114,7 @@ class PxPluginManager(PluginManager):
     # @param plugin `yapsy::PluginInfo::PluginInfo` the plugin object
     # @returns `dict` plugin info record
     def _plugin_info_to_dic(self, plugin):
-        d = {'name': plugin.name, 'active': plugin.is_activated, 'author': plugin.author, 
+        d = {'name': plugin.name, 'active': plugin.is_activated, 'author': plugin.author,
                 'copyright': plugin.copyright, 'description': plugin.description,
                 'path': plugin.path, 'website': plugin.website}
         try:
@@ -156,10 +156,10 @@ class PxPluginManager(PluginManager):
     # and plugins will be added anew from the plugin manager (default = `False`)
     def update_global_settings(self, forced_update=False):
         settings = self.mainwin.global_options()['plugins']['custom']
-        
+
         for category in settings:
 
-            if forced_update: 
+            if forced_update:
                 settings[category].clear()
 
             # Step 1 - update existing plugins, delete non-existing
@@ -173,7 +173,7 @@ class PxPluginManager(PluginManager):
                     settings[category].pop(i)
                 else:
                     # if existing, active / deactivate it based on current settings
-                    self.set_plugin_active(settings[category][i]['name'], category, settings[category][i]['active'])                    
+                    self.set_plugin_active(settings[category][i]['name'], category, settings[category][i]['active'])
                     # update plugin info in settings
                     settings[category][i].update(self._plugin_info_to_dic(plugin))
                     i += 1
@@ -204,7 +204,7 @@ class PxPluginManager(PluginManager):
         for pl in settings[category]:
             if not active_only or pl['active']:
                 plugin = self.getPluginByName(pl['name'], category)
-                if not plugin is None: 
+                if not plugin is None:
                     plugins.append(plugin)
         #if DEBUGGING and plugins: print(f"FOUND PLUGINS: {plugins}")
         return plugins
@@ -229,5 +229,5 @@ class PxPluginManager(PluginManager):
     def configure_plugins(self):
         settings = self.mainwin.global_options()['plugins']['custom']
         for cat_name in settings:
-            for plugin in settings[cat_name]:                
+            for plugin in settings[cat_name]:
                 self.set_plugin_active(plugin['name'], cat_name, plugin['active'])

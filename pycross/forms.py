@@ -4,7 +4,7 @@
 
 ## @package pycross.forms
 # Classes for all the GUI app's forms except the main window.
-from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport, 
+from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport,
                     QtWebEngineWidgets, QtWebEngineCore, QtWebEngine)
 import os, copy, json
 import numpy as np
@@ -19,7 +19,7 @@ from dbapi import HunspellImport, Sqlitedb
 
 # ******************************************************************************** #
 # *****          BrowseEdit
-# ******************************************************************************** # 
+# ******************************************************************************** #
 
 ## @brief Edit field with internal 'Browse' button to file or folder browsing.
 # Inherited from `QtWidgets.QLineEdit`
@@ -27,7 +27,7 @@ class BrowseEdit(QtWidgets.QLineEdit):
 
     ## Constructor.
     # @param text `str` initial text in edit field (default = empty)
-    # @param dialogtype `str` path and dialog type: 
+    # @param dialogtype `str` path and dialog type:
     #   * 'fileopen' = open file browse dialog
     #   * 'filesave' = save file browse dialog
     #   * 'folder' = folder browse dialog
@@ -47,14 +47,14 @@ class BrowseEdit(QtWidgets.QLineEdit):
                 opendialogtitle=None, filefilters=None, fullpath=True):
         super().__init__(text, parent)
         ## `str` path and dialog type ('file' or 'folder')
-        self.dialogtype = dialogtype or 'fileopen'      
+        self.dialogtype = dialogtype or 'fileopen'
         ## `str` icon file name in 'assets/icons'
         self.btnicon = btnicon or 'folder-2.png'
         ## `int` browse button position (0 or 1)
         self.btnposition = btnposition or QtWidgets.QLineEdit.TrailingPosition
         ## `str` dialog title
         self.opendialogtitle = opendialogtitle or \
-            (_('Select file') if self.dialogtype.startswith('file') else _('Select folder'))        
+            (_('Select file') if self.dialogtype.startswith('file') else _('Select folder'))
         ## `str` file filters for file browse dialog
         self.filefilters = filefilters or _('All files (*.*)')
         self.fullpath = fullpath
@@ -67,8 +67,8 @@ class BrowseEdit(QtWidgets.QLineEdit):
         if text and not (os.path.isfile(text) or os.path.isdir(text)):
             text = os.path.join(os.getcwd(), text)
         if os.path.isfile(text) or os.path.isdir(text):
-            return text #os.path.dirname(text)    
-        else: 
+            return text #os.path.dirname(text)
+        else:
             return os.getcwd()
 
     ## Clears previous actions from the underlying object.
@@ -101,7 +101,7 @@ class BrowseEdit(QtWidgets.QLineEdit):
         else:
             if self.delegate: self.delegate.blockSignals(False)
             return
-        if not selected_path: 
+        if not selected_path:
             if self.delegate: self.delegate.blockSignals(False)
             return
         selected_path = selected_path.replace('/', os.sep)
@@ -112,18 +112,18 @@ class BrowseEdit(QtWidgets.QLineEdit):
 
 # ******************************************************************************** #
 # *****          BrowseEditDelegate
-# ******************************************************************************** #        
+# ******************************************************************************** #
 
 ## Delegate class for table and tree-like widgets implementing an edit field with the browse button.
 # @see BrowseEdit
 class BrowseEditDelegate(QtWidgets.QStyledItemDelegate):
 
     ## Constructor.
-    # @param model_indices `list` list of indices in underlying model that must contain the 
+    # @param model_indices `list` list of indices in underlying model that must contain the
     # BrowseEdit fields
     # @param thisparent `QtWidgets.QWidget` parent widget for this instance
     # @param browse_edit_kwargs `keyword arguments` keyword arguments passed to BrowseEdit constructor
-    def __init__(self, model_indices=None, thisparent=None, 
+    def __init__(self, model_indices=None, thisparent=None,
                 **browse_edit_kwargs):
         super().__init__(thisparent)
         self.model_indices = model_indices
@@ -169,29 +169,29 @@ class BrowseEditDelegate(QtWidgets.QStyledItemDelegate):
     # updates the editor position and size for a given model index.
     def updateEditorGeometry(self, editor, option: QtWidgets.QStyleOptionViewItem,
         index: QtCore.QModelIndex):
-        editor.setGeometry(option.rect)        
+        editor.setGeometry(option.rect)
 
 # ******************************************************************************** #
 # *****          ComboboxDelegate
-# ******************************************************************************** #        
+# ******************************************************************************** #
 
 ## Delegate class for table and tree-like widgets implementing an in-cell combobox
 class ComboboxDelegate(QtWidgets.QStyledItemDelegate):
 
     ## Constructor.
-    # @param model_indices `list` list of indices in underlying model that must contain the 
+    # @param model_indices `list` list of indices in underlying model that must contain the
     # BrowseEdit fields
     # @param thisparent `QtWidgets.QWidget` parent widget for this instance
     # @param browse_edit_kwargs `keyword arguments` keyword arguments passed to BrowseEdit constructor
     def __init__(self, editable=False, data_role=QtCore.Qt.UserRole + 1, parent=None):
         super().__init__(parent)
         self.data_role = data_role
-        self.editable = editable        
-        
+        self.editable = editable
+
     ## Overridden method of QtWidgets.QStyledItemDelegate:
     # creates the underlying delegate (editor widget).
     def createEditor(self, parent: QtWidgets.QWidget, option: QtWidgets.QStyleOptionViewItem,
-                    index: QtCore.QModelIndex) -> QtWidgets.QWidget:        
+                    index: QtCore.QModelIndex) -> QtWidgets.QWidget:
         try:
             data = index.data(self.data_role)
             if not data: raise Exception
@@ -228,11 +228,11 @@ class ComboboxDelegate(QtWidgets.QStyledItemDelegate):
     # updates the editor position and size for a given model index.
     def updateEditorGeometry(self, editor, option: QtWidgets.QStyleOptionViewItem,
         index: QtCore.QModelIndex):
-        editor.setGeometry(option.rect)          
+        editor.setGeometry(option.rect)
 
 # ******************************************************************************** #
 # *****          ProgressbarDelegate
-# ******************************************************************************** #        
+# ******************************************************************************** #
 
 ## Delegate class for table and tree-like widgets implementing an in-cell progress bar
 class ProgressbarDelegate(QtWidgets.QStyledItemDelegate):
@@ -252,9 +252,9 @@ class ProgressbarDelegate(QtWidgets.QStyledItemDelegate):
             opt.progress = value
             opt.textVisible = True
             if not text:
-                opt.text = f"{(value * 100.0 / total):.0f}%" if total > 0 else f"--> {value}"  
+                opt.text = f"{(value * 100.0 / total):.0f}%" if total > 0 else f"--> {value}"
             else:
-                opt.text = text            
+                opt.text = text
             QtWidgets.QApplication.style().drawControl(QtWidgets.QStyle.CE_ProgressBar, opt, painter)
         except:
             super().paint(painter, option, index)
@@ -267,7 +267,7 @@ class ProgressbarDelegate(QtWidgets.QStyledItemDelegate):
 # Creates the basic layout for controls (leaving the central area free to add controls),
 # and declares the validate() method to validate correctness of user input before accepting.
 class BasicDialog(QtWidgets.QDialog):
-    
+
     ## Constructor.
     # @param geometry `4-tuple` window geometry data: `(left, top, width, height)`.
     # If set to `None` (default), the position will be centered on the parent widget or screen
@@ -279,20 +279,20 @@ class BasicDialog(QtWidgets.QDialog):
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     # @param sizepolicy `QtWidgets.QSizePolicy` [QWidget size policy](https://doc.qt.io/qt-5/qsizepolicy.html).
     # Default is fixed size in both directions (non-resizable dialog).
-    def __init__(self, geometry=None, title=None, icon=None, parent=None, 
-                 flags=QtCore.Qt.WindowFlags(), 
+    def __init__(self, geometry=None, title=None, icon=None, parent=None,
+                 flags=QtCore.Qt.WindowFlags(),
                  sizepolicy=QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)):
         super().__init__(parent, flags)
         self.initUI(geometry, title, icon)
         self.setSizePolicy(sizepolicy)
-        
+
     ## @brief Creates the main (central) layout for controls.
     # Must be overridden by child classes to change the layout type
     # (default = `QtWidgets.QFormLayout`) and add controls.
     def addMainLayout(self):
         ## `QtWidgets.QFormLayout` central layout for controls
         self.layout_controls = QtWidgets.QFormLayout()
-        
+
     ## Creates the core controls: OK and Cancel buttons and layouts.
     # @param geometry `4-tuple` window geometry data: `(left, top, width, height)`.
     # If set to `None` (default), the position will be centered on the parent widget or screen
@@ -301,9 +301,9 @@ class BasicDialog(QtWidgets.QDialog):
     # @param icon `str` window icon file name (relative to utils::globalvars::ICONFOLDER), e.g. 'main.png'.
     # `None` means no icon.
     def initUI(self, geometry=None, title=None, icon=None):
-        
+
         self.addMainLayout()
-        
+
         ## `QtWidgets.QPushButton` OK button
         self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('OK'), None)
         self.btn_OK.setMaximumWidth(150)
@@ -313,63 +313,63 @@ class BasicDialog(QtWidgets.QDialog):
         self.btn_cancel = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/multiply-1.png"), _('Cancel'), None)
         self.btn_cancel.setMaximumWidth(150)
         self.btn_cancel.clicked.connect(self.on_btn_cancel_clicked)
-        
+
         ## `QtWidgets.QHBoxLayout` bottom layout for OK and Cancel buttons
         self.layout_bottom = QtWidgets.QHBoxLayout()
         self.layout_bottom.setSpacing(10)
         self.layout_bottom.addWidget(self.btn_OK)
-        self.layout_bottom.addWidget(self.btn_cancel)          
-        
+        self.layout_bottom.addWidget(self.btn_cancel)
+
         ## `QtWidgets.QVBoxLayout` window layout
         self.layout_main = QtWidgets.QVBoxLayout()
         self.layout_main.addLayout(self.layout_controls)
         self.layout_main.addLayout(self.layout_bottom)
-        
+
         self.setLayout(self.layout_main)
         if geometry:
-            self.setGeometry(*geometry) 
+            self.setGeometry(*geometry)
         else:
             self.adjustSize()
         if title:
-            self.setWindowTitle(title)      
+            self.setWindowTitle(title)
         if icon:
             self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}"))
-        
+
     ## Validates user input (reimplemented in child classes).
     # @returns `bool` `True` if user input is valid, `False` otherwise
     # @see on_btn_OK_clicked()
-    def validate(self):        
+    def validate(self):
         return True
-    
+
     ## @brief Fires when the OK button is clicked.
-    # Calls validate() to check correctness of input and, if correct, 
+    # Calls validate() to check correctness of input and, if correct,
     # accepts and closes window.
     @QtCore.pyqtSlot()
-    def on_btn_OK_clicked(self): 
+    def on_btn_OK_clicked(self):
         if self.validate(): self.accept()
-        
+
     ## Fires when the Cancel button is clicked: rejects input and closes window.
     @QtCore.pyqtSlot()
-    def on_btn_cancel_clicked(self): 
-        self.reject() 
-        
+    def on_btn_cancel_clicked(self):
+        self.reject()
+
 # ******************************************************************************** #
 # *****          LoadCwDialog
-# ******************************************************************************** #  
-        
+# ******************************************************************************** #
+
 ## Crossword creation dialog providing options to populate the crossword grid.
 class LoadCwDialog(BasicDialog):
-        
+
     ## Constructor.
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__(None, _('New crossword'), 'crossword.png', 
+        super().__init__(None, _('New crossword'), 'crossword.png',
               parent, flags)
-        
+
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()
-        
+
         ## `QtWidgets.QRadioButton` 'load from pattern file' option
         self.rb_grid = QtWidgets.QRadioButton(_('Pattern'))
         self.rb_grid.setToolTip(_('Load pattern preset'))
@@ -383,14 +383,14 @@ class LoadCwDialog(BasicDialog):
         self.rb_empty = QtWidgets.QRadioButton(_('Empty grid'))
         self.rb_empty.setToolTip(_('Set grid dimensions and edit manually'))
         self.rb_empty.toggled.connect(self.rb_toggled)
-        
+
         self.gb_pattern = QtWidgets.QGroupBox(_('Pattern file'))
-        self.le_pattern = BrowseEdit()        
+        self.le_pattern = BrowseEdit()
         self.le_pattern.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         self.layout_pattern = QtWidgets.QHBoxLayout()
         self.layout_pattern.addWidget(self.le_pattern)
         self.gb_pattern.setLayout(self.layout_pattern)
-        
+
         self.gb_file = QtWidgets.QGroupBox(_('Crossword file'))
         self.le_file = BrowseEdit(filefilters=_('Crossword files (*.xpf *.xml *.puz *.ipuz);;All files (*.*)'))
         self.le_file.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -398,7 +398,7 @@ class LoadCwDialog(BasicDialog):
         self.layout_file.addWidget(self.le_file)
         self.gb_file.setLayout(self.layout_file)
         self.gb_file.setVisible(False)
-        
+
         self.gb_manual = QtWidgets.QGroupBox(_('Grid dimensions'))
         self.le_rows = QtWidgets.QLineEdit('15')
         self.le_cols = QtWidgets.QLineEdit('15')
@@ -418,7 +418,7 @@ class LoadCwDialog(BasicDialog):
         self.layout_manual.addRow(_('Pattern:'), self.combo_pattern)
         self.gb_manual.setLayout(self.layout_manual)
         self.gb_manual.setVisible(False)
-        
+
         self.layout_controls.addWidget(self.rb_grid)
         self.layout_controls.addWidget(self.gb_pattern)
         self.layout_controls.addWidget(self.rb_file)
@@ -428,8 +428,8 @@ class LoadCwDialog(BasicDialog):
         #self.layout_controls.addStretch()
 
         self.setMinimumWidth(300)
-        
-    ## Checks that the text / pattern file is valid (if selected) or that the number of 
+
+    ## Checks that the text / pattern file is valid (if selected) or that the number of
     # rows and columns is valid (if creating an empty cw grid).
     def validate(self):
         if self.rb_grid.isChecked() and not os.path.isfile(self.le_pattern.text()):
@@ -437,7 +437,7 @@ class LoadCwDialog(BasicDialog):
             return False
         if self.rb_file.isChecked() and not os.path.isfile(self.le_file.text()):
             MsgBox(_('Crossword file is unavailable, please check!'), self, _('Error'), 'error')
-            return False 
+            return False
         try:
             int(self.le_rows.text())
             int(self.le_cols.text())
@@ -445,20 +445,20 @@ class LoadCwDialog(BasicDialog):
             MsgBox(_('Rows and columns must be valid numbers (e.g. 10)!'), self, _('Error'), 'error')
             return False
         return True
-        
+
     # ----- Slots ----- #
-    
+
     ## Show / hide panels under radio buttons.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def rb_toggled(self, toggled):
         self.gb_pattern.setVisible(self.rb_grid.isChecked())
         self.gb_file.setVisible(self.rb_file.isChecked())
         self.gb_manual.setVisible(self.rb_empty.isChecked())
         self.adjustSize()
-            
+
 # ******************************************************************************** #
 # *****          WordSrcDialog
-# ******************************************************************************** #  
+# ******************************************************************************** #
 
 ## @brief Word source editor dialog: provides adding and editing word sources.
 # The word sources are then combined in gui::MainWindow::wordsrc in their sequential order
@@ -468,15 +468,15 @@ class LoadCwDialog(BasicDialog):
 #   * SQLite database
 #   * text file (with words and their parts of speech occupying one row each)
 #   * in-memory list of words (optionally with part of speech data)
-# 
+#
 # See @ref pycross.wordsrc for implementation of word source objects.
 class WordSrcDialog(BasicDialog):
     ## Constructor.
     # @param src `dict` serialized word source data in the following format:
     # @code
-    # src = {'active': True|False, 'name': '<name>', 'type': 'db|file|list', 'file': '<path>', 
-    # 'dbtype': '<sqlite>', 'dblogin': '', 'dbpass': '', 'dbtables': SQL_TABLES, 
-    # 'haspos': True|False, 'encoding': 'utf-8', 'shuffle': True|False, 
+    # src = {'active': True|False, 'name': '<name>', 'type': 'db|file|list', 'file': '<path>',
+    # 'dbtype': '<sqlite>', 'dblogin': '', 'dbpass': '', 'dbtables': SQL_TABLES,
+    # 'haspos': True|False, 'encoding': 'utf-8', 'shuffle': True|False,
     # 'delim': ' ', 'words': []}
     # @endcode
     # Description of keys:
@@ -505,23 +505,23 @@ class WordSrcDialog(BasicDialog):
     def __init__(self, src=None, parent=None, flags=QtCore.Qt.WindowFlags()):
         ## `dict` serialized word source data (see \_\_init\_\_())
         self.src = src
-        super().__init__(None, _('Word Source'), 'database-3.png', 
+        super().__init__(None, _('Word Source'), 'database-3.png',
               parent, flags)
         if self.src: self.from_src(self.src)
-                
+
     def addMainLayout(self):
-        self.layout_controls = QtWidgets.QVBoxLayout()     
-        
+        self.layout_controls = QtWidgets.QVBoxLayout()
+
         self.gb_name = QtWidgets.QGroupBox(_('Name'))
         self.gb_name.setFlat(True)
-        self.layout_gb_name = QtWidgets.QVBoxLayout() 
+        self.layout_gb_name = QtWidgets.QVBoxLayout()
         self.le_name = QtWidgets.QLineEdit('')
         self.le_name.setStyleSheet('font-weight: bold;')
         self.layout_gb_name.addWidget(self.le_name)
         self.gb_name.setLayout(self.layout_gb_name)
-        
-        self.gb_type = QtWidgets.QGroupBox(_('Source type')) 
-        self.layout_gb_type = QtWidgets.QHBoxLayout() 
+
+        self.gb_type = QtWidgets.QGroupBox(_('Source type'))
+        self.layout_gb_type = QtWidgets.QHBoxLayout()
         self.rb_type_db = QtWidgets.QRadioButton(_('Database'))
         self.rb_type_db.toggled.connect(self.rb_toggled)
         self.rb_type_file = QtWidgets.QRadioButton(_('File'))
@@ -530,19 +530,19 @@ class WordSrcDialog(BasicDialog):
         self.rb_type_list.toggled.connect(self.rb_toggled)
         self.layout_gb_type.addWidget(self.rb_type_db)
         self.layout_gb_type.addWidget(self.rb_type_file)
-        self.layout_gb_type.addWidget(self.rb_type_list)  
-        
+        self.layout_gb_type.addWidget(self.rb_type_list)
+
         self.gb_type.setLayout(self.layout_gb_type)
-        
-        self.stacked = QtWidgets.QStackedWidget() 
+
+        self.stacked = QtWidgets.QStackedWidget()
         self.add_pages()
         self.rb_type_db.setChecked(True)
         self.stacked.setCurrentIndex(0)
-        
+
         self.layout_controls.addWidget(self.gb_name)
         self.layout_controls.addWidget(self.gb_type)
         self.layout_controls.addWidget(self.stacked)
-        
+
     ## Creates tabs for the 3 source types.
     def add_pages(self):
         # 1. DB
@@ -561,11 +561,11 @@ class WordSrcDialog(BasicDialog):
         self.te_dbtables.setFont(font)
         style = color_to_stylesheet(QtGui.QColor('#f2f2f2'), self.te_dbtables.styleSheet())
         self.te_dbtables.setStyleSheet(style)
-        self.te_dbtables.setMinimumHeight(80)        
+        self.te_dbtables.setMinimumHeight(80)
         self.te_dbtables.setTabStopDistance(font_metrics.horizontalAdvance('    '))
         self.te_dbtables.setAcceptRichText(False)
         self.te_dbtables.setPlaceholderText(_('Database table and field names'))
-        self.te_dbtables_hiliter = JsonHiliter(self.te_dbtables.document(), True, 
+        self.te_dbtables_hiliter = JsonHiliter(self.te_dbtables.document(), True,
             self.on_decode_error, self.on_decode_success)
         self.te_te_dbtables_error = QtWidgets.QPlainTextEdit('')
         self.te_te_dbtables_error.setMaximumHeight(80)
@@ -595,7 +595,7 @@ class WordSrcDialog(BasicDialog):
         self.layout_db.addRow(self.btn_dbedit)
         self.page_db.setLayout(self.layout_db)
         self.stacked.addWidget(self.page_db)
-        
+
         # 2. File
         self.page_file = QtWidgets.QWidget()
         self.layout_file = QtWidgets.QFormLayout()
@@ -621,7 +621,7 @@ class WordSrcDialog(BasicDialog):
         self.layout_file.addRow(self.btn_fileedit)
         self.page_file.setLayout(self.layout_file)
         self.stacked.addWidget(self.page_file)
-        
+
         # 3. List
         self.page_list = QtWidgets.QWidget()
         self.layout_list = QtWidgets.QFormLayout()
@@ -630,29 +630,29 @@ class WordSrcDialog(BasicDialog):
         self.combo_list_delim = QtWidgets.QComboBox()
         self.combo_list_delim.addItems([_('SPACE'), _('TAB'), ';', ',', ':'])
         self.combo_list_delim.setEditable(True)
-        self.combo_list_delim.setCurrentIndex(0)       
-        self.chb_haspos.toggled.connect(self.combo_list_delim.setEnabled) 
+        self.combo_list_delim.setCurrentIndex(0)
+        self.chb_haspos.toggled.connect(self.combo_list_delim.setEnabled)
         self.te_wlist = QtWidgets.QTextEdit('')
         self.te_wlist.setStyleSheet('font: 14pt "Courier";color: black')
         self.te_wlist.setAcceptRichText(False)
         self.te_wlist.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
         self.chb_list_shuffle = QtWidgets.QCheckBox()
-        self.chb_list_shuffle.setChecked(True)        
+        self.chb_list_shuffle.setChecked(True)
         self.layout_list.addRow(_('Has parts of speech'), self.chb_haspos)
         self.layout_list.addRow(_('Delimiter'), self.combo_list_delim)
         self.layout_list.addRow(_('Words'), self.te_wlist)
         self.layout_list.addRow(_('Shuffle'), self.chb_list_shuffle)
         self.page_list.setLayout(self.layout_list)
         self.stacked.addWidget(self.page_list)
-                
+
     ## Initializes controls from word source data.
     # @param src `dict` serialized word source data (see \_\_init\_\_())
     # @see The reverse method: to_src()
-    def from_src(self, src): 
+    def from_src(self, src):
         if not src: return
-        
+
         self.le_name.setText(self.src['name'])
-        
+
         if self.src['type'] == 'db':
             self.rb_type_db.setChecked(True)
             self.le_dbfile.setText(self.src['file'])
@@ -661,7 +661,7 @@ class WordSrcDialog(BasicDialog):
             self.le_dbpass.setText(self.src['dbpass'])
             self.te_dbtables.setPlainText(json.dumps(self.src['dbtables'], indent=4))
             self.chb_db_shuffle.setChecked(self.src['shuffle'])
-            
+
         elif self.src['type'] == 'file':
             self.rb_type_file.setChecked(True)
             self.le_txtfile.setText(self.src['file'])
@@ -675,7 +675,7 @@ class WordSrcDialog(BasicDialog):
                 delim = delim[0]
             self.combo_file_delim.setCurrentText(delim)
             self.chb_file_shuffle.setChecked(self.src['shuffle'])
-            
+
         elif self.src['type'] == 'list':
             self.rb_type_list.setChecked(True)
             delim = self.src['delim']
@@ -689,10 +689,10 @@ class WordSrcDialog(BasicDialog):
             self.chb_haspos.setChecked(self.src['haspos'])
             self.te_wlist.setPlainText('\n'.join(self.src['words']))
             self.chb_list_shuffle.setChecked(self.src['shuffle'])
-            
+
         # activate page
         self.rb_toggled(True)
-    
+
     ## Saves current control values to word source data dictionary (WordSrcDialog::src).
     # @see See word source data format in \_\_init\_\_()
     # @see The reverse method: from_src()
@@ -708,7 +708,7 @@ class WordSrcDialog(BasicDialog):
             self.src['dbpass'] = self.le_dbpass.text()
             self.src['dbtables'] = json.loads(self.te_dbtables.toPlainText())
             self.src['shuffle'] = self.chb_db_shuffle.isChecked()
-                
+
         elif self.rb_type_file.isChecked():
             self.src['type'] = 'file'
             self.src['file'] = self.le_txtfile.text()
@@ -722,7 +722,7 @@ class WordSrcDialog(BasicDialog):
                 delim = delim[0]
             self.src['delim'] = delim
             self.src['shuffle'] = self.chb_file_shuffle.isChecked()
-            
+
         else:
             self.src['type'] = 'list'
             delim = self.combo_list_delim.currentText()
@@ -736,7 +736,7 @@ class WordSrcDialog(BasicDialog):
             self.src['haspos'] = self.chb_haspos.isChecked()
             self.src['words'] = self.te_wlist.toPlainText().strip().split('\n')
             self.src['shuffle'] = self.chb_list_shuffle.isChecked()
-    
+
     ## Performs various checks of current control values.
     def validate(self):
         if not self.le_name.text().strip():
@@ -748,7 +748,7 @@ class WordSrcDialog(BasicDialog):
                 return False
             try:
                 d = json.loads(self.te_dbtables.toPlainText())
-                if not isinstance(d, dict): 
+                if not isinstance(d, dict):
                     raise Exception(_('DB tables field has incorrect value!'))
                 # check presence of obligatory keys
                 if not 'words' in d:
@@ -761,7 +761,7 @@ class WordSrcDialog(BasicDialog):
                 ex = f"Example table structure:{NEWLINE}{str(SQL_TABLES)}"
                 MsgBox(str(err) + '\n' + ex, self, _('Error'), 'error')
                 return False
-            
+
         elif self.rb_type_file.isChecked():
             if not self.le_txtfile.text():
                 MsgBox(_('Text file path must be valid!'), self, _('Error'), 'error')
@@ -776,7 +776,7 @@ class WordSrcDialog(BasicDialog):
             if not delim in (_('SPACE'), _('TAB')) and len(delim) > 1:
                 MsgBox(_('Text file delimiter must be either "SPACE" or "TAB" or a single character!'), self, _('Error'), 'error')
                 return False
-            
+
         elif self.rb_type_list.isChecked():
             if self.chb_haspos.isChecked():
                 delim = self.combo_list_delim.currentText()
@@ -789,13 +789,13 @@ class WordSrcDialog(BasicDialog):
             if not self.te_wlist.toPlainText().strip():
                 MsgBox(_('Word list is empty or invalid!'), self, _('Error'), 'error')
                 return False
-            
+
         self.to_src()
         return True
-    
+
     ## @brief Fires when WordSrcDialog::rb_type_db is toggled on or off.
     # Switches to the corresponding tab.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def rb_toggled(self, toggled):
         if self.rb_type_db.isChecked():
             self.stacked.setCurrentIndex(0)
@@ -805,7 +805,7 @@ class WordSrcDialog(BasicDialog):
             self.stacked.setCurrentIndex(2)
 
     ## @brief Fired when WordSrcDialog::btn_dbedit is clicked.
-    # Launches the external DB editor 
+    # Launches the external DB editor
     # (if present in guisettings::CWSettings::settings['plugins']['thirdparty']['dbbrowser']['exepath'])
     @QtCore.pyqtSlot()
     def on_btn_dbedit(self):
@@ -816,10 +816,10 @@ class WordSrcDialog(BasicDialog):
             return
         cmd = settings['command'].replace('<table>', self.src['dbtables']['words']['table'])
         cmd = cmd.replace('<file>', os.path.abspath(self.src['file'] if not self.src['file'].lower() in LANG else os.path.join(DICFOLDER, self.src['file'] + '.db')))
-        run_exe(f"{settings['exepath']} {cmd}", False, False, shell=True) 
+        run_exe(f"{settings['exepath']} {cmd}", False, False, shell=True)
 
     ## @brief Fired when WordSrcDialog::btn_fileedit is clicked.
-    # Launches the external text file editor 
+    # Launches the external text file editor
     # (if present in guisettings::CWSettings::settings['plugins']['thirdparty']['text']['exepath'])
     @QtCore.pyqtSlot()
     def on_btn_fileedit(self):
@@ -854,7 +854,7 @@ class WordSrcDialog(BasicDialog):
 
 # ******************************************************************************** #
 # *****          ToolbarCustomizer
-# ******************************************************************************** #  
+# ******************************************************************************** #
 
 ## @brief Toolbar customizer widget (incorporated by SettingsDialog).
 # This widget provides the user with a handy tool to tweak a toolbar (in this app
@@ -877,7 +877,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         # The source actions will be shown on the left-hand panel (ToolbarCustomizer::tw_actions)
         self.action_source = action_source
         ## @brief `QtWidgets.QToolBar` the initial (source) toolbar that must be configured
-        # All buttons (actions) already present in the toolbar will be shown on the right-hand panel 
+        # All buttons (actions) already present in the toolbar will be shown on the right-hand panel
         # (ToolbarCustomizer::lw_added)
         self.src_toolbar = toolbar
         ## `list` of source actions
@@ -888,10 +888,10 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.update_src_actions()
         self.update_actions()
         #self.update_added(self.src_toolbar.actions(), False)
-        
+
     ## Creates the main layout for controls.
     def addMainLayout(self):
-        self.layout_controls = QtWidgets.QHBoxLayout()    
+        self.layout_controls = QtWidgets.QHBoxLayout()
         self.splitter1 = QtWidgets.QSplitter()
         self.splitter1.setChildrenCollapsible(False)
 
@@ -904,7 +904,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.tw_actions.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.tw_actions.itemSelectionChanged.connect(self.on_tw_actions_selected)
         self.splitter1.addWidget(self.tw_actions)
-        
+
         self.layout_right = QtWidgets.QHBoxLayout()
         self.tb = QtWidgets.QToolBar()
         self.tb.setOrientation(QtCore.Qt.Vertical)
@@ -915,7 +915,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         self.act_clear = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/garbage.png"), _('Clear'), self.on_act_clear)
         self.tb.addSeparator()
         self.act_up = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-L.png"), _('Up'), self.on_act_up)
-        self.act_down = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), 
+        self.act_down = self.tb.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"),
                                         # NOTE: arrow button
                                         _('Down'), self.on_act_down)
         self.layout_right.addWidget(self.tb)
@@ -936,7 +936,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
 
     ## Enables or disables actions depending on the selection of source and target buttons.
     def update_actions(self):
-        cur_treeitem = self.tw_actions.currentItem() 
+        cur_treeitem = self.tw_actions.currentItem()
         cur_lwitem = self.lw_added.currentItem()
         self.act_add.setEnabled(not cur_treeitem is None)
         self.act_remove.setEnabled(not cur_lwitem is None)
@@ -958,7 +958,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
                 if src_action[0] is act_:
                     src_action[1].setFlags(QtCore.Qt.NoItemFlags)
                     break
-        self.tw_actions.show() 
+        self.tw_actions.show()
 
     ## Resets (reloads) source and target actions from the source toolbar.
     def reset(self):
@@ -993,8 +993,8 @@ class ToolbarCustomizer(QtWidgets.QWidget):
                     item.setIcon(act_.icon())
                 item.setData(QtCore.Qt.UserRole, act_)
                 self._lw_add(self.lw_added, item, row)
-                #self.lw_added.addAction(act_)      
-        self.update_actions()   
+                #self.lw_added.addAction(act_)
+        self.update_actions()
 
     ## @brief Adds a source action to the left-hand treeview.
     # @param action `QtWidgets.QActionGroup` | `QtWidgets.QMenu` | `QtWidgets.QAction` source for actions
@@ -1009,13 +1009,13 @@ class ToolbarCustomizer(QtWidgets.QWidget):
             for act_ in action:
                 item = self.add_src_action(act_, tree_item)
             return item
-        
+
         if isinstance(action, QtWidgets.QActionGroup):
-            return self.add_src_action(action.actions(), tree_item)          
+            return self.add_src_action(action.actions(), tree_item)
 
         if isinstance(action, QtWidgets.QMenu):
             return self.add_src_action(action.actions(), self.add_src_action(action.menuAction(), tree_item) if action.isSeparator() else tree_item)
-            
+
         if not isinstance(action, QtWidgets.QAction): return None
 
         txt = action.text()
@@ -1032,7 +1032,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
             tree_item.addChild(item)
         else:
             self.tw_actions.addTopLevelItem(item)
-        self.src_actions.append((action, item))        
+        self.src_actions.append((action, item))
         return item
 
     ## Initializes added actions from a list of action names as in CWSettings['gui']['toolbar_actions'].
@@ -1077,8 +1077,8 @@ class ToolbarCustomizer(QtWidgets.QWidget):
         sel_treeitems = self.tw_actions.selectedItems()
         if len(sel_treeitems) == 0: return
         actions = [item.data(0, QtCore.Qt.UserRole) for item in sel_treeitems]
-        self.update_added(actions, False)  
-        self.update_src_actions()   
+        self.update_added(actions, False)
+        self.update_src_actions()
 
     ## Adds a separator after the selected action.
     @QtCore.pyqtSlot()
@@ -1132,7 +1132,7 @@ class ToolbarCustomizer(QtWidgets.QWidget):
 
 # ******************************************************************************** #
 # *****          CustomPluginDialog
-# ******************************************************************************** #        
+# ******************************************************************************** #
 
 ## Dialog to add or edit custom plugins.
 class CustomPluginDialog(BasicDialog):
@@ -1176,7 +1176,7 @@ class CustomPluginDialog(BasicDialog):
         self.le_website = QtWidgets.QLineEdit(self.presets['plugin_website'])
         self.combo_source = QtWidgets.QComboBox()
         self.combo_source.setEditable(False)
-        self.combo_source.addItems([_('From file'), _('Edit in Editor')])        
+        self.combo_source.addItems([_('From file'), _('Edit in Editor')])
         self.le_sourcepath = BrowseEdit(self.presets['plugin_path'], filefilters=_('Python source files (*.py)'))
         self.combo_source.currentIndexChanged.connect(self.on_combo_source)
         self.combo_source.setCurrentIndex(0)
@@ -1196,7 +1196,7 @@ class CustomPluginDialog(BasicDialog):
         if not catname:
             MsgBox(_('Plugin category must be assigned!'), title=_('Invalid input'), msgtype='error')
             return False
-        plname = self.le_name.text().strip()        
+        plname = self.le_name.text().strip()
         if len(plname) < 4:
             MsgBox(_('Plugin name must contain at least 4 letters!'), title=_('Invalid input'), msgtype='error')
             return False
@@ -1226,7 +1226,7 @@ class CustomPluginDialog(BasicDialog):
 
 # ******************************************************************************** #
 # *****          CustomPluginManager
-# ******************************************************************************** # 
+# ******************************************************************************** #
 
 ## @brief Custom plugin manager widget to add, delete, (de)activate and move around plugins.
 # This is basically a tree-like table with a toolbar for manipulating plugins. Each plugin
@@ -1277,11 +1277,11 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.act_down.triggered.connect(self.on_act_down)
 
         self.tvPlugins = QtWidgets.QTreeView()
-        self.tvPlugins.setSortingEnabled(False)   
+        self.tvPlugins.setSortingEnabled(False)
         self.tvPlugins.setSelectionMode(3)      # extended selection (Ctrl, Shift)
-        self.tvPlugins.setSelectionBehavior(1)  # select rows      
-        self.tvPlugins.setContextMenuPolicy(QtCore.Qt.CustomContextMenu) 
-        self.tvPlugins.doubleClicked.connect(QtCore.pyqtSlot(QtCore.QModelIndex)(lambda _: self.on_act_edit()))   
+        self.tvPlugins.setSelectionBehavior(1)  # select rows
+        self.tvPlugins.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.tvPlugins.doubleClicked.connect(QtCore.pyqtSlot(QtCore.QModelIndex)(lambda _: self.on_act_edit()))
         self.plugin_model = None
         self.from_settings()
         self.lo_main.addWidget(self.tvPlugins)
@@ -1294,7 +1294,7 @@ class CustomPluginManager(QtWidgets.QWidget):
         item.setFlags(QtCore.Qt.NoItemFlags)
         return item
 
-    ## Shortcut method to create a row of QStandardItem elements 
+    ## Shortcut method to create a row of QStandardItem elements
     # where the first element is given by 'item'
     # and the rest are dummy items created by CustomPluginManager::_make_empty_item().
     # @param item `QtGui.QStandardItem` first item in the row
@@ -1333,10 +1333,10 @@ class CustomPluginManager(QtWidgets.QWidget):
     def from_settings(self):
         self.tvPlugins.setModel(None)
         self.plugin_model = QtGui.QStandardItemModel(0, 7)
-        self.plugin_model.setHorizontalHeaderLabels([_('Name'), _('Description'), 
-                                                    _('Version'), _('Author'), _('Copyright'), 
+        self.plugin_model.setHorizontalHeaderLabels([_('Name'), _('Description'),
+                                                    _('Version'), _('Author'), _('Copyright'),
                                                     _('Website'), _('Path')])
-        
+
         settings = self.mainwindow.options()['plugins']['custom']
         for category in settings:
             if not settings[category]: continue
@@ -1365,7 +1365,7 @@ class CustomPluginManager(QtWidgets.QWidget):
                 flags = QtCore.Qt.ItemIsSelectable
                 if checked: flags |= QtCore.Qt.ItemIsEnabled
                 item_path.setFlags(flags)
-                root_item.appendRow([item_name, item_desc, item_vers, item_author, 
+                root_item.appendRow([item_name, item_desc, item_vers, item_author,
                                     item_copyright, item_website, item_path])
             self.plugin_model.appendRow(self._make_padded_row(root_item, 6))
 
@@ -1416,7 +1416,7 @@ class CustomPluginManager(QtWidgets.QWidget):
             for i in range(found.rowCount()):
                 item = found.child(i)
                 if item.text() == plname:
-                    self.tvPlugins.selectionModel().setCurrentIndex(item.index(), 
+                    self.tvPlugins.selectionModel().setCurrentIndex(item.index(),
                         QtCore.QItemSelectionModel.Select | QtCore.QItemSelectionModel.Rows)
                     return item
         return None
@@ -1432,7 +1432,7 @@ class CustomPluginManager(QtWidgets.QWidget):
             self.syneditor = PluginSynEditorWidget(collect_pluggables(self.mainwindow), source=source)
         else:
             self.syneditor.editor.setText(source or '')
-        if show: 
+        if show:
             if modal:
                 return self.syneditor.exec()
             else:
@@ -1452,8 +1452,8 @@ class CustomPluginManager(QtWidgets.QWidget):
         old_website = ''
         old_path = ''
         plugin_active = plugin_item is None
-        if plugin_item:          
-            row = plugin_item.row()  
+        if plugin_item:
+            row = plugin_item.row()
             parent_item = plugin_item.parent()
             if not parent_item: return
             category = parent_item.text()
@@ -1466,12 +1466,12 @@ class CustomPluginManager(QtWidgets.QWidget):
             old_path = parent_item.child(row, 6).text()
             plugin_active = bool(parent_item.child(row, 0).checkState())
 
-        new_plugin_dlg = CustomPluginDialog(self.mainwindow, 
+        new_plugin_dlg = CustomPluginDialog(self.mainwindow,
             _('New plugin') if not plugin_item else _('Editing: {}').format(old_name),
             category, old_name, old_desc, old_vers, old_auth,
             old_copyright, old_website, old_path + '.py' if old_path else '')
         if not new_plugin_dlg.exec(): return
-        
+
         plname = new_plugin_dlg.le_name.text().strip()
         plcat = new_plugin_dlg.combo_category.currentText()
         plauthor = new_plugin_dlg.le_author.text().strip()
@@ -1492,7 +1492,7 @@ class CustomPluginManager(QtWidgets.QWidget):
                     os.rename(fpath, plfile)
                 else:
                     copy_file(fpath, plfile)
-        
+
         # edit source
         if os.path.isfile(plfile):
             with open(plfile, 'r', encoding=ENCODING) as srcfile:
@@ -1512,7 +1512,7 @@ class CustomPluginManager(QtWidgets.QWidget):
                 if not os.path.samefile(plfile, old_path + '.py'):
                     os.remove(old_path + '.py')
             except:
-                pass            
+                pass
 
         # make plugin info file
         plinfofile = os.path.join(PLUGINS_FOLDER, plmodule + '.' + PLUGIN_EXTENSION)
@@ -1532,7 +1532,7 @@ class CustomPluginManager(QtWidgets.QWidget):
             infofile.write('\n'.join(plinfo))
 
         if plugin_item:
-            # delete old plugin files            
+            # delete old plugin files
             try:
                 if not os.path.samefile(plinfofile, old_path + '.' + PLUGIN_EXTENSION):
                     os.remove(old_path + '.' + PLUGIN_EXTENSION)
@@ -1551,7 +1551,7 @@ class CustomPluginManager(QtWidgets.QWidget):
 
     ## @brief Fires when a plugin is checked or unchecked in the plugin table.
     # When checked, the corresponding plugin is enabled in the table, and vice-versa.
-    @QtCore.pyqtSlot('QStandardItem*') 
+    @QtCore.pyqtSlot('QStandardItem*')
     def on_plugin_model_changed(self, item):
         # enable / disable plugins when checked / unchecked 'Enabled'
         parent = item.parent()
@@ -1559,7 +1559,7 @@ class CustomPluginManager(QtWidgets.QWidget):
         row = item.row()
         item_name = parent.child(row, 0)
         if not item_name or not item_name.isCheckable(): return
-        checked = bool(item_name.checkState())       
+        checked = bool(item_name.checkState())
         # iterate children
         self.plugin_model.itemChanged.disconnect()
         for i in range(parent.columnCount()):
@@ -1580,8 +1580,8 @@ class CustomPluginManager(QtWidgets.QWidget):
     ## The Reload action handler: reloads plugins from the plugin manager.
     # @see CustomPluginManager::reload_plugins()
     @QtCore.pyqtSlot()
-    def on_act_reload(self): 
-        reply = MsgBox(_('Reload plugins from folder? Click YES to soft-update currently loaded plugins and add new ones, NO to hard-reload plugins (current plugin config will be lost!).'), 
+    def on_act_reload(self):
+        reply = MsgBox(_('Reload plugins from folder? Click YES to soft-update currently loaded plugins and add new ones, NO to hard-reload plugins (current plugin config will be lost!).'),
                        self, _('Confirm Action'), 'ask', btn=['yes', 'no', 'cancel'])
         if not reply in ('yes', 'no'): return
         self.reload_plugins(reply == 'no')
@@ -1589,14 +1589,14 @@ class CustomPluginManager(QtWidgets.QWidget):
     ## The Add action handler: adds a new plugin.
     # @see CustomPluginManager::add_or_edit_plugin()
     @QtCore.pyqtSlot()
-    def on_act_add(self): 
+    def on_act_add(self):
         self.add_or_edit_plugin()
-        
+
     ## The Delete action handler: deletes the selected plugins (>=1 plugins must be selected).
     # @warning This action will permanently delete the plugin files in 'plugins' directory!
     @QtCore.pyqtSlot()
-    def on_act_remove(self): 
-        reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete the selected plugins?\nYou can deactivate a plugin by unchecking it.'), 
+    def on_act_remove(self):
+        reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete the selected plugins?\nYou can deactivate a plugin by unchecking it.'),
                        self, _('Confirm Action'), 'ask')
         if reply != 'yes': return
         settings = self.mainwindow.options()['plugins']['custom']
@@ -1616,35 +1616,35 @@ class CustomPluginManager(QtWidgets.QWidget):
         self.reload_plugins()
         self.tvPlugins.clearSelection()
         self.update_actions()
-        
+
     ## The Edit action handler: edits the selected plugin (only one must be selected).
     @QtCore.pyqtSlot()
-    def on_act_edit(self): 
-        sel_index = self.tvPlugins.selectionModel().currentIndex() 
+    def on_act_edit(self):
+        sel_index = self.tvPlugins.selectionModel().currentIndex()
         if len(self.tvPlugins.selectionModel().selectedRows()) != 1 or \
             not sel_index.isValid() or not sel_index.parent().isValid(): return
         self.add_or_edit_plugin(self.plugin_model.itemFromIndex(sel_index))
-        
+
     ## The Clear action handler: clears (deletes) all plugins.
     # @warning This action will permanently delete the plugin files in 'plugins' directory!
     @QtCore.pyqtSlot()
-    def on_act_clear(self): 
+    def on_act_clear(self):
         def remove_func(filepath):
             if os.path.basename(filepath) != '__init__.py':
                 os.remove(filepath)
 
-        reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete ALL plugins?\nYou can deactivate plugins by unchecking them.'), 
+        reply = MsgBox(_('Are you sure you would like to PERMANENTLY delete ALL plugins?\nYou can deactivate plugins by unchecking them.'),
                        self, _('Confirm Action'), 'ask')
         if reply != 'yes': return
         walk_dir(PLUGINS_FOLDER, recurse=False, file_process_function=remove_func, file_types=('py', PLUGIN_EXTENSION))
         self.tvPlugins.clearSelection()
         self.reload_plugins()
-        
+
     ## @brief The Up actions handler: moves the selected plugin upwards.
     # This ultimately raises the priority (precedence) of the plugin within the category
-    # since it will be handled _before_ the other ones which come after it in the table. 
+    # since it will be handled _before_ the other ones which come after it in the table.
     @QtCore.pyqtSlot()
-    def on_act_up(self): 
+    def on_act_up(self):
         sel_index = self.tvPlugins.selectionModel().currentIndex()
         if not sel_index.isValid(): return
         sel_item = self.plugin_model.itemFromIndex(sel_index)
@@ -1659,12 +1659,12 @@ class CustomPluginManager(QtWidgets.QWidget):
                 break
         self.reload_plugins()
         self.select_plugin(plcat, plname)
-        
+
     ## @brief The Down actions handler: moves the selected plugin downwards.
     # This ultimately lowers the priority (precedence) of the plugin within the category
-    # since it will be handled _after_ the other ones which come before it in the table. 
+    # since it will be handled _after_ the other ones which come before it in the table.
     @QtCore.pyqtSlot()
-    def on_act_down(self): 
+    def on_act_down(self):
         sel_index = self.tvPlugins.selectionModel().currentIndex()
         if not sel_index.isValid(): return
         sel_item = self.plugin_model.itemFromIndex(sel_index)
@@ -1686,12 +1686,12 @@ class CustomPluginManager(QtWidgets.QWidget):
 
 ## Tiny login/password authentication dialog used by the inbuilt web browser (see pycross::browser).
 class ParamValueEditor(BasicDialog):
-    
+
     # @param title `str` dialog title
     # @param icon `str` dialog icon file
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
-    def __init__(self, data=None, params_editable=False, 
+    def __init__(self, data=None, params_editable=False,
                  can_add=False, can_delete=False, can_reorder=True,
                  unique_params=True,
                  header_labels=[_('Parameter'), _('Value')], on_validate=None,
@@ -1709,7 +1709,7 @@ class ParamValueEditor(BasicDialog):
 
     def resizeEvent(self, event):
         self.twParams.resizeColumnsToContents()
-        
+
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()
 
@@ -1757,7 +1757,9 @@ class ParamValueEditor(BasicDialog):
             if len(params) > len(set(params)):
                 MsgBox(_('Please check that parameter names are unique.'), self, _('Error'), 'error')
                 return False
-        return self.on_validate() if self.on_validate else True
+        if self.on_validate:
+            return self.on_validate(self.serialize_table())
+        return True
 
     @QtCore.pyqtSlot(bool)
     def on_act_addrow(self, checked):
@@ -1829,29 +1831,27 @@ class ParamValueEditor(BasicDialog):
         if not self.data: return
         if self.header_labels:
             self.twParams.setHorizontalHeaderLabels(self.header_labels)
-        lrows = len(self.data)
-        self.twParams.setRowCount(lrows)
-        for r in range(lrows):
-            if not is_iterable(self.data[r]) or len(self.data[r]) < 2:
+            
+        self.twParams.setRowCount(len(self.data))
+
+        for r, param_tuple in enumerate(self.data):
+            if len(param_tuple) != 2:
                 continue
-            if is_iterable(self.data[r][0]):
-                # make combobox
-                try:
-                    index = int(self.data[r][2])
-                except:
-                    index = 0
-                cell_combo = QtWidgets.QComboBox()
-                cell_combo.setEditable(self.params_editable)
-                cell_combo.addItems([str(x) for x in self.data[r][0]])
-                cell_combo.setCurrentIndex(index)
-                self.twParams.setCellWidget(r, 0, cell_combo)
-            else:
-                # make regular param
-                param = QtWidgets.QTableWidgetItem(str(self.data[r][0]))
-                param.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable if self.params_editable else \
-                               QtCore.Qt.ItemIsEnabled)
-                self.twParams.setItem(r, 0, param)
-            self.twParams.setItem(r, 1, QtWidgets.QTableWidgetItem(str(self.data[r][1])))
+            for c, el in enumerate(param_tuple):
+                if isinstance(el, dict) and 'options' in el:
+                    # make combobox
+                    cell_combo = QtWidgets.QComboBox()
+                    cell_combo.setEditable(self.params_editable)
+                    cell_combo.addItems(el['options'])
+                    cell_combo.setCurrentIndex(el.get('default', 0))
+                    self.twParams.setCellWidget(r, c, cell_combo)
+                else:
+                    # make regular param
+                    param = QtWidgets.QTableWidgetItem(str(el))
+                    param.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable if self.params_editable else \
+                                QtCore.Qt.ItemIsEnabled)
+                    self.twParams.setItem(r, c, param)
+        
         self.twParams.show()
         self.update_actions()
         self.adjustSize()
@@ -1869,7 +1869,7 @@ class ParamValueEditor(BasicDialog):
         self.act_delrow.setEnabled(self.can_delete and row >= 0)
         self.act_moverowup.setEnabled(self.can_reorder and row > 0)
         self.act_moverowdown.setEnabled(self.can_reorder and row < (self.twParams.rowCount() - 1))
-    
+
     def serialize_table(self):
         data = []
         for r in range(self.twParams.rowCount()):
@@ -1901,7 +1901,7 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     sigEnableInstall = QtCore.pyqtSignal(bool)
     pos_list = (_('Noun'), _('Verb'), _('Adverb'), _('Adjective'),
-                _('Participle'), _('Pronoun'), _('Interjection'), _('Conjuction'), 
+                _('Participle'), _('Pronoun'), _('Interjection'), _('Conjuction'),
                 _('Preposition'), _('Proposition'), _('Miscellaneous / other'), _('None'))
 
     def __init__(self, settings, parent=None, flags=QtCore.Qt.WindowFlags()):
@@ -1909,7 +1909,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.mainwindow = getattr(parent, 'mainwindow', None)
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"))
         self.setWindowTitle(_('Database Manager'))
-        self.dics_model = None        
+        self.dics_model = None
         self.dics = {}
         self.dics_model_thread = QThreadStump(on_start=self.on_repopulate_dic_model_start,
             on_finish=self.on_repopulate_dic_model_finish,
@@ -1923,7 +1923,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             on_run=self.on_repopulate_db_model_run,
             on_error=self.on_repopulate_db_model_error)
         self.db_model_changed_indices = set()
-        
+
         self.initUI()
         self.sigEnableInstall.emit(False)
 
@@ -1931,7 +1931,7 @@ class WordDBManager(QtWidgets.QMainWindow):
     def sizeHint(self):
         desktopRect = QtWidgets.QApplication.primaryScreen().geometry()
         return desktopRect.size() * 0.5
-    
+
     def showEvent(self, event):
         super().showEvent(event)
         self.dics_model_thread.start()
@@ -1942,7 +1942,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         super().closeEvent(event)
 
     def resizeEvent(self, event):
-        if  self.tvDicPreview.isVisible(): 
+        if  self.tvDicPreview.isVisible():
             self.tvDicPreview.setColumnWidth(0, self.tvDicPreview.width() - self.tvDicPreview.verticalHeader().sectionSize(0))
 
     def initUI(self):
@@ -1954,8 +1954,8 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.lo_main.addWidget(self.tabw)
 
         ## `QtWidgets.QStatusBar` main status bar
-        self.statusbar = QtWidgets.QStatusBar()        
-        self.statusbar.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed) 
+        self.statusbar = QtWidgets.QStatusBar()
+        self.statusbar.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         ## `QtWidgets.QProgressBar` progress bar inside status bar (hidden by default)
         self.statusbar_pbar = QtWidgets.QProgressBar(self.statusbar)
         self.statusbar_pbar.setTextVisible(True)
@@ -1980,13 +1980,13 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_refreshdics.setToolTip(_('Refresh dictionary information'))
         self.act_refreshdics.triggered.connect(self.on_act_refreshdics)
         self.act_refreshdics.changed.connect(self.on_act_refreshdics_changed)
-        
+
         self.tb_dicactions.addSeparator()
-        
+
         self.act_installdics = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), _('Install'))
         self.act_installdics.setToolTip(_('Execute the pending installation / uninstallation operations'))
         self.act_installdics.setEnabled(False)
-        self.act_installdics.triggered.connect(self.on_act_installdics)        
+        self.act_installdics.triggered.connect(self.on_act_installdics)
         self.sigEnableInstall.connect(self.act_installdics.setEnabled)
 
         self.act_stopdics = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), _('Stop'))
@@ -1995,13 +1995,13 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_stopdics.triggered.connect(self.on_act_stopdics)
 
         self.tb_dicactions.addSeparator()
-        
+
         self.act_peekdic = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/binoculars.png"), _('Peek'))
         self.act_peekdic.setToolTip(_('See the raw content of the selected dictionary'))
         self.act_peekdic.setCheckable(True)
         self.act_peekdic.setChecked(False)
         self.act_peekdic.setEnabled(False)
-        self.act_peekdic.triggered.connect(self.on_act_peekdic) 
+        self.act_peekdic.triggered.connect(self.on_act_peekdic)
 
         self.dics_model_thread.started.connect(QtCore.pyqtSlot()(lambda: self.act_refreshdics.setEnabled(False)))
         self.dics_model_thread.finished.connect(QtCore.pyqtSlot()(lambda: self.act_refreshdics.setEnabled(True)))
@@ -2009,18 +2009,18 @@ class WordDBManager(QtWidgets.QMainWindow):
 
         self.splitter_dics = QtWidgets.QSplitter(QtCore.Qt.Vertical)
         self.splitter_dics.setChildrenCollapsible(True)
-        
+
         self.tvDics = QtWidgets.QTableView()
         self.tvDics.setSortingEnabled(True)
         self.tvDics.setWordWrap(True)
         self.tvDics.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.tvDics.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.tvDics.activated.connect(self.on_tvDics_activated)
-        
+
         self.l_gif = QtWidgets.QLabel()
         self.l_gif.setMovie(self.loadermovie)
         self.l_gif.hide()
-        self.splitter_dics.addWidget(self.l_gif)        
+        self.splitter_dics.addWidget(self.l_gif)
         self._default_bgcolor = color_from_stylesheet(self.tvDics.styleSheet(), default='white')
         self.splitter_dics.addWidget(self.tvDics)
 
@@ -2037,7 +2037,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.l_gif2.setMovie(self.loadermovie)
         self.l_gif2.hide()
         self.splitter_dics.addWidget(self.l_gif2)
-        
+
         lo_w1.addWidget(self.splitter_dics)
         w1.setLayout(lo_w1)
         self.tabw.addTab(w1, _('Install'))
@@ -2072,7 +2072,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.tb_dbactions.addSeparator()
         self.act_commit = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), _('Commit'))
         self.act_commit.setToolTip(_('Save changes to DB'))
-        self.act_commit.triggered.connect(self.on_act_commit)      
+        self.act_commit.triggered.connect(self.on_act_commit)
         lo_w2.addWidget(self.tb_dbactions)
 
         self.l_gif3 = QtWidgets.QLabel()
@@ -2098,7 +2098,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         def on_act_copy(checked):
             data_model = self.tvDicPreview.model()
             sel_model =  self.tvDicPreview.selectionModel()
-            if not data_model or not sel_model or not sel_model.hasSelection(): 
+            if not data_model or not sel_model or not sel_model.hasSelection():
                 return
             txt = NEWLINE.join(data_model.itemFromIndex(ind).text() for ind in sel_model.selectedRows())
             clipboard_copy(txt)
@@ -2119,10 +2119,10 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.combo_selectdb.clear()
 
         r = 0
-        for dic in self.dics:            
+        for dic in self.dics:
             isinstalled = bool(dic['path'])
             item_lang = QtGui.QStandardItem(dic['lang_full'])
-            item_lang.setData(dic, QtCore.Qt.UserRole + 1)            
+            item_lang.setData(dic, QtCore.Qt.UserRole + 1)
             item_lang.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             item_lang.setCheckable(True)
             item_lang.setUserTristate(isinstalled)
@@ -2152,7 +2152,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             item_endrow.setData(-1, QtCore.Qt.UserRole + 1)
             self.dics_model.appendRow([item_lang, item_status, item_entries,
                                        item_posrules, item_posstrict, item_posdelim,
-                                       item_replace, item_exclpos, item_exclwd, 
+                                       item_replace, item_exclpos, item_exclwd,
                                        item_startrow, item_endrow])
             self.reformat_dic_model_row(r)
 
@@ -2176,7 +2176,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_stopdics.setEnabled(True)
         self.sigEnableInstall.emit(False)
         self.statusBar().showMessage(_('Populating dictionaries...'))
-        self.dics_model = QtGui.QStandardItemModel()        
+        self.dics_model = QtGui.QStandardItemModel()
         self.dics_model.setHorizontalHeaderLabels([_('Language'), _('Status'),
             _('Entries'), _('POS rules'), _('Strict POS'),
             _('POS delimiter'), _('Replacements'), _('Exclude POS'),
@@ -2207,8 +2207,10 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot()
     def on_act_refreshdics_changed(self):
-        self.tvDics.setEnabled(self.act_refreshdics.isEnabled())
-        if not self.act_refreshdics.isEnabled():
+        enabled = self.act_refreshdics.isEnabled()
+        self.tvDics.setEnabled(enabled)
+        self.tabw.widget(1).setEnabled(enabled)
+        if not enabled:
             self.act_installdics.setEnabled(False)
 
     @QtCore.pyqtSlot(bool)
@@ -2222,6 +2224,10 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(bool)
     def on_act_addwd(self, checked):
+        data = [('<New word>', )]
+
+    @QtCore.pyqtSlot(bool)
+    def on_act_delwd(self, checked):
         pass
 
     @QtCore.pyqtSlot(bool)
@@ -2264,7 +2270,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             #self.tvDics.show()
             return True
         return False
-    
+
     @QtCore.pyqtSlot(int, str, str, str, int)
     def on_getfilesize_download_preview(self, id, url, lang, filepath, total_bytes):
         items = getattr(self, 'dic_preview_item', None)
@@ -2300,7 +2306,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         #self.tvDics.setItemDelegateForColumn(1, None)
         #self.tvDics.show()
         MsgBox(_("Error downloading '{}' from '{}'").format(lang, url), self, _('Error'), 'error')
-        
+
     def download_dic(self, lang, overwrite=False):
 
         if isinstance(lang, str):
@@ -2314,14 +2320,14 @@ class WordDBManager(QtWidgets.QMainWindow):
 
         dic = self.dics_model.item(item.row(), 0).data(QtCore.Qt.UserRole + 1)
         if not dic: return ''
-            
+
         self.tvDics.setItemDelegateForColumn(1, ProgressbarDelegate())
-        self.hunspellmgr.download_hunspell(dic['dic_url'], dic['lang'], overwrite, 
+        self.hunspellmgr.download_hunspell(dic['dic_url'], dic['lang'], overwrite,
                                            self.stopcheck_download_preview,
                                            self.on_start_download_preview,
-                                           self.on_getfilesize_download_preview, 
+                                           self.on_getfilesize_download_preview,
                                            self.on_run_download_preview,
-                                           self.on_complete_download_preview, 
+                                           self.on_complete_download_preview,
                                            self.on_error_download_preview)
 
     def show_db(self, dic_lang, stopcheck=None):
@@ -2338,7 +2344,7 @@ class WordDBManager(QtWidgets.QMainWindow):
                 if stopcheck and stopcheck(): break
                 item_word = QtGui.QStandardItem(wd)
                 item_word.setData(wd_id)
-                item_word.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable) 
+                item_word.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
                 item_pos = QtGui.QStandardItem(pos_full)
                 item_pos.setData(pos_all)
                 item_pos.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
@@ -2375,7 +2381,7 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     def check_commit_db(self, refresh=True, ignore_errors=False):
         if len(self.db_model_changed_indices) == 0: return
-        reply = MsgBox(_("You have unsaved changes in database '{}'. Commit them?").format(self.combo_selectdb.currentText()), 
+        reply = MsgBox(_("You have unsaved changes in database '{}'. Commit them?").format(self.combo_selectdb.currentText()),
                         self, _('Unsaved database'), 'ask')
         if reply == 'yes':
             self.commit_db(refresh, ignore_errors)
@@ -2396,8 +2402,8 @@ class WordDBManager(QtWidgets.QMainWindow):
 
         ok_indices = set()
         r = -1
-        for ind in self.db_model_changed_indices:            
-            if r == ind.row(): 
+        for ind in self.db_model_changed_indices:
+            if r == ind.row():
                 ok_indices.add(ind)
                 continue
 
@@ -2405,8 +2411,8 @@ class WordDBManager(QtWidgets.QMainWindow):
             c = ind.column()
             if c == 0:
                 wd_item = self.db_model.itemFromIndex(ind)
-                pos_item = self.db_model.itemFromIndex(ind.siblingAtColumn(1))           
-            elif c == 1:                
+                pos_item = self.db_model.itemFromIndex(ind.siblingAtColumn(1))
+            elif c == 1:
                 wd_item = self.db_model.itemFromIndex(ind.siblingAtColumn(0))
                 pos_item = self.db_model.itemFromIndex(ind)
             else:
@@ -2433,26 +2439,26 @@ class WordDBManager(QtWidgets.QMainWindow):
                     try:
                         cur.execute(SQL_INSERT)
                     except:
-                        if not ignore_errors: 
+                        if not ignore_errors:
                             MsgBox(str(err), self, _('Error'), 'error')
                             break
                 else:
-                    if not ignore_errors: 
+                    if not ignore_errors:
                         MsgBox(str(err), self, _('Error'), 'error')
                         break
-        
+
         if ignore_errors:
             self.db_model_changed_indices.clear()
         else:
             self.db_model_changed_indices -= ok_indices
 
-        if refresh: 
+        if refresh:
             self.on_act_refreshdb(True)
         else:
             self.update_db_actions()
-        
+
     @QtCore.pyqtSlot()
-    def on_repopulate_db_model_start(self):        
+    def on_repopulate_db_model_start(self):
         self.db_model_changed_indices.clear()
         self.act_stopdb.setChecked(False)
         #self.statusBar().showMessage(_('Refreshing database view...'))
@@ -2491,7 +2497,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.db_model = None
         self.act_stopdb.setChecked(False)
         self.on_act_stopdb(True)
-    
+
     def stop_operations(self):
 
         self.act_stopdics.setChecked(True)
@@ -2535,7 +2541,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         for c in range(self.dics_model.columnCount()):
             item = self.dics_model.item(r, c)
             if not item: continue
-            if txt == _('Installed'):                    
+            if txt == _('Installed'):
                 item.setBackground(QtGui.QBrush(QtCore.Qt.green))
             elif txt == _('Pending'):
                 item.setBackground(QtGui.QBrush(QtCore.Qt.darkYellow))
@@ -2565,7 +2571,7 @@ class WordDBManager(QtWidgets.QMainWindow):
     def on_download_dics_getfilesize(self, id, url, lang, filepath, total_bytes):
         if self.to_install:
             self.to_install[id][0].setData((0, total_bytes, None), QtCore.Qt.UserRole + 1)
-        
+
     @QtCore.pyqtSlot(int, str, str, str, int, int)
     def on_download_dics_run(self, id, url, lang, filepath, bytes_written, total_bytes):
         if self.act_stopdics.isChecked():
@@ -2573,7 +2579,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             return
         if self.to_install:
             self.to_install[id][0].setData((bytes_written, total_bytes, None), QtCore.Qt.UserRole + 1)
-        
+
     @QtCore.pyqtSlot(int, str, str, str)
     def on_download_dics_finish(self, id, url, lang, filepath):
         self.statusbar_pbar.setValue(self.statusbar_pbar.value() + 1)
@@ -2592,7 +2598,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         if self.act_stopdics.isChecked():
             self.stop_operations()
         elif not self.hunspellmgr.pool_running():
-            # launch installation            
+            # launch installation
             self.do_install_dics()
 
     @QtCore.pyqtSlot(int, str, str, str, str)
@@ -2612,7 +2618,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         if self.act_stopdics.isChecked():
             self.stop_operations()
         elif not self.hunspellmgr.pool_running():
-            # launch installation            
+            # launch installation
             self.do_install_dics()
 
     @QtCore.pyqtSlot(int, str, str, str)
@@ -2629,9 +2635,9 @@ class WordDBManager(QtWidgets.QMainWindow):
         # find pending items
         items = self.dics_model.findItems(_('Pending'), column=1)
         if not items: return
-                
+
         self.to_install.clear()
-        to_uninstall = []        
+        to_uninstall = []
 
         try:
             self.dics_model.itemChanged.disconnect()
@@ -2641,9 +2647,9 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.sigEnableInstall.emit(False)
         self.act_stopdics.setChecked(False)
         self.act_stopdics.setEnabled(True)
-        self.act_refreshdics.setEnabled(False)        
+        self.act_refreshdics.setEnabled(False)
 
-        # loop        
+        # loop
         for item in items:
             item_lang = self.dics_model.item(item.row(), 0)
             dic = item_lang.data(QtCore.Qt.UserRole + 1)
@@ -2669,8 +2675,8 @@ class WordDBManager(QtWidgets.QMainWindow):
                 except:
                     continue
                 else:
-                    dic['path'] = ''       
-                    dic['entries'] = 0       
+                    dic['path'] = ''
+                    dic['entries'] = 0
                     item_status.setText(_('Not installed'))
                     self.dics_model.item(item_status.row(), 0).setCheckState(QtCore.Qt.Unchecked)
                     self.dics_model.item(item_status.row(), 2).setText('')
@@ -2680,7 +2686,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.statusbar.clearMessage()
         self.statusbar_pbar.setVisible(False)
 
-        if not self.to_install: 
+        if not self.to_install:
             self.on_act_refreshdics(True)
             return
 
@@ -2691,22 +2697,22 @@ class WordDBManager(QtWidgets.QMainWindow):
 
         # install progress bar delegates into column 1
         self.tvDics.setItemDelegateForColumn(1, ProgressbarDelegate())
-        
+
         # download checked dictionaries
         # (installation will be set off in self.on_download_dics_finish)
         self.hunspellmgr.download_hunspell_all(
-            [d[1] for d in self.to_install], 
+            [d[1] for d in self.to_install],
             on_stopcheck=self.on_download_dics_stopcheck,
             on_start=self.on_download_dics_start,
             on_getfilesize=self.on_download_dics_getfilesize,
-            on_progress=self.on_download_dics_run, 
-            on_complete=self.on_download_dics_finish, 
+            on_progress=self.on_download_dics_run,
+            on_complete=self.on_download_dics_finish,
             on_error=self.on_download_dics_error)
 
     @QtCore.pyqtSlot(int, str, str)
     def on_install_dics_start(self, id, lang, filepath):
         if self.to_install:
-            item = self.to_install[id][0]    
+            item = self.to_install[id][0]
             item.setText(_('Installing...'))
             self.reformat_dic_model_row(item.row())
             #self.tvDics.sortByColumn(1, 1)
@@ -2718,7 +2724,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             return
         if self.to_install:
             self.to_install[id][1]['entries'] = records
-            item = self.to_install[id][0] 
+            item = self.to_install[id][0]
             self.dics_model.item(item.row(), 2).setText(str(records))
             self.reformat_dic_model_row(item.row())
             #self.tvDics.sortByColumn(1, 1)
@@ -2731,7 +2737,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         if self.to_install:
             self.to_install[id][1]['path'] = os.path.join(DICFOLDER, f"{lang}.db")
             self.to_install[id][1]['entries'] = records
-            item = self.to_install[id][0]        
+            item = self.to_install[id][0]
             item.setText(_('Installed'))
             self.dics_model.item(item.row(), 2).setText(str(records))
             self.dics_model.item(item.row(), 0).setUserTristate(True)
@@ -2746,25 +2752,25 @@ class WordDBManager(QtWidgets.QMainWindow):
             pass
 
         if not self.hunspellmgr.pool_running():
-            # refresh dics           
+            # refresh dics
             self.stop_operations()
 
     @QtCore.pyqtSlot(int, str, str, str)
     def on_install_dics_error(self, id, lang, filepath, message):
         self.statusbar_pbar.setValue(self.statusbar_pbar.value() + 1)
         self.statusbar_pbar.setFormat('%p% [%v / %m]')
-        
+
         if self.to_install:
             self.to_install[id][1]['path'] = ''
-            item = self.to_install[id][0]        
+            item = self.to_install[id][0]
             item.setText(_('Error') + f": {message}")
             self.dics_model.item(item.row(), 0).setCheckState(QtCore.Qt.Unchecked)
             self.reformat_dic_model_row(item.row())
             #self.tvDics.sortByColumn(1, 1)
-        
+
         if self.act_stopdics.isChecked() or not self.hunspellmgr.pool_running():
             self.stop_operations()
-        
+
     @QtCore.pyqtSlot(int, str, str)
     def on_install_dics_stopcheck(self, id, lang, filepath):
         if self.act_stopdics.isChecked():
@@ -2806,13 +2812,13 @@ class WordDBManager(QtWidgets.QMainWindow):
             posrules_strict.append(bool(self.dics_model.item(row, 4).checkState()))
             # posdelim
             txt = self.dics_model.item(row, 5).text().strip()
-            if txt == '\\s': 
+            if txt == '\\s':
                 txt = ' '
-            elif txt == '\\t': 
+            elif txt == '\\t':
                 txt = '\t'
             elif not txt:
                 txt = '/'
-            posdelim.append(txt)           
+            posdelim.append(txt)
             # replacements
             txt = self.dics_model.item(row, 6).text().strip()
             replacements.append(json.loads(txt, encoding=ENCODING) if txt else None)
@@ -2835,12 +2841,12 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.statusbar_pbar.setValue(0)
         self.statusbar_pbar.setVisible(True)
         self.statusbar.showMessage(_('Installing...'))
-        
+
         self.hunspellmgr.add_all_from_hunspell(
             dics=langs, posrules=posrules, posrules_strict=posrules_strict,
             posdelim=posdelim, lcase=True, replacements=replacements,
-            remove_hyphens=True, filter_out=filter_out, 
-            rows=rowrange, commit_each=1000, 
+            remove_hyphens=True, filter_out=filter_out,
+            rows=rowrange, commit_each=1000,
             on_stopcheck=self.on_install_dics_stopcheck,
             on_start=self.on_install_dics_start,
             on_commit=self.on_install_dics_commit,
@@ -2861,7 +2867,7 @@ class WordDBManager(QtWidgets.QMainWindow):
     def dics_model_item_changed(self, item):
         c = item.column()
         r = item.row()
-        
+
         if c == 0:
             # language checked / unchecked by user
             dic = self.dics_model.item(r, 0).data(QtCore.Qt.UserRole + 1)
@@ -2891,7 +2897,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             self.reformat_dic_model_row(r)
             pending_items = self.dics_model.findItems(_('Pending'), column=1)
             self.sigEnableInstall.emit(bool(pending_items))
-        
+
         elif c == 9 or c == 10:
             # start row / end row
             self.dics_model.itemChanged.disconnect()
@@ -2900,7 +2906,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             if txt:
                 try:
                     value = int(txt)
-                    if value < 1: 
+                    if value < 1:
                         value = defvalue
                     else:
                         value -= 1
@@ -2929,14 +2935,14 @@ class WordDBManager(QtWidgets.QMainWindow):
             # POS rules
             data = None
             txt = item.text()
-            if txt:                
+            if txt:
                 try:
-                    data = json.loads(txt, encoding=ENCODING)                    
+                    data = json.loads(txt, encoding=ENCODING)
                 except:
                     pass
                 if data and isinstance(data, dict):
                     ldata = []
-                    for pos in data:                        
+                    for pos in data:
                         ldata.append((WordDBManager.pos_list, data[pos], self._get_pos_index(pos)))
                     data = ldata
             else:
@@ -2948,14 +2954,14 @@ class WordDBManager(QtWidgets.QMainWindow):
             ldata = dia_editor.serialize_table()
             data = {POS[el[2]][0]: el[1] for el in ldata}
             item.setText(json.dumps(data) if data else '')
-        
+
         elif c == 6:
             # Replacements
             data = None
             txt = item.text()
-            if txt:                
+            if txt:
                 try:
-                    data = json.loads(txt, encoding=ENCODING)                    
+                    data = json.loads(txt, encoding=ENCODING)
                 except:
                     pass
                 if data and isinstance(data, dict):
@@ -2971,13 +2977,13 @@ class WordDBManager(QtWidgets.QMainWindow):
             # Exclude POS / words
             data = None
             txt = item.text()
-            if txt:                
+            if txt:
                 try:
                     data = json.loads(txt, encoding=ENCODING)
                     assert(isinstance(data, list))
                     data = [(_('Parameter {}').format(i), el) for i, el in enumerate(data)]
                 except:
-                    pass                
+                    pass
             dia_editor = ParamValueEditor(data, can_add=True, can_delete=True,
                                           header_labels=['', _('Regex')],
                                           title=_('Exclude'), parent=self)
@@ -2986,26 +2992,26 @@ class WordDBManager(QtWidgets.QMainWindow):
             item.setText(json.dumps(data) if data else '')
 
     @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
-    def on_tvDics_selectionchanged(self, current, previous):  
+    def on_tvDics_selectionchanged(self, current, previous):
         self.act_peekdic.setEnabled(current.isValid())
-        if self.act_peekdic.isChecked() and current.row() != previous.row():     
+        if self.act_peekdic.isChecked() and current.row() != previous.row():
             self.act_peekdic.setChecked(False)
             self.tvDicPreview.hide()
             self.l_gif2.hide()
 
     @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
-    def on_tvDb_selectionchanged(self, current, previous):  
+    def on_tvDb_selectionchanged(self, current, previous):
         self.update_db_actions()
 
     @QtCore.pyqtSlot(QtCore.QPoint)
     def on_tvDicPreview_contextmenu(self, pos):
         self.tvDicPreview_menu.exec(self.tvDicPreview.mapToGlobal(pos))
-            
+
 # ******************************************************************************** #
 # *****          SettingsDialog
-# ******************************************************************************** #  
+# ******************************************************************************** #
 
-## Global app settings configuration window.        
+## Global app settings configuration window.
 class SettingsDialog(BasicDialog):
 
     ## list of stacked pages corresponding to config categories
@@ -3014,7 +3020,7 @@ class SettingsDialog(BasicDialog):
              _('Third-party'), _('Custom'), _('Printing'), _('Updating'), _('Sharing')]
     ## list of parent nodes that hold several pages
     PARENT_PAGES = [_('Sources'), _('User interface'), _('Plugins')]
-    
+
     ## Constructor.
     # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
@@ -3022,27 +3028,27 @@ class SettingsDialog(BasicDialog):
     def __init__(self, mainwindow=None, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
         self.default_settings = self.load_default_settings()
-        super().__init__(None, _('Settings'), 'settings-5.png', 
+        super().__init__(None, _('Settings'), 'settings-5.png',
               parent, flags)
-        
+
     ## Gets the default settings from 'defsettings.pxjson'.
     # @returns `dict` dictionary of settings loaded from the default settings file ('defsettings.pxjson').
     def load_default_settings(self):
         defsettings = CWSettings.validate_file(DEFAULT_SETTINGS_FILE)
         if defsettings: return defsettings
-        CWSettings.save_to_file(DEFAULT_SETTINGS_FILE) 
+        CWSettings.save_to_file(DEFAULT_SETTINGS_FILE)
         return copy.deepcopy(CWSettings.settings)
-                
+
     def addMainLayout(self):
-        self.layout_controls = QtWidgets.QHBoxLayout()   
+        self.layout_controls = QtWidgets.QHBoxLayout()
 
         ## `QtWidgets.QTreeWidget` config categories tree
-        self.tree = QtWidgets.QTreeWidget()         
+        self.tree = QtWidgets.QTreeWidget()
         self.tree.setColumnCount(1)
         self.tree.setHeaderHidden(True)
         self.tree.setMinimumWidth(100)
         self.tree.setMaximumWidth(500)
-        
+
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Common')]))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Generation')]))
         item = QtWidgets.QTreeWidgetItem([_('Sources')])
@@ -3050,7 +3056,7 @@ class SettingsDialog(BasicDialog):
         item.addChild(QtWidgets.QTreeWidgetItem([_('Source management')]))
         item.addChild(QtWidgets.QTreeWidgetItem([_('Search rules')]))
         self.tree.addTopLevelItem(item)
-        
+
         item = QtWidgets.QTreeWidgetItem([_('User interface')])
         item.setFlags(QtCore.Qt.ItemIsEnabled)
         item.addChild(QtWidgets.QTreeWidgetItem([_('Window')]))
@@ -3058,7 +3064,7 @@ class SettingsDialog(BasicDialog):
         item.addChild(QtWidgets.QTreeWidgetItem([_('Clues')]))
         item.addChild(QtWidgets.QTreeWidgetItem([_('Toolbar')]))
         self.tree.addTopLevelItem(item)
-        
+
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Definition lookup')]))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Import & Export')]))
         item = QtWidgets.QTreeWidgetItem([_('Plugins')])
@@ -3070,11 +3076,11 @@ class SettingsDialog(BasicDialog):
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Updating')]))
         self.tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([_('Sharing')]))
         self.tree.itemSelectionChanged.connect(self.on_tree_select)
-        
+
         self.central_widget = QtWidgets.QWidget()
         self.layout_central = QtWidgets.QVBoxLayout()
         ## `QtWidgets.QStackedWidget` container for config pages for each category
-        self.stacked = QtWidgets.QStackedWidget() 
+        self.stacked = QtWidgets.QStackedWidget()
         self.add_pages()
         self.btn_defaults = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/cloud-computing.png"), _('Restore defaults'))
         self.btn_defaults.setToolTip(_('Restore default settings for selected page'))
@@ -3093,17 +3099,17 @@ class SettingsDialog(BasicDialog):
         self.layout_central.addWidget(self.stacked)
         self.layout_central.addLayout(self.layout_buttons)
         self.central_widget.setLayout(self.layout_central)
-        
+
         self.splitter1 = QtWidgets.QSplitter()
         self.splitter1.setChildrenCollapsible(False)
         self.splitter1.addWidget(self.tree)
         self.splitter1.addWidget(self.central_widget)
         self.layout_controls.addWidget(self.splitter1)
-        
+
         # activate first page unless selected
         if not self.tree.currentItem():
             self.tree.setCurrentItem(self.tree.topLevelItem(0))
-        
+
     ## Creates config pages in SettingsDialog::stacked.
     def add_pages(self):
         # Common
@@ -3116,7 +3122,7 @@ class SettingsDialog(BasicDialog):
 
         self.le_tempdir = BrowseEdit(dialogtype='folder')
         self.le_tempdir.setToolTip(_('Temp directory (leave EMPTY for default)'))
-        
+
         self.chb_autosave_cw = QtWidgets.QCheckBox('')
         self.chb_autosave_cw.setToolTip(_('Save crosswords on exit and load on startup'))
 
@@ -3147,7 +3153,7 @@ class SettingsDialog(BasicDialog):
         self.chb_system_proxy = QtWidgets.QCheckBox(_('Use system proxy settings'))
         self.layout_proxysettings.addWidget(self.chb_system_proxy)
         self.layout_proxysettings2 = QtWidgets.QFormLayout()
-        self.layout_proxysettings2.setContentsMargins(0, 0, 0, 0)        
+        self.layout_proxysettings2.setContentsMargins(0, 0, 0, 0)
         self.le_http_proxy = QtWidgets.QLineEdit('')
         self.le_http_proxy.setToolTip(_('HTTP proxy and port, e.g. http://192.168.1.10:3333'))
         self.le_https_proxy = QtWidgets.QLineEdit('')
@@ -3182,25 +3188,25 @@ class SettingsDialog(BasicDialog):
         self.combo_log.setEditable(True)
         self.combo_log.setCurrentIndex(0)
         self.combo_log.activated.connect(self.on_combo_log)
-                
+
         self.layout_generation.addRow(_('Method'), self.combo_gen_method)
         self.layout_generation.addRow(_('Timeout'), self.spin_gen_timeout)
         self.layout_generation.addRow(_('Log'), self.combo_log)
-        
+
         self.page_generation.setLayout(self.layout_generation)
         self.stacked.addWidget(self.page_generation)
-        
+
         # Sources > Source management
         self.page_src_mgmt = QtWidgets.QWidget()
         self.layout_src_mgmt = QtWidgets.QVBoxLayout()
-        
-        self.gb_src = QtWidgets.QGroupBox(_('Manage sources'))        
+
+        self.gb_src = QtWidgets.QGroupBox(_('Manage sources'))
         self.layout_gb_src = QtWidgets.QHBoxLayout()
         self.lw_sources = QtWidgets.QListWidget()
         self.lw_sources.setToolTip(_('Higher sources in this list take higher precedence (use UP and DOWN buttons to move items)'))
         self.lw_sources.itemDoubleClicked.connect(self.on_lw_sources_dblclick)
         self.layout_gb_src.addWidget(self.lw_sources)
-        
+
         self.tb_src_mgmt = QtWidgets.QToolBar()
         self.tb_src_mgmt.setOrientation(QtCore.Qt.Vertical)
         self.act_src_up = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
@@ -3208,7 +3214,7 @@ class SettingsDialog(BasicDialog):
         self.act_src_up.triggered.connect(self.on_act_src_up)
         self.act_src_down = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), _('Down'))
         self.act_src_down.setToolTip(_('Move source down (lower priority)'))
-        self.act_src_down.triggered.connect(self.on_act_src_down)        
+        self.act_src_down.triggered.connect(self.on_act_src_down)
         self.tb_src_mgmt.addSeparator()
         self.act_src_add = self.tb_src_mgmt.addAction(QtGui.QIcon(f"{ICONFOLDER}/plus.png"), _('Add'))
         self.act_src_add.setToolTip(_('Add new word source'))
@@ -3228,7 +3234,7 @@ class SettingsDialog(BasicDialog):
         self.act_src_manage.triggered.connect(self.on_act_src_manage)
         self.layout_gb_src.addWidget(self.tb_src_mgmt)
         self.gb_src.setLayout(self.layout_gb_src)
-        
+
         self.gb_src_settings = QtWidgets.QGroupBox(_('Settings'))
         self.layout_src_settings = QtWidgets.QGridLayout()
         self.chb_maxfetch = QtWidgets.QCheckBox(_('Constrain max results:'))
@@ -3240,15 +3246,15 @@ class SettingsDialog(BasicDialog):
         self.layout_src_settings.addWidget(self.chb_maxfetch, 0, 0)
         self.layout_src_settings.addWidget(self.spin_maxfetch, 0, 1)
         self.gb_src_settings.setLayout(self.layout_src_settings)
-                
+
         self.layout_src_mgmt.addWidget(self.gb_src)
         self.layout_src_mgmt.addWidget(self.gb_src_settings)
         self.page_src_mgmt.setLayout(self.layout_src_mgmt)
         self.stacked.addWidget(self.page_src_mgmt)
-                
+
         # Sources > Search rules
         self.page_src_rules = QtWidgets.QWidget()
-        self.layout_src_rules = QtWidgets.QVBoxLayout()        
+        self.layout_src_rules = QtWidgets.QVBoxLayout()
         self.gb_pos = QtWidgets.QGroupBox(_('Parts of speech'))
         self.layout_gb_pos = QtWidgets.QVBoxLayout()
         self.lw_pos = QtWidgets.QListWidget()
@@ -3262,7 +3268,7 @@ class SettingsDialog(BasicDialog):
         self.layout_gb_pos.addWidget(self.lw_pos)
         self.gb_pos.setLayout(self.layout_gb_pos)
         self.layout_src_rules.addWidget(self.gb_pos)
-        
+
         self.gb_excluded = QtWidgets.QGroupBox(_('Excluded words'))
         self.layout_gb_excluded = QtWidgets.QVBoxLayout()
         self.te_excluded = QtWidgets.QTextEdit('')
@@ -3275,14 +3281,14 @@ class SettingsDialog(BasicDialog):
         self.layout_gb_excluded.addWidget(self.chb_excl_regex)
         self.gb_excluded.setLayout(self.layout_gb_excluded)
         self.layout_src_rules.addWidget(self.gb_excluded)
-        
+
         self.page_src_rules.setLayout(self.layout_src_rules)
         self.stacked.addWidget(self.page_src_rules)
-        
+
         # UI > Window
         self.page_window = QtWidgets.QWidget()
         self.layout_window = QtWidgets.QFormLayout()
-                
+
         self.combo_apptheme = QtWidgets.QComboBox()
         self.combo_apptheme.addItems(QtWidgets.QStyleFactory.keys())
         self.combo_apptheme.setEditable(False)
@@ -3291,22 +3297,22 @@ class SettingsDialog(BasicDialog):
         self.combo_toolbarpos.addItems([_('Top'), _('Bottom'), _('Left'), _('Right'), _('Hidden')])
         self.combo_toolbarpos.setEditable(False)
         self.combo_toolbarpos.setCurrentIndex(0)
-        
+
         self.layout_window.addRow(_('Theme'), self.combo_apptheme)
         self.layout_window.addRow(_('Toolbar position'), self.combo_toolbarpos)
         self.page_window.setLayout(self.layout_window)
         self.stacked.addWidget(self.page_window)
-        
+
         # UI > Grid
         self.page_grid = QtWidgets.QScrollArea()
         self.page_grid.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.page_grid.setWidgetResizable(True)
         self.layout_grid = QtWidgets.QFormLayout()
         self.layout_grid.setSizeConstraint(QtWidgets.QLayout.SetMinAndMaxSize)
-        
+
         self.spin_cwscale = QtWidgets.QSpinBox()
         self.spin_cwscale.setRange(100, 300)
-        self.spin_cwscale.setValue(100)        
+        self.spin_cwscale.setValue(100)
         self.chb_showgrid = QtWidgets.QCheckBox('')
         self.chb_showgrid.setChecked(True)
         self.chb_showcoords = QtWidgets.QCheckBox('')
@@ -3343,7 +3349,7 @@ class SettingsDialog(BasicDialog):
         self.combo_charcase.addItems([_('UPPERCASE'), _('lowercase')])
         self.combo_charcase.setEditable(False)
         self.combo_charcase.setCurrentIndex(1)
-        
+
         # cell formatting
         self.btn_cell_normal_bg_color = QtWidgets.QPushButton('')
         self.btn_cell_normal_bg_color.setStyleSheet('background-color: white;')
@@ -3361,7 +3367,7 @@ class SettingsDialog(BasicDialog):
         self.btn_cell_normal_font.setStyleSheet('font-family: "Arial"; font-size: 18pt; font-weight: bold;')
         self.btn_cell_normal_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_normal_font.clicked.connect(self.on_font_btn_clicked)
-        
+
         self.btn_cell_hilite_bg_color = QtWidgets.QPushButton('')
         self.btn_cell_hilite_bg_color.setStyleSheet('background-color: yellow;')
         self.btn_cell_hilite_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
@@ -3378,7 +3384,7 @@ class SettingsDialog(BasicDialog):
         self.btn_cell_hilite_font.setStyleSheet('font-family: "Arial"; font-size: 18pt; font-weight: bold;')
         self.btn_cell_hilite_font.setCursor(QtCore.Qt.PointingHandCursor)
         self.btn_cell_hilite_font.clicked.connect(self.on_font_btn_clicked)
-        
+
         self.btn_cell_blank_bg_color = QtWidgets.QPushButton('')
         self.btn_cell_blank_bg_color.setStyleSheet('background-color: white;')
         self.btn_cell_blank_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
@@ -3387,7 +3393,7 @@ class SettingsDialog(BasicDialog):
         self.combo_cell_blank_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_cell_blank_style.setEditable(False)
         self.combo_cell_blank_style.setCurrentIndex(0)
-        
+
         self.btn_cell_filler_bg_color = QtWidgets.QPushButton('')
         self.btn_cell_filler_bg_color.setStyleSheet('background-color: black;')
         self.btn_cell_filler_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
@@ -3396,7 +3402,7 @@ class SettingsDialog(BasicDialog):
         self.combo_cell_filler_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_cell_filler_style.setEditable(False)
         self.combo_cell_filler_style.setCurrentIndex(0)
-        
+
         self.btn_cell_filler2_bg_color = QtWidgets.QPushButton('')
         self.btn_cell_filler2_bg_color.setStyleSheet('background-color: black;')
         self.btn_cell_filler2_bg_color.setCursor(QtCore.Qt.PointingHandCursor)
@@ -3404,8 +3410,8 @@ class SettingsDialog(BasicDialog):
         self.combo_cell_filler2_style = QtWidgets.QComboBox()
         self.combo_cell_filler2_style.addItems([_('Solid'), _('Dense'), _('Striped'), _('Lines'), _('Checkered'), _('Diag1'), _('Diag2'), _('Diag cross'), _('Gradient linear'), _('Gradient radial')])
         self.combo_cell_filler2_style.setEditable(False)
-        self.combo_cell_filler2_style.setCurrentIndex(0)        
-        
+        self.combo_cell_filler2_style.setCurrentIndex(0)
+
         self.layout_grid.addRow(_('Grid scale'), self.spin_cwscale)
         self.layout_grid.addRow(_('Show grid borders'), self.chb_showgrid)
         self.layout_grid.addRow(_('Show grid coords'), self.chb_showcoords)
@@ -3416,7 +3422,7 @@ class SettingsDialog(BasicDialog):
         self.layout_grid.addRow(_('Grid cell size'), self.spin_cellsz)
         self.layout_grid.addRow(_('Character case'), self.combo_charcase)
         self.layout_wspacer1 = QtWidgets.QVBoxLayout()
-        self.layout_wspacer1.addSpacing(20)        
+        self.layout_wspacer1.addSpacing(20)
         self.layout_grid.addRow(self.layout_wspacer1)
         self.layout_grid.addRow(_('Show word numbers'), self.chb_shownumbers)
         self.layout_grid.addRow(_('Word number color'), self.btn_numberscolor)
@@ -3449,8 +3455,8 @@ class SettingsDialog(BasicDialog):
         self.layout_wspacer6.addSpacing(20)
         self.layout_grid.addRow(self.layout_wspacer6)
         self.layout_grid.addRow(_('Surrounding color'), self.btn_cell_filler2_bg_color)
-        self.layout_grid.addRow(_('Surrounding style'), self.combo_cell_filler2_style)  
-        
+        self.layout_grid.addRow(_('Surrounding style'), self.combo_cell_filler2_style)
+
         self.widget_layout_grid = QtWidgets.QWidget()
         self.widget_layout_grid.setLayout(self.layout_grid)
         self.page_grid.setWidget(self.widget_layout_grid)
@@ -3524,23 +3530,23 @@ class SettingsDialog(BasicDialog):
 
         self.layout_clues.addRow(_('Normal color'), self.btn_clue_normal_bg_color)
         self.layout_clues.addRow(_('Normal style'), self.combo_clue_normal_style)
-        self.layout_clues.addRow(_('Normal font color'), self.btn_clue_normal_fg_color)        
+        self.layout_clues.addRow(_('Normal font color'), self.btn_clue_normal_fg_color)
         self.layout_clues_wspacer2 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer2.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer2)
         self.layout_clues.addRow(_('Incomplete color'), self.btn_clue_incomplete_bg_color)
         self.layout_clues.addRow(_('Incomplete style'), self.combo_clue_incomplete_style)
-        self.layout_clues.addRow(_('Incomplete font color'), self.btn_clue_incomplete_fg_color)        
+        self.layout_clues.addRow(_('Incomplete font color'), self.btn_clue_incomplete_fg_color)
         self.layout_clues_wspacer3 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer3.addSpacing(20)
         self.layout_clues.addRow(self.layout_clues_wspacer3)
         self.layout_clues.addRow(_('Complete color'), self.btn_clue_complete_bg_color)
         self.layout_clues.addRow(_('Complete style'), self.combo_clue_complete_style)
-        self.layout_clues.addRow(_('Complete font color'), self.btn_clue_complete_fg_color) 
+        self.layout_clues.addRow(_('Complete font color'), self.btn_clue_complete_fg_color)
         self.layout_clues_wspacer31 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer31.addSpacing(20)
-        self.layout_clues.addRow(self.layout_clues_wspacer31)   
-        self.layout_clues.addRow(_('Surrounding color'), self.btn_clue_surrounding_color)    
+        self.layout_clues.addRow(self.layout_clues_wspacer31)
+        self.layout_clues.addRow(_('Surrounding color'), self.btn_clue_surrounding_color)
 
         self.layout_clues_wspacer4 = QtWidgets.QVBoxLayout()
         self.layout_clues_wspacer4.addSpacing(20)
@@ -3558,7 +3564,7 @@ class SettingsDialog(BasicDialog):
         #self.lw_clues_cols.setAcceptDrops(True)
         #self.lw_clues_cols.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
         #self.lw_clues_cols.setDefaultDropAction(QtCore.Qt.MoveAction)
-        #self.lw_clues_cols.setDropIndicatorShown(True)  
+        #self.lw_clues_cols.setDropIndicatorShown(True)
         self._fill_clue_cols()
         self.layout_gb_clues_cols.addWidget(self.lw_clues_cols)
 
@@ -3566,7 +3572,7 @@ class SettingsDialog(BasicDialog):
         self.tb_clues_cols.setOrientation(QtCore.Qt.Vertical)
         self.act_cluecol_up = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
         self.act_cluecol_up.triggered.connect(self.on_act_cluecol_up)
-        self.act_cluecol_down = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), 
+        self.act_cluecol_down = self.tb_clues_cols.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"),
                                                             # NOTE: arrow button
                                                             _('Down'))
         self.act_cluecol_down.triggered.connect(self.on_act_cluecol_down)
@@ -3598,7 +3604,7 @@ class SettingsDialog(BasicDialog):
             self.combo_lookup_deflang.addItem(v, QtCore.QVariant(k))
         self.combo_lookup_deflang.setEditable(False)
         self.combo_lookup_deflang.setCurrentIndex(0)
-        
+
         self.layout_lookup_top.addRow(_('Default language:'), self.combo_lookup_deflang)
         self.layout_lookup.addLayout(self.layout_lookup_top)
 
@@ -3640,7 +3646,7 @@ class SettingsDialog(BasicDialog):
         for l in d:
             lwitem = QtWidgets.QListWidgetItem(d[l])
             lwitem.setData(QtCore.Qt.StatusTipRole, l)
-            lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)            
+            lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
             lwitem.setCheckState(QtCore.Qt.Unchecked)
             self.lw_google_lang.addItem(lwitem)
         self.lw_google_lang.itemChanged.connect(self.on_lw_google_lang_changed) #
@@ -3654,7 +3660,7 @@ class SettingsDialog(BasicDialog):
         for l in d:
             lwitem = QtWidgets.QListWidgetItem(d[l])
             lwitem.setData(QtCore.Qt.StatusTipRole, l)
-            lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)            
+            lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
             lwitem.setCheckState(QtCore.Qt.Unchecked)
             self.lw_google_interface_lang.addItem(lwitem)
         self.lw_google_interface_lang.itemChanged.connect(self.on_lw_google_interface_lang_changed) #
@@ -3668,7 +3674,7 @@ class SettingsDialog(BasicDialog):
         for l in d:
             lwitem = QtWidgets.QListWidgetItem(d[l])
             lwitem.setData(QtCore.Qt.StatusTipRole, l)
-            lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)            
+            lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
             lwitem.setCheckState(QtCore.Qt.Unchecked)
             self.lw_google_geo.addItem(lwitem)
         self.lw_google_geo.itemChanged.connect(self.on_lw_google_geo_changed) #
@@ -3785,7 +3791,7 @@ class SettingsDialog(BasicDialog):
         item_0 = QtGui.QStandardItem()
         item_0.setFlags(QtCore.Qt.NoItemFlags)
         self.model_plugins_3party.appendRow([item_git, item_0])
-        
+
         item_sqlite = QtGui.QStandardItem(QtGui.QIcon(f"{ICONFOLDER}/sqlite.png"), _('SQLite Editor'))
         item_sqlite.setFlags(QtCore.Qt.ItemIsEnabled)
         item_1 = QtGui.QStandardItem(_('Enabled'))
@@ -3835,13 +3841,13 @@ class SettingsDialog(BasicDialog):
         self.model_plugins_3party.appendRow([item_text, item_0])
 
         self.tv_plugins_3party.setModel(self.model_plugins_3party)
-        
+
         indices = []
-        indices.append(self.model_plugins_3party.index(1, 1, 
+        indices.append(self.model_plugins_3party.index(1, 1,
                 self.model_plugins_3party.indexFromItem(item_git)))
-        indices.append(self.model_plugins_3party.index(1, 1, 
+        indices.append(self.model_plugins_3party.index(1, 1,
                 self.model_plugins_3party.indexFromItem(item_sqlite)))
-        indices.append(self.model_plugins_3party.index(1, 1, 
+        indices.append(self.model_plugins_3party.index(1, 1,
                 self.model_plugins_3party.indexFromItem(item_text)))
         self.tv_plugins_3party.setItemDelegate(BrowseEditDelegate(indices))
 
@@ -3903,8 +3909,8 @@ class SettingsDialog(BasicDialog):
         self.chb_print_print_clue_letters = QtWidgets.QCheckBox(_('Include word size hint'))
         self.chb_print_print_clues.toggled.connect(self.chb_print_print_clue_letters.setEnabled)
         self.chb_print_print_info = QtWidgets.QCheckBox(_('Print crossword information'))
-        self.chb_print_color_print = QtWidgets.QCheckBox(_('Colored output'))        
-        self.chb_print_openfile = QtWidgets.QCheckBox(_('Open file (PDF) on print complete'))        
+        self.chb_print_color_print = QtWidgets.QCheckBox(_('Colored output'))
+        self.chb_print_openfile = QtWidgets.QCheckBox(_('Open file (PDF) on print complete'))
 
         self.gb_print_fonts = QtWidgets.QGroupBox(_('Fonts'))
         self.layout_gb_print_fonts = QtWidgets.QFormLayout()
@@ -3995,11 +4001,11 @@ class SettingsDialog(BasicDialog):
         self.spin_update_period.setToolTip(_('Set to -1 to disable update checks'))
         self.chb_update_auto = QtWidgets.QCheckBox('')
         self.chb_update_major_only = QtWidgets.QCheckBox('')
-        self.chb_update_restart = QtWidgets.QCheckBox('')       
-        
+        self.chb_update_restart = QtWidgets.QCheckBox('')
+
         self.le_update_logfile = BrowseEdit(dialogtype='filesave', fullpath=False)
         self.le_update_logfile.setToolTip(_('Log file for update operations'))
-        
+
         self.layout_updating.addRow(_('Check for updates every'), self.spin_update_period)
         self.layout_updating.addRow(_('Check / update major releases only'), self.chb_update_major_only)
         self.layout_updating.addRow(_('Auto update'), self.chb_update_auto)
@@ -4046,7 +4052,7 @@ class SettingsDialog(BasicDialog):
                 lwitem.setFlags(QtCore.Qt.NoItemFlags)
                 lwitem.setForeground(QtGui.QBrush(QtGui.QColor(QtCore.Qt.red), QtCore.Qt.SolidPattern))
             else:
-                lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDragEnabled | QtCore.Qt.ItemIsDropEnabled)                
+                lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDragEnabled | QtCore.Qt.ItemIsDropEnabled)
             lwitem.setCheckState(QtCore.Qt.Checked if col['visible'] else QtCore.Qt.Unchecked)
             self.lw_clues_cols.addItem(lwitem)
 
@@ -4076,7 +4082,7 @@ class SettingsDialog(BasicDialog):
 
         # timeout
         settings['cw_settings']['timeout'] = self.spin_gen_timeout.value()
-        
+
         # method
         method = self.combo_gen_method.currentIndex()
         if method == 0:
@@ -4085,7 +4091,7 @@ class SettingsDialog(BasicDialog):
             settings['cw_settings']['method'] = 'iter'
         else:
             settings['cw_settings']['method'] = 'recurse'
-            
+
         # pos
         pos = []
         for row in range(self.lw_pos.count()):
@@ -4097,7 +4103,7 @@ class SettingsDialog(BasicDialog):
                     break
         if len(pos) == 1: pos = pos[0]
         settings['cw_settings']['pos'] = pos
-        
+
         # log
         log = self.combo_log.currentText()
         if log == _('No log'):
@@ -4106,10 +4112,10 @@ class SettingsDialog(BasicDialog):
             settings['cw_settings']['log'] = 'stdout'
         else:
             settings['cw_settings']['log'] = log
-            
+
         # wordsrc
         settings['wordsrc']['maxres'] = self.spin_maxfetch.value() if self.chb_maxfetch.isChecked() else None
-        settings['wordsrc']['sources'] = []        
+        settings['wordsrc']['sources'] = []
         for row in reversed(range(self.lw_sources.count())):
             item = self.lw_sources.item(row)
             src = json.loads(item.data(QtCore.Qt.UserRole))
@@ -4118,19 +4124,19 @@ class SettingsDialog(BasicDialog):
                 print(_('No user data in src!'))
                 continue
             settings['wordsrc']['sources'].append(src)
-            
+
         # excluded
         settings['wordsrc']['excluded'] = {}
         excl = self.te_excluded.toPlainText().strip().split('\n')
         settings['wordsrc']['excluded']['words'] = excl if excl and excl[0] else []
         settings['wordsrc']['excluded']['regex'] = self.chb_excl_regex.isChecked()
-        
+
         # grid_style
         settings['grid_style']['scale'] = self.spin_cwscale.value()
         settings['grid_style']['show'] = self.chb_showgrid.isChecked()
         settings['grid_style']['line'] = QtCore.Qt.SolidLine
         color = color_from_stylesheet(self.btn_gridlinecolor.styleSheet(), 'background-color', 'gray')
-        settings['grid_style']['line_color'] = color.rgba()        
+        settings['grid_style']['line_color'] = color.rgba()
         index = self.combo_gridlinestyle.currentIndex()
         if index == 1:
             settings['grid_style']['line'] = QtCore.Qt.DashLine
@@ -4140,7 +4146,7 @@ class SettingsDialog(BasicDialog):
             settings['grid_style']['line'] = QtCore.Qt.DashDotLine
         settings['grid_style']['line_width'] = self.spin_gridlinesz.value()
         color = color_from_stylesheet(self.btn_activecellcolor.styleSheet(), 'background-color', 'blue')
-        settings['grid_style']['active_cell_color'] = color.rgba()    
+        settings['grid_style']['active_cell_color'] = color.rgba()
         settings['grid_style']['header'] = self.chb_showcoords.isChecked()
         settings['grid_style']['cell_size'] = self.spin_cellsz.value()
         settings['grid_style']['numbers'] = {}
@@ -4152,7 +4158,7 @@ class SettingsDialog(BasicDialog):
         settings['grid_style']['numbers']['font_size'] = font.pointSize()
         settings['grid_style']['numbers']['font_name'] = font.family()
         settings['grid_style']['numbers']['font_weight'] = font.weight()
-        settings['grid_style']['numbers']['font_italic'] = font.italic() 
+        settings['grid_style']['numbers']['font_italic'] = font.italic()
         index = self.combo_charcase.currentIndex()
         if index == 0:
             settings['grid_style']['char_case'] = 'upper'
@@ -4193,7 +4199,7 @@ class SettingsDialog(BasicDialog):
         settings['cell_format']['NORMAL']['font_weight'] = font.weight()
         settings['cell_format']['NORMAL']['font_italic'] = font.italic()
         settings['cell_format']['NORMAL']['align'] = QtCore.Qt.AlignCenter
-        
+
         settings['cell_format']['HILITE'] = {}
         color = color_from_stylesheet(self.btn_cell_hilite_bg_color.styleSheet(), 'background-color', 'yellow')
         settings['cell_format']['HILITE']['bg_color'] = color.rgba()
@@ -4228,7 +4234,7 @@ class SettingsDialog(BasicDialog):
         settings['cell_format']['HILITE']['font_weight'] = font.weight()
         settings['cell_format']['HILITE']['font_italic'] = font.italic()
         settings['cell_format']['HILITE']['align'] = settings['cell_format']['NORMAL']['align']
-        
+
         settings['cell_format']['BLANK'] = {}
         color = color_from_stylesheet(self.btn_cell_blank_bg_color.styleSheet(), 'background-color', 'white')
         settings['cell_format']['BLANK']['bg_color'] = color.rgba()
@@ -4260,7 +4266,7 @@ class SettingsDialog(BasicDialog):
         settings['cell_format']['BLANK']['font_weight'] = settings['cell_format']['NORMAL']['font_weight']
         settings['cell_format']['BLANK']['font_italic'] = settings['cell_format']['NORMAL']['font_italic']
         settings['cell_format']['BLANK']['align'] = settings['cell_format']['NORMAL']['align']
-        
+
         settings['cell_format']['FILLER'] = {}
         color = color_from_stylesheet(self.btn_cell_filler_bg_color.styleSheet(), 'background-color', 'black')
         settings['cell_format']['FILLER']['bg_color'] = color.rgba()
@@ -4292,7 +4298,7 @@ class SettingsDialog(BasicDialog):
         settings['cell_format']['FILLER']['font_weight'] = settings['cell_format']['NORMAL']['font_weight']
         settings['cell_format']['FILLER']['font_italic'] = settings['cell_format']['NORMAL']['font_italic']
         settings['cell_format']['FILLER']['align'] = settings['cell_format']['NORMAL']['align']
-        
+
         settings['cell_format']['FILLER2'] = {}
         color = color_from_stylesheet(self.btn_cell_filler2_bg_color.styleSheet(), 'background-color', 'gray')
         settings['cell_format']['FILLER2']['bg_color'] = color.rgba()
@@ -4423,9 +4429,9 @@ class SettingsDialog(BasicDialog):
         settings['clues']['columns'] = []
         for i in range(self.lw_clues_cols.count()):
             item = self.lw_clues_cols.item(i)
-            settings['clues']['columns'].append({'name': item.text(), 
+            settings['clues']['columns'].append({'name': item.text(),
                 'visible': bool(item.checkState()), 'width': -1})
-            
+
         # lookup
         settings['lookup']['default_lang'] = self.combo_lookup_deflang.currentData()
 
@@ -4492,7 +4498,7 @@ class SettingsDialog(BasicDialog):
         settings['plugins']['custom'] = {}
         settings['plugins']['custom'].update(CWSettings.settings['plugins']['custom'])
         self.page_plugins_custom.reload_plugins()
-        
+
         # printing
         settings['printing']['margins'] = [self.spin_margin_left.value(), self.spin_margin_right.value(),
                                            self.spin_margin_top.value(), self.spin_margin_bottom.value()]
@@ -4558,7 +4564,7 @@ class SettingsDialog(BasicDialog):
         settings['update']['check_every'] = self.spin_update_period.value()
         settings['update']['only_major_versions'] = self.chb_update_major_only.isChecked()
         settings['update']['auto_update'] = self.chb_update_auto.isChecked()
-        settings['update']['restart_on_update'] = self.chb_update_restart.isChecked()        
+        settings['update']['restart_on_update'] = self.chb_update_restart.isChecked()
         settings['update']['logfile'] = os.path.relpath(self.le_update_logfile.text(), os.path.dirname(__file__)) if self.le_update_logfile.text() else ''
 
         # sharing
@@ -4568,7 +4574,7 @@ class SettingsDialog(BasicDialog):
         settings['sharing']['root_folder'] = self.le_sharing_root.text()
         settings['sharing']['user'] = self.le_sharing_user.text()
         settings['sharing']['use_own_browser'] = self.chb_sharing_ownbrowser.isChecked()
-        
+
         return settings
 
     ## Shortcut method to set the value of a QtWidgets.QSpinBox control with min/max threshold checks.
@@ -4578,14 +4584,14 @@ class SettingsDialog(BasicDialog):
         elif val > spin.maximum():
             val = spin.maximum()
         spin.setValue(val)
-    
+
     ## @brief Updates the GUI controls from a dict of global settings.
-    # @param settings `dict` global setting dictionary in guisettings::CWSettings::settings format. 
+    # @param settings `dict` global setting dictionary in guisettings::CWSettings::settings format.
     # If `None` (default), guisettings::CWSettings::settings is used (the app global settings).
-    # @param page `str` name of page to update. GUI controls are updated only on this page. 
+    # @param page `str` name of page to update. GUI controls are updated only on this page.
     # If `None` (default), GUI controls will be updated on all pages.
     def from_settings(self, settings=None, page=None):
-        
+
         if settings is None:
             settings = CWSettings.settings
 
@@ -4622,7 +4628,7 @@ class SettingsDialog(BasicDialog):
                 self.combo_log.setCurrentIndex(1)
             else:
                 self.combo_log.setCurrentText(log)
-        
+
         # Sources > Source management
         if page is None or page == _('Source management'):
             # maxres
@@ -4636,14 +4642,14 @@ class SettingsDialog(BasicDialog):
             self.lw_sources.clear()
             for src in settings['wordsrc']['sources']:
                 self.addoredit_wordsrc(src)
-        
+
         # Sources > Search rules
         if page is None or page == _('Search rules'):
             # pos
             pos = settings['cw_settings']['pos']
             if isinstance(pos, str) and ',' in pos:
                 pos = pos.split(',')
-                
+
             for row in range(self.lw_pos.count()):
                 it = self.lw_pos.item(row)
                 for p in POS:
@@ -4654,7 +4660,7 @@ class SettingsDialog(BasicDialog):
             exwords = settings['wordsrc']['excluded']['words']
             self.te_excluded.setPlainText('\n'.join(exwords) if exwords else '')
             self.chb_excl_regex.setChecked(settings['wordsrc']['excluded']['regex'])
-        
+
         # UI > Window
         if page is None or page == _('Window'):
             index = self.combo_apptheme.findText(settings['gui']['theme'])
@@ -4663,7 +4669,7 @@ class SettingsDialog(BasicDialog):
             index = settings['gui']['toolbar_pos']
             if index >=0 and index <5:
                 self.combo_toolbarpos.setCurrentIndex(index)
-        
+
         # UI > grid
         if page is None or page == _('Grid'):
             # scale
@@ -4681,11 +4687,11 @@ class SettingsDialog(BasicDialog):
             elif gridline == QtCore.Qt.DashDotLine:
                 self.combo_gridlinestyle.setCurrentIndex(3)
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['grid_style']['line_color']), self.btn_gridlinecolor.styleSheet(), 'background-color')
-            self.btn_gridlinecolor.setStyleSheet(style)     
+            self.btn_gridlinecolor.setStyleSheet(style)
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['grid_style']['active_cell_color']), self.btn_activecellcolor.styleSheet(), 'background-color')
-            self.btn_activecellcolor.setStyleSheet(style) 
+            self.btn_activecellcolor.setStyleSheet(style)
             self._set_spin_value_safe(self.spin_gridlinesz, settings['grid_style']['line_width'])
-            # char case 
+            # char case
             charcase = settings['grid_style']['char_case']
             if charcase == 'upper':
                 self.combo_charcase.setCurrentIndex(0)
@@ -4699,7 +4705,7 @@ class SettingsDialog(BasicDialog):
             self.chb_shownumbers.setChecked(settings['grid_style']['numbers']['show'])
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['grid_style']['numbers']['color']), self.btn_numberscolor.styleSheet(), 'background-color')
             self.btn_numberscolor.setStyleSheet(style)
-            font = make_font(settings['grid_style']['numbers']['font_name'], settings['grid_style']['numbers']['font_size'], 
+            font = make_font(settings['grid_style']['numbers']['font_name'], settings['grid_style']['numbers']['font_size'],
                              settings['grid_style']['numbers']['font_weight'], settings['grid_style']['numbers']['font_italic'])
             style = font_to_stylesheet(font, self.btn_numbersfont.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['grid_style']['numbers']['color']), style, 'color')
@@ -4730,12 +4736,12 @@ class SettingsDialog(BasicDialog):
                 self.combo_cell_normal_style.setCurrentIndex(9)
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['cell_format']['NORMAL']['fg_color']), self.btn_cell_normal_fg_color.styleSheet(), 'background-color')
             self.btn_cell_normal_fg_color.setStyleSheet(style)
-            font = make_font(settings['cell_format']['NORMAL']['font_name'], settings['cell_format']['NORMAL']['font_size'], 
+            font = make_font(settings['cell_format']['NORMAL']['font_name'], settings['cell_format']['NORMAL']['font_size'],
                              settings['cell_format']['NORMAL']['font_weight'], settings['cell_format']['NORMAL']['font_italic'])
             style = font_to_stylesheet(font, self.btn_cell_normal_font.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['cell_format']['NORMAL']['fg_color']), style, 'color')
             self.btn_cell_normal_font.setStyleSheet(style)
-            
+
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['cell_format']['HILITE']['bg_color']), self.btn_cell_hilite_bg_color.styleSheet(), 'background-color')
             self.btn_cell_hilite_bg_color.setStyleSheet(style)
             patn = settings['cell_format']['HILITE']['bg_pattern']
@@ -4761,12 +4767,12 @@ class SettingsDialog(BasicDialog):
                 self.combo_cell_hilite_style.setCurrentIndex(9)
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['cell_format']['HILITE']['fg_color']), self.btn_cell_hilite_fg_color.styleSheet(), 'background-color')
             self.btn_cell_hilite_fg_color.setStyleSheet(style)
-            font = make_font(settings['cell_format']['HILITE']['font_name'], settings['cell_format']['HILITE']['font_size'], 
+            font = make_font(settings['cell_format']['HILITE']['font_name'], settings['cell_format']['HILITE']['font_size'],
                              settings['cell_format']['HILITE']['font_weight'], settings['cell_format']['HILITE']['font_italic'])
             style = font_to_stylesheet(font, self.btn_cell_hilite_font.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['cell_format']['HILITE']['fg_color']), style, 'color')
             self.btn_cell_hilite_font.setStyleSheet(style)
-            
+
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['cell_format']['BLANK']['bg_color']), self.btn_cell_blank_bg_color.styleSheet(), 'background-color')
             self.btn_cell_blank_bg_color.setStyleSheet(style)
             patn = settings['cell_format']['BLANK']['bg_pattern']
@@ -4790,7 +4796,7 @@ class SettingsDialog(BasicDialog):
                 self.combo_cell_blank_style.setCurrentIndex(8)
             elif patn == QtCore.Qt.RadialGradientPattern:
                 self.combo_cell_blank_style.setCurrentIndex(9)
-                
+
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['cell_format']['FILLER']['bg_color']), self.btn_cell_filler_bg_color.styleSheet(), 'background-color')
             self.btn_cell_filler_bg_color.setStyleSheet(style)
             patn = settings['cell_format']['FILLER']['bg_pattern']
@@ -4814,7 +4820,7 @@ class SettingsDialog(BasicDialog):
                 self.combo_cell_filler_style.setCurrentIndex(8)
             elif patn == QtCore.Qt.RadialGradientPattern:
                 self.combo_cell_filler_style.setCurrentIndex(9)
-                
+
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['cell_format']['FILLER2']['bg_color']), self.btn_cell_filler2_bg_color.styleSheet(), 'background-color')
             self.btn_cell_filler2_bg_color.setStyleSheet(style)
             patn = settings['cell_format']['FILLER2']['bg_pattern']
@@ -4838,7 +4844,7 @@ class SettingsDialog(BasicDialog):
                 self.combo_cell_filler2_style.setCurrentIndex(8)
             elif patn == QtCore.Qt.RadialGradientPattern:
                 self.combo_cell_filler2_style.setCurrentIndex(9)
-        
+
         # UI > clues
         if page is None or page == _('Clues'):
             # normal
@@ -4867,7 +4873,7 @@ class SettingsDialog(BasicDialog):
                 self.combo_clue_normal_style.setCurrentIndex(9)
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clues']['NORMAL']['fg_color']), self.btn_clue_normal_fg_color.styleSheet(), 'background-color')
             self.btn_clue_normal_fg_color.setStyleSheet(style)
-            font = make_font(settings['clues']['NORMAL']['font_name'], settings['clues']['NORMAL']['font_size'], 
+            font = make_font(settings['clues']['NORMAL']['font_name'], settings['clues']['NORMAL']['font_size'],
                              settings['clues']['NORMAL']['font_weight'], settings['clues']['NORMAL']['font_italic'])
             style = font_to_stylesheet(font, self.btn_clue_normal_font.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clues']['NORMAL']['fg_color']), style, 'color')
@@ -4942,7 +4948,7 @@ class SettingsDialog(BasicDialog):
         # UI > Toolbar
         if page is None or page == _('Toolbar'):
             self.page_toolbar.from_list(settings['gui']['toolbar_actions'])
-        
+
         # Lookup
         if page is None or page == _('Definition lookup'):
             self.combo_lookup_deflang.setCurrentText(LANG[settings['lookup']['default_lang']])
@@ -4999,7 +5005,7 @@ class SettingsDialog(BasicDialog):
             self._set_spin_value_safe(self.spin_export_quality, settings['img_output_quality'])
             self.le_svg_title.setText(settings['svg_title'])
             self.le_svg_description.setText(settings['svg_description'])
-        
+
         # Plugins > Third-party
         if page is None or page == _('Third-party'):
             settings = CWSettings.settings['plugins']['thirdparty']
@@ -5034,7 +5040,7 @@ class SettingsDialog(BasicDialog):
         # Plugins > Custom
         if page is None or page == _('Custom'):
             self.page_plugins_custom.reload_plugins()
-                    
+
         # Printing
         if page is None or page == _('Printing'):
 
@@ -5065,7 +5071,7 @@ class SettingsDialog(BasicDialog):
 
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['header_font']['color']), self.btn_print_header_color.styleSheet(), 'background-color')
             self.btn_print_header_color.setStyleSheet(style)
-            font = make_font(settings['header_font']['font_name'], settings['header_font']['font_size'], 
+            font = make_font(settings['header_font']['font_name'], settings['header_font']['font_size'],
                              settings['header_font']['font_weight'], settings['header_font']['font_italic'])
             style = font_to_stylesheet(font, self.btn_print_header_font.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['header_font']['color']), style, 'color')
@@ -5073,7 +5079,7 @@ class SettingsDialog(BasicDialog):
 
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['info_font']['color']), self.btn_print_info_color.styleSheet(), 'background-color')
             self.btn_print_info_color.setStyleSheet(style)
-            font = make_font(settings['info_font']['font_name'], settings['info_font']['font_size'], 
+            font = make_font(settings['info_font']['font_name'], settings['info_font']['font_size'],
                              settings['info_font']['font_weight'], settings['info_font']['font_italic'])
             style = font_to_stylesheet(font, self.btn_print_info_font.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['info_font']['color']), style, 'color')
@@ -5081,7 +5087,7 @@ class SettingsDialog(BasicDialog):
 
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clue_number_font']['color']), self.btn_print_clue_number_color.styleSheet(), 'background-color')
             self.btn_print_clue_number_color.setStyleSheet(style)
-            font = make_font(settings['clue_number_font']['font_name'], settings['clue_number_font']['font_size'], 
+            font = make_font(settings['clue_number_font']['font_name'], settings['clue_number_font']['font_size'],
                              settings['clue_number_font']['font_weight'], settings['clue_number_font']['font_italic'])
             style = font_to_stylesheet(font, self.btn_print_clue_number_font.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clue_number_font']['color']), style, 'color')
@@ -5089,7 +5095,7 @@ class SettingsDialog(BasicDialog):
 
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clue_font']['color']), self.btn_print_clue_text_color.styleSheet(), 'background-color')
             self.btn_print_clue_text_color.setStyleSheet(style)
-            font = make_font(settings['clue_font']['font_name'], settings['clue_font']['font_size'], 
+            font = make_font(settings['clue_font']['font_name'], settings['clue_font']['font_size'],
                              settings['clue_font']['font_weight'], settings['clue_font']['font_italic'])
             style = font_to_stylesheet(font, self.btn_print_clue_text_font.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clue_font']['color']), style, 'color')
@@ -5097,7 +5103,7 @@ class SettingsDialog(BasicDialog):
 
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clue_letters_font']['color']), self.btn_print_clue_sizehint_color.styleSheet(), 'background-color')
             self.btn_print_clue_sizehint_color.setStyleSheet(style)
-            font = make_font(settings['clue_letters_font']['font_name'], settings['clue_letters_font']['font_size'], 
+            font = make_font(settings['clue_letters_font']['font_name'], settings['clue_letters_font']['font_size'],
                              settings['clue_letters_font']['font_weight'], settings['clue_letters_font']['font_italic'])
             style = font_to_stylesheet(font, self.btn_print_clue_sizehint_font.styleSheet())
             style = color_to_stylesheet(QtGui.QColor.fromRgba(settings['clue_letters_font']['color']), style, 'color')
@@ -5105,7 +5111,7 @@ class SettingsDialog(BasicDialog):
 
         # Updating
         if page is None or page == _('Updating'):
-            
+
             settings = CWSettings.settings['update']
             self._set_spin_value_safe(self.spin_update_period, settings['check_every'])
             self.chb_update_auto.setChecked(settings['auto_update'])
@@ -5115,7 +5121,7 @@ class SettingsDialog(BasicDialog):
 
         # Sharing
         if page is None or page == 'Sharing':
-            
+
             settings = CWSettings.settings['sharing']
             self.le_sharing_account.setText(settings['account'])
             self.le_sharing_token.setText(settings['bearer_token'])
@@ -5123,9 +5129,9 @@ class SettingsDialog(BasicDialog):
             self.le_sharing_user.setText(settings['user'])
             self.chb_sharing_use_api_key.setChecked(settings['use_api_key'])
             self.chb_sharing_ownbrowser.setChecked(settings['use_own_browser'])
-    
+
     ## Adds a new word source from 'src' dict or assigns it to an existing item.
-    # @param src `dict` dictionary describing a word source; 
+    # @param src `dict` dictionary describing a word source;
     # see dict format in WordSrcDialog docs
     # @param src_item `QtWidgets.QListWidgetItem` source item in SettingsDialog::lw_sources
     # that must be updated; if `None` (default), a new source is added instead
@@ -5144,14 +5150,14 @@ class SettingsDialog(BasicDialog):
         if not src_item:
             item.setCheckState(QtCore.Qt.Checked if src.get('active', False) else QtCore.Qt.Unchecked)
             self.lw_sources.insertItem(0, item)
-    
+
     ## Fires when the dialog is shown: updates controls from current settings.
-    def showEvent(self, event):        
+    def showEvent(self, event):
         # read settings
         self.from_settings()
-    
+
     ## Fires when a config category is selected in the category tree.
-    @QtCore.pyqtSlot()        
+    @QtCore.pyqtSlot()
     def on_tree_select(self):
         item = self.tree.currentItem()
         if not item: return
@@ -5160,10 +5166,10 @@ class SettingsDialog(BasicDialog):
             item.setExpanded(True)
             self.tree.setCurrentItem(item.child(0))
         else:
-            self.stacked.setCurrentIndex(SettingsDialog.PAGES.index(txt))       
-            
+            self.stacked.setCurrentIndex(SettingsDialog.PAGES.index(txt))
+
     ## Default button handler: Restores default settings for current page or all pages.
-    @QtCore.pyqtSlot(bool) 
+    @QtCore.pyqtSlot(bool)
     def on_btn_defaults(self, checked):
         msbox = MsgBox(_('Press YES to restore defaults only for current page and YES TO ALL to restore all default settings'), self,
             _('Restore defaults'), 'ask', ['yes', 'yesall', 'cancel'], execnow=False)
@@ -5173,7 +5179,7 @@ class SettingsDialog(BasicDialog):
             self.from_settings(self.default_settings, self.tree.currentItem().text(0) if clk.text() == MSGBOX_BUTTONS['yes'][0] else None)
 
     ## Load button handler: Loads settings from a file for current page or all pages.
-    @QtCore.pyqtSlot(bool) 
+    @QtCore.pyqtSlot(bool)
     def on_btn_load(self, checked):
         msbox = MsgBox(_('Press YES to load settings only for current page and YES TO ALL to load all settings'), self,
             _('Load defaults'), 'ask', ['yes', 'yesall', 'cancel'], execnow=False)
@@ -5185,13 +5191,13 @@ class SettingsDialog(BasicDialog):
         if not selected_path[0]: return
         selected_path = selected_path[0].replace('/', os.sep)
         settings = CWSettings.validate_file(selected_path)
-        if not settings: 
+        if not settings:
             MsgBox(_("File '{}' has a wrong format or incomplete settings!").format(selected_path), self, _('Error'), 'error')
             return
         self.from_settings(settings, self.tree.currentItem().text(0) if clk.text() == MSGBOX_BUTTONS['yes'][0] else None)
 
     ## Save button handler: Saves current settings to a file.
-    @QtCore.pyqtSlot(bool) 
+    @QtCore.pyqtSlot(bool)
     def on_btn_save(self, checked):
         selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.path.join(os.getcwd(), 'settings.pxjson'), _('Settings files (*.pxjson)'))
         if not selected_path[0]: return
@@ -5206,19 +5212,19 @@ class SettingsDialog(BasicDialog):
             selected_path = QtWidgets.QFileDialog.getSaveFileName(self, _('Select file'), os.getcwd(), _('All files (*.*)'))
             if selected_path[0]:
                 self.combo_log.setCurrentText(selected_path[0].replace('/', os.sep))
-       
+
     ## When a word source is double-clicked, edit it.
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_sources_dblclick(self, item):
         self.on_act_src_edit(False)
-            
+
     ## When SettingsDialog::chb_maxfetch is checked or unchecked.
     @QtCore.pyqtSlot(int)
     def on_chb_maxfetch_checked(self, state):
         self.spin_maxfetch.setEnabled(bool(state))
-        
+
     ## Moves selected word source up one position.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_src_up(self, checked):
         item = self.lw_sources.currentItem()
         if not item: return
@@ -5226,9 +5232,9 @@ class SettingsDialog(BasicDialog):
         if not row: return
         self.lw_sources.insertItem(row - 1, self.lw_sources.takeItem(row))
         self.lw_sources.setCurrentRow(row - 1)
-    
+
     ## Moves selected word source down one position.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_src_down(self, checked):
         item = self.lw_sources.currentItem()
         if not item: return
@@ -5236,25 +5242,25 @@ class SettingsDialog(BasicDialog):
         if row == (self.lw_sources.count() - 1): return
         self.lw_sources.insertItem(row + 1, self.lw_sources.takeItem(row))
         self.lw_sources.setCurrentRow(row + 1)
-    
+
     ## Adds a new word source.
     # @see WordSrcDialog, SettingsDialog::addoredit_wordsrc()
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_src_add(self, checked):
         dia_src = WordSrcDialog()
         if not dia_src.exec(): return
         self.addoredit_wordsrc(dia_src.src)
-    
+
     ## Deletes the selected word source.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_src_remove(self, checked):
         row = self.lw_sources.currentRow()
         if row < 0: return
         self.lw_sources.takeItem(row)
-    
+
     ## Edits the selected word source.
     # @see WordSrcDialog, SettingsDialog::addoredit_wordsrc()
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_src_edit(self, checked):
         item = self.lw_sources.currentItem()
         if not item: return
@@ -5271,23 +5277,23 @@ class SettingsDialog(BasicDialog):
         except Exception as err:
             print(err)
             return
-    
+
     ## Clears all current word sources.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_src_clear(self, checked):
         self.lw_sources.clear()
 
     ## Launches the DB Manager -- WordDBManager.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_src_manage(self, checked):
         mgr = WordDBManager(self.mainwindow.options(), self)
         mgr.setWindowModality(QtCore.Qt.WindowModal)
         mgr.show()
-        mgr.move(self.x() + self.width() // 2 - mgr.width() // 2, 
+        mgr.move(self.x() + self.width() // 2 - mgr.width() // 2,
                  self.y() + self.height() // 2 - mgr.height() // 2)
 
     ## Moves selected clues column up one position.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_cluecol_up(self, checked):
         item = self.lw_clues_cols.currentItem()
         if not item: return
@@ -5295,7 +5301,7 @@ class SettingsDialog(BasicDialog):
         if row < 2: return
         self.lw_clues_cols.insertItem(row - 1, self.lw_clues_cols.takeItem(row))
         self.lw_clues_cols.setCurrentRow(row - 1)
-    
+
     ## Moves selected clues column down one position.
     @QtCore.pyqtSlot(bool)
     def on_act_cluecol_down(self, checked):
@@ -5305,9 +5311,9 @@ class SettingsDialog(BasicDialog):
         if row == 0 or row == (self.lw_clues_cols.count() - 1): return
         self.lw_clues_cols.insertItem(row + 1, self.lw_clues_cols.takeItem(row))
         self.lw_clues_cols.setCurrentRow(row + 1)
-        
+
     ## Fires when any of the color select buttons is clicked.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_color_btn_clicked(self, checked):
         btn = self.sender()
         if not btn: return
@@ -5338,23 +5344,23 @@ class SettingsDialog(BasicDialog):
                 font_btn = self.btn_print_clue_sizehint_font
             if font_btn:
                 font_btn.setStyleSheet(color_to_stylesheet(dia_colorpicker.selectedColor(), font_btn.styleSheet(), 'color'))
-            
+
     ## Fires when any of the font select buttons is clicked.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_font_btn_clicked(self, checked):
         btn = self.sender()
         if not btn: return
         # get btn font
         style = btn.styleSheet()
         #print(f"BTN '{btn.objectName()}': {style}")
-        font = font_from_stylesheet(style)        
+        font = font_from_stylesheet(style)
         # show font dialog
         new_font = QtWidgets.QFontDialog.getFont(font, self, _('Choose font'))
         if new_font[1]:
             btn.setStyleSheet(font_to_stylesheet(new_font[0], style))
 
     ## Checks / unchecks all checkboxes for Google languages.
-    @QtCore.pyqtSlot(int)        
+    @QtCore.pyqtSlot(int)
     def on_chb_google_lang_all(self, state):
         if state == QtCore.Qt.Checked or state == QtCore.Qt.Unchecked:
             self.chb_google_lang_all.stateChanged.disconnect()
@@ -5365,7 +5371,7 @@ class SettingsDialog(BasicDialog):
             self.lw_google_lang.itemChanged.connect(self.on_lw_google_lang_changed)
 
     ## Checks / unchecks all checkboxes for Google interface languages.
-    @QtCore.pyqtSlot(int)        
+    @QtCore.pyqtSlot(int)
     def on_chb_google_interface_lang_all(self, state):
         if state == QtCore.Qt.Checked or state == QtCore.Qt.Unchecked:
             self.chb_google_interface_lang_all.stateChanged.disconnect()
@@ -5376,7 +5382,7 @@ class SettingsDialog(BasicDialog):
             self.lw_google_interface_lang.itemChanged.connect(self.on_lw_google_interface_lang_changed)
 
     ## Checks / unchecks all checkboxes for Google locations.
-    @QtCore.pyqtSlot(int)        
+    @QtCore.pyqtSlot(int)
     def on_chb_google_geo_all(self, state):
         if state == QtCore.Qt.Checked or state == QtCore.Qt.Unchecked:
             self.chb_google_geo_all.stateChanged.disconnect()
@@ -5387,7 +5393,7 @@ class SettingsDialog(BasicDialog):
             self.lw_google_geo.itemChanged.connect(self.on_lw_google_geo_changed)
 
     ## Sets the tristate for the ALL checkbox when a Google language is checked / unchecked.
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)        
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_google_lang_changed(self, item):
         self.chb_google_lang_all.stateChanged.disconnect()
         ch = 0
@@ -5407,7 +5413,7 @@ class SettingsDialog(BasicDialog):
         self.chb_google_lang_all.stateChanged.connect(self.on_chb_google_lang_all)
 
     ## Sets the tristate for the ALL checkbox when a Google interface language is checked / unchecked.
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)        
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_google_interface_lang_changed(self, item):
         self.chb_google_interface_lang_all.stateChanged.disconnect()
         ch = 0
@@ -5427,7 +5433,7 @@ class SettingsDialog(BasicDialog):
         self.chb_google_interface_lang_all.stateChanged.connect(self.on_chb_google_interface_lang_all)
 
     ## Sets the tristate for the ALL checkbox when a Google location is checked / unchecked.
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)        
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_lw_google_geo_changed(self, item):
         self.chb_google_geo_all.stateChanged.disconnect()
         ch = 0
@@ -5447,12 +5453,12 @@ class SettingsDialog(BasicDialog):
         self.chb_google_geo_all.stateChanged.connect(self.on_chb_google_geo_all)
 
     ## Sets the default resolution value ('Export' page).
-    @QtCore.pyqtSlot() 
+    @QtCore.pyqtSlot()
     def on_btn_export_auto_resolution_img(self):
         self.spin_export_resolution_img.setValue(72)
 
     ## Sets the default PDF resolution value ('Export' page).
-    @QtCore.pyqtSlot() 
+    @QtCore.pyqtSlot()
     def on_btn_export_auto_resolution_pdf(self):
         self.spin_export_resolution_pdf.setValue(1200)
 
@@ -5470,25 +5476,25 @@ class SettingsDialog(BasicDialog):
             MsgBox(_('Could not assign file associations!'), self, _('Error'), 'error')
 
     ## Enables / disables proxy related controls when the checkbox is checked / unchecked.
-    @QtCore.pyqtSlot(int)        
+    @QtCore.pyqtSlot(int)
     def on_chb_system_proxy(self, state):
         self.le_http_proxy.setEnabled(state==QtCore.Qt.Unchecked)
         self.le_https_proxy.setEnabled(state==QtCore.Qt.Unchecked)
 
     ## Enables / disables a 3d-party plugin when checked / unchecked.
-    @QtCore.pyqtSlot('QStandardItem*') 
+    @QtCore.pyqtSlot('QStandardItem*')
     def on_model_plugins_3party_changed(self, item):
         parent = item.parent()
         if not item.isCheckable() or not parent: return
-        checked = bool(item.checkState())       
+        checked = bool(item.checkState())
         # iterate children
         for i in range(parent.rowCount()):
             if i != item.row():
                 parent.child(i, 1).setEnabled(checked)
-        
+
 # ******************************************************************************** #
 # *****          CwTable
-# ******************************************************************************** # 
+# ******************************************************************************** #
 
 ## @brief Crossword grid class (based on `QtWidgets.QTableWidget`).
 # Custom implementation handles key events (like Del, Backspace, etc.),
@@ -5507,17 +5513,17 @@ class CwTable(QtWidgets.QTableWidget):
         self.on_deselect = on_deselect
         super().__init__(parent)
 
-    ## Disable keyboard search functionality to enable cell editing by keyboard. 
+    ## Disable keyboard search functionality to enable cell editing by keyboard.
     def keyboardSearch(self, search):
         return
-        
+
     ## Key release event handler: call the stored on_key callback.
     def keyReleaseEvent(self, event: QtGui.QKeyEvent):
         if self.on_key: self.on_key(event)
 
     ## Mouse button release event handler: call the on_deselect callback
     # to deselect all grid cells if pressed outside of the grid.
-    def mouseReleaseEvent(self, event: QtGui.QMouseEvent):        
+    def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
         if not self.indexAt(event.pos()).isValid() and self.on_deselect:
             self.on_deselect()
         super().mouseReleaseEvent(event)
@@ -5532,7 +5538,7 @@ class CwTable(QtWidgets.QTableWidget):
 
 # ******************************************************************************** #
 # *****          ClickableLabel
-# ******************************************************************************** # 
+# ******************************************************************************** #
 
 ## Label with mouse click event handler. Used in gui::MainWindow::statusbar_l2.
 class ClickableLabel(QtWidgets.QLabel):
@@ -5555,15 +5561,15 @@ class ClickableLabel(QtWidgets.QLabel):
     ## Mouse double-click event handler: emit `dblclicked` signal.
     def mouseDoubleClickEvent(self, event):
         self.dblclicked.emit(event)
-        
-        
+
+
 # ******************************************************************************** #
 # *****          CrosswordMenu
-# ******************************************************************************** #    
+# ******************************************************************************** #
 
-## Context menu for crossword grid: contains core actions for ease of use.        
+## Context menu for crossword grid: contains core actions for ease of use.
 class CrosswordMenu(QtWidgets.QMenu):
-    
+
     ## Constructor.
     # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
     # @param on_triggered `callable` callback for the `triggered` signal (when an action is triggered)
@@ -5573,7 +5579,7 @@ class CrosswordMenu(QtWidgets.QMenu):
         super().__init__(parent=parent)
         self.initActions()
         if on_triggered: self.triggered.connect(on_triggered)
-        
+
     ## Adds actions to context menu.
     def initActions(self):
         self.addAction(self.mainwindow.act_edit)
@@ -5589,7 +5595,7 @@ class CrosswordMenu(QtWidgets.QMenu):
         self.addAction(self.mainwindow.act_addrow)
         self.addAction(self.mainwindow.act_delrow)
         self.addSeparator()
-        self.addAction(self.mainwindow.act_addcol)        
+        self.addAction(self.mainwindow.act_addcol)
         self.addAction(self.mainwindow.act_delcol)
         self.addSeparator()
         self.addAction(self.mainwindow.act_reflect)
@@ -5598,42 +5604,42 @@ class CrosswordMenu(QtWidgets.QMenu):
             self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(3).child(1))
             self.mainwindow.on_act_config(False)
         self.addAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Configure grid...'), on_menu)
-   
+
 
 # ******************************************************************************** #
 # *****          WordSuggestDialog
-# ******************************************************************************** #  
-    
+# ******************************************************************************** #
+
 ## Small dialog window to look for words matching a given pattern among the word sources.
 class WordSuggestDialog(BasicDialog):
-    
+
     ## Constructor.
     # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
     # @param word `str` the word pattern to look up in suggestions, e.g. 'f_th__'
     # @param word_editable `bool` whether the word string can be edited directly in the dialog
     # (default = False)
     # @param getresults `callable` pointer to function that retrieves word suggestions.
-    # This function takes one argument (the word pattern string) and returns suggestions 
+    # This function takes one argument (the word pattern string) and returns suggestions
     # as a list of strings.
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
-    def __init__(self, mainwindow, word='', word_editable=False, getresults=None, 
+    def __init__(self, mainwindow, word='', word_editable=False, getresults=None,
                 parent=None, flags=QtCore.Qt.WindowFlags()):
-        ## `QtWidgets.QMainWindow` pointer to gui::MainWindow instance 
+        ## `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
         self.mainwindow = mainwindow
         ## `str` suggestions sort order: 'A' = ascending, 'D' = descending
-        self.sortdir = ''     
-        ## `str` word pattern to find suggestions for  
+        self.sortdir = ''
+        ## `str` word pattern to find suggestions for
         self.word = word
         ## `bool` whether the word string can be edited directly in the dialog
         self.word_editable = word_editable
         ## `callable` pointer to function that retrieves word suggestions
-        self.getresults = getresults 
+        self.getresults = getresults
         ## `list` list of retrieved suggestions (word strings)
         self.results = []
         ## `str` the selected word (from the suggested list)
         self.selected = ''
-        super().__init__(None, _('Word Lookup'), 'magic-wand.png', 
+        super().__init__(None, _('Word Lookup'), 'magic-wand.png',
               parent, flags)
 
     def addMainLayout(self):
@@ -5677,10 +5683,10 @@ class WordSuggestDialog(BasicDialog):
         self.init(self.word, self.word_editable)
 
     ## Fires when the dialog shows up.
-    def showEvent(self, event):     
+    def showEvent(self, event):
         self.selected = ''
         self.old_truncate = self.mainwindow.cw.wordsource.max_fetch
-        super().showEvent(event) 
+        super().showEvent(event)
 
     ## Fires when the dialog closes.
     def closeEvent(self, event):
@@ -5689,7 +5695,7 @@ class WordSuggestDialog(BasicDialog):
 
     ## Creates and initializes members.
     def init(self, word='', word_editable=False):
-        self.selected = ''        
+        self.selected = ''
         self.word = word
         self.word_editable = word_editable
         self.le_word.setText(self.word)
@@ -5697,7 +5703,7 @@ class WordSuggestDialog(BasicDialog):
         self.fill_words()
 
     ## Checks that a suggestion is selected before quitting.
-    def validate(self): 
+    def validate(self):
         self.selected = ''
         if self.lw_words.currentItem() is None:
             MsgBox(_('No word selected!'), self, _('Error'), 'error')
@@ -5726,7 +5732,7 @@ class WordSuggestDialog(BasicDialog):
         self.act_source_config.setEnabled(not self.mainwindow is None)
 
     ## Sorts the suggestions in the list box.
-    # @param order `str` sort order: 'A' = ascending, 'D' = descending, 
+    # @param order `str` sort order: 'A' = ascending, 'D' = descending,
     # 'toggle' = toggle order, empty = use WordSuggestDialog::sortdir
     def sort_words(self, order=''):
         if not self.lw_words.count(): return
@@ -5742,33 +5748,33 @@ class WordSuggestDialog(BasicDialog):
                 self.sortdir = 'D'
 
     ## When the 'Truncate' checkbox is (un)checked.
-    @QtCore.pyqtSlot(bool) 
+    @QtCore.pyqtSlot(bool)
     def on_ch_truncate(self, checked):
         self.mainwindow.cw.wordsource.max_fetch = CWSettings.settings['wordsrc']['maxres'] if checked else None
         self.fill_words()
 
     ## When the word pattern is edited: store the new pattern.
-    @QtCore.pyqtSlot(str) 
+    @QtCore.pyqtSlot(str)
     def on_word_edited(self, text):
-        self.word = text  
+        self.word = text
 
     ## When a suggestion is double-clicked: select it and quit.
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)         
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def on_word_dblclick(self, item):
         self.on_btn_OK_clicked()
 
     ## Refresh action handler: update suggestions.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_refresh(self, checked):
         self.fill_words()
 
     ## Sort action handler: sort suggestions.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_sort(self, checked):
         self.sort_words('toggle')
 
     ## Shuffle action handler: shuffle suggestions randomly.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_shuffle(self, checked):
         if not self.results: return
         np.random.seed()
@@ -5777,18 +5783,18 @@ class WordSuggestDialog(BasicDialog):
         self.lw_words.addItems(self.results)
 
     ## Word source settings action: show word source management page in settings dialog.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def on_act_source_config(self, checked):
         self.mainwindow.on_act_wsrc(False)
 
 
 # ******************************************************************************** #
 # *****          PrintPreviewDialog
-# ******************************************************************************** #  
-    
+# ******************************************************************************** #
+
 ## Print preview window to preview crossword / clues and configure printing.
 class PrintPreviewDialog(BasicDialog):
-    
+
     ## Constructor.
     # @param printer `QtPrintSupport.QPrinter` selected printer
     # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
@@ -5805,11 +5811,11 @@ class PrintPreviewDialog(BasicDialog):
         self.printer = printer
         ## `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
         self.mainwindow = mainwindow
-        super().__init__(None, _("Printing to: {}").format(self.printer.printerName()), 'binoculars.png', 
+        super().__init__(None, _("Printing to: {}").format(self.printer.printerName()), 'binoculars.png',
               parent, flags)
 
     ## Update preview on dialog show.
-    def showEvent(self, event):      
+    def showEvent(self, event):
         event.accept()
         self.ppreview.updatePreview()
 
@@ -5830,9 +5836,9 @@ class PrintPreviewDialog(BasicDialog):
             layout_bottom.addWidget(w)
         layout.addLayout(layout_bottom)
         return layout
-        
+
     def addMainLayout(self):
-        self.layout_controls = QtWidgets.QVBoxLayout()       
+        self.layout_controls = QtWidgets.QVBoxLayout()
 
         # top 'toolbar'
         self.tb_main = QtWidgets.QWidget()
@@ -5841,7 +5847,7 @@ class PrintPreviewDialog(BasicDialog):
         self.combo_page_size = QtWidgets.QComboBox()
         printer_info = QtPrintSupport.QPrinterInfo(self.printer)
         pagesz_ids = list(sorted(set(pgsz.id() for pgsz in printer_info.supportedPageSizes() if pgsz.isValid())))
-        for szid in pagesz_ids:  
+        for szid in pagesz_ids:
             pgsz = QtGui.QPageSize(szid)
             if pgsz.isValid():
                 self.combo_page_size.addItem(pgsz.name(), int(szid))
@@ -5910,7 +5916,7 @@ class PrintPreviewDialog(BasicDialog):
         self.layout_margins = self._make_labelled_widgets('margins', _('Margins'), [self.le_margin_l, self.le_margin_r, self.le_margin_t, self.le_margin_b])
         self.layout_tb_main.addLayout(self.layout_margins)
 
-        self.layout_tb_main.addSpacing(20) 
+        self.layout_tb_main.addSpacing(20)
 
         self.btn_settings = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Settings'), None)
         self.btn_settings.setToolTip(_('Configure additional printing settings'))
@@ -5918,16 +5924,16 @@ class PrintPreviewDialog(BasicDialog):
         self.layout_tb_main.addWidget(self.btn_settings)
 
         self.layout_controls.addLayout(self.layout_tb_main)
-        
+
         # central preview widget
         self.layout_center = QtWidgets.QHBoxLayout()
-        self.ppreview = QtPrintSupport.QPrintPreviewWidget(self.printer)        
+        self.ppreview = QtPrintSupport.QPrintPreviewWidget(self.printer)
         self.layout_center.addWidget(self.ppreview)
         self.layout_controls.addLayout(self.layout_center)
 
         self.update_controls()
 
-    ## Updates the printer settings from guisettings::CWSettings::settings and 
+    ## Updates the printer settings from guisettings::CWSettings::settings and
     # updates the controls in toolbar and preview according to current
     # printer settings.
     def update_controls(self):
@@ -5952,7 +5958,7 @@ class PrintPreviewDialog(BasicDialog):
         margins = CWSettings.settings['printing']['margins']
         self.printer.setPageMargins(margins[0], margins[2], margins[1], margins[3], QtPrintSupport.QPrinter.Millimeter)
         self.update_margins()
-        
+
         self.ppreview.updatePreview()
 
     ## Updates the page size from the one selected in the page size combo.
@@ -5962,8 +5968,8 @@ class PrintPreviewDialog(BasicDialog):
         self.combo_page_size.activated.disconnect()
         item_count = self.combo_page_size.count()
         for i in range(item_count):
-            if self.combo_page_size.itemData(i) == pgsize:         
-                self.combo_page_size.setCurrentIndex(i)                
+            if self.combo_page_size.itemData(i) == pgsize:
+                self.combo_page_size.setCurrentIndex(i)
                 break
         else:
             if old_index < 0 and item_count > 0:
@@ -5972,7 +5978,7 @@ class PrintPreviewDialog(BasicDialog):
 
     ## Sets the page margins according to the values in the margin edit fields.
     def update_margins(self):
-        # update margin values in fields                                       
+        # update margin values in fields
         self.le_margin_l.textChanged.disconnect()
         self.le_margin_r.textChanged.disconnect()
         self.le_margin_t.textChanged.disconnect()
@@ -6060,33 +6066,33 @@ class PrintPreviewDialog(BasicDialog):
     # @see PrintPreviewDialog::update_margins()
     @QtCore.pyqtSlot(str)
     def on_margins_changed(self, text):
-        self.printer.setPageMargins(float(self.le_margin_l.text() or 0), 
-                                       float(self.le_margin_t.text() or 0), 
-                                       float(self.le_margin_r.text() or 0), 
+        self.printer.setPageMargins(float(self.le_margin_l.text() or 0),
+                                       float(self.le_margin_t.text() or 0),
+                                       float(self.le_margin_r.text() or 0),
                                        float(self.le_margin_b.text() or 0),
                                        QtPrintSupport.QPrinter.Millimeter)
-        # update margin values in fields                                       
+        # update margin values in fields
         self.update_margins()
         self.ppreview.updatePreview()
 
     ## Shows global settings dialog.
     @QtCore.pyqtSlot()
-    def on_btn_settings(self):        
+    def on_btn_settings(self):
         self.mainwindow.dia_settings.tree.setCurrentItem(self.mainwindow.dia_settings.tree.topLevelItem(7))
         if not self.mainwindow.dia_settings.exec(): return
         settings = self.mainwindow.dia_settings.to_settings()
         if json.dumps(settings, sort_keys=True) != json.dumps(CWSettings.settings, sort_keys=True):
             CWSettings.settings = settings
             self.update_controls()
-            self.ppreview.paintRequested.emit(self.printer)            
+            self.ppreview.paintRequested.emit(self.printer)
 
 # ******************************************************************************** #
 # *****          CwInfoDialog
-# ******************************************************************************** #  
-        
+# ******************************************************************************** #
+
 ## Crossword information editor window.
 class CwInfoDialog(BasicDialog):
-    
+
     ## Constructor.
     # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
@@ -6094,11 +6100,11 @@ class CwInfoDialog(BasicDialog):
     def __init__(self, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
         ## `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
         self.mainwindow = mainwindow
-        super().__init__(None, _('Crossword Info'), 'info1.png', 
+        super().__init__(None, _('Crossword Info'), 'info1.png',
               parent, flags)
-                
+
     def addMainLayout(self):
-        self.layout_controls = QtWidgets.QFormLayout()  
+        self.layout_controls = QtWidgets.QFormLayout()
 
         self.le_title = QtWidgets.QLineEdit('')
         self.le_title.setMinimumWidth(300)
@@ -6136,17 +6142,17 @@ class CwInfoDialog(BasicDialog):
     # @returns `crossword::CWInfo` crossword information record
     def to_info(self):
         return CWInfo(self.le_title.text(), self.le_author.text(), self.le_editor.text(),
-                      self.le_publisher.text(), self.le_copyright.text(), 
+                      self.le_publisher.text(), self.le_copyright.text(),
                       self.de_date.dateTime().toPyDateTime() if self.de_date.date().isValid() else None)
 
 
 # ******************************************************************************** #
 # *****          DefLookupDialog
-# ******************************************************************************** # 
+# ******************************************************************************** #
 
 ## Word definition lookup dialog to look up a word in a dictionary and/or Google.
 class DefLookupDialog(BasicDialog):
-    
+
     ## Constructor.
     # @param word `str` the word string to look up
     # @param word_editable `bool` whether the word string can be edited in the dialog (default = `False`)
@@ -6156,7 +6162,7 @@ class DefLookupDialog(BasicDialog):
     # guisettings::CWSettings::settings['lookup']['default_lang'] is taken.
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
-    def __init__(self, word='', word_editable=False, lang='', 
+    def __init__(self, word='', word_editable=False, lang='',
                  parent=None, flags=QtCore.Qt.WindowFlags()):
         self.word = word.lower() or ''
         self.word_editable = word_editable
@@ -6166,7 +6172,7 @@ class DefLookupDialog(BasicDialog):
         self.google_engine = None
         self.setlang(lang)
 
-        super().__init__(None, _('Word Lookup'), 'worldwide.png', 
+        super().__init__(None, _('Word Lookup'), 'worldwide.png',
               parent, flags)
         ## worker threads to retrieve word definitions from the internet
         self.load_threads = {'dics': QThreadStump(on_start=self.on_dics_load_start, on_finish=self.on_dics_load_finish, on_run=self.on_dics_load_run, on_error=self.on_thread_error),
@@ -6175,12 +6181,12 @@ class DefLookupDialog(BasicDialog):
     ## Before the dialog quits, need to stop all running background threads.
     def closeEvent(self, event):
         # close running threads
-        self.kill_threads()  
+        self.kill_threads()
         # close
-        event.accept()      
+        event.accept()
 
     ## Retrieve results when the dialog shows.
-    def showEvent(self, event):      
+    def showEvent(self, event):
         self.update_content()
         event.accept()
 
@@ -6196,13 +6202,13 @@ class DefLookupDialog(BasicDialog):
                 self.load_threads[thread].wait()
 
     def addMainLayout(self):
-        self.layout_controls = QtWidgets.QVBoxLayout() 
+        self.layout_controls = QtWidgets.QVBoxLayout()
 
         self.gb_word = QtWidgets.QGroupBox(_('Lookup word'))
-        self.layout_gb_word = QtWidgets.QHBoxLayout()   
-        self.le_word = QtWidgets.QLineEdit('') 
+        self.layout_gb_word = QtWidgets.QHBoxLayout()
+        self.le_word = QtWidgets.QLineEdit('')
         self.le_word.textChanged.connect(self.on_le_word_changed)
-        self.combo_lang = QtWidgets.QComboBox()                
+        self.combo_lang = QtWidgets.QComboBox()
         self.combo_lang.setEditable(False)
         self.combo_lang.addItems([k for k in LANG])
         self.combo_lang.activated.connect(self.on_combo_lang)
@@ -6223,7 +6229,7 @@ class DefLookupDialog(BasicDialog):
         self.gb_sources.setLayout(self.layout_gb_sources)
         self.layout_controls.addWidget(self.gb_sources)
 
-        self.stacked = QtWidgets.QStackedWidget() 
+        self.stacked = QtWidgets.QStackedWidget()
         self.add_pages()
         #self.stacked.setCurrentIndex(0)
         self.layout_controls.addWidget(self.stacked)
@@ -6249,10 +6255,10 @@ class DefLookupDialog(BasicDialog):
             pass
         self.combo_lang.setCurrentIndex(index)
         self.combo_lang.activated.connect(self.on_combo_lang)
-        # word        
+        # word
         self.le_word.setEnabled(self.word_editable)
         self.le_word.textChanged.disconnect()
-        self.le_word.setText(self.word) 
+        self.le_word.setText(self.word)
         self.word = self.word.lower()
         self.le_word.textChanged.connect(self.on_le_word_changed)
         # disable / enable pages
@@ -6266,8 +6272,8 @@ class DefLookupDialog(BasicDialog):
                 self.rb_google.setChecked(True)
                 #self.stacked.setCurrentIndex(2)
             else:
-                self.stacked.setCurrentIndex(-1)  
-        
+                self.stacked.setCurrentIndex(-1)
+
     ## Sets the selected language.
     def update_language(self):
         self.lang = self.combo_lang.currentText()
@@ -6294,7 +6300,7 @@ class DefLookupDialog(BasicDialog):
             file_types=settings['file_types'], lang=settings['lang'], country=settings['country'],
             interface_lang=settings['interface_lang'], link_site=settings['link_site'],
             related_site=settings['related_site'], in_site=settings['in_site'],
-            nresults=settings['nresults'], safe_search=settings['safe_search'], timeout=timeout or None) 
+            nresults=settings['nresults'], safe_search=settings['safe_search'], timeout=timeout or None)
 
     ## Adds the Dictionary and Google pages to the tab widget.
     def add_pages(self):
@@ -6306,18 +6312,18 @@ class DefLookupDialog(BasicDialog):
         self.combo_dict_homs.currentIndexChanged.connect(self.on_combo_dict_homs)
         self.layout_dict_top = QtWidgets.QFormLayout()
         self.layout_dict_top.addRow(_('Choose entry / meaning:'), self.combo_dict_homs)
-        self.layout_dict.addLayout(self.layout_dict_top)    
+        self.layout_dict.addLayout(self.layout_dict_top)
         self.te_dict_defs = QtWidgets.QPlainTextEdit('')
         self.te_dict_defs.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: normal; background-color: white; color: black')
         self.te_dict_defs.setReadOnly(True)
         self.te_dict_defs.setLineWrapMode(QtWidgets.QPlainTextEdit.WidgetWidth)
-        self.layout_dict.addWidget(self.te_dict_defs)  
+        self.layout_dict.addWidget(self.te_dict_defs)
         self.l_link_dict = QtWidgets.QLabel(_('Link'))
         self.l_link_dict.setTextFormat(QtCore.Qt.RichText)
         self.l_link_dict.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
         self.l_link_dict.setOpenExternalLinks(True)
         self.l_link_dict.setEnabled(False)
-        self.layout_dict.addWidget(self.l_link_dict)  
+        self.layout_dict.addWidget(self.l_link_dict)
         self.page_dict.setLayout(self.layout_dict)
         self.stacked.addWidget(self.page_dict)
 
@@ -6329,7 +6335,7 @@ class DefLookupDialog(BasicDialog):
         self.combo_google.currentIndexChanged.connect(self.on_combo_google)
         self.layout_google_top = QtWidgets.QFormLayout()
         self.layout_google_top.addRow(_('Choose link page:'), self.combo_google)
-        self.layout_google.addLayout(self.layout_google_top)    
+        self.layout_google.addLayout(self.layout_google_top)
         self.te_google_res = QtWidgets.QPlainTextEdit('')
         self.te_google_res.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: normal; background-color: white; color: black')
         self.te_google_res.setReadOnly(True)
@@ -6375,19 +6381,19 @@ class DefLookupDialog(BasicDialog):
             pass
         self.combo_dict_homs.clear()
         self.te_dict_defs.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: bold; background-color: #ffd6e2; color: black')
-        self.te_dict_defs.setPlainText(_('UPDATING ...'))     
-        
+        self.te_dict_defs.setPlainText(_('UPDATING ...'))
+
     ## Dictionary thread run event handler: retrieve dictionary results.
-    def on_dics_load_run(self):    
+    def on_dics_load_run(self):
         thread = self.load_threads['dics']
 
         thread.lock()
         exact_match = CWSettings.settings['lookup']['dics']['exact_match']
         bad_pos = CWSettings.settings['lookup']['dics']['bad_pos']
         thread.unlock()
-      
+
         word_def = self.dict_engine.get_short_defs(self.word, exact_match=exact_match, bad_pos=bad_pos)
-        
+
         thread.lock()
         self.word_def = word_def
         thread.unlock()
@@ -6407,7 +6413,7 @@ class DefLookupDialog(BasicDialog):
         self.combo_dict_homs.setCurrentIndex(0)
         self.on_combo_dict_homs(0)
         self.combo_dict_homs.currentIndexChanged.connect(self.on_combo_dict_homs)
-    
+
     ## Fires before the Google results are retrieved.
     def on_google_load_start(self):
         #print(f"Started GOOGLE thread for '{self.word}'...")
@@ -6422,10 +6428,10 @@ class DefLookupDialog(BasicDialog):
             pass
         self.combo_google.clear()
         self.te_google_res.setStyleSheet('font-family: Arial; font-size: 10pt; font-weight: bold; background-color: #ffd6e2; color: black')
-        self.te_google_res.setPlainText(_('UPDATING ...')) 
+        self.te_google_res.setPlainText(_('UPDATING ...'))
 
     ## Google thread run event handler: retrieve Google search results.
-    def on_google_load_run(self):     
+    def on_google_load_run(self):
         data = self.google_engine.search_lite()
 
         thread = self.load_threads['google']
@@ -6452,22 +6458,22 @@ class DefLookupDialog(BasicDialog):
     def update_content(self, dictionary=True, google=True):
         if not self.word: return
         # kill running threads
-        self.kill_threads(dictionary and CWSettings.settings['lookup']['dics']['show'], 
+        self.kill_threads(dictionary and CWSettings.settings['lookup']['dics']['show'],
                           google and CWSettings.settings['lookup']['google']['show'])
 
         self.update_dict_engine()
         self.update_google_engine()
-    
+
         # dict
         if dictionary and CWSettings.settings['lookup']['dics']['show']:
             self.load_threads['dics'].start()
-    
+
         # google
         if google and CWSettings.settings['lookup']['google']['show']:
             self.load_threads['google'].start()
 
     ## Shows the specified page when a radio button is toggled.
-    @QtCore.pyqtSlot(bool)        
+    @QtCore.pyqtSlot(bool)
     def rb_source_toggled(self, toggled):
         if self.rb_dict.isChecked():
             self.stacked.setCurrentIndex(0)
@@ -6511,7 +6517,7 @@ class DefLookupDialog(BasicDialog):
     def on_combo_google(self, index):
         if index < 0 or not self.google_res or index >= len(self.google_res): return
         url = self.google_res[index]['url']
-        if url:            
+        if url:
             self.l_link_google.setText(f'<a href="{url}">Link</a>')
             self.l_link_google.setToolTip(url)
             self.l_link_google.setEnabled(True)
@@ -6523,27 +6529,27 @@ class DefLookupDialog(BasicDialog):
 
 # ******************************************************************************** #
 # *****          ReflectGridDialog
-# ******************************************************************************** #  
-    
+# ******************************************************************************** #
+
 ## @bried Dialog to reflect / duplicate crossword grid cells.
 # @see gui::MainWindow::act_reflect
 class ReflectGridDialog(BasicDialog):
-    
+
     ## Constructor.
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, parent=None, flags=QtCore.Qt.WindowFlags()):
-        super().__init__(None, _('Duplicate Grid'), 'windows-1.png', 
+        super().__init__(None, _('Duplicate Grid'), 'windows-1.png',
               parent, flags)
-        
+
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()
 
         self.ag_dir = QtWidgets.QActionGroup(self)
-        self.act_down = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"), 
+        self.act_down = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-r.png"),
                                                 # NOTE: arrow button
                                                 _('Down'))
-        self.act_down.setCheckable(True)        
+        self.act_down.setCheckable(True)
         self.act_down.toggled.connect(self.on_actdir)
         self.act_up = self.ag_dir.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-l.png"), _('Up'))
         self.act_up.setCheckable(True)
@@ -6631,7 +6637,7 @@ class ReflectGridDialog(BasicDialog):
 
 ## Tiny login/password authentication dialog used by the inbuilt web browser (see pycross::browser).
 class PasswordDialog(BasicDialog):
-    
+
     ## Constructor.
     # @param title `str` dialog title
     # @param icon `str` dialog icon file
@@ -6644,13 +6650,13 @@ class PasswordDialog(BasicDialog):
     def __init__(self, title=_('Authentication'), icon='locked.png',
                  user_label=_('User'), password_label=_('Password'),
                  allow_empty_user=False, allow_empty_password=False,
-                 parent=None, flags=QtCore.Qt.WindowFlags()):        
+                 parent=None, flags=QtCore.Qt.WindowFlags()):
         self.user_label = user_label
         self.password_label = password_label
         self.allow_empty_user = allow_empty_user
         self.allow_empty_password = allow_empty_password
         super().__init__(None, title, icon, parent, flags)
-        
+
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QFormLayout()
         self.le_user = QtWidgets.QLineEdit('')
@@ -6681,7 +6687,7 @@ class PasswordDialog(BasicDialog):
 
 ## Information dialog showing info about this app.
 class AboutDialog(QtWidgets.QDialog):
-    
+
     ## Constructor.
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
@@ -6689,29 +6695,29 @@ class AboutDialog(QtWidgets.QDialog):
         super().__init__(parent, flags)
         self.initUI(None, _('About'), 'main.png')
         self.layout().setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
-        
-    def initUI(self, geometry=None, title=None, icon=None):        
+
+    def initUI(self, geometry=None, title=None, icon=None):
         self.addMainLayout()
-        
+
         self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('OK'), None)
         self.btn_OK.setMaximumWidth(150)
         self.btn_OK.setDefault(True)
         self.btn_OK.clicked.connect(self.accept)
         self.layout_bottom = QtWidgets.QHBoxLayout()
         self.layout_bottom.addWidget(self.btn_OK, alignment=QtCore.Qt.AlignHCenter)
-        
+
         self.layout_main = QtWidgets.QVBoxLayout()
         self.layout_main.addLayout(self.layout_controls)
         self.layout_main.addLayout(self.layout_bottom)
-        
+
         self.setLayout(self.layout_main)
 
         if geometry:
-            self.setGeometry(*geometry) 
+            self.setGeometry(*geometry)
         if title:
-            self.setWindowTitle(title)      
+            self.setWindowTitle(title)
         if icon:
-            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}")) 
+            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}"))
 
         self.adjustSize()
 
@@ -6763,11 +6769,11 @@ class AboutDialog(QtWidgets.QDialog):
 
 ## Authentication dialog for uploading files to the cloud (via Kloudess API).
 class KloudlessAuthDialog(QtWidgets.QDialog):
-    
+
     ## Constructor.
-    # @param on_gettoken `callable` callback function to get a valid user token 
+    # @param on_gettoken `callable` callback function to get a valid user token
     # (callback takes no arguments and implies that the user will authorize online
-    # and paste the token string from the web browser into the dialog) 
+    # and paste the token string from the web browser into the dialog)
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, on_gettoken, parent=None, flags=QtCore.Qt.WindowFlags()):
@@ -6777,9 +6783,9 @@ class KloudlessAuthDialog(QtWidgets.QDialog):
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
 
     def initUI(self, geometry=None, title=None, icon=None):
-        
+
         self.addMainLayout()
-        
+
         self.btn_OK = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/like.png"), _('OK'), None)
         self.btn_OK.setMaximumWidth(150)
         self.btn_OK.setDefault(True)
@@ -6797,18 +6803,18 @@ class KloudlessAuthDialog(QtWidgets.QDialog):
         self.layout_bottom.addWidget(self.btn_OK, alignment=QtCore.Qt.AlignHCenter)
         self.layout_bottom.addWidget(self.btn_cancel, alignment=QtCore.Qt.AlignHCenter)
         self.layout_bottom.addWidget(self.btn_gettoken, alignment=QtCore.Qt.AlignHCenter)
-        
+
         self.layout_main = QtWidgets.QVBoxLayout()
         self.layout_main.addLayout(self.layout_controls)
         self.layout_main.addLayout(self.layout_bottom)
-        
+
         self.setLayout(self.layout_main)
         if geometry:
-            self.setGeometry(*geometry) 
+            self.setGeometry(*geometry)
         if title:
-            self.setWindowTitle(title)      
+            self.setWindowTitle(title)
         if icon:
-            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}")) 
+            self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/{icon}"))
 
         self.adjustSize()
 
@@ -6817,24 +6823,24 @@ class KloudlessAuthDialog(QtWidgets.QDialog):
         self.le_token = QtWidgets.QLineEdit('')
         self.le_token.setEchoMode(QtWidgets.QLineEdit.Password)
         self.layout_controls.addRow(_('Your Bearer Token:'), self.le_token)
-            
+
 
 # ******************************************************************************** #
 # *****          ShareDialog
-# ******************************************************************************** #  
+# ******************************************************************************** #
 
-## Dialog for sharing crosswords in social networks.        
+## Dialog for sharing crosswords in social networks.
 class ShareDialog(BasicDialog):
-    
+
     ## Constructor.
     # @param mainwindow `QtWidgets.QMainWindow` pointer to gui::MainWindow instance
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, mainwindow, parent=None, flags=QtCore.Qt.WindowFlags()):
         self.mainwindow = mainwindow
-        super().__init__(None, _('Share'), 'share-1.png', 
+        super().__init__(None, _('Share'), 'share-1.png',
               parent, flags)
-        
+
     def addMainLayout(self):
         self.layout_controls = QtWidgets.QVBoxLayout()
 

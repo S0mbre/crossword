@@ -6,17 +6,17 @@
 # Undo / Redo history support using a simple list-based approach.
 # Borrowed from [https://github.com/derdon/hodgepodge/blob/master/python/undoredomanager.py]
 from .globalvars import *
-# ******************************************************************************** #        
+# ******************************************************************************** #
 
 ## Abstract undoable operation (action) with a do/undo callback pair.
 class Operation:
 
     ## Constructor.
-    # @param command `dict` the 'do' command (direct action) constisting  
+    # @param command `dict` the 'do' command (direct action) constisting
     # of a pointer to a function/method and arguments passed to it.
     # The dictionary keys are as follows:
     #   * func `callable` pointer to the 'do' function or other callable object
-    #   * args `tuple` positional arguments passed to the 'do' function (optional) 
+    #   * args `tuple` positional arguments passed to the 'do' function (optional)
     #   * kwargs `dict` keyword arguments passed to the 'do' function (optional)
     # @warning The first parameter passed to 'func' is always the pointer to this
     # Operation instance. So 'args' and/or 'kwargs' (if present) will start from
@@ -80,7 +80,7 @@ class CommandManager():
     ## Constructor.
     # @param histsize `int` Undo / Redo history size (max number of operations
     # stored in each stack); default is 10k
-    # @param cyclic `bool` if `True` (default) the Undo / Redo stack will 
+    # @param cyclic `bool` if `True` (default) the Undo / Redo stack will
     # automatically remove the oldest operation when the threshold size is reached;
     # if `False`, the HistoryOverflowError excetion will be raised.
     # @param on_update `callable` callback fired when the Undo or Redo stack is updated
@@ -92,7 +92,7 @@ class CommandManager():
         on_pop_undo=None, on_push_undo=None, on_pop_redo=None, on_push_redo=None):
         ## `int` Undo / Redo history size
         self.histsize = histsize
-        ## `bool` if `True` (default) the Undo / Redo stack will 
+        ## `bool` if `True` (default) the Undo / Redo stack will
         # automatically remove the oldest operation when the threshold size is reached
         self.cyclic = cyclic
         ## `callable` callback fired when the Undo or Redo stack is updated
@@ -135,7 +135,7 @@ class CommandManager():
         return self._redo_commands[pos]
 
     ## @brief Stores (appends) a new command in the Undo stack.
-    # If the max stack size is reached, the history will remove the oldest 
+    # If the max stack size is reached, the history will remove the oldest
     # operation if CommandManager::cyclic is `True` or raise the HistoryOverflowError error.
     # @param command `Operation` the new command to store
     def _push_undo_command(self, command):
@@ -159,7 +159,7 @@ class CommandManager():
     ## @brief Stores (appends) a command in the Redo stack.
     # The Redo stack adds operations removed from the Undo stack (so they
     # can be redone later).
-    # If the max stack size is reached, the history will remove the oldest 
+    # If the max stack size is reached, the history will remove the oldest
     # operation if CommandManager::cyclic is `True` or raise the HistoryOverflowError error.
     # @param command `Operation` the command to store
     def _push_redo_command(self, command):

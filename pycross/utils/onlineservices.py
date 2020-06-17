@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.onlineservices
-# Provides interfaces for the online services used by the app: 
+# Provides interfaces for the online services used by the app:
 # Yandex and MW online dictionaries, Google search engine, Kloudless cloud storage
 # and Shareaholic social sharing service.
 import requests, os, uuid, json, webbrowser, time
@@ -11,12 +11,12 @@ import urllib.parse
 from abc import ABC, abstractmethod
 
 from .globalvars import *
-from .utils import MsgBox, UserInput, clipboard_copy, generate_uuid           
+from .utils import MsgBox, UserInput, clipboard_copy, generate_uuid
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-## @brief Google search interface. 
-# Executes search with custom parameters using Google's JSON (REST) API 
+## @brief Google search interface.
+# Executes search with custom parameters using Google's JSON (REST) API
 # and returns the results in a Python dictionary.
 class GoogleSearch:
 
@@ -26,7 +26,7 @@ class GoogleSearch:
     # fuzzily (`False`)
     # @param file_types `iterable` | `None` if not `None`, Google will present results (documents) only
     # having the indicated file types (extensions), e.g. `['pdf', 'doc', 'docx']`
-    # @param lang `iterable` | `None` search documents restricted only to these languages, 
+    # @param lang `iterable` | `None` search documents restricted only to these languages,
     # as listed by GoogleSearch::get_document_languages()
     # @param country `iterable` | `None` only return documents found in these countries,
     # as listed by GoogleSearch::get_document_countries()
@@ -39,7 +39,7 @@ class GoogleSearch:
     # @param safe_search `bool` turn on Google safe search filter
     # @param timeout `int` network request timeout (in msec.)
     def __init__(self, settings, search_phrase='', exact_match=False, file_types=None, lang=None,
-                 country=None, interface_lang=None, link_site=None, related_site=None, in_site=None, 
+                 country=None, interface_lang=None, link_site=None, related_site=None, in_site=None,
                  nresults=-1, safe_search=False, timeout=5000):
         ## `dict` stored pointer to app global settings
         self.settings = settings
@@ -53,7 +53,7 @@ class GoogleSearch:
     # fuzzily (`False`)
     # @param file_types `iterable` | `None` if not `None`, Google will present results (documents) only
     # having the indicated file types (extensions), e.g. `['pdf', 'doc', 'docx']`
-    # @param lang `iterable` | `None` search documents restricted only to these languages, 
+    # @param lang `iterable` | `None` search documents restricted only to these languages,
     # as listed by GoogleSearch::get_document_languages()
     # @param country `iterable` | `None` only return documents found in these countries,
     # as listed by GoogleSearch::get_document_countries()
@@ -66,7 +66,7 @@ class GoogleSearch:
     # @param safe_search `bool` turn on Google safe search filter
     # @param timeout `int` network request timeout (in msec.)
     def init(self, search_phrase='', exact_match=False, file_types=None, lang=None,
-                 country=None, interface_lang=None, link_site=None, related_site=None, in_site=None, 
+                 country=None, interface_lang=None, link_site=None, related_site=None, in_site=None,
                  nresults=-1, safe_search=False, timeout=5000):
         ## `str` search phrase to search in Google
         self.search_phrase = search_phrase
@@ -128,7 +128,7 @@ class GoogleSearch:
         return urllib.parse.unquote(txt)
 
     ## Returns full Google search results for `GoogleSearch::search_phrase`.
-    # @param method `str` parsing method to parse the results 
+    # @param method `str` parsing method to parse the results
     # @returns `dict` | `str` search results; if `method` == 'json' (default),
     # the results are parsed as a JSON-formatted string into a Python dictionary object.
     # Otherwise, the raw result string is returned.
@@ -184,7 +184,7 @@ class GoogleSearch:
     @staticmethod
     def get_user_countries():
         return GOOGLE_COUNTRIES_GL
-        
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ## Base (abstract) class for online dictionaries.
@@ -257,13 +257,13 @@ class MWDict(OnlineDictionary):
         results = []
         for hom in entry:
             if not isinstance(hom, dict): continue
-            wd = hom.get('hwi', None)            
+            wd = hom.get('hwi', None)
             if not wd or not isinstance(wd, dict): continue
             wd = wd.get('hw', None)
             if not wd: continue
             wd = wd.replace('*', '')
             if exact_match and wd.lower() != word.lower(): continue
-            pos = hom.get('fl', bad_pos)            
+            pos = hom.get('fl', bad_pos)
             if (not partsofspeech) or (pos in partsofspeech):
                 defs = hom.get('shortdef', None)
                 results.append((wd, pos, defs, MW_WORD_URL.format(urllib.parse.quote_plus(wd))))
@@ -279,7 +279,7 @@ class YandexDict(OnlineDictionary):
         super().__init__(settings, YAN_DICT_HTTP, timeout)
 
     def prepare_request_url(self, word):
-        return self.url.format(self.settings['lookup']['dics']['yandex_key'] or YAN_DICT_KEY, 
+        return self.url.format(self.settings['lookup']['dics']['yandex_key'] or YAN_DICT_KEY,
                                 word, self.lang)
 
     def get_short_defs(self, word, exact_match=True, partsofspeech=None, bad_pos='UNKNOWN'):
@@ -298,9 +298,9 @@ class YandexDict(OnlineDictionary):
                         wdefs.append(tr['text'])
                         syns = tr.get('syn', [])
                         for syn in syns:
-                            wdefs.append(syn['text'])                
+                            wdefs.append(syn['text'])
                     results.append((wd, pos, wdefs, ''))
-            except Exception as err: 
+            except Exception as err:
                 print(err)
                 continue
         return results
@@ -352,9 +352,9 @@ class Cloudstorage:
     #   * `str` the Bearer Token entered by the user
     #   * `bool` user action result: `True` = use the Bearer Token, `False` = cancel
     # @param timeout `int` network request timeout (in msec.)
-    def __init__(self, settings, auto_create_user=False, 
+    def __init__(self, settings, auto_create_user=False,
                  on_user_exist=None, on_update_users=None, on_error=None,
-                 show_errors=False, on_apikey_required=None, on_bearer_required=None, 
+                 show_errors=False, on_apikey_required=None, on_bearer_required=None,
                  timeout=5000):
         ## `dict` stored pointer to app global settings
         self.settings = settings
@@ -377,14 +377,14 @@ class Cloudstorage:
         # requires the user to enter a Kloudless Bearer Token
         self.on_bearer_required = on_bearer_required
         ## `list` list of users connected to the cloud
-        self.users = []      
-        # initialize settings  
-        self.init_settings(auto_create_user)        
+        self.users = []
+        # initialize settings
+        self.init_settings(auto_create_user)
 
     ## Initializes the Kloudless config, optionally creating the user account and folders.
     # @param auto_create_user `bool` create a new user account if the user ID stored
     # in the app global settings is not active / not found
-    def init_settings(self, auto_create_user=True):        
+    def init_settings(self, auto_create_user=True):
         # get valid Bearer Token or API key before anything else
         if not self._authenticate():
             self._error(_('Failed to authenticate!'), raise_error=True)
@@ -400,10 +400,10 @@ class Cloudstorage:
                 and self.settings['sharing']['bearer_token']) else Cloudstorage.ROOTNAME
         new_folder = self._create_folder(rootname)
         if new_folder:
-            self._rootid = new_folder[1]                  
+            self._rootid = new_folder[1]
             self.settings['root_folder'] = '' if new_folder[0] == Cloudstorage.ROOTNAME else new_folder[0]
         else:
-            self._error(_("Unable to create/access folder '{}'!").format(rootname))    
+            self._error(_("Unable to create/access folder '{}'!").format(rootname))
 
         if auto_create_user:
             self._find_or_create_user(self.settings['sharing']['user'], True)
@@ -449,11 +449,11 @@ class Cloudstorage:
             raise Exception(message)
 
     ## Converts an error dictionary object into a single string.
-    # @param error `dict` | `str` error data with 2 keys: 'message' (error message) 
+    # @param error `dict` | `str` error data with 2 keys: 'message' (error message)
     # and 'code' (the code fragment that caused the error); or a prepared error message
     # @returns `str` formatted error message
     def _error_tostr(self, error):
-        if isinstance(error, str): 
+        if isinstance(error, str):
             return error
         if isinstance(error, dict):
             return f"{error['message']}{('{NEWLINE}[' + error['code'] + ']') if error['code'] else ''}"
@@ -465,7 +465,7 @@ class Cloudstorage:
     #   * 'get' the GET command
     #   * 'post' the POST command
     #   * 'delete' the DELETE command
-    #   * 'update' the UPDATE command 
+    #   * 'update' the UPDATE command
     # @param returntype `str` type of the returned results; any of:
     #   * 'json' (default) Python dictionary constructed from JSON text
     #   * 'bool' Boolean value (`True` or `False`)
@@ -477,7 +477,7 @@ class Cloudstorage:
     # to the `requests` methods (like `timeout`, `proxies` etc.)
     # @returns `dict`|`str`|`bool`|`bytes` request result depending on the value
     # of `returntype`
-    def _request(self, url, command='get', returntype='json',  
+    def _request(self, url, command='get', returntype='json',
                  error_keymap={'message': 'message', 'code': 'status_code'},
                  **kwargs):
 
@@ -487,12 +487,12 @@ class Cloudstorage:
                   "DATA = {}").format(command, url, kwargs.get('headers', None), kwargs.get('data', None)))
 
         methods = {'get': requests.get, 'post': requests.post, 'delete': requests.delete,
-                   'patch': requests.patch}  
-        res = None      
+                   'patch': requests.patch}
+        res = None
         try:
             kwargs['timeout'] = kwargs.get('timeout', self.timeout)
             if not self.settings['common']['web']['proxy']['use_system']:
-                kwargs['proxies'] = {'http': self.settings['common']['web']['proxy']['http'], 'https': self.settings['common']['web']['proxy']['https']} 
+                kwargs['proxies'] = {'http': self.settings['common']['web']['proxy']['http'], 'https': self.settings['common']['web']['proxy']['https']}
             res = methods[command](url, **kwargs)
             if res is None: raise Exception(_("Empty result returned by request '{}'").format(url))
             if DEBUGGING:
@@ -502,7 +502,7 @@ class Cloudstorage:
                     err = res.json()
                 except:
                     err = {}
-                self._error(str(err.get(error_keymap['message'], _("Error returned by request '{}'").format(url))), 
+                self._error(str(err.get(error_keymap['message'], _("Error returned by request '{}'").format(url))),
                             err.get(error_keymap['code'], None))
                 return None if returntype != 'bool' else False
 
@@ -516,7 +516,7 @@ class Cloudstorage:
         return res.content
 
     ## Unless no Kloudless API key is stored in Cloudstorage::_apikey, asks the user
-    # to provide one. 
+    # to provide one.
     def _get_apikey(self):
         if not getattr(self, '_apikey', None):
             res = [None, False]
@@ -529,10 +529,10 @@ class Cloudstorage:
             self._apikey = res[0] if res[1] else None
 
     ## Unless no Bearer Token is stored in Cloudstorage::_bearer, asks the user
-    # to provide one. 
+    # to provide one.
     def _get_bearer(self):
         self._bearer = self.settings['sharing'].get('bearer_token', None)
-        if self._bearer: 
+        if self._bearer:
             return
         res = [None, False]
         if self.on_bearer_required:
@@ -540,10 +540,10 @@ class Cloudstorage:
             while res[0] is None: time.sleep(100)
         else:
             # TODO: authorize via browser
-            res = UserInput(label=_('Enter your Bearer token'), textmode='password')            
+            res = UserInput(label=_('Enter your Bearer token'), textmode='password')
         ## `str` the stored Bearer Token
-        self._bearer = res[0] if res[1] else None        
-        
+        self._bearer = res[0] if res[1] else None
+
     ## Validates the provided Bearer Token againt the app ID in Kloudless.
     # @param bearer_token `str` the user's Bearer Token; if `None`, it will
     # be retrieved from Cloudstorage::_bearer
@@ -555,7 +555,7 @@ class Cloudstorage:
             bearer_token = getattr(self, '_bearer', None)
         if not bearer_token:
             return False
-        res = self._request('https://api.kloudless.com/v1/oauth/token', 
+        res = self._request('https://api.kloudless.com/v1/oauth/token',
                             headers={'Content-Type': 'application/json', 'Authorization': f"Bearer {bearer_token}"})
         if res and res.get('client_id', '') == Cloudstorage.APP_ID:
             self._accid = res.get('account_id', None)
@@ -588,7 +588,7 @@ class Cloudstorage:
     # @returns `dict` accounts data
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/authentication#accounts-list-accounts-get)
     def _get_accounts(self, enabled=None, admin=None, search=None):
-        req = f"{Cloudstorage.APIURL}accounts/" 
+        req = f"{Cloudstorage.APIURL}accounts/"
         if not enabled is None:
             req += f"?enabled={str(enabled).lower()}"
         if not admin is None:
@@ -607,7 +607,7 @@ class Cloudstorage:
     # @returns `dict` account metadata
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/authentication#accounts-retrieve-an-account-get)
     def _get_account_matadata(self, account_id, retrieve_tokens=False, retrieve_full=True):
-        req = f"{Cloudstorage.APIURL}accounts/{account_id}/?retrieve_tokens={str(retrieve_tokens).lower()}&retrieve_full={str(retrieve_full).lower()}" 
+        req = f"{Cloudstorage.APIURL}accounts/{account_id}/?retrieve_tokens={str(retrieve_tokens).lower()}&retrieve_full={str(retrieve_full).lower()}"
         return self._request(req, headers=self._make_headers(force_api_key=True))
 
     ## Retrieves storage quota information.
@@ -618,7 +618,7 @@ class Cloudstorage:
         return self._request(req, headers=self._make_headers())
 
     ## Lists items in a folder.
-    # @param fid `str` folder ID 
+    # @param fid `str` folder ID
     # @param recurse `bool` recurse into subfolders
     # @returns `dict` folder elements (subfolders and files)
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/storage#folders-retrieve-folder-contents-get)
@@ -680,7 +680,7 @@ class Cloudstorage:
         folder_name = folder_name.lower()
         data = {'parent_id': parent_id, 'name': folder_name}
         req = f"{self._baseurl}folders/?conflict_if_exists={str(error_on_exist).lower()}"
-        res = self._request(req, 'post', headers=self._make_headers(), json=data)        
+        res = self._request(req, 'post', headers=self._make_headers(), json=data)
         return (res['name'], res['id'], res['ids']['path']) if res else None
 
     ## @brief Updates the list of subfolders present in `dropbox/pycrossall` root folder.
@@ -690,9 +690,9 @@ class Cloudstorage:
     #   2. user ID (unique hash string)
     #   3. path to user's root folder
     def _update_users(self):
-        res = self._get_folder_objects(self._rootid)        
+        res = self._get_folder_objects(self._rootid)
         self.users = []
-        if res: 
+        if res:
             for obj in res['objects']:
                 if obj['type'] != 'folder': continue
                 self.users.append((obj['name'].lower(), obj['id'], obj['ids']['path']))
@@ -713,7 +713,7 @@ class Cloudstorage:
     # @see _get_file_metadata()
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/storage#folders-retrieve-folder-metadata-get)
     def _get_folder_metadata(self, folder_id=None):
-        if not folder_id: 
+        if not folder_id:
             if not self._user:
                 self._error(_('Neither the folder ID not the user ID is valid!'))
                 return None
@@ -753,7 +753,7 @@ class Cloudstorage:
         #   1. user name (in lower case)
         #   2. user ID (unique hash string)
         #   3. path to user's root folder
-        self._user = None  
+        self._user = None
 
         if username:
 
@@ -761,10 +761,10 @@ class Cloudstorage:
             if u:
                 if not self.on_user_exist or self.on_user_exist(username):
                     # if on_user_exist is not set, or if it returns True,
-                    # assign the existing user data to the current one                    
+                    # assign the existing user data to the current one
                     self._user = u
                     self.settings['sharing']['user'] = u[0]
-                    return True                        
+                    return True
                 else:
                     # otherwise, return False
                     return False
@@ -782,20 +782,20 @@ class Cloudstorage:
 
     ## @brief Deletes a user permanently.
     # This in effect deletes the corresponding user's root folder from the
-    # app root folder on DropBox (`pycrossall/<username>`), naturally 
-    # erasing all its contents.    
+    # app root folder on DropBox (`pycrossall/<username>`), naturally
+    # erasing all its contents.
     # @param username `str`|`None` name of the user to delete; if `None`, the current
     # user will be deleted
     # @warning Note that you cannot delete other users unless authorized by
     # the application API Key on Kloudless!
     # @returns `bool` `True` on success, `False` on failure
     def _delete_user(self, username=None):
-        if username and self._user and username != self._user[0]:            
+        if username and self._user and username != self._user[0]:
             self._get_apikey()
             if not self._apikey:
                 self._error(_('You can delete other users only with a valid API key!'))
                 return False
-            user_folder = self._create_folder(username, self._rootid)   
+            user_folder = self._create_folder(username, self._rootid)
             return self.delete_folder(user_folder[1]) if user_folder else False
         elif self._user:
             return self.delete_folder(self._user[1])
@@ -813,7 +813,7 @@ class Cloudstorage:
     # if `None` (default), the current user's root folder will be used
     # @returns `bool` `True` on success, `False` on failure
     def clear_folder(self, folder_id=None):
-        if not folder_id: 
+        if not folder_id:
             if not self._user:
                 self._error(_('Neither the folder ID not the user ID is valid!'))
                 return False
@@ -832,9 +832,9 @@ class Cloudstorage:
         # iterate for onjects in folder
         for obj in res['objects']:
             req = ''
-            if obj['type'] != 'folder': 
+            if obj['type'] != 'folder':
                 req = f"{self._baseurl}folders/{urllib.parse.quote(obj['id'])}/?permanent=true&recursive=true"
-            elif obj['type'] != 'file': 
+            elif obj['type'] != 'file':
                 req = f"{self._baseurl}files/{urllib.parse.quote(obj['id'])}/?permanent=true"
             if req:
                 try:
@@ -847,7 +847,7 @@ class Cloudstorage:
 
     ## Deletes the folder with the given ID, optionally permanently.
     # @param folder_id `str` ID of the folder to clear
-    # @param permanent `bool` whether to delete the folder permanently 
+    # @param permanent `bool` whether to delete the folder permanently
     # @param recurse `bool` whether to recurse into subdirectories
     # (effectively clearing **everything** in that folder)
     # @returns `bool` `True` on success, `False` on failure
@@ -866,19 +866,19 @@ class Cloudstorage:
 
         req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/?permanent={str(permanent).lower()}&recursive={str(recurse).lower()}"
         return self._request(req, 'delete', 'bool', headers=self._make_headers('application/octet-stream'))
-        
+
     ## Renames the given (sub)folder.
     # @param folder_id `str` ID of the folder to clear
     # @param new_name `str` new folder name
-    # @returns `tuple`|`None` the tuple ('folder name', 'folder id') on success 
-    # or `None` on failure 
+    # @returns `tuple`|`None` the tuple ('folder name', 'folder id') on success
+    # or `None` on failure
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/storage#folders-rename-move-a-folder-patch)
     def rename_folder(self, folder_id, new_name):
         req = f"{self._baseurl}folders/{urllib.parse.quote(folder_id)}/"
         data = {'name': new_name}
         res = self._request(req, 'patch', headers=self._make_headers(), json=data)
         return (res['name'], res['id'], res['ids']['path']) if res else None
-        
+
     ## Uploads a file into the current user's folder (optionally subfolder) and returns the link info.
     # @param filepath `str` full path to the local file to upload
     # @param folder_id `str`|`None` ID of the folder to clear;
@@ -898,8 +898,8 @@ class Cloudstorage:
     # (`None` = don't protect)
     # @returns `dict`|`None` the result of create_file_link() or `None` on failure
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/storage#files-upload-a-file-post)
-    def upload_file(self, filepath, folder_id=None, overwrite=False, 
-                    makelink=True, activelink=True, 
+    def upload_file(self, filepath, folder_id=None, overwrite=False,
+                    makelink=True, activelink=True,
                     directlink=True, expire=None, password=None):
         if getattr(self, '_user', None) is None:
             self._error(_('Current user is not defined! Please create new user first.'))
@@ -910,24 +910,24 @@ class Cloudstorage:
 
         # get file size (bytes)
         fsize = os.path.getsize(filepath)
-        
+
         # upload file
         headers = self._make_headers('application/octet-stream')
-        headers['X-Kloudless-Metadata'] = json.dumps({'name': os.path.basename(filepath), 
+        headers['X-Kloudless-Metadata'] = json.dumps({'name': os.path.basename(filepath),
             'parent_id': self._user[1] if not folder_id else folder_id})
         headers['Content-Length'] = str(fsize)
         req = f"{self._baseurl}files/?overwrite={str(overwrite).lower()}"
 
         res = None
-        with open(filepath, 'rb') as f:      
-            res = self._request(req, 'post', headers=headers, data=f)     
+        with open(filepath, 'rb') as f:
+            res = self._request(req, 'post', headers=headers, data=f)
         if not res: return None
         return self.create_file_link(res['id'], activelink, directlink, expire, password) \
                if makelink else res
 
     ## Deletes the file with the given ID, optionally permanently.
     # @param file_id `str` ID of the file to delete
-    # @param permanent `bool` whether to delete the file permanently 
+    # @param permanent `bool` whether to delete the file permanently
     # @returns `bool` `True` on success, `False` on failure
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/storage#files-delete-a-file-delete)
     def delete_file(self, file_id, permanent=True):
@@ -937,7 +937,7 @@ class Cloudstorage:
     ## Renames the given file (in the original folder).
     # @param file_id `str` ID of the file to rename
     # @param new_name `str` new file name
-    # @returns `tuple`|`None` the tuple ('file name', 'file id') on success 
+    # @returns `tuple`|`None` the tuple ('file name', 'file id') on success
     # or `None` on failure
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/storage#files-rename-move-a-file-patch)
     def rename_file(self, file_id, new_name):
@@ -963,7 +963,7 @@ class Cloudstorage:
             return False
 
         req = f"{self._baseurl}files/{urllib.parse.quote(file_id)}/contents/"
-        res = self._request(req, returntype='content', 
+        res = self._request(req, returntype='content',
                             headers=self._make_headers(file_info['mime_type'] if file_info \
                             else 'application/octet-stream'), allow_redirects=True)
         if not res: return False
@@ -983,7 +983,7 @@ class Cloudstorage:
     # (`None` = don't protect)
     # @returns `dict`|`None` the link meta info or `None` on failure
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/storage#links-create-a-link-post)
-    def create_file_link(self, file_id, activelink=True, directlink=True, 
+    def create_file_link(self, file_id, activelink=True, directlink=True,
                          expire=None, password=None):
         if not file_id:
             self._error(_('Empty file ID passed to create_file_link()!'))
@@ -1018,7 +1018,7 @@ class Cloudstorage:
     # (`None` = don't protect)
     # @returns `dict`|`None` the link meta info or `None` on failure
     # @see [Kloudless docs](https://developers.kloudless.com/docs/v1/storage#links-update-a-link-patch)
-    def update_file_link(self, link_id, activelink=None,  
+    def update_file_link(self, link_id, activelink=None,
                          expire=None, password=None):
         if not link_id:
             self._error(_('Empty link ID passed to update_file_link()!'))
@@ -1042,7 +1042,7 @@ class Cloudstorage:
             self._error(_('Empty link ID passed to delete_file_link()!'))
             return None
 
-        req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"       
+        req = f"{self._baseurl}links/{urllib.parse.quote(link_id)}/"
         return self._request(req, 'delete', 'bool', headers=self._make_headers())
 
 
@@ -1076,7 +1076,7 @@ class Share:
     # @param on_prepare_url `callable` callback called when the request URL
     # to Shareaholic is prepared; takes one arg: `str` the request URL
     # @param stop_check `callable` callback that takes no arguments
-    # and returns `True` to stop the current sharing operation or 
+    # and returns `True` to stop the current sharing operation or
     # `False` to continue
     # @param timeout `int` network request timeout (in msec)
     def __init__(self, cloud: Cloudstorage, on_upload=None, on_clipboard_write=None,
@@ -1090,11 +1090,11 @@ class Share:
         # to Shareaholic is prepared
         self.on_prepare_url = on_prepare_url
         ## `callable` callback that takes no arguments
-        # and returns `True` to stop the current sharing operation or 
+        # and returns `True` to stop the current sharing operation or
         # `False` to continue
         self.stop_check = stop_check
         ## `int` network request timeout (in msec)
-        self.timeout = timeout        
+        self.timeout = timeout
         if not cloud:
             raise Exception(_('Share object must be given a valid instance of Cloudstorage as the "cloud" argument!'))
         ## `Cloudstorage` pointer to the `Cloudstorage` object
@@ -1103,9 +1103,9 @@ class Share:
     ## @brief Shares a given URL or file in selected social networks.
     # This method is the main interface for the application, since it
     # encapsulates the lower-level cloud storage functionality to
-    # upload files and create public links. 
+    # upload files and create public links.
     # @warning This method is called in a separate thread, so it is designed
-    # for maximum thread safety. That is also the reason why it doesn't 
+    # for maximum thread safety. That is also the reason why it doesn't
     # return any results but rather replies on callback functions.
     # @param file_or_url `str` full path to a local file or a prepared link (URL)
     # @param social `str` social network short name, e.g. 'twitter' --
@@ -1117,7 +1117,7 @@ class Share:
     # for available options
     # @param tags `str` comma-separated tags for your post
     # @param source `str` name of the sharing app ('pycrossword')
-    def share(self, file_or_url, social='twitter', 
+    def share(self, file_or_url, social='twitter',
               title='My new crossword', notes=_('See my new crossword'),
               url_shortener='shrlc', tags='pycrossword,crossword,python',
               source='pycrossword'):
@@ -1126,9 +1126,9 @@ class Share:
         just_copy_url = False
 
         if isinstance(serv, str):
-            serv = Share.SERVICES.get(serv, -1)                
+            serv = Share.SERVICES.get(serv, -1)
             if serv == -1:
-                self.cloud._error(_("Cannot find social network '{}'!").format(serv))                
+                self.cloud._error(_("Cannot find social network '{}'!").format(serv))
                 return
             elif serv == 0:
                 just_copy_url = True
@@ -1139,7 +1139,7 @@ class Share:
             if not link_info:
                 return
             if self.stop_check and self.stop_check(): return
-            url = link_info.get('url', None)            
+            url = link_info.get('url', None)
             if self.on_upload:
                 self.on_upload(file_or_url, url)
             file_or_url = url
@@ -1149,11 +1149,11 @@ class Share:
             return
 
         if just_copy_url:
-            # copy link to clipboard and exit            
+            # copy link to clipboard and exit
             if self.on_clipboard_write:
-                self.on_clipboard_write(file_or_url)  
+                self.on_clipboard_write(file_or_url)
             else:
-                clipboard_copy(file_or_url)          
+                clipboard_copy(file_or_url)
             return
 
         if self.stop_check and self.stop_check(): return
@@ -1171,9 +1171,9 @@ class Share:
             req += f"&source={urllib.parse.quote(source)}"
 
         if self.on_prepare_url:
-            self.on_prepare_url(req)           
+            self.on_prepare_url(req)
 
-        elif self.cloud._request(req, returntype='bool', headers={'Content-Type': 'application/json'}, 
+        elif self.cloud._request(req, returntype='bool', headers={'Content-Type': 'application/json'},
                                    error_keymap=Share.ERRMAP, timeout=self.timeout):
             webbrowser.open(req, new=2)
 

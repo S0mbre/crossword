@@ -4,7 +4,7 @@
 
 ## @package utils.pluginbase
 # User plugin platform to extend pyCrossword functionality based on [Yapsy](http://yapsy.sourceforge.net/).
-# @see [example 1](http://yapsy.sourceforge.net/FilteredPluginManager.html), 
+# @see [example 1](http://yapsy.sourceforge.net/FilteredPluginManager.html),
 # [example 2](https://stackoverflow.com/questions/5333128/yapsy-minimal-example)
 import PyQt5
 from yapsy.IPlugin import IPlugin
@@ -24,30 +24,30 @@ from .pluginmanager import PxPluginManager
 # ```
 # With this code (provided that the plugin is active), when the user triggers the `act_new`
 # action of the main window, the app will first call the plugin method and print 'hey!', then
-# proceed with the original method handler (`on_act_new`). 
+# proceed with the original method handler (`on_act_new`).
 #
 # Note that when using `before`, the result returned will be that of the original function,
 # since it will be called last.
 # @see after(), replace()
-def before(func):        
+def before(func):
     func.wraptype = 'before'
     return func
 
 ## @brief Decorator adds the `wraptype` attribute set to 'after' to a given function.
 # Contrary to before(), it will call the wrapped plugin method after the original one.
 # @see before(), replace()
-def after(func):        
+def after(func):
     func.wraptype = 'after'
     return func
 
 ## @brief Decorator adds the `wraptype` attribute set to 'replace' to a given function.
 # Contrary to before() and after(), it will call the wrapped plugin method instead of the original one,
-# that is, the original method will not be called at all, and will be replaced by the 
+# that is, the original method will not be called at all, and will be replaced by the
 # corresponding plugin method.
 # @see before(), after()
-def replace(func):        
+def replace(func):
     func.wraptype = 'replace'
-    return func  
+    return func
 
 ## @brief Base class for category-specific user plugins (extensions) written in Python.
 # This class *must not* be subclassed directly; instead, inherit from `PxPluginGeneral` declared below.

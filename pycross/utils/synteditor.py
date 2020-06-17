@@ -12,14 +12,14 @@ from PyQt5 import Qsci
 
 # ******************************************************************************** #
 # *****          SynEditor
-# ******************************************************************************** # 
+# ******************************************************************************** #
 
 ## @brief Scintilla-based Python editor
 # Adapted from [this example](https://eli.thegreenplace.net/2011/04/01/sample-using-qscintilla-with-pyqt)
 # and [this addition](https://stackoverflow.com/questions/40002373/qscintilla-based-text-editor-in-pyqt5-with-clickable-functions-and-variables)
 # @see [QScintilla docs](https://qscintilla.com/), [API reference](https://www.riverbankcomputing.com/static/Docs/QScintilla/classQsciScintilla.html)
 class SynEditor(Qsci.QsciScintilla):
-    
+
     ## arrow marker type to place on the left margin
     ARROW_MARKER_NUM = 8
 
@@ -47,9 +47,9 @@ class SynEditor(Qsci.QsciScintilla):
         self.setMarginsForegroundColor(QtGui.QColor(QtCore.Qt.yellow))
 
         # Margin 0 is used for line numbers
-        self.setMarginType(0, Qsci.QsciScintilla.NumberMargin)        
+        self.setMarginType(0, Qsci.QsciScintilla.NumberMargin)
         self.setMarginWidth(0, '00000')
-        self.setMarginLineNumbers(0, True)        
+        self.setMarginLineNumbers(0, True)
 
         # Clickable margin 1 for showing markers
         self.setMarginType(1, Qsci.QsciScintilla.SymbolMargin)
@@ -58,7 +58,7 @@ class SynEditor(Qsci.QsciScintilla):
         self.marginClicked.connect(self.on_margin_clicked)
         self.markerDefine(Qsci.QsciScintilla.RightArrow, SynEditor.ARROW_MARKER_NUM)
         self.setMarkerBackgroundColor(QtGui.QColor(QtCore.Qt.magenta), SynEditor.ARROW_MARKER_NUM)
-        
+
         # Brace matching: enable for a brace immediately before or after
         # the current position
         self.setBraceMatching(Qsci.QsciScintilla.SloppyBraceMatch)
@@ -66,8 +66,8 @@ class SynEditor(Qsci.QsciScintilla):
         # Current line visible with special background color
         self.setCaretLineVisible(True)
         self.setCaretLineBackgroundColor(QtGui.QColor("#f2f2f2"))
-        
-        ## Python lexer        
+
+        ## Python lexer
         self.lexer = lexer
         # Set style for Python comments (style number 1) to a fixed-width font
         self.lexer.setDefaultFont(font)
@@ -121,7 +121,7 @@ class SynEditor(Qsci.QsciScintilla):
                 event.ignore()
                 return
         super().keyPressEvent(event)
-        
+
     ## Refreshes the source words in `SynEditor::autocomplete`.
     @QtCore.pyqtSlot()
     def reset_autocomplete_source(self):
@@ -140,7 +140,7 @@ class SynEditor(Qsci.QsciScintilla):
 
 # ******************************************************************************** #
 # *****          SynEditorWidget
-# ******************************************************************************** #            
+# ******************************************************************************** #
 
 ## Standalone syntax editor window with a SynEditor object as the main widget.
 class SynEditorWidget(QtWidgets.QDialog):
@@ -157,7 +157,7 @@ class SynEditorWidget(QtWidgets.QDialog):
         super().__init__()
         ## `QtWidgets.QVBoxLayout` main window layout
         self.layout_main = QtWidgets.QVBoxLayout()
-        self.add_elements(lexer, source, autocomplete_source)     
+        self.add_elements(lexer, source, autocomplete_source)
         self.setLayout(self.layout_main)
         # set minimum widget size
         if minsize: self.setMinimumSize(*minsize)
@@ -205,7 +205,7 @@ class SynEditorWidget(QtWidgets.QDialog):
 
 # ******************************************************************************** #
 # *****          PluginSynEditorWidget
-# ******************************************************************************** #            
+# ******************************************************************************** #
 
 ## @brief Extended syntax editor dialog based on SynEditorWidget.
 # Adds a left panel with available API methods exposed to custom plugins.
@@ -216,7 +216,7 @@ class PluginSynEditorWidget(SynEditorWidget):
 
     ## @param methods `list` list of methods exposed to plugins in the format
     # returned by utils::utils::collect_pluggables()
-    def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None, 
+    def __init__(self, methods, lexer=Qsci.QsciLexerPython(), source=None,
                  minsize=(800, 500), icon='file.png', title=_(':: Code Editor ::')):
         ## `list` list of methods exposed to plugins
         self.methods = methods
@@ -245,14 +245,14 @@ class PluginSynEditorWidget(SynEditorWidget):
         self.lw_methods.itemChanged.connect(self.on_lw_methods_changed)
         self.lw_methods.itemDoubleClicked.connect(self.on_lw_methods_dblclicked)
         self.reset_methods()
-    
+
         ## `QtWidgets.QAction` clear filter action
-        self.actn_clear_filter = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), _('Clear'))        
+        self.actn_clear_filter = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), _('Clear'))
         ## `QtWidgets.QAction` toggle regex filter action
-        self.actn_filter_regex = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/asterisk1.png"), _('Regex'))   
+        self.actn_filter_regex = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/asterisk1.png"), _('Regex'))
         self.actn_filter_regex.setCheckable(True)
         self.actn_filter_regex.setChecked(False)
-        
+
         ## `QtWidgets.QLineEdit` filter field for the source methods
         self.le_filter = QtWidgets.QLineEdit('')
         self.le_filter.setStyleSheet('background-color: #fffff0;')
@@ -262,7 +262,7 @@ class PluginSynEditorWidget(SynEditorWidget):
         self.le_filter.addAction(self.actn_clear_filter, 1)
         self.actn_clear_filter.triggered.connect(QtCore.pyqtSlot(bool)(lambda _: self.le_filter.clear()))
         self.actn_filter_regex.toggled.connect(self.on_actn_filter_regex_toggled)
-        
+
         self.lo_methods.addWidget(self.le_filter)
         self.lo_methods.addWidget(self.lw_methods)
         self.methods_widget = QtWidgets.QWidget()
@@ -282,7 +282,7 @@ class PluginSynEditorWidget(SynEditorWidget):
     # @returns `list` list of variables -- see utils::utils::get_script_members()
     def _get_autocomplete_source(self, source):
         return get_script_members(source)
-        
+
     ## Fills the list of available API methods in the left panel from `PluginSynEditorWidget::methods`.
     def reset_methods(self):
         self.lw_methods.blockSignals(True)
@@ -297,7 +297,7 @@ class PluginSynEditorWidget(SynEditorWidget):
             self.lw_methods.addItem(lwitem)
         self.lw_methods.blockSignals(False)
 
-    ## @brief Checks or unchecks the source methods in the left panel based on 
+    ## @brief Checks or unchecks the source methods in the left panel based on
     # the current editor text.
     # The method searches the function signatures of the source methods in
     # the current editor and if found, checks the corresponding method to mark
@@ -338,7 +338,7 @@ class PluginSynEditorWidget(SynEditorWidget):
                 item.setHidden(not matched)
         self.lw_methods.itemChanged.connect(self.on_lw_methods_changed)
 
-    ## On Toggle slot for the filter button (action): 
+    ## On Toggle slot for the filter button (action):
     # re-applies the filter with / without regex.
     @QtCore.pyqtSlot(bool)
     def on_actn_filter_regex_toggled(self, checked):
