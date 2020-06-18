@@ -48,7 +48,7 @@ f"join {SQL_TABLES['pos']['table']} on {SQL_TABLES['words']['table']}.{SQL_TABLE
 ## SQL query to display all POS
 SQL_GET_POS = f"select * from {SQL_TABLES['pos']['table']};"
 ## Hunspell dic repo URL
-HUNSPELL_REPO = 'https://raw.githubusercontent.com/wooorm/dictionaries/master'
+HUNSPELL_REPO = 'https://raw.githubusercontent.com/wooorm/dictionaries/main'
 
 # ******************************************************************************** #
 
@@ -506,9 +506,11 @@ class HunspellImport:
         readme = f"{HUNSPELL_REPO}/readme.md"
         dics = []
         res = requests.get(readme, allow_redirects=True, timeout=self.timeout_, proxies=self.proxies_)
-        if not res: return []
-        if stopcheck and stopcheck(): return []
-        res = res.text
+        if not res: 
+            return []
+        if stopcheck and stopcheck(): 
+            return []
+        res = res.text        
         regex = re.compile(r'(\(dictionaries/[\w]+\))(\s*\|\s*)([\w\s]+)(\s*\|\s*)(\[.*?\])(\(.*?\))', re.I)
         try:
             for match in regex.finditer(res):

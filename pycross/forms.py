@@ -1691,17 +1691,16 @@ class ParamValueEditor(BasicDialog):
     # @param icon `str` dialog icon file
     # @param parent `QtWidgets.QWidget` parent widget (default = `None`, i.e. no parent)
     # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
-    def __init__(self, data=None, params_editable=False,
-                 can_add=False, can_delete=False, can_reorder=True,
-                 unique_params=True,
+    def __init__(self, data=None, can_add=False, can_delete=False, 
+                 can_reorder=True, unique_params=True, params_editable=False,
                  header_labels=[_('Parameter'), _('Value')], on_validate=None,
                  title=_('Value Editor'), icon='table.png',
                  parent=None, flags=QtCore.Qt.WindowFlags()):
-        self.params_editable = params_editable
         self.can_add = can_add
         self.can_delete = can_delete
         self.can_reorder = can_reorder
         self.unique_params = unique_params
+        self.params_editable = params_editable
         self.on_validate = on_validate
         self.header_labels = header_labels
         super().__init__(None, title, icon, parent, flags)
@@ -1718,13 +1717,13 @@ class ParamValueEditor(BasicDialog):
         self.act_addrow = self.tbMain.addAction(QtGui.QIcon(f"{ICONFOLDER}/add.png"), _('Add'))
         self.act_addrow.setToolTip(_('Add row'))
         self.act_addrow.setShortcut(QtGui.QKeySequence('Ins'))
-        self.act_addrow.setEnabled(self.can_add)
+        self.act_addrow.setVisible(self.can_add)
         self.act_addrow.triggered.connect(self.on_act_addrow)
 
         self.act_delrow = self.tbMain.addAction(QtGui.QIcon(f"{ICONFOLDER}/multiply.png"), _('Delete'))
         self.act_delrow.setToolTip(_('Delete row'))
         self.act_delrow.setShortcut(QtGui.QKeySequence('Ctrl+Del'))
-        self.act_delrow.setEnabled(self.can_delete)
+        self.act_delrow.setVisible(self.can_delete)
         self.act_delrow.triggered.connect(self.on_act_delrow)
 
         self.tbMain.addSeparator()
@@ -1732,13 +1731,13 @@ class ParamValueEditor(BasicDialog):
         self.act_moverowup = self.tbMain.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-L.png"), _('Up'))
         self.act_moverowup.setToolTip(_('Move up'))
         self.act_moverowup.setShortcut(QtGui.QKeySequence('Ctrl+Up'))
-        self.act_moverowup.setEnabled(self.can_reorder)
+        self.act_moverowup.setVisible(self.can_reorder)
         self.act_moverowup.triggered.connect(self.on_act_moverowup)
 
         self.act_moverowdown = self.tbMain.addAction(QtGui.QIcon(f"{ICONFOLDER}/rewind-R.png"), _('Down'))
         self.act_moverowdown.setToolTip(_('Move down'))
         self.act_moverowdown.setShortcut(QtGui.QKeySequence('Ctrl+Down'))
-        self.act_moverowdown.setEnabled(self.can_reorder)
+        self.act_moverowdown.setVisible(self.can_reorder)
         self.act_moverowdown.triggered.connect(self.on_act_moverowdown)
 
         self.layout_controls.addWidget(self.tbMain)
@@ -1753,7 +1752,7 @@ class ParamValueEditor(BasicDialog):
 
     def validate(self):
         if self.unique_params:
-            params = self.list_params()
+            params = self.list_values(0)
             if len(params) > len(set(params)):
                 MsgBox(_('Please check that parameter names are unique.'), self, _('Error'), 'error')
                 return False
@@ -1763,42 +1762,43 @@ class ParamValueEditor(BasicDialog):
 
     @QtCore.pyqtSlot(bool)
     def on_act_addrow(self, checked):
+        if not self.can_add: return
         rows = self.twParams.rowCount()
         if not rows and self.header_labels:
             self.twParams.setHorizontalHeaderLabels(self.header_labels)
         self.twParams.setRowCount(rows + 1)
-        if rows > 0 and self.twParams.cellWidget(rows - 1, 0):
-            combo = self.twParams.cellWidget(rows - 1, 0)
-            cell_combo = QtWidgets.QComboBox()
-            cell_combo.setEditable(self.params_editable)
-            cell_combo.addItems([combo.itemText(i) for i in range(combo.count())])
-            cell_combo.setCurrentIndex(combo.currentIndex())
-            self.twParams.setCellWidget(rows, 0, cell_combo)
+        if rows > 0:
+            self.copyrow(rows - 1, rows)
         else:
             param = QtWidgets.QTableWidgetItem(_('Parameter {}').format(rows + 1))
             param.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable if self.params_editable else \
                             QtCore.Qt.ItemIsEnabled)
             self.twParams.setItem(rows, 0, param)
+            val = QtWidgets.QTableWidgetItem(_('Value {}').format(rows + 1))
+            val.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+            self.twParams.setItem(rows, 1, val)
+
         self.twParams.setCurrentCell(rows, 1)
         self.update_actions()
 
     def copyrow(self, row_from, row_to):
-        combo = self.twParams.cellWidget(row_from, 0)
-        if combo:
-            cell_combo = QtWidgets.QComboBox()
-            cell_combo.setEditable(self.params_editable)
-            cell_combo.addItems([combo.itemText(i) for i in range(combo.count())])
-            cell_combo.setCurrentIndex(combo.currentIndex())
-            self.twParams.setCellWidget(row_to, 0, cell_combo)
-        else:
-            from_item = self.twParams.item(row_from, 0)
-            param = QtWidgets.QTableWidgetItem(from_item.text())
-            param.setFlags(from_item.flags())
-            self.twParams.setItem(row_to, 0, param)
-        self.twParams.setItem(row_to, 1, QtWidgets.QTableWidgetItem(self.twParams.item(row_from, 1).text()))
+        for c in range(2):
+            combo = self.twParams.cellWidget(row_from, c)
+            if isinstance(combo, QtWidgets.QComboBox):
+                cell_combo = QtWidgets.QComboBox()
+                cell_combo.setEditable(combo.isEditable())
+                cell_combo.addItems([combo.itemText(i) for i in range(combo.count())])
+                cell_combo.setCurrentIndex(combo.currentIndex())
+                self.twParams.setCellWidget(row_to, c, cell_combo)
+            else:
+                from_item = self.twParams.item(row_from, c)
+                param = QtWidgets.QTableWidgetItem(from_item.text())
+                param.setFlags(from_item.flags())
+                self.twParams.setItem(row_to, c, param)
 
     @QtCore.pyqtSlot(bool)
     def on_act_delrow(self, checked):
+        if not self.can_delete: return
         row = self.twParams.currentRow()
         if row >= 0:
             self.twParams.removeRow(row)
@@ -1806,6 +1806,7 @@ class ParamValueEditor(BasicDialog):
 
     @QtCore.pyqtSlot(bool)
     def on_act_moverowup(self, checked):
+        if not self.can_reorder: return
         row = self.twParams.currentRow()
         if row > 0:
             self.twParams.insertRow(row - 1)
@@ -1815,6 +1816,7 @@ class ParamValueEditor(BasicDialog):
 
     @QtCore.pyqtSlot(bool)
     def on_act_moverowdown(self, checked):
+        if not self.can_reorder: return
         row = self.twParams.currentRow()
         last_row = self.twParams.rowCount() - 1
         if row < last_row:
@@ -1838,18 +1840,28 @@ class ParamValueEditor(BasicDialog):
             if len(param_tuple) != 2:
                 continue
             for c, el in enumerate(param_tuple):
-                if isinstance(el, dict) and 'options' in el:
-                    # make combobox
-                    cell_combo = QtWidgets.QComboBox()
-                    cell_combo.setEditable(self.params_editable)
-                    cell_combo.addItems(el['options'])
-                    cell_combo.setCurrentIndex(el.get('default', 0))
-                    self.twParams.setCellWidget(r, c, cell_combo)
+                if isinstance(el, dict):                 
+                    if 'options' in el:
+                        # make combobox
+                        cell_combo = QtWidgets.QComboBox()
+                        cell_combo.setEditable(el.get('editable', self.params_editable))
+                        cell_combo.addItems(el['options'])
+                        cell_combo.setCurrentIndex(el.get('default', 0 if el['options'] else -1))
+                        self.twParams.setCellWidget(r, c, cell_combo)
+                    elif 'default' in el:
+                        # make regular param
+                        param = QtWidgets.QTableWidgetItem(str(el['default']))
+                        param.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable \
+                                       if el.get('editable', self.params_editable) else \
+                                       QtCore.Qt.ItemIsEnabled)
+                        self.twParams.setItem(r, c, param)
                 else:
-                    # make regular param
+                    # make regular UNEDITABLE first column, EDITABLE second column
                     param = QtWidgets.QTableWidgetItem(str(el))
-                    param.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable if self.params_editable else \
-                                QtCore.Qt.ItemIsEnabled)
+                    flags = QtCore.Qt.ItemIsEnabled
+                    if c == 1 or self.params_editable: 
+                        flags |= QtCore.Qt.ItemIsEditable
+                    param.setFlags(flags)
                     self.twParams.setItem(r, c, param)
         
         self.twParams.show()
@@ -1873,22 +1885,20 @@ class ParamValueEditor(BasicDialog):
     def serialize_table(self):
         data = []
         for r in range(self.twParams.rowCount()):
-            combo = self.twParams.cellWidget(r, 0)
-            if combo:
-                data.append((combo.currentText(), self.twParams.item(r, 1).text(), combo.currentIndex()))
-            else:
-                data.append((self.twParams.item(r, 0).text(), self.twParams.item(r, 1).text()))
+            combo1 = self.twParams.cellWidget(r, 0)
+            combo2 = self.twParams.cellWidget(r, 1)
+            param1 = combo1.currentText() if isinstance(combo1, QtWidgets.QComboBox) else self.twParams.item(r, 0).text()
+            param2 = combo2.currentText() if isinstance(combo2, QtWidgets.QComboBox) else self.twParams.item(r, 1).text()
+            data.append((param1, param2))
         return data
 
-    def list_values(self):
-        return [self.twParams.item(r, 1).text() for r in range(self.twParams.rowCount())]
-
-    def list_params(self):
-        res = []
+    def list_values(self, col):
+        if col not in (0, 1): return []
+        vals = []
         for r in range(self.twParams.rowCount()):
-            combo = self.twParams.cellWidget(r, 0)
-            res.append(combo.currentText() if combo else self.twParams.item(r, 0).text())
-        return res
+            combo = self.twParams.cellWidget(r, col)
+            vals.append(combo.currentText() if isinstance(combo, QtWidgets.QComboBox) else self.twParams.item(r, col).text())
+        return vals
 
 # ******************************************************************************** #
 # *****          WordDBManager
@@ -1900,9 +1910,9 @@ class ParamValueEditor(BasicDialog):
 class WordDBManager(QtWidgets.QMainWindow):
 
     sigEnableInstall = QtCore.pyqtSignal(bool)
-    pos_list = (_('Noun'), _('Verb'), _('Adverb'), _('Adjective'),
+    pos_list = [_('Noun'), _('Verb'), _('Adverb'), _('Adjective'),
                 _('Participle'), _('Pronoun'), _('Interjection'), _('Conjuction'),
-                _('Preposition'), _('Proposition'), _('Miscellaneous / other'), _('None'))
+                _('Preposition'), _('Proposition'), _('Miscellaneous / other'), _('None')]
 
     def __init__(self, settings, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(parent, flags)
@@ -1934,7 +1944,7 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     def showEvent(self, event):
         super().showEvent(event)
-        self.dics_model_thread.start()
+        self.on_act_refreshdics(True)
 
     def closeEvent(self, event):
         self.stop_operations()
@@ -2064,10 +2074,10 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_stopdb.triggered.connect(self.on_act_stopdb)
         self.tb_dbactions.addSeparator()
         self.act_addwd = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/add.png"), _('Add'))
-        self.act_addwd.setToolTip(_('Add a new record'))
+        self.act_addwd.setToolTip(_('Add new words'))
         self.act_addwd.triggered.connect(self.on_act_addwd)
         self.act_delwd = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/multiply.png"), _('Delete'))
-        self.act_delwd.setToolTip(_('Delete selected records'))
+        self.act_delwd.setToolTip(_('Delete selected words'))
         self.act_delwd.triggered.connect(self.on_act_delwd)
         self.tb_dbactions.addSeparator()
         self.act_commit = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), _('Commit'))
@@ -2224,11 +2234,63 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(bool)
     def on_act_addwd(self, checked):
-        data = [('<New word>', )]
+
+        def on_validate(data):
+            if not data: 
+                MsgBox(_('No valid data!'), self, _('Error'), 'error')
+                return False            
+            if not data[0][0].isalpha():
+                MsgBox(_("Word '{}' is invalid!").format(data[0][0]), self, _('Error'), 'error')
+                return False
+            return True
+
+        dic_lang = self.combo_selectdb.currentData()
+        if not dic_lang: return
+
+        db = Sqlitedb()
+        if not db.setpath(dic_lang['lang']):
+            MsgBox(_("Unable to connect to database '{}'").format(dic_lang['lang']), self, _('Error'), 'error')
+            return
+
+        data = [('<New word>', {'options': WordDBManager.pos_list, 'editable': False})]
+        dia_editor = ParamValueEditor(data, can_add=True, can_delete=True,
+                                          can_reorder=False,
+                                          params_editable=True, on_validate=on_validate,
+                                          header_labels=[_('Word'), _('Part of speech')],
+                                          title=_('New word'), parent=self)
+        if not dia_editor.exec(): return
+
+        data = dia_editor.serialize_table()
+        
+        for wd, pos in data:
+            item_word = QtGui.QStandardItem(wd)
+            item_word.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
+            item_word.setBackground(QtGui.QBrush(QtCore.Qt.green))
+            
+            item_pos = QtGui.QStandardItem(pos)
+            item_pos.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
+            item_pos.setData(WordDBManager.pos_list)
+            item_pos.setBackground(QtGui.QBrush(QtCore.Qt.green))            
+
+            self.db_model.appendRow([item_word, item_pos])
+
+            self.db_model_changed_indices.add(item_word.index())
+            self.db_model_changed_indices.add(item_pos.index())
+
+        self.tvDB.setItemDelegateForColumn(1, ComboboxDelegate())
+        self.update_db_actions()
 
     @QtCore.pyqtSlot(bool)
     def on_act_delwd(self, checked):
-        pass
+        self.db_model.itemChanged.disconnect()
+        for ind in self.tvDB.selectedIndexes():
+            item = self.db_model.itemFromIndex(ind)
+            if item.column() == 0:
+                item.setData(float(item.data()))
+                self.db_model_changed_indices.add(item.index())
+            item.setBackground(QtGui.QBrush(QtCore.Qt.red))
+        self.db_model.itemChanged.connect(self.db_model_item_changed)
+        self.update_db_actions()
 
     @QtCore.pyqtSlot(bool)
     def on_act_peekdic(self, checked):
@@ -2337,7 +2399,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             MsgBox(_("Unable to connect to database '{}'").format(dic_lang['lang']), self, _('Error'), 'error')
             return
 
-        pos_all = {pos_full: pos_short for (_, pos_short, pos_full) in db.get_pos()}
+        #pos_all = {pos_full: pos_short for (_, pos_short, pos_full) in db.get_pos()}
 
         try:
             for (wd_id, wd, pos_short, pos_full) in db.get_words():
@@ -2345,8 +2407,9 @@ class WordDBManager(QtWidgets.QMainWindow):
                 item_word = QtGui.QStandardItem(wd)
                 item_word.setData(wd_id)
                 item_word.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
-                item_pos = QtGui.QStandardItem(pos_full)
-                item_pos.setData(pos_all)
+                pos_index = self._get_pos_index(pos_short)
+                item_pos = QtGui.QStandardItem(WordDBManager.pos_list[pos_index])
+                item_pos.setData(WordDBManager.pos_list)
                 item_pos.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEditable)
                 self.db_model.appendRow([item_word, item_pos])
         finally:
@@ -2387,10 +2450,12 @@ class WordDBManager(QtWidgets.QMainWindow):
             self.commit_db(refresh, ignore_errors)
 
     def commit_db(self, refresh=True, ignore_errors=False):
-        if len(self.db_model_changed_indices) == 0: return
+        if len(self.db_model_changed_indices) == 0: 
+            return
 
         dic_lang = self.combo_selectdb.currentData()
-        if not dic_lang: return
+        if not dic_lang: 
+            return
 
         db = Sqlitedb()
         if not db.setpath(dic_lang['lang']):
@@ -2403,49 +2468,52 @@ class WordDBManager(QtWidgets.QMainWindow):
         ok_indices = set()
         r = -1
         for ind in self.db_model_changed_indices:
-            if r == ind.row():
+            item = self.db_model.itemFromIndex(ind)
+            if r == item.row():
                 ok_indices.add(ind)
                 continue
 
-            r = ind.row()
-            c = ind.column()
-            if c == 0:
-                wd_item = self.db_model.itemFromIndex(ind)
-                pos_item = self.db_model.itemFromIndex(ind.siblingAtColumn(1))
-            elif c == 1:
-                wd_item = self.db_model.itemFromIndex(ind.siblingAtColumn(0))
-                pos_item = self.db_model.itemFromIndex(ind)
-            else:
-                continue
+            r = item.row()
 
+            wd_item = self.db_model.item(r, 0)
+            pos_item = self.db_model.item(r, 1)
+
+            pos = POS[WordDBManager.pos_list.index(pos_item.text())][0]
+       
             SQL_INSERT = "insert or replace into twords(word, idpos)\n" \
                          "values('{}', (select distinct id from tpos where " \
-                         "posdesc = '{}'));".format(wd_item.text(), pos_item.text())
-
+                         "pos = '{}'));".format(wd_item.text(), pos)
+            
             data = wd_item.data()
             if data:
-                SQL = "update twords set word = '{}', " \
-                      "idpos = (select distinct id from tpos where posdesc = '{}')\n" \
-                      "where id = {};".format(wd_item.text(), pos_item.text(), data)
+                if isinstance(data, int) and data >= 0:
+                    SQL = "update twords set word = '{}', " \
+                        "idpos = (select distinct id from tpos where pos = '{}')\n" \
+                        "where id = {};".format(wd_item.text(), pos, data)
+                elif isinstance(data, float) and data >= 0.:
+                    SQL = "delete from twords where id = {};".format(int(data))
             else:
                 SQL = SQL_INSERT
 
             try:
                 cur.execute(SQL)
-                db.conn.commit()
-                ok_indices.add(ind)
+                db.conn.commit()                
             except Exception as err:
-                if 'UNIQUE constraint failed' in str(err):
+                if 'UNIQUE constraint failed' in str(err) and SQL.startswith('update'):
                     try:
                         cur.execute(SQL_INSERT)
                     except:
                         if not ignore_errors:
                             MsgBox(str(err), self, _('Error'), 'error')
                             break
+                    else:
+                        ok_indices.add(ind)
                 else:
                     if not ignore_errors:
                         MsgBox(str(err), self, _('Error'), 'error')
                         break
+            else:
+                ok_indices.add(ind)
 
         if ignore_errors:
             self.db_model_changed_indices.clear()
@@ -2855,6 +2923,7 @@ class WordDBManager(QtWidgets.QMainWindow):
 
     @QtCore.pyqtSlot(QtGui.QStandardItem)
     def db_model_item_changed(self, item):
+        item.setBackground(QtGui.QBrush(QtCore.Qt.yellow))
         self.db_model_changed_indices.add(item.index())
         self.update_db_actions()
 
@@ -2922,10 +2991,16 @@ class WordDBManager(QtWidgets.QMainWindow):
                 item.setData(defvalue, QtCore.Qt.UserRole + 1)
             self.dics_model.itemChanged.connect(self.dics_model_item_changed)
 
-    def _get_pos_index(self, pos):
+    def _get_pos_index(self, pos_short):
         for i in range(len(POS)):
-            if POS[i][0] == pos: return i
+            if POS[i][0] == pos_short: return i
         return 0
+
+    def _get_pos_short(self, pos_desc):
+        for pos_short, pos_long in POS:
+            if pos_long == pos_desc: 
+                return pos_short
+        return None
 
     @QtCore.pyqtSlot(QtCore.QModelIndex)
     def on_tvDics_activated(self, index):
@@ -2943,16 +3018,15 @@ class WordDBManager(QtWidgets.QMainWindow):
                 if data and isinstance(data, dict):
                     ldata = []
                     for pos in data:
-                        ldata.append((WordDBManager.pos_list, data[pos], self._get_pos_index(pos)))
+                        ldata.append(({'options': WordDBManager.pos_list, 'editable': False, 'default': WordDBManager.pos_list.index(pos)}, data[pos]))
                     data = ldata
             else:
-                data = [(WordDBManager.pos_list, '')]
-            dia_editor = ParamValueEditor(data, can_add=True, can_delete=True,
+                data = [({'options': WordDBManager.pos_list, 'editable': False}, '')]
+            dia_editor = ParamValueEditor(data, can_add=True, can_delete=True,                                          
                                           header_labels=[_('Part of speech'), _('Regex pattern')],
                                           title=_('Part-of-speech rules'), parent=self)
             if not dia_editor.exec(): return
-            ldata = dia_editor.serialize_table()
-            data = {POS[el[2]][0]: el[1] for el in ldata}
+            data = dict(dia_editor.serialize_table())
             item.setText(json.dumps(data) if data else '')
 
         elif c == 6:
@@ -2966,7 +3040,8 @@ class WordDBManager(QtWidgets.QMainWindow):
                     pass
                 if data and isinstance(data, dict):
                     data = list(data.items())
-            dia_editor = ParamValueEditor(data, True, can_add=True, can_delete=True,
+            dia_editor = ParamValueEditor(data, can_add=True, can_delete=True,
+                                          params_editable=True,
                                           header_labels=[_('Find'), _('Replace')],
                                           title=_('Replacement rules'), parent=self)
             if not dia_editor.exec(): return
@@ -2981,14 +3056,14 @@ class WordDBManager(QtWidgets.QMainWindow):
                 try:
                     data = json.loads(txt, encoding=ENCODING)
                     assert(isinstance(data, list))
-                    data = [(_('Parameter {}').format(i), el) for i, el in enumerate(data)]
+                    data = [(_('Rule {}').format(i + 1), el) for i, el in enumerate(data)]
                 except:
                     pass
             dia_editor = ParamValueEditor(data, can_add=True, can_delete=True,
                                           header_labels=['', _('Regex')],
                                           title=_('Exclude'), parent=self)
             if not dia_editor.exec(): return
-            data = dia_editor.list_values()
+            data = dia_editor.list_values(1)
             item.setText(json.dumps(data) if data else '')
 
     @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
