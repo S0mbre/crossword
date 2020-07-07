@@ -27,16 +27,16 @@
 * + [v. 0.4] enhanced grid editing: multiple selection, instruments for filler, 
 			blank, surrounding cells, batch cell edit etc.
 * + [v. 0.4] undo / redo
+* + [v. 0.4] word source database manager (import from Hunspell, edit DB manually)
 
-* [v. 0.4] fill all clues automatically from Google
-* [v. 0.4] search text in grid and clues
-* [v. 0.4] whats-this tips for UI elements linked to Help sections 
+* [v. 0.5] fill all clues automatically from Google
+* [v. 0.5] search text in grid and clues
+* [v. 0.5] whats-this tips for UI elements linked to Help sections 
 			(QWhatsThis: https://doc.qt.io/qt-5/qwhatsthis.html)
-* [v. 0.4] non-rectangular cells (circles, hexagons, triangles, etc)
-* [v. 0.4] customizable interval between cells in grid (>=0)
-* [v. 0.4] individual cell styling (color, shape, font...) and custom style sets
-* [v. 0.4] word source add from Hunspell / Aspell GUI instrument
-* [v. 0.4] random grid pattern creation (parametric)
+* [v. 0.5] non-rectangular cells (circles, hexagons, triangles, etc)
+* [v. 0.5] customizable interval between cells in grid (>=0)
+* [v. 0.5] individual cell styling (color, shape, font...) and custom style sets
+* [v. 0.5] random grid pattern creation (parametric)
 * [v. 0.5] grid pattern from outline image (with OpenCV or PIL)
 * [v. 0.5] read crosswords from image (scan) using OpenCV
 * [v. 0.5] other than classic xwords (e.g. Swedish or Barred)

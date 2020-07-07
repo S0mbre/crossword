@@ -1,5 +1,5 @@
 PROJECT_NAME           = "pycrossword"
-PROJECT_NUMBER         = 0.3
+PROJECT_NUMBER         = 0.4
 PROJECT_BRIEF          = "Pure-Python implementation of a crossword puzzle generator and editor"
 PROJECT_LOGO           = pycross\assets\icons\main.ico
 OUTPUT_DIRECTORY       = pycross\doc\apiref
