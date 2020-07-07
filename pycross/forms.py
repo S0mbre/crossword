@@ -4,8 +4,7 @@
 
 ## @package pycross.forms
 # Classes for all the GUI app's forms except the main window.
-from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport,
-                    QtWebEngineWidgets, QtWebEngineCore, QtWebEngine)
+from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport)
 import os, copy, json
 import numpy as np
 from distutils import version
@@ -1684,7 +1683,7 @@ class CustomPluginManager(QtWidgets.QWidget):
 # *****          ParamValueEditor
 # ******************************************************************************** #
 
-## Tiny login/password authentication dialog used by the inbuilt web browser (see pycross::browser).
+## Tiny login/password authentication dialog.
 class ParamValueEditor(BasicDialog):
 
     # @param title `str` dialog title
@@ -1937,7 +1936,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.initUI()
         self.sigEnableInstall.emit(False)
 
-    ## Implemented method to make the browser window half the screen size.
+    ## Implemented method to make the window half the screen size.
     def sizeHint(self):
         desktopRect = QtWidgets.QApplication.primaryScreen().geometry()
         return desktopRect.size() * 0.5
@@ -4105,15 +4104,12 @@ class SettingsDialog(BasicDialog):
         self.le_sharing_user.setToolTip(_('Kloudless username (leave EMPTY to create new user automatically)'))
         self.chb_sharing_use_api_key = QtWidgets.QCheckBox('')
         self.chb_sharing_use_api_key.setToolTip(_('Check this to use one single API key for authentication (WARNING! NOT SAFE!)'))
-        self.chb_sharing_ownbrowser = QtWidgets.QCheckBox('')
-        self.chb_sharing_ownbrowser.setToolTip(_('Use app inbuilt browser to open share links (otherwise, use system browser)'))
 
         self.layout_sharing.addRow(_('Kloudless account ID'), self.le_sharing_account)
         self.layout_sharing.addRow(_('Kloudless Bearer Token'), self.le_sharing_token)
         self.layout_sharing.addRow(_('Kloudless root folder'), self.le_sharing_root)
         self.layout_sharing.addRow(_('Kloudless username'), self.le_sharing_user)
         self.layout_sharing.addRow(_('Use API key'), self.chb_sharing_use_api_key)
-        self.layout_sharing.addRow(_('Use inbuilt browser'), self.chb_sharing_ownbrowser)
 
         self.page_sharing.setLayout(self.layout_sharing)
         self.stacked.addWidget(self.page_sharing)
@@ -4648,7 +4644,6 @@ class SettingsDialog(BasicDialog):
         settings['sharing']['use_api_key'] = self.chb_sharing_use_api_key.isChecked()
         settings['sharing']['root_folder'] = self.le_sharing_root.text()
         settings['sharing']['user'] = self.le_sharing_user.text()
-        settings['sharing']['use_own_browser'] = self.chb_sharing_ownbrowser.isChecked()
 
         return settings
 
@@ -5203,7 +5198,6 @@ class SettingsDialog(BasicDialog):
             self.le_sharing_root.setText(settings['root_folder'])
             self.le_sharing_user.setText(settings['user'])
             self.chb_sharing_use_api_key.setChecked(settings['use_api_key'])
-            self.chb_sharing_ownbrowser.setChecked(settings['use_own_browser'])
 
     ## Adds a new word source from 'src' dict or assigns it to an existing item.
     # @param src `dict` dictionary describing a word source;
@@ -6710,7 +6704,7 @@ class ReflectGridDialog(BasicDialog):
 # *****          PasswordDialog
 # ******************************************************************************** #
 
-## Tiny login/password authentication dialog used by the inbuilt web browser (see pycross::browser).
+## Tiny login/password authentication dialog.
 class PasswordDialog(BasicDialog):
 
     ## Constructor.

@@ -133,7 +133,7 @@ class CWSettings:
     'sharing':
         {
             'account': '', 'bearer_token': '', 'use_api_key': False,
-            'root_folder': 'pycross', 'user': '', 'use_own_browser': True
+            'root_folder': 'pycross', 'user': ''
         },
     'plugins':
         {

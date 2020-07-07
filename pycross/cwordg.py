@@ -38,7 +38,6 @@ def main():
     # switch language
     switch_lang(settings['common']['lang'])
 
-    from PyQt5 import QtWebEngineWidgets
     from gui import QtCore, QtWidgets, MainWindow
 
     try:
@@ -48,10 +47,6 @@ def main():
         QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
         # create QApplication instance
         app = QtWidgets.QApplication(sys.argv)
-        # initialize core web engine settings
-        QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
-        QtWebEngineWidgets.QWebEngineSettings.defaultSettings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.DnsPrefetchEnabled, True)
-        QtWebEngineWidgets.QWebEngineProfile.defaultProfile().setUseForGlobalCertificateVerification()
         # localize Qt widgets
         lang = settings['common']['lang'] or 'en'
         locale = QtCore.QLocale(lang)

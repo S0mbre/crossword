@@ -24,7 +24,6 @@ from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu,
                     ShareDialog, KloudlessAuthDialog)
 from crossword import Word, Crossword, CWError, FILLER, FILLER2, BLANK
 from wordsrc import DBWordsource, TextWordsource, TextfileWordsource, MultiWordsource
-from browser import Browser
 
 # ******************************************************************************** #
 
@@ -1719,7 +1718,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     def create_cloud(self, thread):
         cloud = Cloudstorage(CWSettings.settings, auto_create_user=False,
-                on_user_exist=lambda username: False, on_update_users=None,
+                on_user_exist=lambda _: False, on_update_users=None,
                 on_error=lambda err: thread.sig_error.emit(thread, err) if thread else None,
                 show_errors=thread is None,
                 on_apikey_required=lambda res: thread.sig_apikey_required.emit(res) if thread else None,
@@ -1751,15 +1750,11 @@ class MainWindow(QtWidgets.QMainWindow):
         # create / find user
         cloud.on_user_exist = lambda username: True
         cloud._find_or_create_user(username)
-
-        on_prepare_url = None
-        if CWSettings.settings['sharing']['use_own_browser']:
-            on_prepare_url = lambda url: thread.sig_prepare_url.emit(url) if thread else self.share_url
         on_clipboard_write = lambda url: thread.sig_clipboard_write.emit(url) if thread else None
 
         ## utils::onlineservices::Share instance used for cloud upload / sharing
         self.sharer = Share(cloud, on_clipboard_write=on_clipboard_write,
-                            on_prepare_url=on_prepare_url, stop_check=self.act_stop.isChecked,
+                            stop_check=self.act_stop.isChecked,
                             timeout=(CWSettings.settings['common']['web']['req_timeout'] * 1000) or None)
 
     ## Opens a share link in inbuilt or external browser (for sharing)
@@ -1769,13 +1764,7 @@ class MainWindow(QtWidgets.QMainWindow):
     # @see utils::onlineservices::Share
     @pluggable('general')
     def share_url(self, url, headers={'Content-Type': 'application/json'}, error_keymap=Share.ERRMAP):
-        if not hasattr(self, 'browser'):
-            self.browser = Browser()
-            self.browser.navigate('about:blank')
-        try:
-            self.browser.navigate(url, False)
-        except:
-            traceback.print_exc(limit=None)
+        webbrowser.open(url, new=2)
 
     ## @brief Creates and optionally shows the inbuilt python code editor.
     # @param source `str` | `None` source code to set in editor (`None` clears the existing code)
@@ -3772,13 +3761,7 @@ class MainWindow(QtWidgets.QMainWindow):
         def on_chart_save(filename):
             url = os.path.abspath(filename)
             self.garbage.append(url)
-            if not hasattr(self, 'browser'):
-                ## inbuilt web browser
-                self.browser = Browser()
-            try:
-                self.browser.navigate(url, False)
-            except:
-                traceback.print_exc(limit=None)
+            webbrowser.open(url, new=2)
 
         d1 = data_from_dict({'Words': self.cw.words.stats['word_count'],
               'Complete': self.cw.words.stats['complete_word_count'],

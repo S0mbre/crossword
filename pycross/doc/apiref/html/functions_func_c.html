@@ -78,9 +78,6 @@ $(function() {
 <li>canundo()
 : <a class="el" href="classpycross_1_1utils_1_1undo_1_1_command_manager.html#a75775172e2eb6f672844165dd72d7f75">pycross.utils.undo.CommandManager</a>
 </li>
-<li>certificateError()
-: <a class="el" href="classpycross_1_1browser_1_1_web_page.html#a996be4004f20baaf775017fd08191a72">pycross.browser.WebPage</a>
-</li>
 <li>change_word()
 : <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a0eb075b30c061d6cc07ed7c5d85f279e">pycross.crossword.Crossword</a>
 , <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a568b86856c75311fb46d751606c5c1e5">pycross.crossword.Wordgrid</a>
@@ -91,6 +88,9 @@ $(function() {
 <li>check()
 : <a class="el" href="classpycross_1_1wordsrc_1_1_multi_wordsource.html#aa2a22f5c79b4bc1543229a3b189d402c">pycross.wordsrc.MultiWordsource</a>
 , <a class="el" href="classpycross_1_1wordsrc_1_1_wordsource.html#a1d064848734da1dd7ba06abaefbf6d8b">pycross.wordsrc.Wordsource</a>
+</li>
+<li>check_commit_db()
+: <a class="el" href="classpycross_1_1forms_1_1_word_d_b_manager.html#af3dab68aee1c33ba1a5da4658f29ef8e">pycross.forms.WordDBManager</a>
 </li>
 <li>check_save_required()
 : <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac69983d87c330c8975c832451f590336">pycross.gui.MainWindow</a>
@@ -110,29 +110,23 @@ $(function() {
 : <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#ac1310eb1bd930780c819ef1e5ed6fc35">pycross.crossword.Crossword</a>
 , <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a8066b5d704fc3096eaae7013fbcd2d83">pycross.crossword.Wordgrid</a>
 </li>
-<li>cloneTab()
-: <a class="el" href="classpycross_1_1browser_1_1_tab_widget.html#a14abb4ef84e73932ac3960ee0695c5be">pycross.browser.TabWidget</a>
-</li>
 <li>close_cw()
 : <a class="el" href="classpycross_1_1gui_1_1_main_window.html#ac27d319cfb2ccb749198206eaeac204e">pycross.gui.MainWindow</a>
 </li>
 <li>closeEvent()
-: <a class="el" href="classpycross_1_1browser_1_1_browser_window.html#aecdfa02a73972787526ef23a7cc5afab">pycross.browser.BrowserWindow</a>
-, <a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a04dc3a3fc8d11a4820db18cd5653fae0">pycross.forms.DefLookupDialog</a>
+: <a class="el" href="classpycross_1_1forms_1_1_def_lookup_dialog.html#a04dc3a3fc8d11a4820db18cd5653fae0">pycross.forms.DefLookupDialog</a>
+, <a class="el" href="classpycross_1_1forms_1_1_word_d_b_manager.html#a4271b94546015b1e73b4b72a62c81eee">pycross.forms.WordDBManager</a>
 , <a class="el" href="classpycross_1_1forms_1_1_word_suggest_dialog.html#a7dfa4c4d1a75b52dbe30f6c25110cfce">pycross.forms.WordSuggestDialog</a>
 , <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a12f65be26547f46f5f066499911dbce5">pycross.gui.MainWindow</a>
 </li>
 <li>closelog()
 : <a class="el" href="classpycross_1_1crossword_1_1_crossword.html#a801b8847c8cd9e9ec01f23f97bbe35cc">pycross.crossword.Crossword</a>
 </li>
-<li>closeOtherTabs()
-: <a class="el" href="classpycross_1_1browser_1_1_tab_widget.html#ad08cb2d9673bf38e5d253c7cb6568adc">pycross.browser.TabWidget</a>
-</li>
-<li>closeTab()
-: <a class="el" href="classpycross_1_1browser_1_1_tab_widget.html#a7bb6bbd899695df2a7890ec569eca7f1">pycross.browser.TabWidget</a>
-</li>
 <li>clues_show_hide_cols()
 : <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aedc5567d659e582099b905ea7daa324f">pycross.gui.MainWindow</a>
+</li>
+<li>commit_db()
+: <a class="el" href="classpycross_1_1forms_1_1_word_d_b_manager.html#a21dbb29e4444e0f667d8115800168231">pycross.forms.WordDBManager</a>
 </li>
 <li>configure_plugins()
 : <a class="el" href="classpycross_1_1utils_1_1pluginmanager_1_1_px_plugin_manager.html#a0a112eb99785e627d719597790649bf2">pycross.utils.pluginmanager.PxPluginManager</a>
@@ -141,11 +135,13 @@ $(function() {
 : <a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#adc4cee52d457774cbd1ad4359de85f29">pycross.dbapi.Sqlitedb</a>
 </li>
 <li>contextMenuEvent()
-: <a class="el" href="classpycross_1_1browser_1_1_web_view.html#af7cc7388e3ab60e5d4fcf2201e62ae0f">pycross.browser.WebView</a>
-, <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a09a1d0f58bce12626840f3b43e5e32a7">pycross.gui.MainWindow</a>
+: <a class="el" href="classpycross_1_1gui_1_1_main_window.html#a09a1d0f58bce12626840f3b43e5e32a7">pycross.gui.MainWindow</a>
 </li>
 <li>coord_array()
 : <a class="el" href="classpycross_1_1crossword_1_1_coords.html#ab3d44731dacf062c80a40a60016e1a41">pycross.crossword.Coords</a>
+</li>
+<li>copyrow()
+: <a class="el" href="classpycross_1_1forms_1_1_param_value_editor.html#a8a95fbcc1d9803b92a351efda39cf37f">pycross.forms.ParamValueEditor</a>
 </li>
 <li>count_incomplete()
 : <a class="el" href="classpycross_1_1crossword_1_1_wordgrid.html#a8ae74aaedbee7c9c737afdca083b734d">pycross.crossword.Wordgrid</a>
@@ -172,51 +168,18 @@ $(function() {
 <li>create_tables()
 : <a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#af102df64affbafd6d61529fa48b88b4e">pycross.dbapi.Sqlitedb</a>
 </li>
-<li>createBackgroundTab()
-: <a class="el" href="classpycross_1_1browser_1_1_tab_widget.html#ad7e41b92aad8fee0e21e49581d4e9398">pycross.browser.TabWidget</a>
-</li>
-<li>createDevToolsWindow()
-: <a class="el" href="classpycross_1_1browser_1_1_browser.html#ae46476b0a71e1d093bdca66e17023fe1">pycross.browser.Browser</a>
-</li>
-<li>createEditMenu()
-: <a class="el" href="classpycross_1_1browser_1_1_browser_window.html#a8002e72b42015a1b5a491b76d882d19d">pycross.browser.BrowserWindow</a>
+<li>create_tvDicPreview_menu()
+: <a class="el" href="classpycross_1_1forms_1_1_word_d_b_manager.html#ada4cb433ae3e33756352d2c772d0d087">pycross.forms.WordDBManager</a>
 </li>
 <li>createEditor()
 : <a class="el" href="classpycross_1_1forms_1_1_browse_edit_delegate.html#a23c17572015ed0da0841d501767a4343">pycross.forms.BrowseEditDelegate</a>
+, <a class="el" href="classpycross_1_1forms_1_1_combobox_delegate.html#a527555d02413a1329f01c80b35342041">pycross.forms.ComboboxDelegate</a>
 </li>
-<li>createFileMenu()
-: <a class="el" href="classpycross_1_1browser_1_1_browser_window.html#a8318200791be04e875cf16d4f6817346">pycross.browser.BrowserWindow</a>
-</li>
-<li>createHelpMenu()
-: <a class="el" href="classpycross_1_1browser_1_1_browser_window.html#af0e7c2aa44398d007a2169d2fea80b99">pycross.browser.BrowserWindow</a>
-</li>
-<li>createTab()
-: <a class="el" href="classpycross_1_1browser_1_1_tab_widget.html#a776dbce3561cc6f1a4c6abafd4217642">pycross.browser.TabWidget</a>
-</li>
-<li>createToolBar()
-: <a class="el" href="classpycross_1_1browser_1_1_browser_window.html#a679b03debfb291b712b0e3954fff95d8">pycross.browser.BrowserWindow</a>
-</li>
-<li>createViewMenu()
-: <a class="el" href="classpycross_1_1browser_1_1_browser_window.html#a52ddbd676eabce490f024cd954f0df66">pycross.browser.BrowserWindow</a>
-</li>
-<li>createWebActionTrigger()
-: <a class="el" href="classpycross_1_1browser_1_1_web_view.html#a815301c36fe7c527ea5fdbdaa89e3725">pycross.browser.WebView</a>
-</li>
-<li>createWindow()
-: <a class="el" href="classpycross_1_1browser_1_1_browser.html#abc2a35ee3771efa07605f3225c87c125">pycross.browser.Browser</a>
-, <a class="el" href="classpycross_1_1browser_1_1_web_view.html#a3fe3b46cbb321c850e938bdf1586575d">pycross.browser.WebView</a>
-</li>
-<li>createWindowMenu()
-: <a class="el" href="classpycross_1_1browser_1_1_browser_window.html#ab70511fa070ba652d0b5c2d4206ed5c1">pycross.browser.BrowserWindow</a>
-</li>
-<li>currentTab()
-: <a class="el" href="classpycross_1_1browser_1_1_browser_window.html#a9e0b20aa5f5f518adb8e04efc1f87f5c">pycross.browser.BrowserWindow</a>
+<li>createTabs()
+: <a class="el" href="classpycross_1_1forms_1_1_word_d_b_manager.html#a1d9b4e33385b6870c079a00168c66d32">pycross.forms.WordDBManager</a>
 </li>
 <li>currenttext()
 : <a class="el" href="classpycross_1_1utils_1_1synteditor_1_1_syn_editor_widget.html#a1766b45d240f60b6c3845edeacc87dff">pycross.utils.synteditor.SynEditorWidget</a>
-</li>
-<li>currentWebView()
-: <a class="el" href="classpycross_1_1browser_1_1_tab_widget.html#ab0c08b3518fc580ef124cda6ce250b8a">pycross.browser.TabWidget</a>
 </li>
 <li>cw_resized()
 : <a class="el" href="classpycross_1_1gui_1_1_main_window.html#aa2156bca99fa04aaf5c184fd089baaee">pycross.gui.MainWindow</a>
