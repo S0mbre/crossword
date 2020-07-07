@@ -1,0 +1,4 @@
+#!/usr/bin/python
+
+from cwordg import main
+main()

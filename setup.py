@@ -44,7 +44,7 @@ includes = ['assets/dic/*', 'assets/icons/*',
 setuptools.setup(
     name=APP_NAME.lower(),
     version=APP_VERSION,
-    scripts=[],
+    scripts=['pycross/pycrossword'],
     author=APP_AUTHOR,
     author_email=APP_EMAIL,
     description=f"{APP_NAME} - the Python Crossword Puzzle Generator and Editor",
