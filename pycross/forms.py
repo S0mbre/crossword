@@ -2920,7 +2920,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             on_finish=self.on_install_dics_finish,
             on_error=self.on_install_dics_error)
 
-    @QtCore.pyqtSlot(QtGui.QStandardItem)
+    @QtCore.pyqtSlot('QStandardItem*')
     def db_model_item_changed(self, item):
         item.setBackground(QtGui.QBrush(QtCore.Qt.yellow))
         self.db_model_changed_indices.add(item.index())
@@ -2931,7 +2931,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.db_model_changed_indices.clear()
         self.update_db_actions()
 
-    @QtCore.pyqtSlot(QtGui.QStandardItem)
+    @QtCore.pyqtSlot('QStandardItem*')
     def dics_model_item_changed(self, item):
         c = item.column()
         r = item.row()
