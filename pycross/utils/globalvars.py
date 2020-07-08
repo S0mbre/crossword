@@ -25,7 +25,7 @@ DEBUGGING = False
 ## current app version
 # @warning This constant is used by setup.py to generate version-specific
 # Python distributions; so it must be checked and modified regularly!
-APP_VERSION = '0.4.1'
+APP_VERSION = '0.4.0.1'
 
 ## app name
 # @warning This constant is used by setup.py to generate version-specific
@@ -340,10 +340,7 @@ def readSettings(settings_file=None, write_defaults_on_error=True):
     if not CWSettings.validate_file(settings_file) and write_defaults_on_error:
         CWSettings.save_to_file(settings_file)
     else:
-        try:
-            CWSettings.load_from_file(settings_file)
-        except Exception as err:
-            print(err)
+        CWSettings.load_from_file(settings_file)
     return CWSettings.settings
 
 ## @brief Changes the app interface language by installing the specified translation.

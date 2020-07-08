@@ -25,7 +25,6 @@ def get_all_files(root_dir):
         if not '__pycache__' in dir_path:
             l.append(dir_path.replace('\\', '/') + '/*')
     walk_dir(root_dir, False, True, process_dir)
-    print(l)
     return l
 
 
@@ -36,7 +35,7 @@ with open("requirements.txt", "r") as reqs:
     pip_requirements = reqs.readlines()
     
 includes = ['assets/dic/*', 'assets/icons/*', 
-            'utils/*', 'plugins/*', '*.bat', '*.sh'] + \
+            'utils/*', 'plugins/*'] + \
            [f"../{d}" for d in get_all_files('pycross/doc')] + \
            [f"../{d}" for d in get_all_files('pycross/locale')] + \
            [f"../{d}" for d in get_all_files('pycross/presets')]
@@ -44,7 +43,7 @@ includes = ['assets/dic/*', 'assets/icons/*',
 setuptools.setup(
     name=APP_NAME.lower(),
     version=APP_VERSION,
-    scripts=['pycross/pycrossword'],
+    scripts=['pycross/pycross.bat', 'pycross/pycross'],
     author=APP_AUTHOR,
     author_email=APP_EMAIL,
     description=f"{APP_NAME} - the Python Crossword Puzzle Generator and Editor",

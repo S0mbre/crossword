@@ -232,6 +232,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a64369123ce2c2f732f49506e908625d5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#a64369123ce2c2f732f49506e908625d5">on_share_prepare_url</a> (self, url)</td></tr>
 <tr class="memdesc:a64369123ce2c2f732f49506e908625d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer has prepared the URL for sharing on a social network.  <a href="classpycross_1_1gui_1_1_main_window.html#a64369123ce2c2f732f49506e908625d5">More...</a><br /></td></tr>
 <tr class="separator:a64369123ce2c2f732f49506e908625d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf1d1f5362f53edbf65e96fc0e04baf"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#afaf1d1f5362f53edbf65e96fc0e04baf">on_share_no_user</a> (self, cloud, username)</td></tr>
+<tr class="memdesc:afaf1d1f5362f53edbf65e96fc0e04baf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slot fires when the sharer detects that there is no current username assigned.  <a href="classpycross_1_1gui_1_1_main_window.html#afaf1d1f5362f53edbf65e96fc0e04baf">More...</a><br /></td></tr>
+<tr class="separator:afaf1d1f5362f53edbf65e96fc0e04baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacead2e77dc9e2ea5dd490d1bfc38c69"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1gui_1_1_main_window.html#aacead2e77dc9e2ea5dd490d1bfc38c69">on_share_run</a> (self)</td></tr>
 <tr class="memdesc:aacead2e77dc9e2ea5dd490d1bfc38c69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main worker slot (function) for the sharer thread (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="ShareThread sharer worker thread">MainWindow::share_thread</a>).  <a href="classpycross_1_1gui_1_1_main_window.html#aacead2e77dc9e2ea5dd490d1bfc38c69">More...</a><br /></td></tr>
 <tr class="separator:aacead2e77dc9e2ea5dd490d1bfc38c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5380,6 +5383,49 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Slot fires when the sharer (<a class="el" href="classpycross_1_1gui_1_1_main_window.html#a7d4afad49bc23080412f422b2bd97979" title="ShareThread sharer worker thread">MainWindow::share_thread</a>) has completed its operation. </p>
+
+</div>
+</div>
+<a id="afaf1d1f5362f53edbf65e96fc0e04baf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaf1d1f5362f53edbf65e96fc0e04baf">&#9670;&nbsp;</a></span>on_share_no_user()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pycross.gui.MainWindow.on_share_no_user </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>cloud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>username</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Slot fires when the sharer detects that there is no current username assigned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cloud</td><td><code><a class="el" href="classpycross_1_1utils_1_1onlineservices_1_1_cloudstorage.html" title="Interface for the Kloudless cloud storage API.">utils::onlineservices::Cloudstorage</a></code> pointer to the cloud object </td></tr>
+    <tr><td class="paramname">username</td><td><code>list</code> created / found username [OUT] - empty list must be passed! </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

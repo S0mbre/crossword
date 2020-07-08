@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['yan_5fdaily_5freq_3133',['YAN_DAILY_REQ',['../namespacepycross_1_1utils_1_1globalvars.html#ac511021b8dacc3618bf943795598d14d',1,'pycross::utils::globalvars']]],
-  ['yan_5fdict_5fhttp_3134',['YAN_DICT_HTTP',['../namespacepycross_1_1utils_1_1globalvars.html#a1f92f3503c9ebb5cdb715113e621632c',1,'pycross::utils::globalvars']]],
-  ['yan_5fdict_5fkey_3135',['YAN_DICT_KEY',['../namespacepycross_1_1utils_1_1globalvars.html#ad533520c17b297ff2701c45b1680d724',1,'pycross::utils::globalvars']]]
+  ['yan_5fdaily_5freq_3137',['YAN_DAILY_REQ',['../namespacepycross_1_1utils_1_1globalvars.html#ac511021b8dacc3618bf943795598d14d',1,'pycross::utils::globalvars']]],
+  ['yan_5fdict_5fhttp_3138',['YAN_DICT_HTTP',['../namespacepycross_1_1utils_1_1globalvars.html#a1f92f3503c9ebb5cdb715113e621632c',1,'pycross::utils::globalvars']]],
+  ['yan_5fdict_5fkey_3139',['YAN_DICT_KEY',['../namespacepycross_1_1utils_1_1globalvars.html#ad533520c17b297ff2701c45b1680d724',1,'pycross::utils::globalvars']]]
 ];

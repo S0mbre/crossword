@@ -2299,6 +2299,8 @@ class WordDBManager(QtWidgets.QMainWindow):
             self.download_dic(self.dics_model.itemFromIndex(index), False)
         else:
             self.tvDicPreview.hide()
+            for r in range(self.dics_model.rowCount()):
+                self.dics_model.item(r, 1).setData(None, QtCore.Qt.UserRole + 1)
 
     def show_dic_content(self, filepath):
         tvDicPreview_model = QtGui.QStandardItemModel()

@@ -505,14 +505,15 @@ class HunspellImport:
     def list_hunspell(self, stopcheck=None):
         readme = f"{HUNSPELL_REPO}/readme.md"
         dics = []
-        res = requests.get(readme, allow_redirects=True, timeout=self.timeout_, proxies=self.proxies_)
-        if not res: 
-            return []
-        if stopcheck and stopcheck(): 
-            return []
-        res = res.text        
-        regex = re.compile(r'(\(dictionaries/[\w]+\))(\s*\|\s*)([\w\s]+)(\s*\|\s*)(\[.*?\])(\(.*?\))', re.I)
         try:
+            res = requests.get(readme, allow_redirects=True, timeout=self.timeout_, proxies=self.proxies_)
+            if not res: 
+                return []
+            if stopcheck and stopcheck(): 
+                return []
+            res = res.text        
+            regex = re.compile(r'(\(dictionaries/[\w]+\))(\s*\|\s*)([\w\s]+)(\s*\|\s*)(\[.*?\])(\(.*?\))', re.I)
+        
             for match in regex.finditer(res):
                 if stopcheck and stopcheck(): break
                 entry = {}
@@ -525,7 +526,7 @@ class HunspellImport:
                     entry['license'] = entry['license'][1:-1]
                 entry['license_url'] = f"{HUNSPELL_REPO}/{match[6][1:-1]}"
                 dics.append(entry)
-        except Exception:
+        except:
             return []
         return dics
 

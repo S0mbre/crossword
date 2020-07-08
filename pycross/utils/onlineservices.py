@@ -401,7 +401,7 @@ class Cloudstorage:
         new_folder = self._create_folder(rootname)
         if new_folder:
             self._rootid = new_folder[1]
-            self.settings['root_folder'] = '' if new_folder[0] == Cloudstorage.ROOTNAME else new_folder[0]
+            self.settings['sharing']['root_folder'] = '' if new_folder[0] == Cloudstorage.ROOTNAME else new_folder[0]
         else:
             self._error(_("Unable to create/access folder '{}'!").format(rootname))
 
@@ -522,7 +522,7 @@ class Cloudstorage:
             res = [None, False]
             if self.on_apikey_required:
                 self.on_apikey_required(res)
-                while res[0] is None: time.sleep(100)
+                while res[0] is None: time.sleep(50)
             else:
                 res = UserInput(label=_('Enter your API key'), textmode='password')
             ## `str` the stored API key
@@ -537,7 +537,7 @@ class Cloudstorage:
         res = [None, False]
         if self.on_bearer_required:
             self.on_bearer_required(res)
-            while res[0] is None: time.sleep(100)
+            while res[0] is None: time.sleep(50)
         else:
             # TODO: authorize via browser
             res = UserInput(label=_('Enter your Bearer token'), textmode='password')

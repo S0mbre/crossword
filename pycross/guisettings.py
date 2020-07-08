@@ -8,7 +8,7 @@
 from PyQt5 import QtGui, QtCore, QtWidgets
 import json, os, gzip
 
-from utils.globalvars import *
+from utils.globalvars import SETTINGS_FILE, MAX_RESULTS, ENCODING
 
 # ******************************************************************************** #
 
@@ -177,15 +177,24 @@ class CWSettings:
                 vals.append(f"{k}: {l}" if l else k)
             return sorted(vals)
 
-        if not os.path.isfile(filepath): return None
+        if not os.path.isfile(filepath): 
+            print(f"File '{filepath}' is unavailable!")
+            return None
         with gzip.open(filepath, 'rt', encoding=ENCODING) as fsettings:
             try:
                 content = fsettings.read()
                 d = json.loads(content)
-            except:
+            except Exception as err:
+                print(err)
                 return None
-            if get_dic_str(d) == get_dic_str(CWSettings.settings):
+            keys_default = get_dic_str(CWSettings.settings)
+            keys_file = get_dic_str(d)
+            if keys_default == keys_file:
                 return d
+            else:
+                print("Keys don't match!")
+                #print(f"DEFAULT = {keys_default}")
+                #print(f"FILE = {keys_file}")
         return None
 
     ## Dumps the current app settings into a settings file.
@@ -212,5 +221,5 @@ class CWSettings:
     def load_from_file(filepath=SETTINGS_FILE):
         d = CWSettings.validate_file(filepath)
         if not d:
-            raise Exception(_("File '{}' is unavailable or has an invalid format!").format(filepath))
+            raise Exception("File '{}' is unavailable or has an invalid format!".format(filepath))
         CWSettings.settings.update(d)

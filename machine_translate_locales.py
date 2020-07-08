@@ -12,7 +12,7 @@ from multiprocessing import Pool
 
 LOCALEDIR = os.path.join(os.path.dirname(__file__), 'pycross', 'locale')
 SRC_LANG = 'en'
-EXCLUDED_LANGS = ('en', 'ru', 'fr')
+EXCLUDED_LANGS = ('en', 'ru')
 # ***************************************************************** #
 
 def translate_pot(src_file, lang):

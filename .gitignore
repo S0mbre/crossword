@@ -18,4 +18,3 @@ pycross/settings.pxjson
 */nohup.out
 pycross/plugins/*
 !pycross/plugins/__init__.py
-pycross/doc/manual/chm/*.chw

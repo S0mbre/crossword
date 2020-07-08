@@ -7,6 +7,7 @@
 from PyQt5 import QtGui, QtCore, QtWidgets, QtPrintSupport, QtSvg
 from subprocess import Popen
 import os, json, re, threading, math, traceback, webbrowser, copy
+import time as ttime
 
 from utils.globalvars import *
 from utils.utils import *
@@ -63,10 +64,13 @@ class ShareThread(QThreadStump):
     sig_prepare_url = QtCore.pyqtSignal(str)
     ## `QtCore.pyqtSignal` Clipboard copy signal
     sig_clipboard_write = QtCore.pyqtSignal(str)
+    ## `QtCore.pyqtSignal` Clipboard copy signal
+    sig_no_user = QtCore.pyqtSignal('PyQt_PyObject', list)
 
     ## Initializes signals binding them to callbacks passed to constructor
     def __init__(self, on_progress=None, on_upload=None, on_clipboard_write=None,
-                 on_apikey_required=None, on_bearer_required=None, on_prepare_url=None,
+                 on_apikey_required=None, on_bearer_required=None, 
+                 on_no_user=None, on_prepare_url=None,
                  on_start=None, on_finish=None, on_run=None, on_error=None):
         super().__init__(on_start=on_start, on_finish=on_finish, on_run=on_run, on_error=on_error)
         if on_progress: self.sig_progress.connect(on_progress)
@@ -74,6 +78,7 @@ class ShareThread(QThreadStump):
         if on_clipboard_write: self.sig_clipboard_write.connect(on_clipboard_write)
         if on_apikey_required: self.sig_apikey_required.connect(on_apikey_required)
         if on_bearer_required: self.sig_bearer_required.connect(on_bearer_required)
+        if on_no_user: self.sig_no_user.connect(on_no_user)
         if on_prepare_url: self.sig_prepare_url.connect(on_prepare_url)
 
 # ******************************************************************************** #
@@ -117,7 +122,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.share_thread = ShareThread(on_progress=self.on_share_progress,
             on_upload=self.on_share_upload, on_clipboard_write=self.on_share_clipboard_write,
             on_apikey_required=self.on_share_apikey_required, on_bearer_required=self.on_share_bearer_required,
-            on_prepare_url=self.on_share_prepare_url,
+            on_no_user=self.on_share_no_user, on_prepare_url=self.on_share_prepare_url,
             on_start=self.on_share_start, on_finish=self.on_share_finish, on_run=self.on_share_run,
             on_error=self.on_share_error)
 
@@ -1610,6 +1615,37 @@ class MainWindow(QtWidgets.QMainWindow):
         finally:
             self.share_thread.unlock()
 
+    ## Slot fires when the sharer detects that there is no current username assigned.
+    # @param cloud `utils::onlineservices::Cloudstorage` pointer to the cloud object
+    # @param username `list` created / found username [OUT] - empty list must be passed!
+    @pluggable('general')
+    @QtCore.pyqtSlot('PyQt_PyObject', list)
+    def on_share_no_user(self, cloud, username):
+        reply = MsgBox(_("You don't have a registered user name for uploading and sharing files.\n"
+        "Would you like to set a new user name yourself (YES) or let {} assign the name for you (NO)?").format(APP_NAME),
+        None, _('Create new user'), 'ask')
+        if reply != 'yes': 
+            username = []
+            return
+        # ask for new user name
+        while username == [-1] or not username:
+            res = UserInput(parent=self, title=_('Create new user'), label=_('Enter user name:'))
+            if not res[1]:
+                MsgBox(_("{} will generate a new user name automatically").format(APP_NAME), self, _('Create new user'))
+                username = list('auto')
+                return
+            if cloud._user_exists(res[0]):
+                reply2 = MsgBox(_("Username {} is already occupied!\nUser another name (YES) or create name for you (NO)?").format(res[0]),
+                                self, _('Create new user'), 'warn', ['yes', 'no'])
+                if reply2 == 'yes':
+                    continue
+                else:
+                    username = []
+                    return
+            else:
+                username = list(res[0])
+                return
+
     ## Main worker slot (function) for the sharer thread (MainWindow::share_thread).
     @pluggable('general')
     @QtCore.pyqtSlot()
@@ -1664,6 +1700,9 @@ class MainWindow(QtWidgets.QMainWindow):
             try:
                 self.share_thread.lock()
                 self.create_cloud(self.share_thread)
+                if not self.sharer: 
+                    self.share_thread.sig_progress.emit(100, _('Finished'))
+                    return
             except:
                 self.share_thread.unlock()
                 traceback.print_exc(limit=None)
@@ -1717,36 +1756,21 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param thread `QtCore.QThread` the sharer thread (ShareThread)
     @pluggable('general')
     def create_cloud(self, thread):
-        cloud = Cloudstorage(CWSettings.settings, auto_create_user=False,
-                on_user_exist=lambda _: False, on_update_users=None,
-                on_error=lambda err: thread.sig_error.emit(thread, err) if thread else None,
-                show_errors=thread is None,
-                on_apikey_required=lambda res: thread.sig_apikey_required.emit(res) if thread else None,
-                on_bearer_required=lambda res: thread.sig_bearer_required.emit(res) if thread else None,
-                timeout=(CWSettings.settings['common']['web']['req_timeout'] * 1000) or None)
-
+        cloud = None
+        try:
+            cloud = Cloudstorage(CWSettings.settings, auto_create_user=False,
+                    on_user_exist=lambda _: False, on_update_users=None,
+                    on_error=lambda err: thread.sig_error.emit(thread, err) if thread else None,
+                    show_errors=thread is None,
+                    on_apikey_required=lambda res: thread.sig_apikey_required.emit(res) if thread else None,
+                    on_bearer_required=lambda res: thread.sig_bearer_required.emit(res) if thread else None,
+                    timeout=(CWSettings.settings['common']['web']['req_timeout'] * 1000) or None)
+        except:
+            return
+        
+        if not cloud: return
         username = CWSettings.settings['sharing']['user'] or None
-        if not username:
-            reply = MsgBox(_("You don't have a registered user name for uploading and sharing files.\n"
-            "Would you like to set a new user name yourself (YES) or let {} assign the name for you (NO)?").format(APP_NAME),
-            None, _('Create new user'), 'ask')
-            if reply == 'yes':
-                # ask for new user name
-                while not username:
-                    res = UserInput(parent=self, title=_('Create new user'), label=_('Enter user name:'))
-                    if not res[1]:
-                        MsgBox(_("{} will generate a new user name automatically").format(APP_NAME), self, _('Create new user'))
-                        break
-                    if cloud._user_exists(res[0]):
-                        reply2 = MsgBox(_("Username {} is already occupied!\nUser another name (YES) or create name for you (NO)?").format(res[0]),
-                                        self, _('Create new user'), 'warn', ['yes', 'no'])
-                        if reply2 == 'yes':
-                            continue
-                        else:
-                            break
-                    else:
-                        username = res[0]
-                        break
+        
         # create / find user
         cloud.on_user_exist = lambda username: True
         cloud._find_or_create_user(username)
@@ -3108,7 +3132,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.share_thread = ShareThread(on_progress=self.on_share_progress,
             on_upload=self.on_share_upload, on_clipboard_write=self.on_share_clipboard_write,
             on_apikey_required=self.on_share_apikey_required, on_bearer_required=self.on_share_bearer_required,
-            on_prepare_url=self.on_share_prepare_url,
+            on_no_user=self.on_share_no_user, on_prepare_url=self.on_share_prepare_url,
             on_start=self.on_share_start, on_finish=self.on_share_finish, on_run=self.on_share_run,
             on_error=self.on_share_error)
         self.share_thread.start()
@@ -3679,6 +3703,8 @@ class MainWindow(QtWidgets.QMainWindow):
         old_settings_str = json.dumps(CWSettings.settings, sort_keys=True)
         # apply settings only if they are different from current
         if settings_str == old_settings_str: return
+
+        #print(settings_str)
 
         def do_(op):
             CWSettings.settings = settings
