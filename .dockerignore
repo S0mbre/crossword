@@ -10,5 +10,6 @@ pycross/assets/*.txt
 */autosaved.xpf
 mynotes.txt
 *.xpf
+*.bat
 **/.vscode
 **/nohup.out
