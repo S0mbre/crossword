@@ -3,8 +3,10 @@
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.utils
-# This package is a general container for utility functions and classes used
-# across the entire application. The utilities include file operations, OS and system
+# @brief General container for utility functions and classes used
+# across the entire application. 
+# 
+# The utilities include file operations, OS and system
 # queries, multithreading and some Qt GUI methods.
 import sys, os, subprocess, traceback, uuid
 import tempfile, platform, re, json, shutil, inspect, builtins

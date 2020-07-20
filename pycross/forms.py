@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package pycross.forms
-# Classes for all the GUI app's forms except the main window.
+# @brief Classes for all the GUI app's forms except the main window.
 from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport)
 import os, copy, json
 import numpy as np
@@ -233,7 +233,7 @@ class ComboboxDelegate(QtWidgets.QStyledItemDelegate):
 # *****          ProgressbarDelegate
 # ******************************************************************************** #
 
-## Delegate class for table and tree-like widgets implementing an in-cell progress bar
+## Delegate class for table and tree-like widgets implementing an in-cell progress bar.
 class ProgressbarDelegate(QtWidgets.QStyledItemDelegate):
 
     def paint(self, painter: QtGui.QPainter, option: QtWidgets.QStyleOptionViewItem,
@@ -1906,56 +1906,89 @@ class ParamValueEditor(BasicDialog):
 ## @brief Manager for the inbuilt SQLite word source database.
 # Lets the user download and import Hunspell dictionaries for any language,
 # with flexible part-of-speech / blacklisting / replacement settings.
+# Language dictionaries (basically, word lists) available for download are retrieved
+# from the unofficial [Hunspell repository on Github](https://github.com/wooorm/dictionaries).
+# These dictionaries can be downloaded and installed locally as SQLite databases, which
+# in turn can be used by the application as word sources to generate crossword.
+# Installed dictionaries are stored as *.db files in pycross/assets/dic (one *.db file
+# for each installed language). See pycross::dbapi for details on the DB structure.
+# The Word DB Manager provides the user with a convenient GUI to investigate the
+# available and installed dictionaries, install / uninstall them, and manually edit the
+# installed databases (add / remove and change entries). Most operations are performed
+# in a multithreaded way, without blocking the GUI window, and can be interrupted by
+# the user at any moment.
 class WordDBManager(QtWidgets.QMainWindow):
 
+    ## `QtCore.pyqtSignal` signal to notify if dictionary installation can be started.
     sigEnableInstall = QtCore.pyqtSignal(bool)
+    ## `list` list of localized part pf speech names
     pos_list = [_('Noun'), _('Verb'), _('Adverb'), _('Adjective'),
                 _('Participle'), _('Pronoun'), _('Interjection'), _('Conjuction'),
                 _('Preposition'), _('Proposition'), _('Miscellaneous / other'), _('None')]
 
+    ## @param settings `dict` pointer to the app global settings dictionary (`utils::guisettings::CWSettings::settings`)
+    # @param parent `QtWidgets.QWidget` parent widget
+    # @param flags `QtCore.Qt.WindowFlags` [Qt window flags](https://doc.qt.io/qt-5/qt.html#WindowType-enum)
     def __init__(self, settings, parent=None, flags=QtCore.Qt.WindowFlags()):
         super().__init__(parent, flags)
+        ## `gui::MainWindow` the app main window
         self.mainwindow = getattr(parent, 'mainwindow', None)
         self.setWindowIcon(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"))
         self.setWindowTitle(_('Database Manager'))
+        ## `QtGui.QStandardItemModel` underlying model for the dictionary collection 
+        # populated from the Hunspell repo (in Tab 1)
         self.dics_model = None
+        ## `dict` stored data for dictionaries retrieved from the Hunspell repo
         self.dics = {}
+        ## `utils::QThreadStump` dedicated thread to populate dictionaries from the Hunspell repo
         self.dics_model_thread = QThreadStump(on_start=self.on_repopulate_dic_model_start,
             on_finish=self.on_repopulate_dic_model_finish,
             on_run=self.on_repopulate_dic_model_run_fromserver)
+        ## `dbapi::HunspellImport` HunspellImport object to import dictionaries from Hunspell
         self.hunspellmgr = HunspellImport(settings)
+        ## `list` list of dictionaries selected for installation
         self.to_install = []
+        ## `QtGui.QMovie` animation shown during lengthy operations
         self.loadermovie = QtGui.QMovie(f"{ICONFOLDER}/ajax-loader.gif")
+        ## `QtGui.QStandardItemModel` underlying model for the current database (in Tab 2)
         self.db_model = None
+        ## `utils::QThreadStump` dedicated thread to refresh the database table (in Tab 2)
         self.db_model_thread = QThreadStump(on_start=self.on_repopulate_db_model_start,
             on_finish=self.on_repopulate_db_model_finish,
             on_run=self.on_repopulate_db_model_run,
             on_error=self.on_repopulate_db_model_error)
+        ## `set` stored indices of the DB model to reflect user changes that must be committed
         self.db_model_changed_indices = set()
 
         self.initUI()
         self.sigEnableInstall.emit(False)
 
-    ## Implemented method to make the window half the screen size.
+    ## Overridden method to make the window half the screen size.
     def sizeHint(self):
         desktopRect = QtWidgets.QApplication.primaryScreen().geometry()
         return desktopRect.size() * 0.5
 
+    ## OnShow event handler: populates the dictionaries when the window is displayed.
     def showEvent(self, event):
         super().showEvent(event)
         self.on_act_refreshdics(True)
 
+    ## OnClose event handler: stops all running operations, writes changes to the DB.
     def closeEvent(self, event):
         self.stop_operations()
         self.check_commit_db(False, True)
         super().closeEvent(event)
 
+    ## OnResize event handler: adjusts the Preview control size.
     def resizeEvent(self, event):
         if  self.tvDicPreview.isVisible():
             self.tvDicPreview.setColumnWidth(0, self.tvDicPreview.width() - self.tvDicPreview.verticalHeader().sectionSize(0))
 
+    ## Creates and initializes the GUI.
     def initUI(self):
+        ## `QtWidgets.QVBoxLayout` central widget layout
         self.lo_main = QtWidgets.QVBoxLayout()
+        ## `QtWidgets.QTabWidget` tab container for the 2 tabs in the window
         self.tabw = QtWidgets.QTabWidget()
         self.tabw.setUpdatesEnabled(False)
         self.createTabs()
@@ -1973,18 +2006,21 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.statusbar_pbar.setVisible(False)
         self.statusbar.addPermanentWidget(self.statusbar_pbar)
         self.setStatusBar(self.statusbar)
-
+        ## `QtWidgets.QWidget` window central widget (root container for other controls)
         self.wcentral = QtWidgets.QWidget()
         self.wcentral.setLayout(self.lo_main)
         self.setCentralWidget(self.wcentral)
 
+    ## Creates the 2 tabs of the window.
     def createTabs(self):
         # tab 1: installed dictionaries table
+        ## `QtWidgets.QWidget` Tab 1 widget
         w1 = QtWidgets.QWidget()
+        ## `QtWidgets.QVBoxLayout` Tab 1 layout
         lo_w1 = QtWidgets.QVBoxLayout()
-
+        ## `QtWidgets.QToolBar` Tab 1 toolbar
         self.tb_dicactions = QtWidgets.QToolBar()
-
+        ## `QtWidgets.QAction` action to repopulate dictionaries list
         self.act_refreshdics = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Refresh'))
         self.act_refreshdics.setToolTip(_('Refresh dictionary information'))
         self.act_refreshdics.triggered.connect(self.on_act_refreshdics)
@@ -1992,19 +2028,20 @@ class WordDBManager(QtWidgets.QMainWindow):
 
         self.tb_dicactions.addSeparator()
 
+        ## `QtWidgets.QAction` action to install selected (checked) and uninstall unchecked dictionaries
         self.act_installdics = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), _('Install'))
         self.act_installdics.setToolTip(_('Execute the pending installation / uninstallation operations'))
         self.act_installdics.setEnabled(False)
         self.act_installdics.triggered.connect(self.on_act_installdics)
         self.sigEnableInstall.connect(self.act_installdics.setEnabled)
-
+        ## `QtWidgets.QAction` action to stop the current operation (refresh / installation)
         self.act_stopdics = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), _('Stop'))
         self.act_stopdics.setToolTip(_('Stop operation'))
         self.act_stopdics.setCheckable(True)
         self.act_stopdics.triggered.connect(self.on_act_stopdics)
 
         self.tb_dicactions.addSeparator()
-
+        ## `QtWidgets.QAction` action to see the raw content of the selected dictionary
         self.act_peekdic = self.tb_dicactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/binoculars.png"), _('Peek'))
         self.act_peekdic.setToolTip(_('See the raw content of the selected dictionary'))
         self.act_peekdic.setCheckable(True)
@@ -2015,24 +2052,24 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.dics_model_thread.started.connect(QtCore.pyqtSlot()(lambda: self.act_refreshdics.setEnabled(False)))
         self.dics_model_thread.finished.connect(QtCore.pyqtSlot()(lambda: self.act_refreshdics.setEnabled(True)))
         lo_w1.addWidget(self.tb_dicactions)
-
+        ## `QtWidgets.QSplitter` splitter between dictionaries list and preview
         self.splitter_dics = QtWidgets.QSplitter(QtCore.Qt.Vertical)
         self.splitter_dics.setChildrenCollapsible(True)
-
+        ## `QtWidgets.QTableView` table control to view the dictionaries list
         self.tvDics = QtWidgets.QTableView()
         self.tvDics.setSortingEnabled(True)
         self.tvDics.setWordWrap(True)
         self.tvDics.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.tvDics.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.tvDics.activated.connect(self.on_tvDics_activated)
-
+        ## `QtWidgets.QLabel` GIF control to display the wait animation (for dics list)
         self.l_gif = QtWidgets.QLabel()
         self.l_gif.setMovie(self.loadermovie)
         self.l_gif.hide()
         self.splitter_dics.addWidget(self.l_gif)
         self._default_bgcolor = color_from_stylesheet(self.tvDics.styleSheet(), default='white')
         self.splitter_dics.addWidget(self.tvDics)
-
+        ## `QtWidgets.QTableView` table control to preview the dictionary content (read-only)
         self.tvDicPreview = QtWidgets.QTableView()
         self.tvDicPreview.setSortingEnabled(False)
         self.tvDicPreview.setWordWrap(False)
@@ -2042,6 +2079,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.tvDicPreview.hide()
 
         self.splitter_dics.addWidget(self.tvDicPreview)
+        ## `QtWidgets.QLabel` GIF control to display the wait animation (for preview)
         self.l_gif2 = QtWidgets.QLabel()
         self.l_gif2.setMovie(self.loadermovie)
         self.l_gif2.hide()
@@ -2052,10 +2090,14 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.tabw.addTab(w1, _('Install'))
 
         # tab 2: DB editor
+        ## `QtWidgets.QWidget` Tab 2 widget
         w2 = QtWidgets.QWidget()
+        ## `QtWidgets.QVBoxLayout` Tab 2 layout
         lo_w2 = QtWidgets.QVBoxLayout()
+        ## `QtWidgets.QFormLayout` Tab 2 top panel layout
         lo_w2top = QtWidgets.QFormLayout()
         lo_w2top.setSpacing(10)
+        ## `QtWidgets.QComboBox` combo box to select the database to view / edit
         self.combo_selectdb = QtWidgets.QComboBox()
         self.combo_selectdb.setEditable(False)
         self.combo_selectdb.setMaximumWidth(250)
@@ -2063,32 +2105,40 @@ class WordDBManager(QtWidgets.QMainWindow):
         lo_w2top.addRow(_('Select database:'), self.combo_selectdb)
         lo_w2.addLayout(lo_w2top)
 
+        ## `QtWidgets.QToolBar` Tab 2 toolbar
         self.tb_dbactions = QtWidgets.QToolBar()
+
+        ## `QtWidgets.QAction` action to display / refresh the current database in the editor
         self.act_refreshdb = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Refresh'))
         self.act_refreshdb.setToolTip(_('Refresh view'))
         self.act_refreshdb.triggered.connect(self.on_act_refreshdb)
+        ## `QtWidgets.QAction` action to stop the current operation (DB view refresh)
         self.act_stopdb = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), _('Stop'))
         self.act_stopdb.setToolTip(_('Stop refreshing'))
         self.act_stopdb.setCheckable(True)
         self.act_stopdb.triggered.connect(self.on_act_stopdb)
         self.tb_dbactions.addSeparator()
+        ## `QtWidgets.QAction` action to add a new word to the DB
         self.act_addwd = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/add.png"), _('Add'))
         self.act_addwd.setToolTip(_('Add new words'))
         self.act_addwd.triggered.connect(self.on_act_addwd)
+        ## `QtWidgets.QAction` action to delete the selected words from the DB
         self.act_delwd = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/multiply.png"), _('Delete'))
         self.act_delwd.setToolTip(_('Delete selected words'))
         self.act_delwd.triggered.connect(self.on_act_delwd)
         self.tb_dbactions.addSeparator()
+        ## `QtWidgets.QAction` action to write the pending changes to the DB
         self.act_commit = self.tb_dbactions.addAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), _('Commit'))
         self.act_commit.setToolTip(_('Save changes to DB'))
         self.act_commit.triggered.connect(self.on_act_commit)
         lo_w2.addWidget(self.tb_dbactions)
 
+        ## `QtWidgets.QLabel` GIF control to display the wait animation (for DB view)
         self.l_gif3 = QtWidgets.QLabel()
         self.l_gif3.setMovie(self.loadermovie)
         self.l_gif3.hide()
         lo_w2.addWidget(self.l_gif3, QtCore.Qt.AlignCenter)
-
+        ## `QtWidgets.QTableView` table control to display / edit the current DB
         self.tvDB = QtWidgets.QTableView()
         self.tvDB.setSortingEnabled(True)
         self.tvDB.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
@@ -2098,6 +2148,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         w2.setLayout(lo_w2)
         self.tabw.addTab(w2, _('Words'))
 
+    ## Creates the context menu for WordDBManager::tvDicPreview.
     def create_tvDicPreview_menu(self):
         @QtCore.pyqtSlot(bool)
         def on_act_selectall(checked):
@@ -2112,12 +2163,19 @@ class WordDBManager(QtWidgets.QMainWindow):
             txt = NEWLINE.join(data_model.itemFromIndex(ind).text() for ind in sel_model.selectedRows())
             clipboard_copy(txt)
 
+        ## `QtWidgets.QMenu` context menu for WordDBManager::tvDicPreview
         self.tvDicPreview_menu = QtWidgets.QMenu(self)
         act_selectall = self.tvDicPreview_menu.addAction(_('Select All'))
         act_selectall.triggered.connect(on_act_selectall)
         act_copy = self.tvDicPreview_menu.addAction(_('Copy'))
         act_copy.triggered.connect(on_act_copy)
 
+    ## Repopulates the list of available dictionaries on Tab 1.
+    # @param refresh_from_server `bool` if `True`, the list will be retrieved
+    # from the Github repo; if `False`, the previously populated data in WordDBManager::dics
+    # will be used
+    # @param stopcheck `callable` callback function that must return `True` to
+    # stop the current operation, or `False` to continue
     def repopulate_dic_model(self, refresh_from_server=True, stopcheck=None):
         if not self.dics or refresh_from_server:
             self.dics = self.hunspellmgr.list_all_dics(stopcheck)
@@ -2171,14 +2229,17 @@ class WordDBManager(QtWidgets.QMainWindow):
             r += 1
             if stopcheck and stopcheck(): break
 
+    ## OnRun callback for WordDBManager::dics_model_thread forcing update from server.
     @QtCore.pyqtSlot()
     def on_repopulate_dic_model_run_fromserver(self):
         self.repopulate_dic_model(True, self.act_stopdics.isChecked)
 
+    ## OnRun callback for WordDBManager::dics_model_thread forcing update from stored data.
     @QtCore.pyqtSlot()
     def on_repopulate_dic_model_run_local(self):
         self.repopulate_dic_model(False, self.act_stopdics.isChecked)
 
+    ## OnStart callback for WordDBManager::dics_model_thread called when the thread starts.
     @QtCore.pyqtSlot()
     def on_repopulate_dic_model_start(self):
         self.act_stopdics.setChecked(False)
@@ -2194,6 +2255,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.l_gif.show()
         self.loadermovie.start()
 
+    ## OnFinish callback for WordDBManager::dics_model_thread called when the thread completes.
     @QtCore.pyqtSlot()
     def on_repopulate_dic_model_finish(self):
         self.loadermovie.stop()
@@ -2208,12 +2270,14 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_stopdics.setChecked(False)
         self.act_stopdics.setEnabled(False)
 
+    ## OnTriggered handler for WordDBManager::act_refreshdics: starts WordDBManager::dics_model_thread.
     @QtCore.pyqtSlot(bool)
     def on_act_refreshdics(self, checked):
         if not self.dics_model_thread.isRunning():
             self.dics_model_thread.on_run = self.on_repopulate_dic_model_run_fromserver
             self.dics_model_thread.start()
 
+    ## OnChanged handler for WordDBManager::act_refreshdics: adjusts the Enabled property of some actions.
     @QtCore.pyqtSlot()
     def on_act_refreshdics_changed(self):
         enabled = self.act_refreshdics.isEnabled()
@@ -2222,15 +2286,19 @@ class WordDBManager(QtWidgets.QMainWindow):
         if not enabled:
             self.act_installdics.setEnabled(False)
 
+    ## OnTriggered handler for WordDBManager::act_installdics: installs / uninstalls checked / unchecked dictionaries.
     @QtCore.pyqtSlot(bool)
     def on_act_installdics(self, checked):
         self.execute_pending_dics()
 
+    ## OnTriggered handler for WordDBManager::act_stopdics: interrupts the current operations
+    # waiting on the spawned threads to terminate.
     @QtCore.pyqtSlot(bool)
     def on_act_stopdics(self, checked):
         if self.act_stopdics.isEnabled() and checked:
             self.stop_operations()
 
+    ## OnTriggered handler for WordDBManager::act_addwd: adds a new word to the current DB.
     @QtCore.pyqtSlot(bool)
     def on_act_addwd(self, checked):
 
@@ -2279,6 +2347,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.tvDB.setItemDelegateForColumn(1, ComboboxDelegate())
         self.update_db_actions()
 
+    ## OnTriggered handler for WordDBManager::act_delwd: deletes the selected words from the current DB.
     @QtCore.pyqtSlot(bool)
     def on_act_delwd(self, checked):
         self.db_model.itemChanged.disconnect()
@@ -2291,6 +2360,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.db_model.itemChanged.connect(self.db_model_item_changed)
         self.update_db_actions()
 
+    ## OnTriggered handler for WordDBManager::act_peekdic: shows or hides the dictionary preview table.
     @QtCore.pyqtSlot(bool)
     def on_act_peekdic(self, checked):
         if checked:
@@ -2302,6 +2372,8 @@ class WordDBManager(QtWidgets.QMainWindow):
             for r in range(self.dics_model.rowCount()):
                 self.dics_model.item(r, 1).setData(None, QtCore.Qt.UserRole + 1)
 
+    ## Shows the raw content of the given dictionary the in the preview panel.
+    # @param filepath `str` full path to dictionary file (*.dic)
     def show_dic_content(self, filepath):
         tvDicPreview_model = QtGui.QStandardItemModel()
         with open(filepath, 'r', encoding=ENCODING) as fin:
@@ -2314,6 +2386,12 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.tvDicPreview.show()
         self.tvDicPreview.setColumnWidth(0, self.tvDicPreview.width() - self.tvDicPreview.verticalHeader().sectionSize(0))
 
+    ## OnStart callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _preview_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
     @QtCore.pyqtSlot(int, str, str, str)
     def on_start_download_preview(self, id, url, lang, filepath):
         self.tvDicPreview.hide()
@@ -2321,6 +2399,13 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.loadermovie.start()
         self.dic_preview_item = self.locate_dic_item(lang)
 
+    ## OnStopCheck callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _preview_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @returns `bool` `True` to stop / `False` to continue download
     @QtCore.pyqtSlot(int, str, str, str)
     def stopcheck_download_preview(self, id, url, lang, filepath):
         if not self.act_peekdic.isChecked():
@@ -2334,18 +2419,39 @@ class WordDBManager(QtWidgets.QMainWindow):
             return True
         return False
 
+    ## OnGetFilesize callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _preview_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @param total_bytes `int` length of file to be downloaded (in bytes)
     @QtCore.pyqtSlot(int, str, str, str, int)
     def on_getfilesize_download_preview(self, id, url, lang, filepath, total_bytes):
         items = getattr(self, 'dic_preview_item', None)
         if items:
             items[1].setData((0, total_bytes, None), QtCore.Qt.UserRole + 1)
 
+    ## OnProgress callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _preview_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @param bytes_written `int` number of bytes downloaded so far
+    # @param total_bytes `int` length of file to be downloaded (in bytes)
     @QtCore.pyqtSlot(int, str, str, str, int, int)
     def on_run_download_preview(self, id, url, lang, filepath, bytes_written, total_bytes):
         items = getattr(self, 'dic_preview_item', None)
         if items:
             items[1].setData((bytes_written, total_bytes, None), QtCore.Qt.UserRole + 1)
 
+    ## OnComplete callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _preview_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
     @QtCore.pyqtSlot(int, str, str, str)
     def on_complete_download_preview(self, id, url, lang, filepath):
         self.loadermovie.stop()
@@ -2359,6 +2465,13 @@ class WordDBManager(QtWidgets.QMainWindow):
             self.mainwindow.garbage.append(filepath)
             self.show_dic_content(filepath)
 
+    ## OnError callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _preview_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @param message `str` the error message
     @QtCore.pyqtSlot(int, str, str, str, str)
     def on_error_download_preview(self, id, url, lang, filepath, message):
         self.loadermovie.stop()
@@ -2370,19 +2483,23 @@ class WordDBManager(QtWidgets.QMainWindow):
         #self.tvDics.show()
         MsgBox(_("Error downloading '{}' from '{}'").format(lang, url), self, _('Error'), 'error')
 
+    ## Downloads the dictionary for the given language from the Hunspell repo
+    # and stores it locally as pycross/assets/dic/<LANG>.dic.
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param overwrite `bool` whether to overwrite the existing file
     def download_dic(self, lang, overwrite=False):
 
         if isinstance(lang, str):
             item = self.locate_dic_item(lang)
-            if not item: return ''
+            if not item: return
             item = item[1]
         elif isinstance(lang, QtGui.QStandardItem):
             item = self.dics_model.item(lang.row(), 1)
         else:
-            return ''
+            return
 
         dic = self.dics_model.item(item.row(), 0).data(QtCore.Qt.UserRole + 1)
-        if not dic: return ''
+        if not dic: return
 
         self.tvDics.setItemDelegateForColumn(1, ProgressbarDelegate())
         self.hunspellmgr.download_hunspell(dic['dic_url'], dic['lang'], overwrite,
@@ -2393,6 +2510,10 @@ class WordDBManager(QtWidgets.QMainWindow):
                                            self.on_complete_download_preview,
                                            self.on_error_download_preview)
 
+    ## Refreshes and shows the DB for a given dictionary in the DB view.
+    # @param dic_lang `dict` dictionary info (see dbapi::HunspellImport::list_hunspell())
+    # @param stopcheck `callable` callback function that must return `True` to
+    # stop the current operation, or `False` to continue
     def show_db(self, dic_lang, stopcheck=None):
         if not dic_lang: return
         db = Sqlitedb()
@@ -2416,6 +2537,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         finally:
             db.disconnect()
 
+    ## Updates the Enabled property of the DB actions in the toolbar.
     def update_db_actions(self):
         refresh_running = self.db_model_thread.isRunning()
         self.act_stopdb.setEnabled(refresh_running)
@@ -2423,26 +2545,33 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_delwd.setEnabled(not refresh_running and not self.db_model is None and self.tvDB.currentIndex().isValid())
         self.act_commit.setEnabled(len(self.db_model_changed_indices) > 0)
 
+    ## Fires when a DB is selected in WordDBManager::combo_selectdb.
     @QtCore.pyqtSlot(int)
     def on_combo_selectdb(self, index):
         self.on_act_refreshdb(True)
 
+    ## OnTriggered handler for WordDBManager::act_refreshdb: display / refresh the current database in the editor.
     @QtCore.pyqtSlot(bool)
     def on_act_refreshdb(self, checked):
         self.on_act_stopdb(True)
         self.check_commit_db(False, True)
         self.db_model_thread.start()
 
+    ## OnTriggered handler for WordDBManager::act_stopdb: stops the current operation (DB view refresh).
     @QtCore.pyqtSlot(bool)
     def on_act_stopdb(self, checked):
         if checked and self.db_model_thread.isRunning():
             self.db_model_thread.wait()
             self.update_db_actions()
 
+    ## OnTriggered handler for WordDBManager::act_commit: writes the pending changes to the DB.
     @QtCore.pyqtSlot(bool)
     def on_act_commit(self, checked):
         self.commit_db()
 
+    ## Displays a user confirmation dialog to write the pending changes to the current DB.
+    # @param refresh `bool` whether to refresh the DB view after writing the changes
+    # @param ignore_errors `bool` whether to ignore any errors when writing the changes
     def check_commit_db(self, refresh=True, ignore_errors=False):
         if len(self.db_model_changed_indices) == 0: return
         reply = MsgBox(_("You have unsaved changes in database '{}'. Commit them?").format(self.combo_selectdb.currentText()),
@@ -2450,6 +2579,9 @@ class WordDBManager(QtWidgets.QMainWindow):
         if reply == 'yes':
             self.commit_db(refresh, ignore_errors)
 
+    ## Commits (writes) the pending changes to the currently edited DB.
+    # @param refresh `bool` whether to refresh the DB view after writing the changes
+    # @param ignore_errors `bool` whether to ignore any errors when writing the changes 
     def commit_db(self, refresh=True, ignore_errors=False):
         if len(self.db_model_changed_indices) == 0: 
             return
@@ -2526,6 +2658,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         else:
             self.update_db_actions()
 
+    ## OnStart callback for WordDBManager::db_model_thread called when the thread starts.
     @QtCore.pyqtSlot()
     def on_repopulate_db_model_start(self):
         self.db_model_changed_indices.clear()
@@ -2538,6 +2671,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.loadermovie.start()
         self.update_db_actions()
 
+    ## OnRun callback for WordDBManager::db_model_thread: repopulates the DB model.
     @QtCore.pyqtSlot()
     def on_repopulate_db_model_run(self):
         self.show_db(self.combo_selectdb.currentData(), self.act_stopdb.isChecked)
@@ -2558,6 +2692,9 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_stopdb.setChecked(False)
         self.update_db_actions()
 
+    ## OnError callback for WordDBManager::db_model_thread: shows error and interrupts repopulation.
+    # @param thread `QtCore.QThread` pointer to thread causing the error
+    # @param message `str` the error message
     @QtCore.pyqtSlot(QtCore.QThread, str)
     def on_repopulate_db_model_error(self, thread, message):
         MsgBox(message, self, _('Error'), 'error')
@@ -2567,6 +2704,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.act_stopdb.setChecked(False)
         self.on_act_stopdb(True)
 
+    ## Stops all operations running in child threads.
     def stop_operations(self):
 
         self.act_stopdics.setChecked(True)
@@ -2605,6 +2743,9 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.statusbar_pbar.setVisible(False)
         self.on_act_refreshdics(True)
 
+    ## Formats the given row in the dictionaries view changing the background color
+    # according to the dictionary status.
+    # @param r `int` number of row to apply formatting to
     def reformat_dic_model_row(self, r):
         txt = self.dics_model.item(r, 1).text()
         for c in range(self.dics_model.columnCount()):
@@ -2623,6 +2764,10 @@ class WordDBManager(QtWidgets.QMainWindow):
             else:
                 item.setBackground(QtGui.QBrush(self._default_bgcolor))
 
+    ## Returns the item in WordDBManager::dics_model corresponding to a given language.
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @returns `QtGui.QStandardItem` | `None` found item in WordDBManager::dics_model or `None`
+    # if not found
     def locate_dic_item(self, lang):
         for r in range(self.dics_model.rowCount()):
             item = self.dics_model.item(r, 0)
@@ -2631,16 +2776,37 @@ class WordDBManager(QtWidgets.QMainWindow):
                 return (item, self.dics_model.item(r, 1))
         return None
 
+    ## OnStart callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _installation_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
     @QtCore.pyqtSlot(int, str, str, str)
     def on_download_dics_start(self, id, url, lang, filepath):
         #print(f"Downloading '{lang}' from {url}")
         pass
 
+    ## OnGetFilesize callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _installation_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @param total_bytes `int` length of file to be downloaded (in bytes)
     @QtCore.pyqtSlot(int, str, str, str, int)
     def on_download_dics_getfilesize(self, id, url, lang, filepath, total_bytes):
         if self.to_install:
             self.to_install[id][0].setData((0, total_bytes, None), QtCore.Qt.UserRole + 1)
 
+    ## OnProgress callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _installation_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @param bytes_written `int` number of bytes downloaded so far
+    # @param total_bytes `int` length of file to be downloaded (in bytes)
     @QtCore.pyqtSlot(int, str, str, str, int, int)
     def on_download_dics_run(self, id, url, lang, filepath, bytes_written, total_bytes):
         if self.act_stopdics.isChecked():
@@ -2649,6 +2815,12 @@ class WordDBManager(QtWidgets.QMainWindow):
         if self.to_install:
             self.to_install[id][0].setData((bytes_written, total_bytes, None), QtCore.Qt.UserRole + 1)
 
+    ## OnComplete callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _installation_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
     @QtCore.pyqtSlot(int, str, str, str)
     def on_download_dics_finish(self, id, url, lang, filepath):
         self.statusbar_pbar.setValue(self.statusbar_pbar.value() + 1)
@@ -2670,6 +2842,13 @@ class WordDBManager(QtWidgets.QMainWindow):
             # launch installation
             self.do_install_dics()
 
+    ## OnError callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _installation_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @param message `str` the error message
     @QtCore.pyqtSlot(int, str, str, str, str)
     def on_download_dics_error(self, id, url, lang, filepath, message):
         self.statusbar_pbar.setValue(self.statusbar_pbar.value() + 1)
@@ -2690,6 +2869,13 @@ class WordDBManager(QtWidgets.QMainWindow):
             # launch installation
             self.do_install_dics()
 
+    ## OnStopCheck callback for dbapi::HunspellImport::download_hunspell() 
+    # downloading dictionaries for _installation_.
+    # @param id `int` ID of task in the thread pool
+    # @param url `str` URL of the downloaded file (dictionary)
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @returns `bool` `True` to stop / `False` to continue download
     @QtCore.pyqtSlot(int, str, str, str)
     def on_download_dics_stopcheck(self, id, url, lang, filepath):
         if self.act_stopdics.isChecked():
@@ -2700,6 +2886,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             return True
         return False
 
+    ## Installs the checked and uninstalls the unchecked dictionaries.
     def execute_pending_dics(self):
         # find pending items
         items = self.dics_model.findItems(_('Pending'), column=1)
@@ -2778,6 +2965,10 @@ class WordDBManager(QtWidgets.QMainWindow):
             on_complete=self.on_download_dics_finish,
             on_error=self.on_download_dics_error)
 
+    ## OnStart callback for dbapi::HunspellImport::add_all_from_hunspell().
+    # @param id `int` ID of task in the thread pool
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
     @QtCore.pyqtSlot(int, str, str)
     def on_install_dics_start(self, id, lang, filepath):
         if self.to_install:
@@ -2786,6 +2977,11 @@ class WordDBManager(QtWidgets.QMainWindow):
             self.reformat_dic_model_row(item.row())
             #self.tvDics.sortByColumn(1, 1)
 
+    ## OnCommit callback for dbapi::HunspellImport::add_all_from_hunspell().
+    # @param id `int` ID of task in the thread pool
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @param records `int` number of records (entries) written so far
     @QtCore.pyqtSlot(int, str, str, int)
     def on_install_dics_commit(self, id, lang, filepath, records):
         if self.act_stopdics.isChecked():
@@ -2798,6 +2994,11 @@ class WordDBManager(QtWidgets.QMainWindow):
             self.reformat_dic_model_row(item.row())
             #self.tvDics.sortByColumn(1, 1)
 
+    ## OnFinish callback for dbapi::HunspellImport::add_all_from_hunspell().
+    # @param id `int` ID of task in the thread pool
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @param records `int` number of records (entries) written to the DB
     @QtCore.pyqtSlot(int, str, str, int)
     def on_install_dics_finish(self, id, lang, filepath, records):
         self.statusbar_pbar.setValue(self.statusbar_pbar.value() + 1)
@@ -2824,6 +3025,11 @@ class WordDBManager(QtWidgets.QMainWindow):
             # refresh dics
             self.stop_operations()
 
+    ## OnError callback for dbapi::HunspellImport::add_all_from_hunspell().
+    # @param id `int` ID of task in the thread pool
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @param message `str` error message
     @QtCore.pyqtSlot(int, str, str, str)
     def on_install_dics_error(self, id, lang, filepath, message):
         self.statusbar_pbar.setValue(self.statusbar_pbar.value() + 1)
@@ -2840,6 +3046,11 @@ class WordDBManager(QtWidgets.QMainWindow):
         if self.act_stopdics.isChecked() or not self.hunspellmgr.pool_running():
             self.stop_operations()
 
+    ## OnStopCheck callback for dbapi::HunspellImport::add_all_from_hunspell().
+    # @param id `int` ID of task in the thread pool
+    # @param lang `str` short language name for the dictionary (e.g. 'en', 'de')
+    # @param filepath `str` full path to the downloaded dictionary (saved in pycross/assets/dic by default)
+    # @returns `bool` `True` to stop / `False` to continue
     @QtCore.pyqtSlot(int, str, str)
     def on_install_dics_stopcheck(self, id, lang, filepath):
         if self.act_stopdics.isChecked():
@@ -2850,6 +3061,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             return True
         return False
 
+    ## Installs the downloaded dictionaries marked for installation.
     def do_install_dics(self):
         if self.hunspellmgr.pool_running(): return
 
@@ -2922,17 +3134,23 @@ class WordDBManager(QtWidgets.QMainWindow):
             on_finish=self.on_install_dics_finish,
             on_error=self.on_install_dics_error)
 
+    ## OnItemChanged handler for WordDBManager::db_model: 
+    # adds the changed item to WordDBManager::db_model_changed_indices.
     @QtCore.pyqtSlot('QStandardItem*')
     def db_model_item_changed(self, item):
         item.setBackground(QtGui.QBrush(QtCore.Qt.yellow))
         self.db_model_changed_indices.add(item.index())
         self.update_db_actions()
 
+    ## OnModelReset handler for WordDBManager::db_model: 
+    # clears WordDBManager::db_model_changed_indices.
     @QtCore.pyqtSlot()
     def db_model_reset(self):
         self.db_model_changed_indices.clear()
         self.update_db_actions()
 
+    ## OnItemChanged handler for WordDBManager::dics_model: 
+    # sets the item internal / displayed data according to the user changes.
     @QtCore.pyqtSlot('QStandardItem*')
     def dics_model_item_changed(self, item):
         c = item.column()
@@ -2992,17 +3210,26 @@ class WordDBManager(QtWidgets.QMainWindow):
                 item.setData(defvalue, QtCore.Qt.UserRole + 1)
             self.dics_model.itemChanged.connect(self.dics_model_item_changed)
 
+    ## Gets the index of a part of speech in utils::globalvars::POS given its short name.
+    # @param pos_short `str` short POS name, e.g. 'n' (noun)
+    # @returns `int` index of the POS in utils::globalvars::POS (default = 0)
     def _get_pos_index(self, pos_short):
         for i in range(len(POS)):
             if POS[i][0] == pos_short: return i
         return 0
 
+    ## Gets the short name of a part of speech given its full name.
+    # @param pos_desc `str` full POS name, e.g. 'Noun'
+    # @returns `str` | `None` short POS name, e.g. 'n' (`None` if not found in in utils::globalvars::POS)
     def _get_pos_short(self, pos_desc):
         for pos_short, pos_long in POS:
             if pos_long == pos_desc: 
                 return pos_short
         return None
 
+    ## OnItemActivated handler for WordDBManager::tvDics:
+    # brings up editor dialogs to edit specific values like Replacements or Excluded POS.
+    # @param index `QtCore.QModelIndex` the index of the activated (e.g. double-clicked) item
     @QtCore.pyqtSlot(QtCore.QModelIndex)
     def on_tvDics_activated(self, index):
         c = index.column()
@@ -3067,6 +3294,7 @@ class WordDBManager(QtWidgets.QMainWindow):
             data = dia_editor.list_values(1)
             item.setText(json.dumps(data) if data else '')
 
+    ## OnSelectionChanged handler for WordDBManager::tvDics.
     @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
     def on_tvDics_selectionchanged(self, current, previous):
         self.act_peekdic.setEnabled(current.isValid())
@@ -3075,10 +3303,12 @@ class WordDBManager(QtWidgets.QMainWindow):
             self.tvDicPreview.hide()
             self.l_gif2.hide()
 
+    ## OnSelectionChanged handler for WordDBManager::tvDb.
     @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
     def on_tvDb_selectionchanged(self, current, previous):
         self.update_db_actions()
 
+    ## OnCustomContextMenuRequested handler for WordDBManager::tvDicPreview.
     @QtCore.pyqtSlot(QtCore.QPoint)
     def on_tvDicPreview_contextmenu(self, pos):
         self.tvDicPreview_menu.exec(self.tvDicPreview.mapToGlobal(pos))

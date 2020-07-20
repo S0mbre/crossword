@@ -2,6 +2,7 @@
 	{ "s": "QSCINTILLA", "p": [2] },
 	{ "s": "QT5", "p": [3] },
 	{ "s": "QUALITY", "p": [14, 3] },
+	{ "s": "QUERIES", "p": [29] },
 	{ "s": "QUIT", "p": [7] },
 	{ "s": "QUITS", "p": [7] }
 ]

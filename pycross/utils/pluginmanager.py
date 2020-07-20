@@ -3,9 +3,9 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.pluginmanager
-# User plugin platform to extend pyCrossword functionality based on [Yapsy](http://yapsy.sourceforge.net/).
-# @see [example 1](http://yapsy.sourceforge.net/FilteredPluginManager.html),
-# [example 2](https://stackoverflow.com/questions/5333128/yapsy-minimal-example)
+# @brief User plugin manager for custom plugins based on [Yapsy](http://yapsy.sourceforge.net/).
+# 
+# @see utils::pluginbase
 from yapsy.PluginManager import PluginManager
 from PyQt5 import QtWidgets
 from .globalvars import *

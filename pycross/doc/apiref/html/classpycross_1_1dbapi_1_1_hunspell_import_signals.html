@@ -77,6 +77,9 @@ $(function() {
 <div class="title">pycross.dbapi.HunspellImportSignals Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Container for Qt signals used by <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html" title="A single import task to import words from a DIC file (downloaded from the Hunspell repo) to an SQLite...">HunspellImportTask</a>.  
+ <a href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.dbapi.HunspellImportSignals:</div>
 <div class="dyncontent">
@@ -87,17 +90,24 @@ Inheritance diagram for pycross.dbapi.HunspellImportSignals:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:adbf6b11c8961a0618dea78cb910a592d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#adbf6b11c8961a0618dea78cb910a592d">sigStart</a> = QtCore.pyqtSignal(int, str, str)</td></tr>
+<tr class="memdesc:adbf6b11c8961a0618dea78cb910a592d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted before the import starts.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#adbf6b11c8961a0618dea78cb910a592d">More...</a><br /></td></tr>
 <tr class="separator:adbf6b11c8961a0618dea78cb910a592d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2954bdd27a194bfc0aae31e00549ac79"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#a2954bdd27a194bfc0aae31e00549ac79">sigWordWritten</a> = QtCore.pyqtSignal(int, str, str, str, str, int)</td></tr>
+<tr class="memdesc:a2954bdd27a194bfc0aae31e00549ac79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a next word is written to the database.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#a2954bdd27a194bfc0aae31e00549ac79">More...</a><br /></td></tr>
 <tr class="separator:a2954bdd27a194bfc0aae31e00549ac79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f252e1a78520cd062e6d1527c4363b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#a34f252e1a78520cd062e6d1527c4363b">sigCommit</a> = QtCore.pyqtSignal(int, str, str, int)</td></tr>
+<tr class="memdesc:a34f252e1a78520cd062e6d1527c4363b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a commit is made to the database (by default, after each 1000 words).  <a href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#a34f252e1a78520cd062e6d1527c4363b">More...</a><br /></td></tr>
 <tr class="separator:a34f252e1a78520cd062e6d1527c4363b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbddd9aae638daa09dbaedfe2028a67d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#adbddd9aae638daa09dbaedfe2028a67d">sigComplete</a> = QtCore.pyqtSignal(int, str, str, int)</td></tr>
+<tr class="memdesc:adbddd9aae638daa09dbaedfe2028a67d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when the import task completes.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#adbddd9aae638daa09dbaedfe2028a67d">More...</a><br /></td></tr>
 <tr class="separator:adbddd9aae638daa09dbaedfe2028a67d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae90b72eaca84a8b27d355c60190a37e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#ae90b72eaca84a8b27d355c60190a37e5">sigError</a> = QtCore.pyqtSignal(int, str, str, str)</td></tr>
+<tr class="memdesc:ae90b72eaca84a8b27d355c60190a37e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when an exception occurs during the import operation.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#ae90b72eaca84a8b27d355c60190a37e5">More...</a><br /></td></tr>
 <tr class="separator:ae90b72eaca84a8b27d355c60190a37e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Container for Qt signals used by <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html" title="A single import task to import words from a DIC file (downloaded from the Hunspell repo) to an SQLite...">HunspellImportTask</a>. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a34f252e1a78520cd062e6d1527c4363b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34f252e1a78520cd062e6d1527c4363b">&#9670;&nbsp;</a></span>sigCommit</h2>
 
@@ -117,6 +127,17 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Emitted when a commit is made to the database (by default, after each 1000 words). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td><code>int</code> ID of task in the thread pool </td></tr>
+    <tr><td class="paramname">lang</td><td><code>str</code> short language name for the dictionary (e.g. 'en', 'de') </td></tr>
+    <tr><td class="paramname">filepath</td><td><code>str</code> full path to the downloaded dictionary (saved in pycross/assets/dic by default) </td></tr>
+    <tr><td class="paramname">count</td><td><code>int</code> number of entries (words) written so far </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -140,6 +161,17 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Emitted when the import task completes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td><code>int</code> ID of task in the thread pool </td></tr>
+    <tr><td class="paramname">lang</td><td><code>str</code> short language name for the dictionary (e.g. 'en', 'de') </td></tr>
+    <tr><td class="paramname">filepath</td><td><code>str</code> full path to the downloaded dictionary (saved in pycross/assets/dic by default) </td></tr>
+    <tr><td class="paramname">count</td><td><code>int</code> total number of entries (words) written </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ae90b72eaca84a8b27d355c60190a37e5"></a>
@@ -161,6 +193,17 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Emitted when an exception occurs during the import operation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td><code>int</code> ID of task in the thread pool </td></tr>
+    <tr><td class="paramname">lang</td><td><code>str</code> short language name for the dictionary (e.g. 'en', 'de') </td></tr>
+    <tr><td class="paramname">filepath</td><td><code>str</code> full path to the downloaded dictionary (saved in pycross/assets/dic by default) </td></tr>
+    <tr><td class="paramname">message</td><td><code>str</code> the error message </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -184,6 +227,16 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Emitted before the import starts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td><code>int</code> ID of task in the thread pool </td></tr>
+    <tr><td class="paramname">lang</td><td><code>str</code> short language name for the dictionary (e.g. 'en', 'de') </td></tr>
+    <tr><td class="paramname">filepath</td><td><code>str</code> full path to the downloaded dictionary (saved in pycross/assets/dic by default) </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a2954bdd27a194bfc0aae31e00549ac79"></a>
@@ -205,6 +258,19 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Emitted when a next word is written to the database. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td><code>int</code> ID of task in the thread pool </td></tr>
+    <tr><td class="paramname">lang</td><td><code>str</code> short language name for the dictionary (e.g. 'en', 'de') </td></tr>
+    <tr><td class="paramname">filepath</td><td><code>str</code> full path to the downloaded dictionary (saved in pycross/assets/dic by default) </td></tr>
+    <tr><td class="paramname">word</td><td><code>str</code> the word string, e.g. 'father' </td></tr>
+    <tr><td class="paramname">pos</td><td><code>str</code> the word's part of speech, e.g. 'n' (=noun) </td></tr>
+    <tr><td class="paramname">count</td><td><code>int</code> number of entries (words) written so far </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

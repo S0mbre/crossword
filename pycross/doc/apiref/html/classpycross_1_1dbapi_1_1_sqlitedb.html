@@ -106,8 +106,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af102df64affbafd6d61529fa48b88b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the default table structure in the DB.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#af102df64affbafd6d61529fa48b88b4e">More...</a><br /></td></tr>
 <tr class="separator:af102df64affbafd6d61529fa48b88b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39e3bced057b11a654cd36efaa7d3684"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a39e3bced057b11a654cd36efaa7d3684">get_words</a> (self)</td></tr>
+<tr class="memdesc:a39e3bced057b11a654cd36efaa7d3684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves all words from the database.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a39e3bced057b11a654cd36efaa7d3684">More...</a><br /></td></tr>
 <tr class="separator:a39e3bced057b11a654cd36efaa7d3684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1431977258252fdb4f710f709bda9c9b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html#a1431977258252fdb4f710f709bda9c9b">get_pos</a> (self)</td></tr>
+<tr class="memdesc:a1431977258252fdb4f710f709bda9c9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves all parts of speech from the database.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#a1431977258252fdb4f710f709bda9c9b">More...</a><br /></td></tr>
 <tr class="separator:a1431977258252fdb4f710f709bda9c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -331,6 +333,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Retrieves all parts of speech from the database. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> list of POS as tuples: (ID, POS SHORT NAME, POS FULL NAME) </dd></dl>
+
 </div>
 </div>
 <a id="a39e3bced057b11a654cd36efaa7d3684"></a>
@@ -348,6 +353,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Retrieves all words from the database. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> list of retrieved words as tuples: (ID, WORD, POS SHORT NAME, POS FULL NAME) </dd></dl>
 
 </div>
 </div>

@@ -44,7 +44,6 @@ You must have the following applications / packages installed in your system:
 * Python packages: 
 	- pip
 	- PyQt5>=5.14
-	- PyQtWebEngine>=5.14
 	- QScintilla>=2.11
 	- jedi>=0.16
 	- yapsy>=1.12
@@ -85,7 +84,7 @@ Choose one of the two installation options.
   **Linux / Mac**
   ```bash
   cd myprojects
-  virtualenv pycross
+  venv pycross
   cd pycross
   . ./bin/activate
   ```
@@ -93,7 +92,7 @@ Choose one of the two installation options.
   **Windows**
   ```bash
   cd myprojects
-  virtualenv pycross
+  venv pycross
   cd pycross
   scripts\activate.bat
   ```
@@ -116,7 +115,23 @@ Choose one of the two installation options.
   ```
 
 ## Usage
-Run `pycross.sh` on Linux/Mac (remember to do `chmod +x pycross.sh` first) or `pycross.bat` on Windows to launch the pycrossword UI app.
+Run `pycross` on Linux/Mac or `pycross.bat` on Windows to launch the pycrossword UI app. This should work both with and without the Python virtual environment.
+
+To launch the app manually, run 
+```
+python cwordg.py [optional command-line params]
+```
+from your pycross/ directory.
+
+The command-line parameters that can be passed to cwordg.py are as follows:
+* `-s` or `--settings` + `"path to *.pxjson settings file"`: load app from a preset (configuration file)
+* `-o` or `--open` + `"path to crossword file"`: open a crossword file (\*.xpf or \*.ipuz)
+* `-n` or `--new`: create a new crossword on startup (see creation parameters below)
+* `--cols`: number of columns in the new crossword (default = 15)
+* `--rows`: number of rows in the new crossword (default = 15)
+* `--pattern`: pattern number for the new crossword (one of 1...6, default = 1)
+* `-e` or `--empty`: don't open or create a crossword
+* `-a` or `--addsrc` + `"{source data}"`: add a word source (see forms.py/WordSrcDialog for description of the source data structure)
 
 Alternativaly, you can register the pycrossword file associations at initial run (go to *Settings* > *Common* > *Register file associations*). After that, you can launch the app by double-clicking crossword files (like \*.xpf or \*.ipuz) or settings files (\*.pxjson)
 

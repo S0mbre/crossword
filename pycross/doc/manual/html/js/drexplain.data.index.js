@@ -2,12 +2,12 @@ DR_EXPLAIN.namespace( 'DR_EXPLAIN.data_index' );
 DR_EXPLAIN.data_index = {
 
 	// index
-	DREX_NODE_KEYWORDS: [],
-	DREX_NODE_KEYWORDS_START: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], //length:= drex.nodes_count,
-	DREX_NODE_KEYWORDS_END: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], //length:= drex.nodes_count,
+	DREX_NODE_KEYWORDS: [1,2,3,4,5,6,7,10,11,8,9,12,13,14,15,16,17,18,19,9,8,20,21,22,100,23,24,101,102,103,25,26,27,28,29,30,31,32,33,104,26,27,28,34,89,90,91,92,93,94,35,36,37,35,105,38,39,40,41,42,80,107,73,74,75,51,108,20,81,20,80,82,83,84,36,37,41,38,42,43,44,45,46,47,48,80,44,61,16,99,106,26,27,66,67,68,69,70,71,72,51,76,77,78,79,108,51,108,95,49,50,51,52,53,54,44,55,96,56,85,86,87,88,44,97,57,58,59,60,61,16,98,62,63,64,65],
+	DREX_NODE_KEYWORDS_START: [0,0,7,9,11,21,22,27,37,51,59,61,65,67,67,67,67,67,67,67,67,69,71,72,73,74,78,85,87,90,100,106,108,108,108,108,108,108,108,108,108,108,108,108,108,108,108,108,108,112,119,124,129,136,136,136,136,136,136,136,136,136], //length:= drex.nodes_count,
+	DREX_NODE_KEYWORDS_END: [0,7,9,11,21,22,27,37,51,59,61,65,67,67,67,67,67,67,67,67,69,71,72,73,74,78,85,87,90,100,106,108,108,108,108,108,108,108,108,108,108,108,108,108,108,108,108,108,112,119,124,129,136,136,136,136,136,136,136,136,136,136], //length:= drex.nodes_count,
 
-	DREX_KEYWORD_NAMES: ["<NEW KEYWORD>"],
-	DREX_KEYWORD_CHILD_START: [1],
-	DREX_KEYWORD_CHILD_END: [1]
+	DREX_KEYWORD_NAMES: ["<НОВОЕ КЛЮЧЕВОЕ СЛОВО>","installation","install","installing","git","pypi","virtualenv","venv","overview","gui","usage","launch","main window","toolbar","menu bar","language box","clues panel","crossword grid","scale slide","status bar","main actions","create","new crossword","pattern file","grid pattern","import","xpf","ipuz","json","saving","loading","reloading","export","save as","image","pdf","print","printing","layout","margins","greyscale","preview","edit","navigation","grid","unicode","clear","delete letter","delete word","suggestions","suggest word","word sources","block","unblock","surrounding","cell types","edit mode","duplicate","clone","mirror","reflect","clues","online dictionary","google","word definition","word meaning","copyright","publication","meta information","author","publisher","date","editor","stats","statistics","chart","database","SQLite","text file","word list","Edit","File","View","Generate","Help","Add row","Delete row","Add column","Delete column","jpg","bmp","tif","tiff","png","svg","Suggest word","Edit","Duplicate","Lookup word","Edit clue","New","Open","Save","Reload","Save As","Print","Info","Show stats","Word sources"],
+	DREX_KEYWORD_CHILD_START: [1,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,89,89,89,89,89,89,89,89,89,89,89,89,89,89,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,100,106,108,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109],
+	DREX_KEYWORD_CHILD_END: [80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,89,89,89,89,89,89,89,89,89,89,89,89,89,89,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,100,106,108,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109,109]
 	
 };

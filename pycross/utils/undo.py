@@ -3,7 +3,8 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.undo
-# Undo / Redo history support using a simple list-based approach.
+# @brief Undo / Redo history support using a simple list-based approach.
+# 
 # Borrowed from [https://github.com/derdon/hodgepodge/blob/master/python/undoredomanager.py]
 from .globalvars import *
 # ******************************************************************************** #

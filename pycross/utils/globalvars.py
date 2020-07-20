@@ -3,8 +3,9 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.globalvars
-# Most application globals are placed here for convenience. They are commonly
-# used in more than one module. Also some are used by external scripts like
+# @brief Most application globals are placed here for convenience. 
+# 
+# They are commonly used in more than one module. Also some are used by external scripts like
 # setup.py (that generateds the PyPI-ready distro). There are also a number of
 # common functions here, but most are still defined in ::utils.
 import os, gettext
@@ -25,7 +26,7 @@ DEBUGGING = False
 ## current app version
 # @warning This constant is used by setup.py to generate version-specific
 # Python distributions; so it must be checked and modified regularly!
-APP_VERSION = '0.4.0.1'
+APP_VERSION = '0.4.0.2'
 
 ## app name
 # @warning This constant is used by setup.py to generate version-specific

@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.update
-# Support for application updates from the PyPi or Github servers.
+# @brief Support for application updates from the PyPi or Github servers.
 import os, sys, subprocess, json, traceback, platform
 from datetime import datetime
 from pathlib import Path, PurePath

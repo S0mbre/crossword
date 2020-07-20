@@ -78,57 +78,70 @@ $(function() {
 <div class="title">pycross.dbapi.HunspellImport Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Main interface to handle downloads and imports of Hunspell dictionaries as SQLite databases.  
+ <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8e56b70048571edc72afcce83afe2e8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#ac8e56b70048571edc72afcce83afe2e8">__init__</a> (self, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#ae7d0c1ec90c9bb7aec45aefdc138befd">settings</a>, dbmanager=None, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a5765e0fce7fc554db048186eae832076">dicfolder</a>=DICFOLDER)</td></tr>
 <tr class="separator:ac8e56b70048571edc72afcce83afe2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bce7ac800e4eed4771931324308c198"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a0bce7ac800e4eed4771931324308c198">pool_running</a> (self)</td></tr>
+<tr class="memdesc:a0bce7ac800e4eed4771931324308c198"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if there are tasks running in the pool.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a0bce7ac800e4eed4771931324308c198">More...</a><br /></td></tr>
 <tr class="separator:a0bce7ac800e4eed4771931324308c198"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0557b4ccce0c80d47b57e5b4c8f770b7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a0557b4ccce0c80d47b57e5b4c8f770b7">pool_threadcount</a> (self)</td></tr>
+<tr class="memdesc:a0557b4ccce0c80d47b57e5b4c8f770b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of active threads (tasks) in the pool.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a0557b4ccce0c80d47b57e5b4c8f770b7">More...</a><br /></td></tr>
 <tr class="separator:a0557b4ccce0c80d47b57e5b4c8f770b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe183c4685d423803fa40bb993147f68"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#abe183c4685d423803fa40bb993147f68">pool_wait</a> (self)</td></tr>
+<tr class="memdesc:abe183c4685d423803fa40bb993147f68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits for all the tasks in the pool to complete.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#abe183c4685d423803fa40bb993147f68">More...</a><br /></td></tr>
 <tr class="separator:abe183c4685d423803fa40bb993147f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac390307aa3fa767aec6251819dab95c8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#ac390307aa3fa767aec6251819dab95c8">get_installed_info</a> (self, lang)</td></tr>
+<tr class="memdesc:ac390307aa3fa767aec6251819dab95c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the information about an existing SQLite database: full path and number of words.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#ac390307aa3fa767aec6251819dab95c8">More...</a><br /></td></tr>
 <tr class="separator:ac390307aa3fa767aec6251819dab95c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28688fadfd8f05d150ecc3d50b5e5979"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a28688fadfd8f05d150ecc3d50b5e5979">list_hunspell</a> (self, stopcheck=None)</td></tr>
 <tr class="memdesc:a28688fadfd8f05d150ecc3d50b5e5979"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the list of Hunspell dictionaries available for download from the <a href="https://github.com/wooorm/dictionaries/">public Github repo</a>.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a28688fadfd8f05d150ecc3d50b5e5979">More...</a><br /></td></tr>
 <tr class="separator:a28688fadfd8f05d150ecc3d50b5e5979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54fa22e09199c33e5d695aa16f153c7c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a54fa22e09199c33e5d695aa16f153c7c">list_all_dics</a> (self, stopcheck=None)</td></tr>
+<tr class="memdesc:a54fa22e09199c33e5d695aa16f153c7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the information for all available Hunspell dictionaries.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a54fa22e09199c33e5d695aa16f153c7c">More...</a><br /></td></tr>
 <tr class="separator:a54fa22e09199c33e5d695aa16f153c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ba99955dd79433426940ff94cc7fd89"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a7ba99955dd79433426940ff94cc7fd89">download_hunspell</a> (self, url, lang, overwrite=True, on_stopcheck=None, on_start=None, on_getfilesize=None, on_progress=None, on_complete=None, on_error=None, wait=False)</td></tr>
+<tr class="memdesc:a7ba99955dd79433426940ff94cc7fd89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Downloads a single Hunspell dictionary (*.dic file) and stores it locally.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a7ba99955dd79433426940ff94cc7fd89">More...</a><br /></td></tr>
 <tr class="separator:a7ba99955dd79433426940ff94cc7fd89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf9c04614d918758b25adc4cb51ed38e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#abf9c04614d918758b25adc4cb51ed38e">download_hunspell_all</a> (self, dics, on_stopcheck=None, on_start=None, on_getfilesize=None, on_progress=None, on_complete=None, on_error=None)</td></tr>
+<tr class="memdesc:abf9c04614d918758b25adc4cb51ed38e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Downloads all the Hunspell dictionaries specified by the user.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#abf9c04614d918758b25adc4cb51ed38e">More...</a><br /></td></tr>
 <tr class="separator:abf9c04614d918758b25adc4cb51ed38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc4fe2652b241ff5f1c8c84437de6b1f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#abc4fe2652b241ff5f1c8c84437de6b1f">standard_posrules</a> (self, lang)</td></tr>
-<tr class="memdesc:abc4fe2652b241ff5f1c8c84437de6b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default Hunspell-formatted metadata patterns for the three common parts of speech (noun, verb, adjective).  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#abc4fe2652b241ff5f1c8c84437de6b1f">More...</a><br /></td></tr>
-<tr class="separator:abc4fe2652b241ff5f1c8c84437de6b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb075e6c3a673a3a5c9293ceb6e933d1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#afb075e6c3a673a3a5c9293ceb6e933d1">standard_replacements</a> (self, lang)</td></tr>
-<tr class="memdesc:afb075e6c3a673a3a5c9293ceb6e933d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default replacement rules for a language to use in Hunspell imports.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#afb075e6c3a673a3a5c9293ceb6e933d1">More...</a><br /></td></tr>
-<tr class="separator:afb075e6c3a673a3a5c9293ceb6e933d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a045c552d88ddadc457af3f42e80a915f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a045c552d88ddadc457af3f42e80a915f">add_from_hunspell</a> (self, lang, posrules=None, posrules_strict=False, posdelim='/', lcase=True, replacements=None, remove_hyphens=True, filter_out=None, rows=None, commit_each=1000, on_checkstop=None, on_start=None, on_word=None, on_commit=None, on_finish=None, on_error=None, wait=False)</td></tr>
 <tr class="memdesc:a045c552d88ddadc457af3f42e80a915f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports a Hunspell-formatted dictionary file into the DB.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a045c552d88ddadc457af3f42e80a915f">More...</a><br /></td></tr>
 <tr class="separator:a045c552d88ddadc457af3f42e80a915f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b5ad3e74b633222605c74993a52c734"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a2b5ad3e74b633222605c74993a52c734">add_all_from_hunspell</a> (self, dics, posrules=None, posrules_strict=True, posdelim='/', lcase=True, replacements=None, remove_hyphens=True, filter_out=None, rows=None, commit_each=1000, on_stopcheck=None, on_start=None, on_word=None, on_commit=None, on_finish=None, on_error=None)</td></tr>
-<tr class="memdesc:a2b5ad3e74b633222605c74993a52c734"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports all Hunspell-formatted dictionaries found in 'assets/dic'.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a2b5ad3e74b633222605c74993a52c734">More...</a><br /></td></tr>
+<tr class="memdesc:a2b5ad3e74b633222605c74993a52c734"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports all Hunspell dictionaries specified by the user.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a2b5ad3e74b633222605c74993a52c734">More...</a><br /></td></tr>
 <tr class="separator:a2b5ad3e74b633222605c74993a52c734"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ae7d0c1ec90c9bb7aec45aefdc138befd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#ae7d0c1ec90c9bb7aec45aefdc138befd">settings</a></td></tr>
+<tr class="memdesc:ae7d0c1ec90c9bb7aec45aefdc138befd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dict</code> pointer to the app global settings (<code>utils::guisettings::CWSettings::settings</code>)  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#ae7d0c1ec90c9bb7aec45aefdc138befd">More...</a><br /></td></tr>
 <tr class="separator:ae7d0c1ec90c9bb7aec45aefdc138befd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cdabc9732b05e776ec66b462f5d9b85"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a8cdabc9732b05e776ec66b462f5d9b85">db</a></td></tr>
+<tr class="memdesc:a8cdabc9732b05e776ec66b462f5d9b85"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html" title="SQLite database driver implementation wrapping the standard Python sqlite3 methods.">Sqlitedb</a></code> | <code>None</code> DB object  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a8cdabc9732b05e776ec66b462f5d9b85">More...</a><br /></td></tr>
 <tr class="separator:a8cdabc9732b05e776ec66b462f5d9b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5765e0fce7fc554db048186eae832076"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a5765e0fce7fc554db048186eae832076">dicfolder</a></td></tr>
+<tr class="memdesc:a5765e0fce7fc554db048186eae832076"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> root path of the dictionaries, default = <a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a843cd6cec1c94850cf6e24e33714c2a9" title="path to the &#39;dic&#39; folder containing word sources">utils::globalvars::DICFOLDER</a>  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a5765e0fce7fc554db048186eae832076">More...</a><br /></td></tr>
 <tr class="separator:a5765e0fce7fc554db048186eae832076"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2aa9cab3621ff3b3cdc31cfa07c96450"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a2aa9cab3621ff3b3cdc31cfa07c96450">pool</a></td></tr>
+<tr class="memdesc:a2aa9cab3621ff3b3cdc31cfa07c96450"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>QtCore.QThreadPool</code> thread pool to run tasks  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a2aa9cab3621ff3b3cdc31cfa07c96450">More...</a><br /></td></tr>
 <tr class="separator:a2aa9cab3621ff3b3cdc31cfa07c96450"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66a8b1d5171a5016b8fee1974a8fb970"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a66a8b1d5171a5016b8fee1974a8fb970">timeout_</a></td></tr>
+<tr class="memdesc:a66a8b1d5171a5016b8fee1974a8fb970"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> timeout for HTTP(S) requests (in milliseconds)  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a66a8b1d5171a5016b8fee1974a8fb970">More...</a><br /></td></tr>
 <tr class="separator:a66a8b1d5171a5016b8fee1974a8fb970"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86c1590d1faa637a13a7e3d892e271d2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a86c1590d1faa637a13a7e3d892e271d2">proxies_</a></td></tr>
+<tr class="memdesc:a86c1590d1faa637a13a7e3d892e271d2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dict</code> HTTP(S) proxy server settings  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#a86c1590d1faa637a13a7e3d892e271d2">More...</a><br /></td></tr>
 <tr class="separator:a86c1590d1faa637a13a7e3d892e271d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Main interface to handle downloads and imports of Hunspell dictionaries as SQLite databases. </p>
+<p>Can start download and import tasks both in a synchonous mode (start and wait for completion) and asynchronously (in a thread pool). </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac8e56b70048571edc72afcce83afe2e8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac8e56b70048571edc72afcce83afe2e8">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -166,6 +179,14 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">settings</td><td><code>dict</code> pointer to the app global settings (<code>utils::guisettings::CWSettings::settings</code>) </td></tr>
+    <tr><td class="paramname">dbmanager</td><td><code><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html" title="SQLite database driver implementation wrapping the standard Python sqlite3 methods.">Sqlitedb</a></code> | <code>None</code> DB object (<code>None</code> to create a new one) </td></tr>
+    <tr><td class="paramname">dicfolder</td><td><code>str</code> root path of the dictionaries, default = <a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a843cd6cec1c94850cf6e24e33714c2a9" title="path to the &#39;dic&#39; folder containing word sources">utils::globalvars::DICFOLDER</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -286,15 +307,13 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Imports all Hunspell-formatted dictionaries found in 'assets/dic'. </p>
-<dl class="section warning"><dt>Warning</dt><dd>All imported dictionary files must have the '.dic' extension. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Imports all Hunspell dictionaries specified by the user. </p>
+<p>The import tasks are started asynchronously in the thread pool, each task using HunspelImportTask::signals to signalize its status and check for interruption request. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dics</td><td><code>iterable</code> list of dict containing language info (others found will be skipped). Default = <code>None</code> (import all found dictionaries) </td></tr>
+    <tr><td class="paramname">dics</td><td><code>list</code> list of dict objects each representing a single Hunspell dictionary, its URL, langugage, etc. See <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a28688fadfd8f05d150ecc3d50b5e5979" title="Retrieves the list of Hunspell dictionaries available for download from the public Github repo.">list_hunspell()</a> for dict structure. See other parameters in <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a045c552d88ddadc457af3f42e80a915f" title="Imports a Hunspell-formatted dictionary file into the DB.">add_from_hunspell()</a> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a045c552d88ddadc457af3f42e80a915f" title="Imports a Hunspell-formatted dictionary file into the DB.">add_from_hunspell()</a> </dd></dl>
 
 </div>
 </div>
@@ -421,15 +440,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Imports a Hunspell-formatted dictionary file into the DB. </p>
-<p><a href="https://hunspell.github.io/">Hunspell</a> dictionaries can be downloaded from <a href="https://cgit.freedesktop.org/libreoffice/dictionaries/tree/">LibreOffice</a> or <a href="https://github.com/wooorm/dictionaries">Github</a>. Default dictionaries and prebuilt SQLite databases are found in assets/dic. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lang</td><td><code>str</code> short name of the imported dictionary language, e.g. 'en', 'de' etc. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section warning"><dt>Warning</dt><dd>The file must be in <em>plain text</em> format, with each word on a new line, optionally followed by a slash (see 'posdelim' argument) and meta-data (parts of speech etc.) </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">lang</td><td><code>str</code> short name of the imported dictionary language, e.g. 'en', 'de' etc. </td></tr>
     <tr><td class="paramname">posrules</td><td><code>dict</code> part-of-speech regular expression parsing rules in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;N&#39;</span>: <span class="stringliteral">&#39;regex for nouns&#39;</span>, <span class="stringliteral">&#39;V&#39;</span>: <span class="stringliteral">&#39;regex for verb&#39;</span>, ...} </div>
 </div><!-- fragment --> <pre>
      Possible keys are: 'N' [noun], 'V' [verb], 'ADV' [adverb], 'ADJ' [adjective],
@@ -440,25 +453,25 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramname">posrules_strict</td><td><code>bool</code> if <code>True</code> (default), only the parts of speech present in posrules dict will be imported [all other words will be skipped]. If <code>False</code>, such words will be imported with 'MISC' and 'NONE' POS markers. </td></tr>
     <tr><td class="paramname">posdelim</td><td><code>str</code> delimiter delimiting the word and its part of speech [default = '/'] </td></tr>
     <tr><td class="paramname">lcase</td><td><code>bool</code> if <code>True</code> (default), found words will be imported in lower case; otherwise, the original case will remain </td></tr>
-    <tr><td class="paramname">replacements</td><td><code>dict</code>: character replacement rules in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;char_from&#39;</span>: <span class="stringliteral">&#39;char_to&#39;</span>, ...}</div>
+    <tr><td class="paramname">replacements</td><td><code>dict</code> character replacement rules in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;char_from&#39;</span>: <span class="stringliteral">&#39;char_to&#39;</span>, ...}</div>
 </div><!-- fragment --> Default = <code>None</code> (no replacements) </td></tr>
     <tr><td class="paramname">remove_hyphens</td><td><code>bool</code> if <code>True</code> (default), all hyphens ['-'] will be removed from the words </td></tr>
     <tr><td class="paramname">filter_out</td><td><code>dict</code> regex-based rules to filter out [exclude] words in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;word&#39;</span>: [<span class="stringliteral">&#39;regex1&#39;</span>, <span class="stringliteral">&#39;regex2&#39;</span>, ...], <span class="stringliteral">&#39;pos&#39;</span>: [<span class="stringliteral">&#39;regex1&#39;</span>, <span class="stringliteral">&#39;regex2&#39;</span>, ...]}</div>
 </div><!-- fragment --> These words will not be imported. One of the POS rules can be used to screen off specific parts of speech. Match rules for words will be applied AFTER replacements and in the sequential order of the regex list. Default = <code>None</code> (no filter rules apply). </td></tr>
+    <tr><td class="paramname">rows</td><td><code>2-tuple</code> | <code>None</code> the start and end rows (indices) of the words to import; e.g. (20, 100) means start import from row 20 and end import after row 100. If the second element in the tuple is negative (e.g. -1), only the start row will be considered and the import will go on till the last word in the source DIC file. <code>None</code> means ALL available words. </td></tr>
     <tr><td class="paramname">commit_each</td><td><code>int</code> threshold of insert operations after which the transaction will be committed (default = 1000) </td></tr>
-    <tr><td class="paramname">on_word</td><td><code>callable</code> callback function to be called when a word is imported into the DB. Callback prototype is: <div class="fragment"><div class="line">on_word(lang: str, dicfile: str, word: str, part_of_speech: str, records_committed: int) -&gt; <span class="keywordtype">None</span></div>
-</div><!-- fragment --> </td></tr>
-    <tr><td class="paramname">on_commit</td><td><code>callable</code> callback function to be called when a next portion of records is written to the DB. Callback prototype is: <div class="fragment"><div class="line">on_commit(lang: str, dicfile: str, records_committed: int) -&gt; <span class="keywordtype">None</span></div>
-</div><!-- fragment --> </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>int</code> number of words imported from the dictionary </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a2b5ad3e74b633222605c74993a52c734" title="Imports all Hunspell-formatted dictionaries found in &#39;assets/dic&#39;.">add_all_from_hunspell()</a> </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">on_error</td><td><code>callable</code> callback function to be called when an exception occurs Callback prototype is: <div class="fragment"><div class="line">on_error(lang: str, dicfile: str, error_message: str) -&gt; <span class="keywordtype">None</span></div>
-</div><!-- fragment --> </td></tr>
+    <tr><td class="paramname">on_checkstop</td><td><code>callback</code> callback function called periodically to check for interrupt condition; takes 3 parameters:<ul>
+<li>id <code>int</code> unique ID of this task (in the thread pool)</li>
+<li>lang <code>str</code> short name of the language, e.g. 'en'</li>
+<li>filepath <code>str</code> full path to the source DIC file Must return a Boolean value: <code>True</code> to stop the import task, <code>False</code> to continue </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">on_start</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#adbf6b11c8961a0618dea78cb910a592d" title="Emitted before the import starts.">HunspellImportSignals::sigStart</a> </td></tr>
+    <tr><td class="paramname">on_word</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#a2954bdd27a194bfc0aae31e00549ac79" title="Emitted when a next word is written to the database.">HunspellImportSignals::sigWordWritten</a> </td></tr>
+    <tr><td class="paramname">on_commit</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#a34f252e1a78520cd062e6d1527c4363b" title="Emitted when a commit is made to the database (by default, after each 1000 words).">HunspellImportSignals::sigCommit</a> </td></tr>
+    <tr><td class="paramname">on_finish</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#adbddd9aae638daa09dbaedfe2028a67d" title="Emitted when the import task completes.">HunspellImportSignals::sigComplete</a> </td></tr>
+    <tr><td class="paramname">on_error</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#ae90b72eaca84a8b27d355c60190a37e5" title="Emitted when an exception occurs during the import operation.">HunspellImportSignals::sigError</a> </td></tr>
+    <tr><td class="paramname">wait</td><td><code>bool</code> <code>True</code> to wait for the task to complete; <code>False</code> to start the task asynchronously (without waiting for the result) </td></tr>
   </table>
   </dd>
 </dl>
@@ -545,6 +558,29 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Downloads a single Hunspell dictionary (*.dic file) and stores it locally. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">url</td><td><code>str</code> URL of the DIC file to download (generally, <a href="https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/">https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/</a>&lt;LANG&gt;/index.dic) </td></tr>
+    <tr><td class="paramname">lang</td><td><code>str</code> short name of the language, e.g. 'en' </td></tr>
+    <tr><td class="paramname">overwrite</td><td><code>bool</code> whether to overwrite the existing file (if any) </td></tr>
+    <tr><td class="paramname">on_stopcheck</td><td><code>callback</code> callback function called periodically to check for interrupt condition; takes 4 parameters:<ul>
+<li>id <code>int</code> unique ID of this task (in the thread pool)</li>
+<li>url <code>str</code> URL of the DIC file to download</li>
+<li>lang <code>str</code> short name of the language, e.g. 'en'</li>
+<li>filepath <code>str</code> full path to the downloaded (target) file </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">on_start</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_signals.html#a82160bb55ba23ba629f6809913e1aa26" title="Emitted before the download starts.">HunspellDownloadSignals::sigStart</a> </td></tr>
+    <tr><td class="paramname">on_getfilesize</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_signals.html#a8f893354a2bb886f0dad3510d842d588" title="Emitted when the target file size is received.">HunspellDownloadSignals::sigGetFilesize</a> </td></tr>
+    <tr><td class="paramname">on_progress</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_signals.html#aceb6481274634ca47d85a12d834d2ec0" title="Emitted during the download progress (for each kilobyte dowloaded).">HunspellDownloadSignals::sigProgress</a> </td></tr>
+    <tr><td class="paramname">on_complete</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_signals.html#a0c4ed7d33ef2bc4ff3950bffecb46c40" title="Emitted when the download task completes.">HunspellDownloadSignals::sigComplete</a> </td></tr>
+    <tr><td class="paramname">on_error</td><td><code>callback</code> Qt slot (callback) for <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_signals.html#a93dfd76316fcf1b88c9173ee4fab9e26" title="Emitted when an exception occurs during the download.">HunspellDownloadSignals::sigError</a> </td></tr>
+    <tr><td class="paramname">wait</td><td><code>bool</code> <code>True</code> to wait for the task to complete; <code>False</code> to start the task asynchronously (without waiting for the result) </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="abf9c04614d918758b25adc4cb51ed38e"></a>
@@ -609,6 +645,14 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Downloads all the Hunspell dictionaries specified by the user. </p>
+<p>The download tasks are started asynchronously in the thread pool, each task using <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#ac1b07f9a8fc7df54013be821767808f1" title="HunspellDownloadSignals signals emitted by the download task">HunspellDownloadTask::signals</a> to signalize its status and check for interruption request. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dics</td><td><code>list</code> list of dict objects each representing a single Hunspell dictionary, its URL, langugage, etc. See <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a28688fadfd8f05d150ecc3d50b5e5979" title="Retrieves the list of Hunspell dictionaries available for download from the public Github repo.">list_hunspell()</a> for dict structure. See other parameters in <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a7ba99955dd79433426940ff94cc7fd89" title="Downloads a single Hunspell dictionary (*.dic file) and stores it locally.">download_hunspell()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ac390307aa3fa767aec6251819dab95c8"></a>
@@ -637,6 +681,16 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Gets the information about an existing SQLite database: full path and number of words. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lang</td><td><code>str</code> short name of the language, e.g. 'en' </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> info in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;entries&#39;</span>: number_of_entries, <span class="stringliteral">&#39;path&#39;</span>: full_path_to_DB_file} </div>
+</div><!-- fragment --> </dd></dl>
+
 </div>
 </div>
 <a id="a54fa22e09199c33e5d695aa16f153c7c"></a>
@@ -664,6 +718,23 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Retrieves the information for all available Hunspell dictionaries. </p>
+<p>Does everything what <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a28688fadfd8f05d150ecc3d50b5e5979" title="Retrieves the list of Hunspell dictionaries available for download from the public Github repo.">list_hunspell()</a> does, but adds DB information (number of entries and path to DB file) to each dictionary in the list. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stopcheck</td><td><code>callback</code> callback that returns <code>True</code> to stop the operation or <code>False</code> to continue (takes no parameters) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> list of dictionaries representing language-specific dictionary info: <pre>
+   * 'dic_url': URL of the dictionary file
+   * 'lang': short language name, e.g. 'en' / 'ru' / 'it'
+   * 'lang_full': full language name, e.g. 'Russian', 'English (US)'
+   * 'license': name of applicable license, e.g. 'GPL-3.0' / 'MIT and BSD'
+   * 'license_url': URL of applicable license file
+   * 'entries': number of entries in the existing DB (0 if no DB exists or is empty)
+   * 'path': full path to the existing DB file (empty string if no DB exists)
+ </pre> </dd></dl>
 
 </div>
 </div>
@@ -694,6 +765,19 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Retrieves the list of Hunspell dictionaries available for download from the <a href="https://github.com/wooorm/dictionaries/">public Github repo</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stopcheck</td><td><code>callback</code> callback that returns <code>True</code> to stop the operation or <code>False</code> to continue (takes no parameters) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> list of dictionaries representing language-specific dictionary info: <pre>
+   * 'dic_url': URL of the dictionary file
+   * 'lang': short language name, e.g. 'en' / 'ru' / 'it'
+   * 'lang_full': full language name, e.g. 'Russian', 'English (US)'
+   * 'license': name of applicable license, e.g. 'GPL-3.0' / 'MIT and BSD'
+   * 'license_url': URL of applicable license file
+ </pre> </dd></dl>
 
 </div>
 </div>
@@ -713,6 +797,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Checks if there are tasks running in the pool. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if there are active tasks, <code>False</code> if none </dd></dl>
+
 </div>
 </div>
 <a id="a0557b4ccce0c80d47b57e5b4c8f770b7"></a>
@@ -730,6 +817,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Gets the number of active threads (tasks) in the pool. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>int</code> number of active tasks </dd></dl>
 
 </div>
 </div>
@@ -749,85 +839,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="abc4fe2652b241ff5f1c8c84437de6b1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc4fe2652b241ff5f1c8c84437de6b1f">&#9670;&nbsp;</a></span>standard_posrules()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def pycross.dbapi.HunspellImport.standard_posrules </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>lang</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the default Hunspell-formatted metadata patterns for the three common parts of speech (noun, verb, adjective). </p>
-<p>The returned patterns depend on the language. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lang</td><td><code>str</code> language for which the matching patterns are requested, e.g. 'en' or 'ru' </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>dict</code> POS to regex pattern matching table in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;N&#39;</span>: <span class="stringliteral">&#39;regex pattern for nouns&#39;</span>, <span class="stringliteral">&#39;V&#39;</span>: <span class="stringliteral">&#39;regex pattern for verbs&#39;</span>, <span class="stringliteral">&#39;ADJ&#39;</span>: <span class="stringliteral">&#39;regex pattern for adjectives&#39;</span>}</div>
-</div><!-- fragment --> If the language is invalid (none of 'en', 'ru', 'fr' or 'de'), <code>None</code> is returned.<br  />
- Reimplement this method as needed to support other languages / parts of speech formats. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a045c552d88ddadc457af3f42e80a915f" title="Imports a Hunspell-formatted dictionary file into the DB.">add_from_hunspell()</a> </dd></dl>
-
-</div>
-</div>
-<a id="afb075e6c3a673a3a5c9293ceb6e933d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb075e6c3a673a3a5c9293ceb6e933d1">&#9670;&nbsp;</a></span>standard_replacements()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def pycross.dbapi.HunspellImport.standard_replacements </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>lang</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the default replacement rules for a language to use in Hunspell imports. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lang</td><td><code>str</code> language for which the matching patterns are requested, e.g. 'en' or 'ru' </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>dict</code> default replacements in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;character to replace&#39;</span>: <span class="stringliteral">&#39;replacement character&#39;</span>}</div>
-</div><!-- fragment --> If the language is invalid (currently only 'ru' or 'fr'), <code>None</code> is returned.<br  />
- Reimplement this method as needed to add other languages / replaced characters. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html#a045c552d88ddadc457af3f42e80a915f" title="Imports a Hunspell-formatted dictionary file into the DB.">add_from_hunspell()</a> </dd></dl>
+<p>Waits for all the tasks in the pool to complete. </p>
 
 </div>
 </div>
@@ -844,6 +856,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html" title="SQLite database driver implementation wrapping the standard Python sqlite3 methods.">Sqlitedb</a></code> | <code>None</code> DB object </p>
+
 </div>
 </div>
 <a id="a5765e0fce7fc554db048186eae832076"></a>
@@ -857,6 +871,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>str</code> root path of the dictionaries, default = <a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a843cd6cec1c94850cf6e24e33714c2a9" title="path to the &#39;dic&#39; folder containing word sources">utils::globalvars::DICFOLDER</a> </p>
 
 </div>
 </div>
@@ -872,6 +888,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>QtCore.QThreadPool</code> thread pool to run tasks </p>
+
 </div>
 </div>
 <a id="a86c1590d1faa637a13a7e3d892e271d2"></a>
@@ -885,6 +903,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>dict</code> HTTP(S) proxy server settings </p>
 
 </div>
 </div>
@@ -900,6 +920,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>dict</code> pointer to the app global settings (<code>utils::guisettings::CWSettings::settings</code>) </p>
+
 </div>
 </div>
 <a id="a66a8b1d5171a5016b8fee1974a8fb970"></a>
@@ -913,6 +935,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>int</code> timeout for HTTP(S) requests (in milliseconds) </p>
 
 </div>
 </div>

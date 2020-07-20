@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.synteditor
-# Scintilla-based Python editor and its customized version for user plugin
+# @brief Scintilla-based Python editor and its customized version for user plugin
 # developers.
 from .globalvars import *
 from .utils import make_font, re, get_script_members

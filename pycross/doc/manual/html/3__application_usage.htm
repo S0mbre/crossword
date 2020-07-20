@@ -11,7 +11,7 @@
 
     <meta property="og:type" content="article" />
     <meta property="og:title" content="3. Application usage" />
-    <meta property="og:description" content="3. Application usage&#x000D;&#x000A;&#x000D;&#x000A;To launch pycrossword, run pycross.sh on Linux/Mac (remember to do chmod +x pycross.sh first) or pycross.bat on Windows to launch the pycrossword UI app.&#x000D;&#x000A;&#x000D;&#x000A;Alternatively, you can register the pycrossword file associations at " />
+    <meta property="og:description" content="3. Application usage&#x000D;&#x000A;&#x000D;&#x000A;To launch pycrossword, run pycross on Linux/Mac or pycross.bat on Windows to launch the pycrossword UI app. This should work regardless of whether you are running Python in a virtual environment or without one.&#x000D;&#x000A;&#x000D;&#x000A;To launch th" />
     <meta property="og:url" content="https://github.com/S0mbre/crossword/wiki/3__application_usage.htm" />
 
     <script type="text/javascript">
@@ -338,7 +338,33 @@
     </noscript>
                 <div class="description_on_page"><div class="p" style="text-align: center; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="ic"><h1><strong>3. Application usage</strong></h1></div></div>
 <div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
-<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">To launch <strong>pycrossword</strong>, run <span class="code">pycross.sh</span> on Linux/Mac (remember to do <span class="code">chmod +x pycross.sh</span> first) or <span class="code">pycross.bat</span> on Windows to launch the <strong>pycrossword</strong> UI app.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">To launch <strong>pycrossword</strong>, run <span class="code">pycross</span> on Linux/Mac or <span class="code">pycross.bat</span> on Windows to launch the <strong>pycrossword</strong> UI app. This should work regardless of whether you are running Python in a virtual environment or without one.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">To launch the app manually, run: </div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><span class="code"><strong>python cwordg.py [optional command-line params]</strong></span></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">from your <span class="code">pycross</span> directory.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">The command-line parameters that can be passed to <span class="code">cwordg.py</span> are as follows:</div>
+<ul class="de_list"><li class="list-element list-counter-2" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; direction: ltr; counter-reset: list-counter-2;">
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="list-marker" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; display: inline-block; direction: ltr;"></div><span class="code">-s</span> or <span class="code">--settings</span> +<span class="code"> &quot;path to *.pxjson settings file&quot;</span>: <a class="local_link" href="3_12__application_settings.htm"><span class="de_2B94C39861">load application from a preset</span></a> (<span class="code">*.pxjson</span> file)</div>
+</li><li class="list-element list-counter-2" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; direction: ltr; ">
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="list-marker" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; display: inline-block; direction: ltr;"></div><span class="code">-o</span> or <span class="code">--open</span> + <span class="code">&quot;path to crossword file&quot;:</span> <a class="local_link" href="3_4__loading__saving__reloading_and_closing_crosswords.htm#3.4.1"><span class="de_2B94C39861">open a crossword file</span></a> (<span class="code">*.xpf</span> or <span class="code">*.ipuz</span>)</div>
+</li><li class="list-element list-counter-2" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; direction: ltr; ">
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="list-marker" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; display: inline-block; direction: ltr;"></div><span class="code">-n</span> or <span class="code">--new</span>: <a class="local_link" href="3_3__creating_a_new_crossword.htm"><span class="de_2B94C39861">create a new crossword</span></a> on startup (see creation parameters below)</div>
+</li><li class="list-element list-counter-2" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; direction: ltr; ">
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="list-marker" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; display: inline-block; direction: ltr;"></div><span class="code">--cols</span>: <a class="local_link" href="3_3__creating_a_new_crossword.htm#id_3"><span class="de_2B94C39861">number of columns</span></a> in the new crossword (default = 15)</div>
+</li><li class="list-element list-counter-2" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; direction: ltr; ">
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="list-marker" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; display: inline-block; direction: ltr;"></div><span class="code">--rows</span>: <a class="local_link" href="3_3__creating_a_new_crossword.htm#id_3"><span class="de_2B94C39861">number of rows</span></a> in the new crossword (default = 15)</div>
+</li><li class="list-element list-counter-2" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; direction: ltr; ">
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="list-marker" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; display: inline-block; direction: ltr;"></div><span class="code">--pattern</span>: <a class="local_link" href="3_3__creating_a_new_crossword.htm#id_3"><span class="de_2B94C39861">pattern number</span></a> for the new crossword (one of 1...6, default = 1)</div>
+</li><li class="list-element list-counter-2" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; direction: ltr; ">
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="list-marker" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; display: inline-block; direction: ltr;"></div><span class="code">-e</span> or <span class="code">--empty</span>: don't open or create a crossword</div>
+</li><li class="list-element list-counter-2" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; direction: ltr; ">
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="list-marker" style="color:#000000;font-size:11pt;font-family:&quot;Courier New&quot;; display: inline-block; direction: ltr;"></div><span class="code">-a</span> or <span class="code">--addsrc </span>+ <span class="code">&quot;{source data}&quot;</span>: <a class="local_link" href="3_9__working_with_word_sources.htm"><span class="de_2B94C39861">add a word source</span></a> (see <span class="code">pycross/forms.py/WordSrcDialog</span> for description of the source data structure)</div>
+</li></ul><div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">Read the following sections of this manual to learn what these parameters mean.</div>
 <div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
 <div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">Alternatively, you can register the <strong>pycrossword</strong> file associations at initial run (go to <a class="local_link" href="3_12_1__common.htm"><span class="menu"><span class="de_2B94C39861"><strong>Settings &gt; Common &gt; Register file associations</strong></span></span></a>). After that, you can launch the app by double-clicking crossword files (like<span class="code"> *.xpf</span> or <span class="code">*.ipuz</span>) or settings files (<span class="code">*.pxjson</span>).</div>
 </div>                	<div class="menu_on_page">
@@ -448,6 +474,13 @@
 		</span>
 	</span>
 	<span class="b-tree__itemText"><a class="b-breadCrumbs__link" href="3_15__getting_help.htm">3.15. Getting help</a></span>
+</div><div class="m-workZone_seeAlso_itemContent">
+	<span class="b-tree__spacer">
+		<span class="b-tree__i_article">
+			<span class="b-tree__i_article_inner"></span>
+		</span>
+	</span>
+	<span class="b-tree__itemText"><a class="b-breadCrumbs__link" href="appendix_a__list_of_hotkeys.htm">APPENDIX A. List of hotkeys</a></span>
 </div>	</div>
                     	<div class="b-socialplugin__layout">
 		<table class="b-socialplugin__buttons">

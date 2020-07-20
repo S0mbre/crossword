@@ -19,5 +19,4 @@ if [ $retVal -e 0 ]; then
 	echo UPDATE SUCCEEDED
 fi
 
-cd pycross
-python3 ./cwordg.py
+pycross

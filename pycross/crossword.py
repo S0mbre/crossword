@@ -3,6 +3,8 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package pycross.crossword
+# @brief Core low-level crossword generation objects.
+# 
 # Implementation of crossword-related objects: words, crossword grid and crossword generator.
 # The classes implemented here are independent of GUI and can be used in a console environment
 # or accessed by plugins.

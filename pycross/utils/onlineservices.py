@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.onlineservices
-# Provides interfaces for the online services used by the app:
+# @brief Provides interfaces for the online services used by the app:
 # Yandex and MW online dictionaries, Google search engine, Kloudless cloud storage
 # and Shareaholic social sharing service.
 import requests, os, uuid, json, webbrowser, time

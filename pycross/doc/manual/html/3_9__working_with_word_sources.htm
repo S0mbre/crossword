@@ -11,7 +11,7 @@
 
     <meta property="og:type" content="article" />
     <meta property="og:title" content="3.9. Working with word sources" />
-    <meta property="og:description" content="3.9. Working with word sources&#x000D;&#x000A;&lt;TODO&gt;: Insert description text here... And don&apos;t forget to add keyword for this topic" />
+    <meta property="og:description" content="3.9. Working with word sources&#x000D;&#x000A;&#x000D;&#x000A;pycrossword&apos;s key functionality is automatic generation of crossword in a given grid. In this, the application relies on word sources -- collections of words against which pattern searching is performed to find words" />
     <meta property="og:url" content="https://github.com/S0mbre/crossword/wiki/3_9__working_with_word_sources.htm" />
 
     <script type="text/javascript">
@@ -339,7 +339,13 @@
     <div>To properly display this page you need a browser with JavaScript support.</div>
     </noscript>
                 <div class="description_on_page"><div class="p" style="text-align: center; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="ic"><h1><strong>3.9. Working with word sources</strong></h1></div></div>
-<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&lt;TODO&gt;: Insert description text here... And don't forget to add keyword for this topic</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><strong>pycrossword</strong>'s key functionality is automatic generation of crossword in a given grid. In this, the application relies on word sources -- collections of words against which pattern searching is performed to find words matching a given pattern.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">Apart from words proper, word sources can also contain part-of-speech (POS) data to reflect which <a href="https://en.wikipedia.org/wiki/Part_of_speech"><span class="de_2B94C39861">part of speech</span></a> a word belongs to. One and the same word may belong to different parts of speech. English is a very good example of such behavior, in fact. Thus, the word '<span class="de_823826CA2C">stone</span>' may be a noun (as in &quot;he lifted a <span class="de_823826CA2C">stone</span> from the ground&quot;), an adjective (as in: &quot;a <span class="de_823826CA2C">stone</span> wall&quot;), or a verb (as in: &quot;earlier people would have <span class="de_823826CA2C">stoned</span> him to death&quot;). As you will see further, <strong>pycrossword</strong> lets you handle part-of-speech data in a flexible way, for example, by allowing only specific parts of speech (most commonly, nouns) to go into the crossword.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">Every <a class="local_link" href="3_10_2__generation_progress.htm"><span class="de_2B94C39861">generation</span></a> cycle starts an iterative search looking for words matching the dynamically updated word patterns (while also applying part-of-speech search rules, if given). Each matching word is used only once (to avoid duplicates in the crossword). While this process is run completely in memory, <strong>pycrossword</strong> can use several options to import and use such word collections.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
 </div>                	<div class="menu_on_page">
 		<h2>The contents of 3.9. Working with word sources</h2>
 		<div class="m-workZone_seeAlso_itemContent">

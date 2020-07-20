@@ -79,6 +79,9 @@ $(function() {
 <div class="title">pycross.dbapi.HunspellDownloadTask Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A single download task to download one Hunspell dictionary from the remote repo and store it as a DIC file.  
+ <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.dbapi.HunspellDownloadTask:</div>
 <div class="dyncontent">
@@ -91,37 +94,52 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a681bd6a8ac9bdb55b5b7e64e3b2680ec"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a681bd6a8ac9bdb55b5b7e64e3b2680ec">__init__</a> (self, settings, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a1d0273f24606766130c764bb1e629d6a">dicfolder</a>, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#ad27f10eca64222a7bcf0998e8be9f5ab">url</a>, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#addc8be3a46165b494c6c42afd2737233">lang</a>, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a791c0ae2763167ddfe88e46a7881cd32">overwrite</a>=True, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a112c00828ee98c000e8f7c9e24a37124">on_stopcheck</a>=None, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a764b24b3f6ebe9cb0ee0e3a7aa880a76">id</a>=0)</td></tr>
 <tr class="separator:a681bd6a8ac9bdb55b5b7e64e3b2680ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add5048c5a0db2de6c6df89abf0d12fc5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#add5048c5a0db2de6c6df89abf0d12fc5">get_filesize_url</a> (self, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#ad27f10eca64222a7bcf0998e8be9f5ab">url</a>)</td></tr>
+<tr class="memdesc:add5048c5a0db2de6c6df89abf0d12fc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the file size (in bytes) of a given web resource by URL.  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#add5048c5a0db2de6c6df89abf0d12fc5">More...</a><br /></td></tr>
 <tr class="separator:add5048c5a0db2de6c6df89abf0d12fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf06e3144c0bcc16324e6b8b3b7ab897"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#abf06e3144c0bcc16324e6b8b3b7ab897">run</a> (self)</td></tr>
+<tr class="memdesc:abf06e3144c0bcc16324e6b8b3b7ab897"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overridden worker method called when the task is started: does the download job.  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#abf06e3144c0bcc16324e6b8b3b7ab897">More...</a><br /></td></tr>
 <tr class="separator:abf06e3144c0bcc16324e6b8b3b7ab897"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ac1b07f9a8fc7df54013be821767808f1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#ac1b07f9a8fc7df54013be821767808f1">signals</a></td></tr>
+<tr class="memdesc:ac1b07f9a8fc7df54013be821767808f1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_signals.html" title="Container for Qt signals used by HunspellDownloadTask.">HunspellDownloadSignals</a></code> signals emitted by the download task  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#ac1b07f9a8fc7df54013be821767808f1">More...</a><br /></td></tr>
 <tr class="separator:ac1b07f9a8fc7df54013be821767808f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d0273f24606766130c764bb1e629d6a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a1d0273f24606766130c764bb1e629d6a">dicfolder</a></td></tr>
+<tr class="memdesc:a1d0273f24606766130c764bb1e629d6a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> path to the target folder where to store the downloaded DIC file  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a1d0273f24606766130c764bb1e629d6a">More...</a><br /></td></tr>
 <tr class="separator:a1d0273f24606766130c764bb1e629d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad27f10eca64222a7bcf0998e8be9f5ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#ad27f10eca64222a7bcf0998e8be9f5ab">url</a></td></tr>
+<tr class="memdesc:ad27f10eca64222a7bcf0998e8be9f5ab"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> URL of the DIC file to download (generally, <a href="https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/">https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/</a>&lt;LANG&gt;/index.dic)  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#ad27f10eca64222a7bcf0998e8be9f5ab">More...</a><br /></td></tr>
 <tr class="separator:ad27f10eca64222a7bcf0998e8be9f5ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addc8be3a46165b494c6c42afd2737233"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#addc8be3a46165b494c6c42afd2737233">lang</a></td></tr>
+<tr class="memdesc:addc8be3a46165b494c6c42afd2737233"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> short name of the language, e.g.  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#addc8be3a46165b494c6c42afd2737233">More...</a><br /></td></tr>
 <tr class="separator:addc8be3a46165b494c6c42afd2737233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a791c0ae2763167ddfe88e46a7881cd32"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a791c0ae2763167ddfe88e46a7881cd32">overwrite</a></td></tr>
+<tr class="memdesc:a791c0ae2763167ddfe88e46a7881cd32"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> whether to overwrite the existing file (if any)  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a791c0ae2763167ddfe88e46a7881cd32">More...</a><br /></td></tr>
 <tr class="separator:a791c0ae2763167ddfe88e46a7881cd32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a764b24b3f6ebe9cb0ee0e3a7aa880a76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a764b24b3f6ebe9cb0ee0e3a7aa880a76">id</a></td></tr>
+<tr class="memdesc:a764b24b3f6ebe9cb0ee0e3a7aa880a76"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> unique ID of this task (in the thread pool)  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a764b24b3f6ebe9cb0ee0e3a7aa880a76">More...</a><br /></td></tr>
 <tr class="separator:a764b24b3f6ebe9cb0ee0e3a7aa880a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a112c00828ee98c000e8f7c9e24a37124"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a112c00828ee98c000e8f7c9e24a37124">on_stopcheck</a></td></tr>
+<tr class="memdesc:a112c00828ee98c000e8f7c9e24a37124"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callback</code> callback function called periodically to check for interrupt condition  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#a112c00828ee98c000e8f7c9e24a37124">More...</a><br /></td></tr>
 <tr class="separator:a112c00828ee98c000e8f7c9e24a37124"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2b58724ac993d791747b0e9d61a84a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#aa2b58724ac993d791747b0e9d61a84a6">timeout_</a></td></tr>
+<tr class="memdesc:aa2b58724ac993d791747b0e9d61a84a6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> timeout for HTTP(S) requests (in milliseconds)  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#aa2b58724ac993d791747b0e9d61a84a6">More...</a><br /></td></tr>
 <tr class="separator:aa2b58724ac993d791747b0e9d61a84a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadf84fa04ae766bef375b410cd00bb6b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#aadf84fa04ae766bef375b410cd00bb6b">proxies_</a></td></tr>
+<tr class="memdesc:aadf84fa04ae766bef375b410cd00bb6b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dict</code> HTTP(S) proxy server settings  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#aadf84fa04ae766bef375b410cd00bb6b">More...</a><br /></td></tr>
 <tr class="separator:aadf84fa04ae766bef375b410cd00bb6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ac19847355d87c675a5a0c6fdc2b7fff3"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#ac19847355d87c675a5a0c6fdc2b7fff3">_delete_file</a> (self, filepath)</td></tr>
+<tr class="memdesc:ac19847355d87c675a5a0c6fdc2b7fff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes a locally stored file (without raising errors on failure).  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#ac19847355d87c675a5a0c6fdc2b7fff3">More...</a><br /></td></tr>
 <tr class="separator:ac19847355d87c675a5a0c6fdc2b7fff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A single download task to download one Hunspell dictionary from the remote repo and store it as a DIC file. </p>
+<p>Derived from QtCore.QRunnable so the task can be run in a thread pool concurrently with other downloads. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a681bd6a8ac9bdb55b5b7e64e3b2680ec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a681bd6a8ac9bdb55b5b7e64e3b2680ec">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -183,6 +201,24 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">settings</td><td><code>dict</code> pointer to the app global settings (<code>utils::guisettings::CWSettings::settings</code>) </td></tr>
+    <tr><td class="paramname">dicfolder</td><td><code>str</code> path to the target folder where to store the downloaded DIC file </td></tr>
+    <tr><td class="paramname">url</td><td><code>str</code> URL of the DIC file to download (generally, <a href="https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/">https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/</a>&lt;LANG&gt;/index.dic) </td></tr>
+    <tr><td class="paramname">lang</td><td><code>str</code> short name of the language, e.g. 'en' </td></tr>
+    <tr><td class="paramname">overwrite</td><td><code>bool</code> whether to overwrite the existing file (if any) </td></tr>
+    <tr><td class="paramname">on_stopcheck</td><td><code>callback</code> callback function called periodically to check for interrupt condition; takes 4 parameters:<ul>
+<li>id <code>int</code> unique ID of this task (in the thread pool)</li>
+<li>url <code>str</code> URL of the DIC file to download</li>
+<li>lang <code>str</code> short name of the language, e.g. 'en'</li>
+<li>filepath <code>str</code> full path to the downloaded (target) file Must return a Boolean value: <code>True</code> to stop the download task, <code>False</code> to continue </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">id</td><td><code>int</code> unique ID of this task (in the thread pool) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -221,6 +257,14 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Deletes a locally stored file (without raising errors on failure). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filepath</td><td><code>str</code> full path of the file to delete </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="add5048c5a0db2de6c6df89abf0d12fc5"></a>
@@ -249,6 +293,15 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Gets the file size (in bytes) of a given web resource by URL. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">url</td><td><code>str</code> URL of the web resource (file) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>int</code> file size in bytes (-1 on error) </dd></dl>
+
 </div>
 </div>
 <a id="abf06e3144c0bcc16324e6b8b3b7ab897"></a>
@@ -267,6 +320,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Overridden worker method called when the task is started: does the download job. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -282,6 +337,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>str</code> path to the target folder where to store the downloaded DIC file </p>
+
 </div>
 </div>
 <a id="a764b24b3f6ebe9cb0ee0e3a7aa880a76"></a>
@@ -295,6 +352,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>int</code> unique ID of this task (in the thread pool) </p>
 
 </div>
 </div>
@@ -310,6 +369,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>str</code> short name of the language, e.g. </p>
+<p>'en' </p>
+
 </div>
 </div>
 <a id="a112c00828ee98c000e8f7c9e24a37124"></a>
@@ -323,6 +385,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>callback</code> callback function called periodically to check for interrupt condition </p>
 
 </div>
 </div>
@@ -338,6 +402,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>bool</code> whether to overwrite the existing file (if any) </p>
+
 </div>
 </div>
 <a id="aadf84fa04ae766bef375b410cd00bb6b"></a>
@@ -351,6 +417,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>dict</code> HTTP(S) proxy server settings </p>
 
 </div>
 </div>
@@ -366,6 +434,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_signals.html" title="Container for Qt signals used by HunspellDownloadTask.">HunspellDownloadSignals</a></code> signals emitted by the download task </p>
+
 </div>
 </div>
 <a id="aa2b58724ac993d791747b0e9d61a84a6"></a>
@@ -380,6 +450,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>int</code> timeout for HTTP(S) requests (in milliseconds) </p>
+
 </div>
 </div>
 <a id="ad27f10eca64222a7bcf0998e8be9f5ab"></a>
@@ -393,6 +465,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>str</code> URL of the DIC file to download (generally, <a href="https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/">https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/</a>&lt;LANG&gt;/index.dic) </p>
 
 </div>
 </div>

@@ -3,8 +3,10 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package pycross.wordsrc
-# Implements the Wordsource base class and its derivatives -- various sources of words
-# for generating crosswords. These sources include:
+# @brief Implements the Wordsource base class and its derivatives -- various sources of words
+# for generating crosswords. 
+# 
+# These sources include:
 #   * DBWordsource - SQLite database source
 #   * TextWordsource - string-based source
 #   * TextfileWordsource - file-based source

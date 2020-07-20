@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package pycross.cwordg
-# Main application entry-point module that creates and launches the GUI app -- see main() function.
+# @brief Main application entry-point module that creates and launches the GUI app -- see main() function.
 import os, sys, traceback, argparse
 
 # ******************************************************************************** #

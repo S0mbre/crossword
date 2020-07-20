@@ -120,6 +120,28 @@ span.de_2B94C39861
 	color:#0000ff;
 	text-decoration:underline;
 }
+span.de_31A4EF827C
+{
+	font-size: 12pt;
+	color:#000000;
+	font-style:italic;
+}
+span.de_496AA02164
+{
+	font-size: 12pt;
+	color:#000000;
+}
+span.de_4CD179DA38
+{
+	font-family: "Calibri";
+	font-size: 11pt;
+	color:#000000;
+}
+span.de_52574F0E7B
+{
+	color:#ec1346;
+	text-decoration:underline;
+}
 span.de_823826CA2C
 {
 	font-style:italic;
@@ -127,6 +149,14 @@ span.de_823826CA2C
 span.de_B261420348
 {
 	font-size: 14pt;
+}
+span.de_CED2805213
+{
+	color:#ff003c;
+}
+span.de_CF136AA7C2
+{
+	color:#ec1346;
 }
 .list-element {
 	list-style-type: none;
@@ -192,7 +222,7 @@ span.de_B261420348
 	text-align: left;
 	padding: 0;
 	margin: 0;
-	content: '' counter(list-counter-3, decimal) '.\00a0';
+	content: '' counter(list-counter-3, disc) '\00a0';
 	counter-increment: list-counter-3;
 }
 .list-counter-3 > div > div[class='list-marker-chm'] {
@@ -210,7 +240,7 @@ span.de_B261420348
 	text-align: left;
 	padding: 0;
 	margin: 0;
-	content: '' counter(list-counter-4, disc) '\00a0';
+	content: '' counter(list-counter-4, decimal) '.\00a0';
 	counter-increment: list-counter-4;
 }
 .list-counter-4 > div > div[class='list-marker-chm'] {
@@ -282,7 +312,7 @@ span.de_B261420348
 	text-align: left;
 	padding: 0;
 	margin: 0;
-	content: '' counter(list-counter-8, decimal) '.\00a0';
+	content: '' counter(list-counter-8, disc) '\00a0';
 	counter-increment: list-counter-8;
 }
 .list-counter-8 > div > div[class='list-marker-chm'] {
@@ -300,7 +330,7 @@ span.de_B261420348
 	text-align: left;
 	padding: 0;
 	margin: 0;
-	content: '' counter(list-counter-9, disc) '\00a0';
+	content: '' counter(list-counter-9, decimal) '.\00a0';
 	counter-increment: list-counter-9;
 }
 .list-counter-9 > div > div[class='list-marker-chm'] {
@@ -340,6 +370,60 @@ span.de_B261420348
 	counter-increment: list-counter-11;
 }
 .list-counter-11 > div > div[class='list-marker-chm'] {
+	display: inline-block;
+	text-align: left;
+	zoom: 1;
+	padding: 0;
+	margin: 0;
+	*display: inline;
+}
+.list-counter-12 > div > * {
+	text-indent: 0px;}
+.list-counter-12 > div > div[class='list-marker']:before {
+	display: inline-block;
+	text-align: left;
+	padding: 0;
+	margin: 0;
+	content: '' counter(list-counter-12, disc) '\00a0';
+	counter-increment: list-counter-12;
+}
+.list-counter-12 > div > div[class='list-marker-chm'] {
+	display: inline-block;
+	text-align: left;
+	zoom: 1;
+	padding: 0;
+	margin: 0;
+	*display: inline;
+}
+.list-counter-13 > div > * {
+	text-indent: 0px;}
+.list-counter-13 > div > div[class='list-marker']:before {
+	display: inline-block;
+	text-align: left;
+	padding: 0;
+	margin: 0;
+	content: '' counter(list-counter-13, disc) '\00a0';
+	counter-increment: list-counter-13;
+}
+.list-counter-13 > div > div[class='list-marker-chm'] {
+	display: inline-block;
+	text-align: left;
+	zoom: 1;
+	padding: 0;
+	margin: 0;
+	*display: inline;
+}
+.list-counter-14 > div > * {
+	text-indent: 0px;}
+.list-counter-14 > div > div[class='list-marker']:before {
+	display: inline-block;
+	text-align: left;
+	padding: 0;
+	margin: 0;
+	content: '' counter(list-counter-14, disc) '\00a0';
+	counter-increment: list-counter-14;
+}
+.list-counter-14 > div > div[class='list-marker-chm'] {
 	display: inline-block;
 	text-align: left;
 	zoom: 1;

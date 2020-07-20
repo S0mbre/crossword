@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package pycross.guisettings
-# Stores a single global configurations object - CWSettings::settings
+# @brief Stores a single global configurations object - CWSettings::settings
 # together with methods to load from and save to compressed JSON files.
 from PyQt5 import QtGui, QtCore, QtWidgets
 import json, os, gzip

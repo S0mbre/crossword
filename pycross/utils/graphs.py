@@ -3,8 +3,10 @@
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## @package utils.graphs
-# Used to display statistics for the current crossword in the web browser
-# using the Altair package. See [Altair docs](https://altair-viz.github.io/).
+# @brief Used to display statistics for the current crossword in the web browser
+# using the Altair package. 
+# 
+# See [Altair docs](https://altair-viz.github.io/).
 import pandas as pd
 import altair as alt
 

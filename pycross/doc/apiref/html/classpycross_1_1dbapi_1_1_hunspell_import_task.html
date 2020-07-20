@@ -79,6 +79,9 @@ $(function() {
 <div class="title">pycross.dbapi.HunspellImportTask Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A single import task to import words from a DIC file (downloaded from the Hunspell repo) to an SQLite database *.db file.  
+ <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for pycross.dbapi.HunspellImportTask:</div>
 <div class="dyncontent">
@@ -91,48 +94,67 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afaa20e6d8852b7d610bf05ddc0101866"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#afaa20e6d8852b7d610bf05ddc0101866">__init__</a> (self, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#ac8f3b42a27fc4f543ac266c6d2e75119">lang</a>, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a84f4b2a9e72033aa245aeb45cd9e9fbf">dicfile</a>=None, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a8270f018d8dfa6e8ab6c659848e85e4e">posrules</a>=None, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#aa8f379e4c7cdfb427618c2649a28cd24">posrules_strict</a>=False, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a985cba4d976e5ff2d412e25311722f24">posdelim</a>='/', <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a6ab6a1186b8297651f2e28a754bd879b">lcase</a>=True, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a467b031d5f31fcf3750f4ad3297f4072">replacements</a>=None, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#acfb11f308dee8feb196cbc9436bf19e1">remove_hyphens</a>=True, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a251497ebbc7858b7dc4a4d0272704a04">filter_out</a>=None, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a3e01d379c57d31bcc0d02fdf362b3b9b">rows</a>=None, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a5e166096c7d88e3d42034cba58dde553">commit_each</a>=1000, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#ae411e5b673e93b3044938a284f785b27">on_stopcheck</a>=None, <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a75beddca28fc12ad4473a31ae438d2bf">id</a>=0)</td></tr>
 <tr class="separator:afaa20e6d8852b7d610bf05ddc0101866"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae64fcbe7c4b7e050b450077ac3e886d8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#ae64fcbe7c4b7e050b450077ac3e886d8">run</a> (self)</td></tr>
+<tr class="memdesc:ae64fcbe7c4b7e050b450077ac3e886d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overridden worker method called when the task is started: does the import job.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#ae64fcbe7c4b7e050b450077ac3e886d8">More...</a><br /></td></tr>
 <tr class="separator:ae64fcbe7c4b7e050b450077ac3e886d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a08fea3481f11873a4525b0449d0209fa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a08fea3481f11873a4525b0449d0209fa">signals</a></td></tr>
+<tr class="memdesc:a08fea3481f11873a4525b0449d0209fa"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html" title="Container for Qt signals used by HunspellImportTask.">HunspellImportSignals</a></code> signals emiited by the import task  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a08fea3481f11873a4525b0449d0209fa">More...</a><br /></td></tr>
 <tr class="separator:a08fea3481f11873a4525b0449d0209fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8f3b42a27fc4f543ac266c6d2e75119"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#ac8f3b42a27fc4f543ac266c6d2e75119">lang</a></td></tr>
+<tr class="memdesc:ac8f3b42a27fc4f543ac266c6d2e75119"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> short name of the language, e.g.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#ac8f3b42a27fc4f543ac266c6d2e75119">More...</a><br /></td></tr>
 <tr class="separator:ac8f3b42a27fc4f543ac266c6d2e75119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84f4b2a9e72033aa245aeb45cd9e9fbf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a84f4b2a9e72033aa245aeb45cd9e9fbf">dicfile</a></td></tr>
+<tr class="memdesc:a84f4b2a9e72033aa245aeb45cd9e9fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> | <code>None</code> full path to the DIC file to import words from  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a84f4b2a9e72033aa245aeb45cd9e9fbf">More...</a><br /></td></tr>
 <tr class="separator:a84f4b2a9e72033aa245aeb45cd9e9fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8270f018d8dfa6e8ab6c659848e85e4e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a8270f018d8dfa6e8ab6c659848e85e4e">posrules</a></td></tr>
+<tr class="memdesc:a8270f018d8dfa6e8ab6c659848e85e4e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dict</code> part-of-speech regular expression parsing rules  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a8270f018d8dfa6e8ab6c659848e85e4e">More...</a><br /></td></tr>
 <tr class="separator:a8270f018d8dfa6e8ab6c659848e85e4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8f379e4c7cdfb427618c2649a28cd24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#aa8f379e4c7cdfb427618c2649a28cd24">posrules_strict</a></td></tr>
+<tr class="memdesc:aa8f379e4c7cdfb427618c2649a28cd24"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> import only the indicated or all parts of speech  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#aa8f379e4c7cdfb427618c2649a28cd24">More...</a><br /></td></tr>
 <tr class="separator:aa8f379e4c7cdfb427618c2649a28cd24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a985cba4d976e5ff2d412e25311722f24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a985cba4d976e5ff2d412e25311722f24">posdelim</a></td></tr>
+<tr class="memdesc:a985cba4d976e5ff2d412e25311722f24"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> delimiter delimiting the word and its part of speech (default = '/')  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a985cba4d976e5ff2d412e25311722f24">More...</a><br /></td></tr>
 <tr class="separator:a985cba4d976e5ff2d412e25311722f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ab6a1186b8297651f2e28a754bd879b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a6ab6a1186b8297651f2e28a754bd879b">lcase</a></td></tr>
+<tr class="memdesc:a6ab6a1186b8297651f2e28a754bd879b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> import words in lower case  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a6ab6a1186b8297651f2e28a754bd879b">More...</a><br /></td></tr>
 <tr class="separator:a6ab6a1186b8297651f2e28a754bd879b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a467b031d5f31fcf3750f4ad3297f4072"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a467b031d5f31fcf3750f4ad3297f4072">replacements</a></td></tr>
+<tr class="memdesc:a467b031d5f31fcf3750f4ad3297f4072"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dict</code> character replacement rules  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a467b031d5f31fcf3750f4ad3297f4072">More...</a><br /></td></tr>
 <tr class="separator:a467b031d5f31fcf3750f4ad3297f4072"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfb11f308dee8feb196cbc9436bf19e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#acfb11f308dee8feb196cbc9436bf19e1">remove_hyphens</a></td></tr>
+<tr class="memdesc:acfb11f308dee8feb196cbc9436bf19e1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>bool</code> remove all hyphens from words  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#acfb11f308dee8feb196cbc9436bf19e1">More...</a><br /></td></tr>
 <tr class="separator:acfb11f308dee8feb196cbc9436bf19e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a251497ebbc7858b7dc4a4d0272704a04"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a251497ebbc7858b7dc4a4d0272704a04">filter_out</a></td></tr>
+<tr class="memdesc:a251497ebbc7858b7dc4a4d0272704a04"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dict</code> regex-based rules to exclude words  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a251497ebbc7858b7dc4a4d0272704a04">More...</a><br /></td></tr>
 <tr class="separator:a251497ebbc7858b7dc4a4d0272704a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e01d379c57d31bcc0d02fdf362b3b9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a3e01d379c57d31bcc0d02fdf362b3b9b">rows</a></td></tr>
+<tr class="memdesc:a3e01d379c57d31bcc0d02fdf362b3b9b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>2-tuple</code> | <code>None</code> the start and end rows (indices) of the words to import  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a3e01d379c57d31bcc0d02fdf362b3b9b">More...</a><br /></td></tr>
 <tr class="separator:a3e01d379c57d31bcc0d02fdf362b3b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e166096c7d88e3d42034cba58dde553"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a5e166096c7d88e3d42034cba58dde553">commit_each</a></td></tr>
+<tr class="memdesc:a5e166096c7d88e3d42034cba58dde553"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> threshold of DB insert operations after which the changes are written to the DB  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a5e166096c7d88e3d42034cba58dde553">More...</a><br /></td></tr>
 <tr class="separator:a5e166096c7d88e3d42034cba58dde553"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae411e5b673e93b3044938a284f785b27"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#ae411e5b673e93b3044938a284f785b27">on_stopcheck</a></td></tr>
+<tr class="memdesc:ae411e5b673e93b3044938a284f785b27"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callback</code> callback function called periodically to check for interrupt condition  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#ae411e5b673e93b3044938a284f785b27">More...</a><br /></td></tr>
 <tr class="separator:ae411e5b673e93b3044938a284f785b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75beddca28fc12ad4473a31ae438d2bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a75beddca28fc12ad4473a31ae438d2bf">id</a></td></tr>
+<tr class="memdesc:a75beddca28fc12ad4473a31ae438d2bf"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>int</code> unique ID of this task (in the thread pool)  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a75beddca28fc12ad4473a31ae438d2bf">More...</a><br /></td></tr>
 <tr class="separator:a75beddca28fc12ad4473a31ae438d2bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a8031ac111c1d4c0c40bde5a77d18b8b6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a8031ac111c1d4c0c40bde5a77d18b8b6">_delete_db</a> (self, db)</td></tr>
+<tr class="memdesc:a8031ac111c1d4c0c40bde5a77d18b8b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the existing DB file.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#a8031ac111c1d4c0c40bde5a77d18b8b6">More...</a><br /></td></tr>
 <tr class="separator:a8031ac111c1d4c0c40bde5a77d18b8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac1b85c0ddc1b0bf716a1e28d3baa34f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#aac1b85c0ddc1b0bf716a1e28d3baa34f">_get_pos</a> (self, cur)</td></tr>
 <tr class="memdesc:aac1b85c0ddc1b0bf716a1e28d3baa34f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the list of parts of speech present in the DB.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#aac1b85c0ddc1b0bf716a1e28d3baa34f">More...</a><br /></td></tr>
 <tr class="separator:aac1b85c0ddc1b0bf716a1e28d3baa34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A single import task to import words from a DIC file (downloaded from the Hunspell repo) to an SQLite database *.db file. </p>
+<p>Derived from QtCore.QRunnable so the task can be run in a thread pool concurrently with other tasks. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afaa20e6d8852b7d610bf05ddc0101866"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afaa20e6d8852b7d610bf05ddc0101866">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -230,6 +252,37 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lang</td><td><code>str</code> short name of the language, e.g. 'en' </td></tr>
+    <tr><td class="paramname">dicfile</td><td><code>str</code> | <code>None</code> full path to the DIC file to import words from (<code>None</code> means the default path will be assumed: pycross/assets/dic/&lt;LANGUAGE&gt;.dic) </td></tr>
+    <tr><td class="paramname">posrules</td><td><code>dict</code> part-of-speech regular expression parsing rules in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;N&#39;</span>: <span class="stringliteral">&#39;regex for nouns&#39;</span>, <span class="stringliteral">&#39;V&#39;</span>: <span class="stringliteral">&#39;regex for verb&#39;</span>, ...} </div>
+</div><!-- fragment --> <pre>
+     Possible keys are: 'N' [noun], 'V' [verb], 'ADV' [adverb], 'ADJ' [adjective],
+     'P' [participle], 'PRON' [pronoun], 'I' [interjection],
+     'C' [conjuction], 'PREP' [preposition], 'PROP' [proposition],
+     'MISC' [miscellaneous / other], 'NONE' [no POS]
+ </pre> </td></tr>
+    <tr><td class="paramname">posrules_strict</td><td><code>bool</code> if <code>True</code> (default), only the parts of speech present in posrules dict will be imported [all other words will be skipped]. If <code>False</code>, such words will be imported with 'MISC' and 'NONE' POS markers. </td></tr>
+    <tr><td class="paramname">posdelim</td><td><code>str</code> delimiter delimiting the word and its part of speech [default = '/'] </td></tr>
+    <tr><td class="paramname">lcase</td><td><code>bool</code> if <code>True</code> (default), found words will be imported in lower case; otherwise, the original case will remain </td></tr>
+    <tr><td class="paramname">replacements</td><td><code>dict</code> character replacement rules in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;char_from&#39;</span>: <span class="stringliteral">&#39;char_to&#39;</span>, ...}</div>
+</div><!-- fragment --> Default = <code>None</code> (no replacements) </td></tr>
+    <tr><td class="paramname">remove_hyphens</td><td><code>bool</code> if <code>True</code> (default), all hyphens ['-'] will be removed from the words </td></tr>
+    <tr><td class="paramname">filter_out</td><td><code>dict</code> regex-based rules to filter out [exclude] words in the format: <div class="fragment"><div class="line">{<span class="stringliteral">&#39;word&#39;</span>: [<span class="stringliteral">&#39;regex1&#39;</span>, <span class="stringliteral">&#39;regex2&#39;</span>, ...], <span class="stringliteral">&#39;pos&#39;</span>: [<span class="stringliteral">&#39;regex1&#39;</span>, <span class="stringliteral">&#39;regex2&#39;</span>, ...]}</div>
+</div><!-- fragment --> These words will not be imported. One of the POS rules can be used to screen off specific parts of speech. Match rules for words will be applied AFTER replacements and in the sequential order of the regex list. Default = <code>None</code> (no filter rules apply). </td></tr>
+    <tr><td class="paramname">rows</td><td><code>2-tuple</code> | <code>None</code> the start and end rows (indices) of the words to import; e.g. (20, 100) means start import from row 20 and end import after row 100. If the second element in the tuple is negative (e.g. -1), only the start row will be considered and the import will go on till the last word in the source DIC file. <code>None</code> means ALL available words. </td></tr>
+    <tr><td class="paramname">commit_each</td><td><code>int</code> threshold of insert operations after which the transaction will be committed (default = 1000) </td></tr>
+    <tr><td class="paramname">on_stopcheck</td><td><code>callback</code> callback function called periodically to check for interrupt condition; takes 3 parameters:<ul>
+<li>id <code>int</code> unique ID of this task (in the thread pool)</li>
+<li>lang <code>str</code> short name of the language, e.g. 'en'</li>
+<li>filepath <code>str</code> full path to the source DIC file Must return a Boolean value: <code>True</code> to stop the import task, <code>False</code> to continue </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">id</td><td><code>int</code> unique ID of this task (in the thread pool) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -268,6 +321,14 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Deletes the existing DB file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">db</td><td><code><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html" title="SQLite database driver implementation wrapping the standard Python sqlite3 methods.">Sqlitedb</a></code> a single SQLite database to delete </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="aac1b85c0ddc1b0bf716a1e28d3baa34f"></a>
@@ -305,6 +366,12 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Retrieves the list of parts of speech present in the DB. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cur</td><td><code>SQLite cursor object</code> the DB cursor </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd><code>list</code> parts of speech in the short form, e.g. ['N', 'V'] </dd></dl>
 
 </div>
@@ -325,6 +392,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Overridden worker method called when the task is started: does the import job. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -340,6 +409,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>int</code> threshold of DB insert operations after which the changes are written to the DB </p>
+
 </div>
 </div>
 <a id="a84f4b2a9e72033aa245aeb45cd9e9fbf"></a>
@@ -353,6 +424,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>str</code> | <code>None</code> full path to the DIC file to import words from </p>
 
 </div>
 </div>
@@ -368,6 +441,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>dict</code> regex-based rules to exclude words </p>
+
 </div>
 </div>
 <a id="a75beddca28fc12ad4473a31ae438d2bf"></a>
@@ -381,6 +456,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>int</code> unique ID of this task (in the thread pool) </p>
 
 </div>
 </div>
@@ -396,6 +473,9 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>str</code> short name of the language, e.g. </p>
+<p>'en' </p>
+
 </div>
 </div>
 <a id="a6ab6a1186b8297651f2e28a754bd879b"></a>
@@ -409,6 +489,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>bool</code> import words in lower case </p>
 
 </div>
 </div>
@@ -424,6 +506,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>callback</code> callback function called periodically to check for interrupt condition </p>
+
 </div>
 </div>
 <a id="a985cba4d976e5ff2d412e25311722f24"></a>
@@ -437,6 +521,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>str</code> delimiter delimiting the word and its part of speech (default = '/') </p>
 
 </div>
 </div>
@@ -452,6 +538,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>dict</code> part-of-speech regular expression parsing rules </p>
+
 </div>
 </div>
 <a id="aa8f379e4c7cdfb427618c2649a28cd24"></a>
@@ -465,6 +553,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>bool</code> import only the indicated or all parts of speech </p>
 
 </div>
 </div>
@@ -480,6 +570,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>bool</code> remove all hyphens from words </p>
+
 </div>
 </div>
 <a id="a467b031d5f31fcf3750f4ad3297f4072"></a>
@@ -493,6 +585,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>dict</code> character replacement rules </p>
 
 </div>
 </div>
@@ -508,6 +602,8 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>2-tuple</code> | <code>None</code> the start and end rows (indices) of the words to import </p>
+
 </div>
 </div>
 <a id="a08fea3481f11873a4525b0449d0209fa"></a>
@@ -521,6 +617,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html" title="Container for Qt signals used by HunspellImportTask.">HunspellImportSignals</a></code> signals emiited by the import task </p>
 
 </div>
 </div>

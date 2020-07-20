@@ -77,18 +77,26 @@ $(function() {
 <div class="title">pycross.dbapi Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implements classes to work with SQLite databases created from <a href="https://github.com/wooorm/dictionaries">Hunspell dictionaries</a>.  
+<a href="namespacepycross_1_1dbapi.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_signals.html">HunspellDownloadSignals</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container for Qt signals used by <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html" title="A single download task to download one Hunspell dictionary from the remote repo and store it as a DIC...">HunspellDownloadTask</a>.  <a href="classpycross_1_1dbapi_1_1_hunspell_download_signals.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_download_task.html">HunspellDownloadTask</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single download task to download one Hunspell dictionary from the remote repo and store it as a DIC file.  <a href="classpycross_1_1dbapi_1_1_hunspell_download_task.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import.html">HunspellImport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main interface to handle downloads and imports of Hunspell dictionaries as SQLite databases.  <a href="classpycross_1_1dbapi_1_1_hunspell_import.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html">HunspellImportSignals</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container for Qt signals used by <a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html" title="A single import task to import words from a DIC file (downloaded from the Hunspell repo) to an SQLite...">HunspellImportTask</a>.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_signals.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_hunspell_import_task.html">HunspellImportTask</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single import task to import words from a DIC file (downloaded from the Hunspell repo) to an SQLite database *.db file.  <a href="classpycross_1_1dbapi_1_1_hunspell_import_task.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpycross_1_1dbapi_1_1_sqlitedb.html">Sqlitedb</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SQLite database driver implementation wrapping the standard Python sqlite3 methods.  <a href="classpycross_1_1dbapi_1_1_sqlitedb.html#details">More...</a><br /></td></tr>
@@ -97,34 +105,52 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a8e866fe9d39ad8c05cb21e669d8d4bc3"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1dbapi.html#a8e866fe9d39ad8c05cb21e669d8d4bc3">NEWLINE</a> = '\n'</td></tr>
+<tr class="memdesc:a8e866fe9d39ad8c05cb21e669d8d4bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> newline symbol  <a href="namespacepycross_1_1dbapi.html#a8e866fe9d39ad8c05cb21e669d8d4bc3">More...</a><br /></td></tr>
 <tr class="separator:a8e866fe9d39ad8c05cb21e669d8d4bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b9c5e67cb6dcc426e4ecd641a5dfb19"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1dbapi.html#a0b9c5e67cb6dcc426e4ecd641a5dfb19">SQL_CREATE_TABLES</a> = \</td></tr>
-<tr class="memdesc:a0b9c5e67cb6dcc426e4ecd641a5dfb19"><td class="mdescLeft">&#160;</td><td class="mdescRight">SQL query to create default table structure.  <a href="namespacepycross_1_1dbapi.html#a0b9c5e67cb6dcc426e4ecd641a5dfb19">More...</a><br /></td></tr>
+<tr class="memdesc:a0b9c5e67cb6dcc426e4ecd641a5dfb19"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> SQL query to create default table structure  <a href="namespacepycross_1_1dbapi.html#a0b9c5e67cb6dcc426e4ecd641a5dfb19">More...</a><br /></td></tr>
 <tr class="separator:a0b9c5e67cb6dcc426e4ecd641a5dfb19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82e7de73bbbfa3bf8425f2aa049ca53a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1dbapi.html#a82e7de73bbbfa3bf8425f2aa049ca53a">SQL_INSERT_POS</a> = \</td></tr>
-<tr class="memdesc:a82e7de73bbbfa3bf8425f2aa049ca53a"><td class="mdescLeft">&#160;</td><td class="mdescRight">SQL query to insert part of speech data.  <a href="namespacepycross_1_1dbapi.html#a82e7de73bbbfa3bf8425f2aa049ca53a">More...</a><br /></td></tr>
+<tr class="memdesc:a82e7de73bbbfa3bf8425f2aa049ca53a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> SQL query to insert part of speech data  <a href="namespacepycross_1_1dbapi.html#a82e7de73bbbfa3bf8425f2aa049ca53a">More...</a><br /></td></tr>
 <tr class="separator:a82e7de73bbbfa3bf8425f2aa049ca53a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82bdee5e709ef7ef01a10b2f3c320a70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1dbapi.html#a82bdee5e709ef7ef01a10b2f3c320a70">SQL_INSERT_WORD</a> = \</td></tr>
-<tr class="memdesc:a82bdee5e709ef7ef01a10b2f3c320a70"><td class="mdescLeft">&#160;</td><td class="mdescRight">SQL query to insert words and part of speech data.  <a href="namespacepycross_1_1dbapi.html#a82bdee5e709ef7ef01a10b2f3c320a70">More...</a><br /></td></tr>
+<tr class="memdesc:a82bdee5e709ef7ef01a10b2f3c320a70"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> SQL query to insert words and part of speech data  <a href="namespacepycross_1_1dbapi.html#a82bdee5e709ef7ef01a10b2f3c320a70">More...</a><br /></td></tr>
 <tr class="separator:a82bdee5e709ef7ef01a10b2f3c320a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0a5ba4bc39b6e3204f9a46948604916"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1dbapi.html#ae0a5ba4bc39b6e3204f9a46948604916">SQL_CLEAR_WORDS</a> = f&quot;delete from {SQL_TABLES['words']['table']};&quot;</td></tr>
-<tr class="memdesc:ae0a5ba4bc39b6e3204f9a46948604916"><td class="mdescLeft">&#160;</td><td class="mdescRight">SQL query to clear words.  <a href="namespacepycross_1_1dbapi.html#ae0a5ba4bc39b6e3204f9a46948604916">More...</a><br /></td></tr>
+<tr class="memdesc:ae0a5ba4bc39b6e3204f9a46948604916"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> SQL query to clear words  <a href="namespacepycross_1_1dbapi.html#ae0a5ba4bc39b6e3204f9a46948604916">More...</a><br /></td></tr>
 <tr class="separator:ae0a5ba4bc39b6e3204f9a46948604916"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67521c175ce1b9561dc268d1c8ceb5cd"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1dbapi.html#a67521c175ce1b9561dc268d1c8ceb5cd">SQL_COUNT_WORDS</a> = f&quot;select count(*) from {SQL_TABLES['words']['table']};&quot;</td></tr>
-<tr class="memdesc:a67521c175ce1b9561dc268d1c8ceb5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">SQL query to count entries (words)  <a href="namespacepycross_1_1dbapi.html#a67521c175ce1b9561dc268d1c8ceb5cd">More...</a><br /></td></tr>
+<tr class="memdesc:a67521c175ce1b9561dc268d1c8ceb5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> SQL query to count entries (words)  <a href="namespacepycross_1_1dbapi.html#a67521c175ce1b9561dc268d1c8ceb5cd">More...</a><br /></td></tr>
 <tr class="separator:a67521c175ce1b9561dc268d1c8ceb5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d250393e2df33c9a3a0c39dc5650e7b"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1dbapi.html#a5d250393e2df33c9a3a0c39dc5650e7b">SQL_GET_WORDS</a> = f&quot;select {SQL_TABLES['words']['table']}.{SQL_TABLES['words']['fid']}, &quot; \</td></tr>
-<tr class="memdesc:a5d250393e2df33c9a3a0c39dc5650e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">SQL query to display all words.  <a href="namespacepycross_1_1dbapi.html#a5d250393e2df33c9a3a0c39dc5650e7b">More...</a><br /></td></tr>
+<tr class="memdesc:a5d250393e2df33c9a3a0c39dc5650e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> SQL query to display all words  <a href="namespacepycross_1_1dbapi.html#a5d250393e2df33c9a3a0c39dc5650e7b">More...</a><br /></td></tr>
 <tr class="separator:a5d250393e2df33c9a3a0c39dc5650e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41d9dccb3b4cb58fae9ae08babc9a08b"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1dbapi.html#a41d9dccb3b4cb58fae9ae08babc9a08b">SQL_GET_POS</a> = f&quot;select * from {SQL_TABLES['pos']['table']};&quot;</td></tr>
-<tr class="memdesc:a41d9dccb3b4cb58fae9ae08babc9a08b"><td class="mdescLeft">&#160;</td><td class="mdescRight">SQL query to display all POS.  <a href="namespacepycross_1_1dbapi.html#a41d9dccb3b4cb58fae9ae08babc9a08b">More...</a><br /></td></tr>
+<tr class="memdesc:a41d9dccb3b4cb58fae9ae08babc9a08b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> SQL query to display all POS  <a href="namespacepycross_1_1dbapi.html#a41d9dccb3b4cb58fae9ae08babc9a08b">More...</a><br /></td></tr>
 <tr class="separator:a41d9dccb3b4cb58fae9ae08babc9a08b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3144f004b27bf45657bb2bdb3c67f334"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepycross_1_1dbapi.html#a3144f004b27bf45657bb2bdb3c67f334">HUNSPELL_REPO</a> = 'https://raw.githubusercontent.com/wooorm/dictionaries/main'</td></tr>
-<tr class="memdesc:a3144f004b27bf45657bb2bdb3c67f334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hunspell dic repo URL.  <a href="namespacepycross_1_1dbapi.html#a3144f004b27bf45657bb2bdb3c67f334">More...</a><br /></td></tr>
+<tr class="memdesc:a3144f004b27bf45657bb2bdb3c67f334"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> Hunspell dic repo URL  <a href="namespacepycross_1_1dbapi.html#a3144f004b27bf45657bb2bdb3c67f334">More...</a><br /></td></tr>
 <tr class="separator:a3144f004b27bf45657bb2bdb3c67f334"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Low-level SQLite database driver implementation with a bunch of handy methods to create the default DB structure to use as a word source, import words from <a href="https://hunspell.github.io/">Hunspell</a> open-source dictionaries, etc. </p>
+<div class="textblock"><p>Implements classes to work with SQLite databases created from <a href="https://github.com/wooorm/dictionaries">Hunspell dictionaries</a>. </p>
+<p>pycrossword can download raw DIC files from the repo for each available language and convert them to SQLite database files (*.db) stored locally in pycross/assets/dic. Each language is denoted by its 2-character short name, e.g. 'en' = English, 'de' = German (deutsch), 'ru' = Russian, etc. So a file stored as pycross/assets/dic/it.db means there is an Italian word source (database) installed and usable to create crosswords. By default, a Hunspell DIC file represents a list of words followed by part-of-speech markers, e.g.: </p><pre>
+ confederacy/SM
+ confederate/M
+ confer/S
+ conferee/SM
+ conference/MGS
+ ...
+ </pre><p> See part-of-speech names: <a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a9252e6d95e27349c6945c23402d2ae5d" title="parts of speech in brief and full notation">utils::globalvars::POS</a> Accordingly, the default structure of the SQLite DB file is as follows: </p><pre>
+ 1. Table 'tpos': parts of speeches
+   * Field 'id': unique record ID
+   * Field 'pos': short part-of-speech name, e.g. 'N' (=noun)
+   * Field 'posdesc': full part-of-speech name, e.g. 'Noun'
+ 2. Table 'twords': words
+   * Field 'id': unique record ID
+   * Field 'word': word proper (in lower case), e.g. 'conference'
+   * Field 'idpos': cross-reference to a part of speech ('id' field in 'tpos' table)
+ </pre><p> See default table and field names: <a class="el" href="namespacepycross_1_1utils_1_1globalvars.html#a3ec4f07db096e411fc1d1cac08976412" title="default SQLite DB table names for word sources">utils::globalvars::SQL_TABLES</a> </p>
 </div><h2 class="groupheader">Variable Documentation</h2>
 <a id="a3144f004b27bf45657bb2bdb3c67f334"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3144f004b27bf45657bb2bdb3c67f334">&#9670;&nbsp;</a></span>HUNSPELL_REPO</h2>
@@ -138,7 +164,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Hunspell dic repo URL. </p>
+<p><code>str</code> Hunspell dic repo URL </p>
 
 </div>
 </div>
@@ -154,6 +180,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>str</code> newline symbol </p>
+
 </div>
 </div>
 <a id="ae0a5ba4bc39b6e3204f9a46948604916"></a>
@@ -168,7 +196,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>SQL query to clear words. </p>
+<p><code>str</code> SQL query to clear words </p>
 
 </div>
 </div>
@@ -184,7 +212,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>SQL query to count entries (words) </p>
+<p><code>str</code> SQL query to count entries (words) </p>
 
 </div>
 </div>
@@ -200,7 +228,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>SQL query to create default table structure. </p>
+<p><code>str</code> SQL query to create default table structure </p>
 
 </div>
 </div>
@@ -216,7 +244,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>SQL query to display all POS. </p>
+<p><code>str</code> SQL query to display all POS </p>
 
 </div>
 </div>
@@ -232,7 +260,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>SQL query to display all words. </p>
+<p><code>str</code> SQL query to display all words </p>
 
 </div>
 </div>
@@ -248,7 +276,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>SQL query to insert part of speech data. </p>
+<p><code>str</code> SQL query to insert part of speech data </p>
 
 </div>
 </div>
@@ -264,7 +292,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>SQL query to insert words and part of speech data. </p>
+<p><code>str</code> SQL query to insert words and part of speech data </p>
 
 </div>
 </div>
