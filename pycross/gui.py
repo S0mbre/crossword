@@ -3736,15 +3736,13 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_help(self, checked):
-        os = getosname()
-        run_exe(['start' if os == 'Windows' else 'open', make_abspath(f"doc/manual/{'chm/UserGuide.chm' if os == 'Windows' else 'html/index.htm'}")],
-                False, False, shell=True)
+        webbrowser.open(os.path.join(DOCS_FOLDER, 'index.htm'), new=2)
 
     ## @brief Slot for MainWindow::act_apiref: shows API reference in browser.
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_apiref(self, checked):
-        run_exe(['start' if getosname() == 'Windows' else 'open', make_abspath("doc/apiref/html/index.html")], False, False, shell=True)
+        webbrowser.open(os.path.join(APIREF_FOLDER, 'index.html'), new=2)
 
     ## @brief Slot for MainWindow::act_contact: shows form to contact author, i.e. me :)).
     @pluggable('general')

@@ -12,6 +12,7 @@
 #   * TextfileWordsource - file-based source
 #   * MultiWordsource - combined word source container that can store any number of individual sources
 from utils.globalvars import *
+from utils.utils import is_iterable
 import re, csv, numpy as np, itertools
 # ******************************************************************************** #
 
@@ -174,7 +175,12 @@ class DBWordsource(Wordsource):
         if not word is None:
             sql += f"""\nwhere ({self.tables['words']['table']}.{self.tables['words']['fwords']} like '{word.lower().replace(blank, "_")}')"""
         if bpos:
-            pos_conj = f"in ({repr(pos)[1:-1]})" if (isinstance(pos, list) or isinstance(pos, tuple)) else f"= {repr(pos)}"
+            if is_iterable(pos):
+                pos = [p.upper() for p in pos]
+                pos_conj = f"in ({repr(pos)[1:-1]})"
+            else:
+                pos = pos.upper()
+                pos_conj = f"= {repr(pos)}"
             sql += f"{conj} {self.tables['pos']['table']}.{self.tables['pos']['fpos']} {pos_conj}"
             
         cur = None
@@ -209,37 +215,41 @@ class TextWordsource(Wordsource):
     # @param max_fetch `int` maximum number of suggestions returned from the word source
     # @warning `None` means no limit on suggestions, which may be time/resource consuming!
     # @param shuffle `bool` if `True`, fetched words will be shuffled
-    def __init__(self, words=[], max_fetch=None, shuffle=True):
-        ## `bool` `True` if the source word list contains part-of-speech data
-        self.bpos = words and isinstance(words[0], tuple) and len(words[0]) == 2
+    def __init__(self, words=[], max_fetch=None, shuffle=True):        
         if words:
             ## `list` list of 2-tuples, where the first element is the source word
             # and the second element is either a list of parts of speech or `None` if 
             # no part-of-speech data is available 
-            self.words = [(w.lower(), list(p)) for (w, p) in words] if self.bpos else [(w.lower(), None) for w in words]
+            self.words = [(w[0].lower(), [p.upper() for p in w[1]] if is_iterable(w[1]) else [w[1].upper()]) \
+                         if (is_iterable(w) and len(w) > 1) \
+                         else (w.lower(), None) for w in words]
         else:
             self.words = []
         super().__init__(max_fetch, shuffle)
         
     ## Valid only if TextWordsource::words not empty
     def isvalid(self):
-        return bool(self.words)
+        return len(self.words) > 0
             
     ## Fetches results from TextWordsource::words
     def fetch(self, word=None, blank=' ', pos=None, filter_func=None, shuffle=True, truncate=True):
         if not self.isvalid() or not self.active: return []
         results = []
-        regex_w = None if word is None else re.compile(word.lower().replace(blank, r'\w'))
-        if pos: pos = list(pos)
+        regex_w = None if word is None else re.compile(word.lower().replace(blank, r'\w'))        
         for w in self.words:
             matched = bool(regex_w.fullmatch(w[0])) if regex_w else True
             if filter_func: matched = matched and filter_func(w[0])
             if not matched: continue            
-            if w[1] and self.bpos and pos:
-                for p in pos:
-                    if p in w[1]:
-                        matched = True
-                        break
+            if w[1] and pos:
+                if is_iterable(pos):
+                    for p in pos:
+                        if p.upper() in w[1]:
+                            matched = True
+                            break
+                    else:
+                        matched = False
+                elif pos.upper() in w[1]:
+                    matched = True
                 else:
                     matched = False
             if matched:
@@ -260,15 +270,22 @@ class TextfileWordsource(TextWordsource):
     # @param max_fetch `int` maximum number of suggestions returned from the word source
     # @warning `None` means no limit on suggestions, which may be time/resource consuming!
     # @param shuffle `bool` if `True`, fetched words will be shuffled
-    def __init__(self, path, enc='utf-8', delimiter=' ', max_fetch=None, shuffle=True):           
+    def __init__(self, path, enc=ENCODING, delimiter=' ', max_fetch=None, shuffle=True):           
         self.words = []
-        self.bpos = False
-        with open(path, 'r', encoding=enc, newline='') as fin:
+        try:
+            self._read_data(path, enc, delimiter)
+        except UnicodeDecodeError:
+            self._read_data(path, 'ascii', delimiter)
+        except:
+            pass
+        Wordsource.__init__(self, max_fetch, shuffle)
+
+    def _read_data(self, path, enc=ENCODING, delimiter=' '):
+        self.words = []
+        with open(path, 'r', encoding=enc, newline='', errors='surrogateescape') as fin:
             reader = csv.reader(fin, delimiter=delimiter, quoting=csv.QUOTE_NONE)
             for row in reader:
                 self.words.append((row[0], row[1:] if len(row) > 1 else None))
-                if len(row) > 1 and not self.bpos: self.bpos = True
-        Wordsource.__init__(self, max_fetch, shuffle)
                 
 # ******************************************************************************** #
 

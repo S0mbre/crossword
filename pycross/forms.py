@@ -5,7 +5,7 @@
 ## @package pycross.forms
 # @brief Classes for all the GUI app's forms except the main window.
 from PyQt5 import (QtGui, QtCore, QtWidgets, QtPrintSupport)
-import os, copy, json
+import os, copy, json, webbrowser
 import numpy as np
 from distutils import version
 
@@ -284,6 +284,15 @@ class BasicDialog(QtWidgets.QDialog):
         super().__init__(parent, flags)
         self.initUI(geometry, title, icon)
         self.setSizePolicy(sizepolicy)
+
+    def event(self, event: QtCore.QEvent):
+        if event.type() == QtCore.QEvent.WhatsThisClicked:
+            # event has type WhatsThisClicked
+            webbrowser.open(event.href(), new=2)
+            QtWidgets.QWhatsThis.hideText()
+            event.accept()
+            return True
+        return super().event(event)
 
     ## @brief Creates the main (central) layout for controls.
     # Must be overridden by child classes to change the layout type
@@ -5949,29 +5958,43 @@ class WordSuggestDialog(BasicDialog):
         self.layout_top = QtWidgets.QHBoxLayout()
         self.l_word = QtWidgets.QLabel(_('Suggestions for:'))
         self.le_word = QtWidgets.QLineEdit('')
-        self.le_word.setToolTip(_("Use '{}' as blank symbol").format(BLANK))
+        self.le_word.setToolTip(_("Use '{}' as blank symbol").format(BLANK))        
         self.le_word.textEdited.connect(self.on_word_edited)
         self.layout_top.addWidget(self.l_word)
         self.layout_top.addWidget(self.le_word)
         self.layout_center = QtWidgets.QHBoxLayout()
         self.lw_words = QtWidgets.QListWidget()
         self.lw_words.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        href = os.path.join(DOCS_FOLDER, '3_7_1_1__peeking_suggestions.htm#id_2')
+        self.lw_words.setWhatsThis(f'<a href="{href}">Help</a>')
         self.lw_words.itemDoubleClicked.connect(self.on_word_dblclick)
         self.tb_actions = QtWidgets.QToolBar()
         self.tb_actions.setOrientation(QtCore.Qt.Vertical)
         self.act_refresh = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Refresh'))
+        href = os.path.join(DOCS_FOLDER, '3_7_1_1__peeking_suggestions.htm#id_3')
+        self.act_refresh.setWhatsThis(f'<a href="{href}">Help</a>')
         self.act_refresh.triggered.connect(self.on_act_refresh)
         self.act_sort = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/sort.png"), _('Sort'))
+        href = os.path.join(DOCS_FOLDER, '3_7_1_1__peeking_suggestions.htm#id_4')
+        self.act_sort.setWhatsThis(f'<a href="{href}">Help</a>')
         self.act_sort.triggered.connect(self.on_act_sort)
         self.act_shuffle = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/shuffle.png"), _('Shuffle'))
+        href = os.path.join(DOCS_FOLDER, '3_7_1_1__peeking_suggestions.htm#id_5')
+        self.act_shuffle.setWhatsThis(f'<a href="{href}">Help</a>')
         self.act_shuffle.triggered.connect(self.on_act_shuffle)
         self.act_source_config = self.tb_actions.addAction(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"), _('Sources...'))
+        href = os.path.join(DOCS_FOLDER, '3_7_1_1__peeking_suggestions.htm#id_6')
+        self.act_source_config.setWhatsThis(f'<a href="{href}">Help</a>')
         self.act_source_config.triggered.connect(self.on_act_source_config)
         self.layout_center.addWidget(self.lw_words)
         self.layout_center.addWidget(self.tb_actions)
         self.l_count = QtWidgets.QLabel('')
+        href = os.path.join(DOCS_FOLDER, '3_7_1_1__peeking_suggestions.htm#id_7')
+        self.l_count.setWhatsThis(f'<a href="{href}">Help</a>')
         self.ch_truncate = QtWidgets.QCheckBox(_('Truncate'))
         self.ch_truncate.setToolTip(_('Uncheck to retrieve all results with no truncation'))
+        href = os.path.join(DOCS_FOLDER, '3_7_1_1__peeking_suggestions.htm#id_8')
+        self.ch_truncate.setWhatsThis(f'<a href="{href}">Help</a>')
         self.ch_truncate.setChecked(True)
         self.ch_truncate.toggled.connect(self.on_ch_truncate)
         self.layout_lower = QtWidgets.QHBoxLayout()
@@ -6021,7 +6044,7 @@ class WordSuggestDialog(BasicDialog):
             if self.results:
                 cnt = len(self.results)
                 self.lw_words.addItems(self.results)
-                self.sort_words()
+                #self.sort_words()
         self.l_count.setText(_("{} result{}").format(cnt, ('s' if cnt and cnt > 1 else '')))
         self.update_actions()
 

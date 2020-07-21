@@ -60,6 +60,10 @@ DICFOLDER = make_abspath('assets/dic')
 ICONFOLDER = make_abspath('assets/icons')
 ## path to the plugins folder containing user plugins
 PLUGINS_FOLDER = make_abspath('plugins')
+## path to the documentation folder
+DOCS_FOLDER = make_abspath('doc/manual/html')
+## path to the documentation folder
+APIREF_FOLDER = make_abspath('doc/apiref/html')
 ## app interface languages in brief and full notation
 LANG = {'en': 'English', 'ru': 'Russian', 'fr': 'French', 'es': 'Spanish', 'de': 'German', 'it': 'Italian'}
 ## parts of speech in brief and full notation
