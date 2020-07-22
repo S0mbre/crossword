@@ -29,10 +29,10 @@
 * + [v. 0.4] undo / redo
 * + [v. 0.4] word source database manager (import from Hunspell, edit DB manually)
 
+* + [v. 0.5] whats-this tips for UI elements linked to Help sections 
+
 * [v. 0.5] fill all clues automatically from Google
 * [v. 0.5] search text in grid and clues
-* [v. 0.5] whats-this tips for UI elements linked to Help sections 
-			(QWhatsThis: https://doc.qt.io/qt-5/qwhatsthis.html)
 * [v. 0.5] non-rectangular cells (circles, hexagons, triangles, etc)
 * [v. 0.5] customizable interval between cells in grid (>=0)
 * [v. 0.5] individual cell styling (color, shape, font...) and custom style sets

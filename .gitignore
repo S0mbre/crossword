@@ -10,6 +10,7 @@ pycross/assets/*.txt
 pycross/settings.pxjson
 */*.log
 */*.json
+*/*.chw
 */autosaved.xpf
 /mynotes.txt
 /*.xpf

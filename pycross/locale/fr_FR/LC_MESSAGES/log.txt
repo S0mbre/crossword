@@ -1,2 +1,2 @@
 TRANSLATING pycross\locale\fr_FR\LC_MESSAGES\base.po from en into fr...
-Found 79 untranslated entries (11% of total)
+Found 1 untranslated entries (1% of total)

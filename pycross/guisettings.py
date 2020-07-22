@@ -24,7 +24,7 @@ class CWSettings:
                             'act_undo', 'act_redo', 'SEP', 'act_edit', 'SEP', 'act_gen',
                             'act_clear', 'act_clear_wd', 'act_erase_wd',
                             'act_suggest', 'act_lookup', 'act_editclue', 'SEP', 'act_wsrc', 'act_info',
-                            'act_stats', 'act_print', 'SEP', 'act_config', 'act_update', 'act_help']
+                            'act_stats', 'act_print', 'SEP', 'act_config', 'act_update', 'act_help', 'act_whatsthis']
         },
     'cw_settings': {'timeout': 60.0, 'method': 'recurse', 'pos': 'N', 'log': None},
     'grid_style': {'scale': 100, 'show': True, 'line': QtCore.Qt.SolidLine, 'header': False,

@@ -11,7 +11,8 @@
 
     <meta property="og:type" content="article" />
     <meta property="og:title" content="3.9.7. Creating word sources from Hunspell dictionaries" />
-    <meta property="og:description" content="3.9.7. Creating word sources from Hunspell dictionaries&#x000D;&#x000A;&#x000D;&#x000A;&lt;&#x041D;&#x0415; &#x0417;&#x0410;&#x0411;&#x042B;&#x0422;&#x042C;&gt;: &#x0417;&#x0430;&#x043C;&#x0435;&#x043D;&#x0438;&#x0442;&#x0435; &#x044D;&#x0442;&#x043E;&#x0442; &#x0442;&#x0435;&#x043A;&#x0441;&#x0442; &#x043D;&#x0430; &#x0441;&#x0432;&#x043E;&#x0439;. &#x0416;&#x0435;&#x043B;&#x0430;&#x0442;&#x0435;&#x043B;&#x044C;&#x043D;&#x043E; &#x0442;&#x0430;&#x043A;&#x0436;&#x0435; &#x0441;&#x043E;&#x0437;&#x0434;&#x0430;&#x0442;&#x044C; &#x043A;&#x043B;&#x044E;&#x0447;&#x0435;&#x0432;&#x043E;&#x0435; &#x0441;&#x043B;&#x043E;&#x0432;&#x043E; &#x0434;&#x043B;&#x044F; &#x044D;&#x0442;&#x043E;&#x0433;&#x043E; &#x0440;&#x0430;&#x0437;&#x0434;&#x0435;&#x043B;&#x0430;." />
+    <meta property="og:description" content="3.9.7. Creating word sources from Hunspell dictionaries&#x000D;&#x000A;&#x000D;&#x000A;The easiest way to create comprehensive word lists is to import ready-made publicly available spellchecking dictionaries into an SQLite database. pycrossword provides a convenient tool called" />
+    <meta property="og:image" content="https://github.com/S0mbre/crossword/wiki/drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_screen.png" />
     <meta property="og:url" content="https://github.com/S0mbre/crossword/wiki/3_9_7__creating_word_sources_from_hunspell_dictionaries.htm" />
 
     <script type="text/javascript">
@@ -49,7 +50,7 @@
     if (document.referrer == "" && navigator.userAgent == "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11")
     {
         var im = document.createElement("img");
-        im.src = "0";
+        im.src = "https://github.com/S0mbre/crossword/wiki/drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_screen.png";
         document.body.appendChild(im);
 
         $.drex_avoid_load = true;
@@ -262,7 +263,7 @@
                     <div class="b-controlButtons">
                         <ul class="b-controlButtons__items">
                             <li class="b-controlButtons__item m-controlButtons__item__prev"><a href="3_9_6__excluded_word_list.htm" class="b-controlButtons__link" title="Previous page"><span class="b-controlButtons__link_icon"></span><span class="b-controlButtons__link_text">&#xa0;Previous page</span></a></li>
-                            <li class="b-controlButtons__item m-controlButtons__item__next"><a href="3_10__generating_the_crossword.htm" class="b-controlButtons__link" title="Next page"><span class="b-controlButtons__link_text">Next page&#xa0;</span><span class="b-controlButtons__link_icon"></span></a></li>
+                            <li class="b-controlButtons__item m-controlButtons__item__next"><a href="3_9_7_1__installing_dictionaries.htm" class="b-controlButtons__link" title="Next page"><span class="b-controlButtons__link_text">Next page&#xa0;</span><span class="b-controlButtons__link_icon"></span></a></li>
                                                 </ul>
                     </div>
                 </td>
@@ -291,7 +292,7 @@
                             .addClass("b-article__headerSide m-article__headerSide__buttons")
                             .append(
                                 $("<div></div>").addClass("b-controlButtons")
-                                .html($("<ul></ul>").addClass("b-controlButtons__items").html("    <li class=\"b-controlButtons__item m-controlButtons__item__prev\"><a href=\"3_9_6__excluded_word_list.htm\" class=\"b-controlButtons__link\" title=\"Previous page\"><span class=\"b-controlButtons__link_icon\"></span><span class=\"b-controlButtons__link_text\">&#xa0;Previous page</span></a></li>\n    <li class=\"b-controlButtons__item m-controlButtons__item__next\"><a href=\"3_10__generating_the_crossword.htm\" class=\"b-controlButtons__link\" title=\"Next page\"><span class=\"b-controlButtons__link_text\">Next page&#xa0;</span><span class=\"b-controlButtons__link_icon\"></span></a></li>\n"))
+                                .html($("<ul></ul>").addClass("b-controlButtons__items").html("    <li class=\"b-controlButtons__item m-controlButtons__item__prev\"><a href=\"3_9_6__excluded_word_list.htm\" class=\"b-controlButtons__link\" title=\"Previous page\"><span class=\"b-controlButtons__link_icon\"></span><span class=\"b-controlButtons__link_text\">&#xa0;Previous page</span></a></li>\n    <li class=\"b-controlButtons__item m-controlButtons__item__next\"><a href=\"3_9_7_1__installing_dictionaries.htm\" class=\"b-controlButtons__link\" title=\"Next page\"><span class=\"b-controlButtons__link_text\">Next page&#xa0;</span><span class=\"b-controlButtons__link_icon\"></span></a></li>\n"))
                             )
                         )
                     )
@@ -342,8 +343,101 @@
     </noscript>
                 <div class="description_on_page"><div class="p" style="text-align: center; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="ic"><h1><strong>3.9.7. Creating word sources from Hunspell dictionaries</strong></h1></div></div>
 <div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
-<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&lt;НЕ ЗАБЫТЬ&gt;: Замените этот текст на свой. Желательно также создать ключевое слово для этого раздела.</div>
-</div>                                    	<div class="b-socialplugin__layout">
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">The easiest way to create comprehensive word lists is to import ready-made publicly available spellchecking dictionaries into an <a class="local_link" href="3_9_1__word_source_types.htm#3.9.1.1"><span class="de_2B94C39861">SQLite database</span></a>. <strong>pycrossword</strong> provides a convenient tool called the <span class="menu"><strong>Database Manager</strong></span>, which lets you review, install / uninstall and edit language-specific Hunspell dictionaries.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" id="3.9.7.1"></a><h2><strong>Hunspell dictionaries</strong></h2></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">A Hunspell dictionary is just a plain text file with words and part-of-speech data as discussed in <a class="local_link" href="3_9_1__word_source_types.htm#3.9.1.2"><span class="de_2B94C39861">Section 3.9.1</span></a>. Such dictionaries typically have the <span class="code">*.dic</span> file extension and are compiled for each language. For instance, a Hunspell dictionary for the English language might be stored as <span class="code">en.dic</span> in the default location for word sources (<span class="code">pycross/assets/dic</span>).</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">The source for the Hunspell dictionaries is the public repository on Github: <a href="https://github.com/wooorm/dictionaries"><span class="de_2B94C39861">https://github.com/wooorm/dictionaries</span></a> You can read more about the Hunspell project following <a href="https://hunspell.github.io/"><span class="de_2B94C39861">here</span></a>.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><strong>pycrossword</strong> is able to download, parse and convert these dictionaries into SQLite databases with the <a class="local_link" href="3_9_2_1__database_sources.htm#id_7"><span class="de_2B94C39861">default table / field names</span></a>, so they can be used immediately as word sources for crossword generation.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" id="3.9.7.2"></a><h2><strong>Reviewing the installed and available dictionaries</strong></h2></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">To see which dictionaries can and are already installed, launch the <span class="menu"><strong>Database Manager</strong></span> by pressing the <img  alt="" style="border: solid 0px;  " width="32" height="31" class=" de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_custom.png"/> button in the <a class="local_link" href="3_9_2__adding_and_editing_word_sources.htm#id_2"><span class="menu"><span class="de_2B94C39861"><strong>Source Manager Toolbar</strong></span></span></a>. The Database Manager main window is shown below:</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: center; direction: ltr; margin-left: 0px; text-indent: 0px;">
+<map name="controlmapecb3f363_a3a0_4686_8006_77215c86d23e" id="controlmapecb3f363_a3a0_4686_8006_77215c86d23e">
+<area shape="rect" alt="" href="#id_5" coords="231,229,259,257" data-coord-left="231" data-coord-top="229" data-coord-right="259" data-coord-bottom="257"  />
+<area shape="rect" alt="" href="#id_6" coords="231,318,259,346" data-coord-left="231" data-coord-top="318" data-coord-right="259" data-coord-bottom="346"  />
+<area shape="rect" alt="" href="#id_7" coords="231,375,259,403" data-coord-left="231" data-coord-top="375" data-coord-right="259" data-coord-bottom="403"  />
+<area shape="rect" alt="" href="#id_8" coords="231,442,259,470" data-coord-left="231" data-coord-top="442" data-coord-right="259" data-coord-bottom="470"  />
+<area shape="rect" alt="" href="#id_1" coords="232,169,260,197" data-coord-left="232" data-coord-top="169" data-coord-right="260" data-coord-bottom="197"  />
+<area shape="rect" alt="" href="#id_2" coords="355,33,383,61" data-coord-left="355" data-coord-top="33" data-coord-right="383" data-coord-bottom="61"  />
+<area shape="rect" alt="" href="#id_3" coords="495,33,523,61" data-coord-left="495" data-coord-top="33" data-coord-right="523" data-coord-bottom="61"  />
+<area shape="rect" alt="" href="#id_4" coords="639,33,667,61" data-coord-left="639" data-coord-top="33" data-coord-right="667" data-coord-bottom="61"  />
+</map><img usemap="#controlmapecb3f363_a3a0_4686_8006_77215c86d23e"  alt="3.9.7. Creating word sources from Hunspell dictionaries" style="border: solid 0px;  " width="1474" height="619" class="de_wndimg de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_screen.png"/></div>
+<div class="p" style="text-align: center; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" id="Fig._3.9.7.1"></a><span class="caption"><strong>Fig. 3.9.7.1. Database Manager: the dictionary list</strong></span></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;">&#160;</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="de_ctrl"><table><tr><td><a class="anchor" id="id_1"></a><div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" href="#top"><img  alt="1" style="border: solid 0px;  float: left; " width="40" height="40" class="de_ctrlbullet de_780D01ADE8" src="drex_bullet_1.png"/></a><div class="ic"><h2><strong>Refresh dictionary list</strong></h2></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><img  alt="1. Refresh dictionary list" style="border: solid 0px;  " width="34" height="31" class="de_ctrlimg de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_control_1.png"/></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">Refresh the list of dictionaries from the remote server and re-read installed dictionary data.</div>
+</td></tr><tr class="topLinkRow" style="border-style:none"><td style="border-style:none; text-align: right;"><div style="text-align: right; font-size:8pt"><a href="#top">Top</a></div></td></tr></table></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="de_ctrl"><table><tr><td><a class="anchor" id="id_2"></a><div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" href="#top"><img  alt="2" style="border: solid 0px;  float: left; " width="40" height="40" class="de_ctrlbullet de_780D01ADE8" src="drex_bullet_2.png"/></a><div class="ic"><h2><strong>Execute pending operations</strong></h2></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><img  alt="2. Execute pending operations" style="border: solid 0px;  " width="28" height="28" class="de_ctrlimg de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_control_2.png"/></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">When you have selected and configured the dictionaries you'd like to install / reinstall and those you want to uninstall, press this button to execute all these operations.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><span class="de_8B7D6AF64A"><strong>Unless you press this button, no changes will be made!</strong> </span>If you want to cancel your <strong>planned</strong> operations, just <a class="local_link" href="3_9_7__creating_word_sources_from_hunspell_dictionaries.htm#id_1"><span class="de_2B94C39861">refresh the list</span></a>.</div>
+</td></tr><tr class="topLinkRow" style="border-style:none"><td style="border-style:none; text-align: right;"><div style="text-align: right; font-size:8pt"><a href="#top">Top</a></div></td></tr></table></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="de_ctrl"><table><tr><td><a class="anchor" id="id_3"></a><div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" href="#top"><img  alt="3" style="border: solid 0px;  float: left; " width="40" height="40" class="de_ctrlbullet de_780D01ADE8" src="drex_bullet_3.png"/></a><div class="ic"><h2><strong>Stop running operations</strong></h2></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><img  alt="3. Stop running operations" style="border: solid 0px;  " width="28" height="28" class="de_ctrlimg de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_control_3.png"/></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">Press this button if you want to interrupt / cancel the running installation / uninstallation process.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><span class="de_8B7D6AF64A"><strong>Note that in case of incomplete steps (e.g. incompletely downloaded file), all left-over files will be deleted!</strong></span></div>
+</td></tr><tr class="topLinkRow" style="border-style:none"><td style="border-style:none; text-align: right;"><div style="text-align: right; font-size:8pt"><a href="#top">Top</a></div></td></tr></table></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="de_ctrl"><table><tr><td><a class="anchor" id="id_4"></a><div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" href="#top"><img  alt="4" style="border: solid 0px;  float: left; " width="40" height="40" class="de_ctrlbullet de_780D01ADE8" src="drex_bullet_4.png"/></a><div class="ic"><h2><strong>Peek dictionary content</strong></h2></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><img  alt="4. Peek dictionary content" style="border: solid 0px;  " width="28" height="28" class="de_ctrlimg de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_control_4.png"/></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">You can press this button when a dictionary is selected in the list to view its raw content (as it is in the original remote file), without actually downloading or installing it.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">To cancel downloading / showing the file content, press this button again or deselect the current dictionary (click away from it).</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">Below is an example showing the content of the Breton dictionary in a separate viewing panel:</div>
+<div class="p" style="text-align: center; direction: ltr; margin-left: 50px; text-indent: 0px;"><img  alt="" style="border: solid 0px;  " width="1161" height="446" class=" de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_custom_2.png"/></div>
+<div class="p" style="text-align: center; direction: ltr; margin-left: 50px; text-indent: 0px;"><a class="anchor" id="Fig._3.9.7.2"></a><span class="caption"><strong>Fig. 3.9.7.2. Previewing raw dictionary content</strong></span></div>
+</td></tr><tr class="topLinkRow" style="border-style:none"><td style="border-style:none; text-align: right;"><div style="text-align: right; font-size:8pt"><a href="#top">Top</a></div></td></tr></table></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="de_ctrl"><table><tr><td><a class="anchor" id="id_5"></a><div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" href="#top"><img  alt="5" style="border: solid 0px;  float: left; " width="40" height="40" class="de_ctrlbullet de_780D01ADE8" src="drex_bullet_5.png"/></a><div class="ic"><h2><strong>Installed dictionaries</strong></h2></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><img  alt="5. Installed dictionaries" style="border: solid 0px;  " width="254" height="24" class="de_ctrlimg de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_control_5.png"/></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">This is how an installed dictionary looks like. Note the block-like checkbox which means you can either leave it, check it (to <a class="local_link" href="3_9_7__creating_word_sources_from_hunspell_dictionaries.htm#id_7"><span class="de_2B94C39861">reinstall</span></a>) or uncheck it to <a class="local_link" href="3_9_7__creating_word_sources_from_hunspell_dictionaries.htm#id_6"><span class="de_2B94C39861">uninstall</span></a>.</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">&quot;Installed&quot; means that <strong>pycrossword</strong> has found an existing SQLite database file for that language (<span class="code">de.db</span> in this case) in the default word source location. </div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">The number in the third column is the total number of entries (words) in that database.</div>
+</td></tr><tr class="topLinkRow" style="border-style:none"><td style="border-style:none; text-align: right;"><div style="text-align: right; font-size:8pt"><a href="#top">Top</a></div></td></tr></table></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="de_ctrl"><table><tr><td><a class="anchor" id="id_6"></a><div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" href="#top"><img  alt="6" style="border: solid 0px;  float: left; " width="40" height="40" class="de_ctrlbullet de_780D01ADE8" src="drex_bullet_6.png"/></a><div class="ic"><h2><strong>Dictionaries marked to be uninstalled</strong></h2></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><img  alt="6. Dictionaries marked to be uninstalled" style="border: solid 0px;  " width="242" height="24" class="de_ctrlimg de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_control_6.png"/></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">By <strong>unchecking</strong> an installed dictionary, you mark it to be <strong>uninstalled</strong>. </div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">In this example, there is an existing Russian-language database with ca. 170k words, which you want to uninstall (delete).</div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><span class="de_8B7D6AF64A"><strong>Note that by uninstalling a dictionary you actually delete the associated </strong></span><span class="code"><span class="de_8B7D6AF64A"><strong>*.db</strong></span></span><span class="de_8B7D6AF64A"><strong> file from your word source location!</strong></span></div>
+</td></tr><tr class="topLinkRow" style="border-style:none"><td style="border-style:none; text-align: right;"><div style="text-align: right; font-size:8pt"><a href="#top">Top</a></div></td></tr></table></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="de_ctrl"><table><tr><td><a class="anchor" id="id_7"></a><div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" href="#top"><img  alt="7" style="border: solid 0px;  float: left; " width="40" height="40" class="de_ctrlbullet de_780D01ADE8" src="drex_bullet_7.png"/></a><div class="ic"><h2><strong>Dictionaries marked to be installed</strong></h2></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><img  alt="7. Dictionaries marked to be installed" style="border: solid 0px;  " width="244" height="23" class="de_ctrlimg de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_control_7.png"/></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">By <strong>checking</strong> a dictionary, you mark it for <strong>installation</strong>. </div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">If the dictionary is already <a class="local_link" href="3_9_7__creating_word_sources_from_hunspell_dictionaries.htm#id_5"><span class="de_2B94C39861">installed</span></a>, it will be reinstalled from scratch. <span class="de_8B7D6AF64A"><strong>The existing dictionary will be completely replaced!</strong></span></div>
+</td></tr><tr class="topLinkRow" style="border-style:none"><td style="border-style:none; text-align: right;"><div style="text-align: right; font-size:8pt"><a href="#top">Top</a></div></td></tr></table></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><div class="de_ctrl"><table><tr><td><a class="anchor" id="id_8"></a><div class="p" style="text-align: left; direction: ltr; margin-left: 0px; text-indent: 0px;"><a class="anchor" href="#top"><img  alt="8" style="border: solid 0px;  float: left; " width="40" height="40" class="de_ctrlbullet de_780D01ADE8" src="drex_bullet_8.png"/></a><div class="ic"><h2><strong>Dictionaries available for installation</strong></h2></div></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;"><img  alt="8. Dictionaries available for installation" style="border: solid 0px;  " width="178" height="22" class="de_ctrlimg de_780D01ADE8" src="drex_3_9_7__creating_word_sources_from_hunspell_dictionaries_control_8.png"/></div>
+<div class="p" style="text-align: left; direction: ltr; margin-left: 50px; text-indent: 0px;">Dictionaries that are not currently installed or marked for installation are unchecked and unmarked. You may check them to mark for <a class="local_link" href="3_9_7__creating_word_sources_from_hunspell_dictionaries.htm#id_7"><span class="de_2B94C39861">installation</span></a>. </div>
+</td></tr><tr class="topLinkRow" style="border-style:none"><td style="border-style:none; text-align: right;"><div style="text-align: right; font-size:8pt"><a href="#top">Top</a></div></td></tr></table></div></div>
+</div>                	<div class="menu_on_page">
+		<h2>The contents of 3.9.7. Creating word sources from Hunspell dictionaries</h2>
+		<div class="m-workZone_seeAlso_itemContent">
+	<span class="b-tree__spacer">
+		<span class="b-tree__i_article">
+			<span class="b-tree__i_article_inner"></span>
+		</span>
+	</span>
+	<span class="b-tree__itemText"><a class="b-breadCrumbs__link" href="3_9_7_1__installing_dictionaries.htm">3.9.7.1. Installing dictionaries</a></span>
+</div><div class="m-workZone_seeAlso_itemContent">
+	<span class="b-tree__spacer">
+		<span class="b-tree__i_article">
+			<span class="b-tree__i_article_inner"></span>
+		</span>
+	</span>
+	<span class="b-tree__itemText"><a class="b-breadCrumbs__link" href="3_9_7_2__uninstalling_dictionaries.htm">3.9.7.2. Uninstalling dictionaries</a></span>
+</div><div class="m-workZone_seeAlso_itemContent">
+	<span class="b-tree__spacer">
+		<span class="b-tree__i_article">
+			<span class="b-tree__i_article_inner"></span>
+		</span>
+	</span>
+	<span class="b-tree__itemText"><a class="b-breadCrumbs__link" href="3_9_7_3__viewing_and_editing_installed_dictionaries.htm">3.9.7.3. Viewing and editing installed dictionaries</a></span>
+</div>	</div>
+                    	<div class="b-socialplugin__layout">
 		<table class="b-socialplugin__buttons">
 			<tr class="b-socialplugin__buttons_tr">
 				<td class= "b-socialplugin__button">

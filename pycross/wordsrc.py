@@ -189,14 +189,7 @@ class DBWordsource(Wordsource):
         except:
             return []
         if not cur: return []
-        results = []
-        for row in cur:
-            r = row[0]
-            if filter_func:
-                if filter_func(r):
-                    results.append(r)
-            else:
-                results.append(r)
+        results = [row[0] for row in cur if not filter_func or filter_func(row[0])] 
         cur.close()
         if shuffle: results = self.shuffle(results)
         return self.truncate(results) if truncate else results

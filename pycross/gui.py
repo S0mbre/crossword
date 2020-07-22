@@ -26,6 +26,8 @@ from forms import (MsgBox, LoadCwDialog, CwTable, ClickableLabel, CrosswordMenu,
 from crossword import Word, Crossword, CWError, FILLER, FILLER2, BLANK
 from wordsrc import DBWordsource, TextWordsource, TextfileWordsource, MultiWordsource
 
+SHOWHELP = _('Show help')
+
 # ******************************************************************************** #
 
 ## Crossword generation thread class
@@ -197,84 +199,116 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_new = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/crossword.png"), _('New'))
         self.act_new.setToolTip(_('Create new crossword'))
         self.act_new.setShortcuts(QtGui.QKeySequence.New)
+        href = os.path.join(DOCS_FOLDER, '3_3__creating_a_new_crossword.htm')
+        self.act_new.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_new.triggered.connect(self.on_act_new)
         ## `QtWidgets.QAction` open crossword (file) action
         self.act_open = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/folder-15.png"), _('Open'))
         self.act_open.setToolTip(_('Open crossword from file'))
         self.act_open.setShortcuts(QtGui.QKeySequence.Open)
+        href = os.path.join(DOCS_FOLDER, '3_4__loading__saving__reloading_and_closing_crosswords.htm#3.4.1')
+        self.act_open.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_open.triggered.connect(self.on_act_open)
         ## `QtWidgets.QAction` crossword save action
         self.act_save = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/save.png"), _('Save'))
         self.act_save.setToolTip(_('Save crossword'))
         self.act_save.setShortcuts(QtGui.QKeySequence.Save)
+        href = os.path.join(DOCS_FOLDER, '3_4__loading__saving__reloading_and_closing_crosswords.htm#3.4.2')
+        self.act_save.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_save.triggered.connect(self.on_act_save)
         ## `QtWidgets.QAction` crossword save as (export) action
         self.act_saveas = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/saveas.png"), _('Save As...'))
         self.act_saveas.setToolTip(_('Save crossword as new file'))
         self.act_saveas.setShortcuts(QtGui.QKeySequence.SaveAs)
+        href = os.path.join(DOCS_FOLDER, '3_5__exporting_the_crossword.htm')
+        self.act_saveas.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_saveas.triggered.connect(self.on_act_saveas)
         ## `QtWidgets.QAction` crossword close action
         self.act_close = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/close.png"), _('Close'))
         self.act_close.setToolTip(_('Close current crossword'))
         self.act_close.setShortcuts(QtGui.QKeySequence.Close)
+        href = os.path.join(DOCS_FOLDER, '3_4__loading__saving__reloading_and_closing_crosswords.htm#3.4.4')
+        self.act_close.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_close.triggered.connect(self.on_act_close)
         ## `QtWidgets.QAction` crossword reload (from file) action
         self.act_reload = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/repeat.png"), _('Reload'))
         self.act_reload.setToolTip(_('Reload crossword from file'))
         self.act_reload.setShortcuts(QtGui.QKeySequence.Refresh)
+        href = os.path.join(DOCS_FOLDER, '3_4__loading__saving__reloading_and_closing_crosswords.htm#3.4.3')
+        self.act_reload.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_reload.triggered.connect(self.on_act_reload)
         ## `QtWidgets.QAction` crossword share action
         self.act_share = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/share-1.png"), _('Share'))
         self.act_share.setToolTip(_('Share crossword in social networks'))
         self.act_share.setShortcut(QtGui.QKeySequence('F10'))
+        href = os.path.join(DOCS_FOLDER, '3_11__sharing_the_crossword.htm')
+        self.act_share.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_share.triggered.connect(self.on_act_share)
         ## `QtWidgets.QAction` crossword edit action (toggle editing mode)
         self.act_edit = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/edit.png"), _('Edit'))
         self.act_edit.setToolTip(_('Edit crossword'))
         self.act_edit.setCheckable(True)
         self.act_edit.setShortcut(QtGui.QKeySequence('Ctrl+e'))
+        href = os.path.join(DOCS_FOLDER, '3_7_2_1__blocking_and_unblocking_cells.htm#3.7.2.1.2')
+        self.act_edit.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_edit.toggled.connect(self.on_act_edit)
         ## `QtWidgets.QAction` undo action -- see utils::undo
         self.act_undo = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/undo.png"), _('Undo'))
         self.act_undo.setToolTip(_('Undo last action'))
         self.act_undo.setShortcut(QtGui.QKeySequence.Undo)
         self.act_undo.hovered.connect(self.on_act_undo_hovered)
+        href = os.path.join(DOCS_FOLDER, '3_2_2__edit_menu.htm#id_1')
+        self.act_undo.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_undo.triggered.connect(self.on_act_undo)
         ## `QtWidgets.QAction` redo action -- see utils::undo
         self.act_redo = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/redo.png"), _('Redo'))
         self.act_redo.setToolTip(_('Redo last action'))
         self.act_redo.setShortcut(QtGui.QKeySequence.Redo)
+        href = os.path.join(DOCS_FOLDER, '3_2_2__edit_menu.htm#id_2')
+        self.act_redo.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_redo.hovered.connect(self.on_act_redo_hovered)
         self.act_redo.triggered.connect(self.on_act_redo)
         ## `QtWidgets.QAction` add row action
         self.act_addrow = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add_row.png"), _('Add row'))
         self.act_addrow.setToolTip(_('Add row before selected'))
         self.act_addrow.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_Plus))
+        href = os.path.join(DOCS_FOLDER, '3_7_2_2__adding_and_deleting_rows_and_columns.htm#3.7.2.2.1')
+        self.act_addrow.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_addrow.triggered.connect(self.on_act_addrow)
         ## `QtWidgets.QAction` delete row action
         self.act_delrow = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/delete_row.png"), _('Delete row'))
         self.act_delrow.setToolTip(_('Delete row'))
         self.act_delrow.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_Minus))
+        href = os.path.join(DOCS_FOLDER, '3_7_2_2__adding_and_deleting_rows_and_columns.htm#3.7.2.2.2')
+        self.act_delrow.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_delrow.triggered.connect(self.on_act_delrow)
         ## `QtWidgets.QAction` add column action
         self.act_addcol = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/add_col.png"), _('Add column'))
         self.act_addcol.setToolTip(_('Add column before selected'))
         self.act_addcol.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_Equal))
+        href = os.path.join(DOCS_FOLDER, '3_7_2_2__adding_and_deleting_rows_and_columns.htm#3.7.2.2.3')
+        self.act_addcol.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_addcol.triggered.connect(self.on_act_addcol)
         ## `QtWidgets.QAction` delete column action
         self.act_delcol = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/delete_col.png"), _('Delete column'))
         self.act_delcol.setToolTip(_('Delete column'))
         self.act_delcol.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_Underscore))
+        href = os.path.join(DOCS_FOLDER, '3_7_2_2__adding_and_deleting_rows_and_columns.htm#3.7.2.2.4')
+        self.act_delcol.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_delcol.triggered.connect(self.on_act_delcol)
         ## `QtWidgets.QAction` reflect (duplicate) grid action
         self.act_reflect = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/windows-1.png"), _('Duplicate'))
         self.act_reflect.setToolTip(_('Duplicate (reflect) grid cells to any direction'))
         self.act_reflect.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_7))
+        href = os.path.join(DOCS_FOLDER, '3_7_2_3__duplicating_the_grid.htm')
+        self.act_reflect.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_reflect.triggered.connect(self.on_act_reflect)
         ## `QtWidgets.QAction` crossword generate (fill) action
         self.act_gen = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/flash.png"), _('Generate'))
         self.act_gen.setToolTip(_('Generate (solve) crossword'))
         self.act_gen.setShortcut(QtGui.QKeySequence('Ctrl+g'))
+        href = os.path.join(DOCS_FOLDER, '3_10__generating_the_crossword.htm')
+        self.act_gen.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_gen.triggered.connect(self.on_act_gen)
         ## `QtWidgets.QAction` stop (current operation) action
         self.act_stop = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/stop-1.png"), _('Stop'))
@@ -287,74 +321,110 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_clear = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/dust.png"), _('Clear'))
         self.act_clear.setToolTip(_('Clear all words'))
         self.act_clear.setShortcut(QtGui.QKeySequence('Ctrl+d'))
+        href = os.path.join(DOCS_FOLDER, '3_7_1__editing_words.htm#3.7.1.6')
+        self.act_clear.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_clear.triggered.connect(self.on_act_clear)
         ## `QtWidgets.QAction` clear word action
         self.act_clear_wd = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/minus.png"), _('Clear word'))
         self.act_clear_wd.setToolTip(_('Clear word'))
         self.act_clear_wd.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.Key_Delete))
+        href = os.path.join(DOCS_FOLDER, '3_7_1__editing_words.htm#3.7.1.5')
+        self.act_clear_wd.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_clear_wd.triggered.connect(self.on_act_clear_wd)
         ## `QtWidgets.QAction` erase word action
         self.act_erase_wd = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/error.png"), _('Erase word'))
         self.act_erase_wd.setToolTip(_('Erase word'))
         self.act_erase_wd.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL, QtCore.Qt.SHIFT, QtCore.Qt.Key_Delete))
+        href = os.path.join(DOCS_FOLDER, '3_7_1__editing_words.htm#3.7.1.5')
+        self.act_erase_wd.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_erase_wd.triggered.connect(self.on_act_erase_wd)
         ## `QtWidgets.QAction` suggest word action
         self.act_suggest = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/magic-wand.png"), _('Suggest word'))
         self.act_suggest.setToolTip(_('Suggest word'))
         self.act_suggest.setShortcuts(QtGui.QKeySequence.Find)
+        href = os.path.join(DOCS_FOLDER, '3_7_1_1__peeking_suggestions.htm')
+        self.act_suggest.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_suggest.triggered.connect(self.on_act_suggest)
         ## `QtWidgets.QAction` lookup word action
         self.act_lookup = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/worldwide.png"), _('Lookup word'))
         self.act_lookup.setToolTip(_('Lookup word definition'))
         self.act_lookup.setShortcut(QtGui.QKeySequence('Ctrl+l'))
+        href = os.path.join(DOCS_FOLDER, '3_7_3_1__looking_up_word_definitions.htm')
+        self.act_lookup.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_lookup.triggered.connect(self.on_act_lookup)
         ## `QtWidgets.QAction` go to clue action
         self.act_editclue = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/key.png"), _('Edit clue'))
         self.act_editclue.setToolTip(_('Edit clue'))
         self.act_editclue.setShortcut(QtGui.QKeySequence('Ctrl+k'))
+        href = os.path.join(DOCS_FOLDER, '3_7_3__editing_the_clues.htm')
+        self.act_editclue.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_editclue.triggered.connect(self.on_act_editclue)
         ## `QtWidgets.QAction` clear clues action
         self.act_clearclues = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/key-clear.png"), _('Clear clues'))
         self.act_clearclues.setToolTip(_('Clear all clues'))
         self.act_clearclues.setShortcut(QtGui.QKeySequence('Ctrl+Alt+k'))
+        href = os.path.join(DOCS_FOLDER, '3_7_3__editing_the_clues.htm')
+        self.act_clearclues.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_clearclues.triggered.connect(self.on_act_clearclues)
         ## `QtWidgets.QAction` edit word sources action
         self.act_wsrc = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/database-3.png"), _('Word sources'))
         self.act_wsrc.setToolTip(_('Select wordsources'))
         self.act_wsrc.setShortcut(QtGui.QKeySequence('Ctrl+m'))
+        href = os.path.join(DOCS_FOLDER, '3_9_2__adding_and_editing_word_sources.htm')
+        self.act_wsrc.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_wsrc.triggered.connect(self.on_act_wsrc)
         ## `QtWidgets.QAction` show / edit crossword info action
         self.act_info = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/info1.png"), _('Info'))
         self.act_info.setToolTip(_('Show / edit crossword info (Ctrl+I)'))
         self.act_info.setShortcut(QtGui.QKeySequence('Ctrl+i'))
+        href = os.path.join(DOCS_FOLDER, '3_7_4__editing_the_crossword_information.htm')
+        self.act_info.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_info.triggered.connect(self.on_act_info)
         ## `QtWidgets.QAction` print (cw / clues) action
         self.act_print = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/print.png"), _('Print'))
         self.act_print.setToolTip(_('Print crossword and/or clues'))
         self.act_print.setShortcuts(QtGui.QKeySequence.Print)
+        href = os.path.join(DOCS_FOLDER, '3_6__printing_the_crossword.htm')
+        self.act_print.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_print.triggered.connect(self.on_act_print)
         ## `QtWidgets.QAction` configure settings action
         self.act_config = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/settings-5.png"), _('Settings'))
         self.act_config.setToolTip(_('Configure settings'))
         self.act_config.setShortcut(QtGui.QKeySequence('F11'))
+        href = os.path.join(DOCS_FOLDER, '3_12__application_settings.htm')
+        self.act_config.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_config.triggered.connect(self.on_act_config)
         ## `QtWidgets.QAction` check for update action
         self.act_update = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cloud-computing.png"), _('Update'))
         self.act_update.setToolTip(_('Check for updates'))
         self.act_update.setShortcut(QtGui.QKeySequence('Ctrl+u'))
+        href = os.path.join(DOCS_FOLDER, '3_13__application_updating.htm')
+        self.act_update.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_update.triggered.connect(self.on_act_update)
         ## `QtWidgets.QAction` show help docs action
         self.act_help = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/info.png"), _('Help'))
         self.act_help.setToolTip(_('Show help'))
         self.act_help.setShortcuts(QtGui.QKeySequence.HelpContents)
+        href = os.path.join(DOCS_FOLDER, '3_15__getting_help.htm')
+        self.act_help.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_help.triggered.connect(self.on_act_help)
+        ## `QtWidgets.QAction` Whats This action (click on control to show help)
+        self.act_whatsthis = QtWidgets.QWhatsThis.createAction(self)
+        self.act_whatsthis.setToolTip(_('Click on a control to show help'))
+        self.act_whatsthis.setIcon(QtGui.QIcon(f"{ICONFOLDER}/whatsthis.png"))
+        href = os.path.join(DOCS_FOLDER, '3_15__getting_help.htm')
+        self.act_whatsthis.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         ## `QtWidgets.QAction` show API reference action
         self.act_apiref = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/api.png"), _('API reference'))
         self.act_apiref.setToolTip(_('Show API reference'))
+        href = os.path.join(DOCS_FOLDER, '3_14__extending_the_application_with_plugins.htm')
+        self.act_apiref.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_apiref.triggered.connect(self.on_act_apiref)
         ## `QtWidgets.QAction` contact action
         self.act_contact = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/megaphone.png"), _('Contact author'))
         self.act_contact.setToolTip(_('Write to author to leave feedback or report bug'))
+        href = os.path.join(DOCS_FOLDER, '3_15__getting_help.htm')
+        self.act_contact.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_contact.triggered.connect(self.on_act_contact)
         ## `QtWidgets.QAction` show About action
         self.act_about = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/main.png"), _('About'))
@@ -365,11 +435,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_stats = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/analytics.png"), _('Show stats'))
         self.act_stats.setToolTip(_('Show detailed crossword statistics'))
         self.act_stats.setShortcut(QtGui.QKeySequence('F9'))
+        href = os.path.join(DOCS_FOLDER, '3_8__reviewing_crossword_statistics.htm')
+        self.act_stats.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_stats.triggered.connect(self.on_act_stats)
         ## `QtWidgets.QAction` quit application action
         self.act_exit = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/exit.png"), _('Quit'))
         self.act_exit.setToolTip(_('Quit application'))
         self.act_exit.setShortcuts(QtGui.QKeySequence.Quit)
+        href = os.path.join(DOCS_FOLDER, '3_2_1__file_menu.htm#id_10')
+        self.act_exit.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_exit.triggered.connect(self.on_act_exit)
         ## `QtWidgets.QAction` show toolbar action
         self.act_view_showtoolbar = QtWidgets.QAction(_('Show toolbar'))
@@ -382,6 +456,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_fitgrid.setToolTip(_('Fit grid in window'))
         self.act_fitgrid.setCheckable(True)
         self.act_fitgrid.setChecked(False)
+        href = os.path.join(DOCS_FOLDER, '3_1__user_interface_overview.htm#id_6')
+        self.act_fitgrid.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_fitgrid.toggled.connect(self.on_act_fitgrid)
 
         # grid edit actions
@@ -392,21 +468,29 @@ class MainWindow(QtWidgets.QMainWindow):
         self.act_grid_multiselect.setCheckable(True)
         self.act_grid_multiselect.setChecked(False)
         self.act_grid_multiselect.setEnabled(False)
+        href = os.path.join(DOCS_FOLDER, '3_7_1__editing_words.htm#3.7.1.2')
+        self.act_grid_multiselect.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_grid_multiselect.toggled.connect(self.on_act_grid_multiselect)
         ## `QtWidgets.QAction` clear selected cells action (put crossword::BLANK)
         self.act_grid_blank = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cell-blank.png"), _('Blank'))
         self.act_grid_blank.setToolTip(_('Clear selected cells'))
         self.act_grid_blank.setEnabled(False)
+        href = os.path.join(DOCS_FOLDER, '3_7_1__editing_words.htm#3.7.1.4')
+        self.act_grid_blank.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_grid_blank.triggered.connect(self.on_act_grid_blank)
         ## `QtWidgets.QAction` block selected cells action (put crossword::FILLER)
         self.act_grid_filler = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cell-filled.png"), _('Block'))
         self.act_grid_filler.setToolTip(_('Block (fill) selected cells'))
         self.act_grid_filler.setEnabled(False)
+        href = os.path.join(DOCS_FOLDER, '3_7_2_1__blocking_and_unblocking_cells.htm#3.7.2.1.4')
+        self.act_grid_filler.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_grid_filler.triggered.connect(self.on_act_grid_filler)
         ## `QtWidgets.QAction` grey out selected cells action (put crossword::FILLER2)
         self.act_grid_filler2 = QtWidgets.QAction(QtGui.QIcon(f"{ICONFOLDER}/cell-greyed.png"), _('Grey out'))
         self.act_grid_filler2.setToolTip(_('Grey out selected cells (fill with surrounding area color)'))
         self.act_grid_filler2.setEnabled(False)
+        href = os.path.join(DOCS_FOLDER, '3_7_2_1__blocking_and_unblocking_cells.htm#3.7.2.1.4')
+        self.act_grid_filler2.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.act_grid_filler2.triggered.connect(self.on_act_grid_filler2)
 
     ## Creates the app's main toolbar (which can also be hidden in settings).
@@ -418,6 +502,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolbar_main.toggleViewAction().setEnabled(False)
         self.toolbar_main.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.toolbar_main.customContextMenuRequested.connect(self.on_toolbar_contextmenu)
+        href = os.path.join(DOCS_FOLDER, '3_1__user_interface_overview.htm#id_2')
+        self.toolbar_main.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.addToolBar(self.toolbar_main)
 
     ## Fills main toolbar from app settings (CWSettings::settings).
@@ -468,6 +554,8 @@ class MainWindow(QtWidgets.QMainWindow):
         index = self.combo_lang.findData(CWSettings.settings['common'].get('lang', ''))
         if index >= 0:
             self.combo_lang.setCurrentIndex(index)
+        href = os.path.join(DOCS_FOLDER, '3_1__user_interface_overview.htm#id_3')
+        self.combo_lang.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.combo_lang.currentIndexChanged.connect(self.on_combo_lang)
 
     ## Creates the application's main menu.
@@ -475,6 +563,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def UI_create_menu(self):
         ## `QtWidgets.QMenu` UI main menu
         self.menu_main = self.menuBar()
+        href = os.path.join(DOCS_FOLDER, '3_1__user_interface_overview.htm#id_1')
+        self.menu_main.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         ## `QtWidgets.QMenu` 'File' menu
         self.menu_main_file = self.menu_main.addMenu(_('&File'))
         self.menu_main_file.addAction(self.act_new)
@@ -537,6 +627,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ## `QtWidgets.QMenu` 'Help' menu
         self.menu_main_help = self.menu_main.addMenu(_('&Help'))
         self.menu_main_help.addAction(self.act_help)
+        self.menu_main_help.addAction(self.act_whatsthis)
         self.menu_main_help.addAction(self.act_apiref)
         self.menu_main_help.addSeparator()
         self.menu_main_help.addAction(self.act_update)
@@ -590,6 +681,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.twCw.customContextMenuRequested.connect(self.on_twCw_contextmenu)
         self.twCw.itemClicked.connect(self.on_cw_item_clicked)
         self.twCw.currentItemChanged.connect(self.on_cw_current_item_changed)
+        href = os.path.join(DOCS_FOLDER, '3_7_1__editing_words.htm')
+        self.twCw.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
 
         ## `QtWidgets.QSlider` cw scale slider
         self.slider_cw_scale = QtWidgets.QSlider(QtCore.Qt.Horizontal)
@@ -598,6 +691,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.slider_cw_scale.setMaximum(300)
         self.slider_cw_scale.setSingleStep(10)
         self.slider_cw_scale.setPageStep(50)
+        href = os.path.join(DOCS_FOLDER, '3_1__user_interface_overview.htm#id_6')
+        self.slider_cw_scale.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         #self.slider_cw_scale.setTickPosition(QtWidgets.QSlider.TicksBelow)
         #self.slider_cw_scale.setTickInterval(10)
         self.slider_cw_scale.setToolTip(_('Change crossword grid scale'))
@@ -625,6 +720,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         ## `QtWidgets.QTreeView` clues table
         self.tvClues = QtWidgets.QTreeView()
+        href = os.path.join(DOCS_FOLDER, '3_7_3__editing_the_clues.htm')
+        self.tvClues.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         self.tvClues.setDragEnabled(True)
         self.tvClues.setAcceptDrops(True)
         self.tvClues.setDropIndicatorShown(True)
@@ -649,6 +746,8 @@ class MainWindow(QtWidgets.QMainWindow):
         ## `QtWidgets.QStatusBar` main status bar
         self.statusbar = QtWidgets.QStatusBar()
         self.statusbar.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        href = os.path.join(DOCS_FOLDER, '3_1__user_interface_overview.htm#id_7')
+        self.statusbar.setWhatsThis(f'<a href="{href}">{SHOWHELP}</a>')
         ## `QtWidgets.QProgressBar` progress bar inside status bar (hidden by default)
         self.statusbar_pbar = QtWidgets.QProgressBar(self.statusbar)
         self.statusbar_pbar.setTextVisible(True)
@@ -2584,6 +2683,12 @@ class MainWindow(QtWidgets.QMainWindow):
     # @param event `QtCore.QEvent` the handled event
     @pluggable('general')
     def event(self, event: QtCore.QEvent):
+        if event.type() == QtCore.QEvent.WhatsThisClicked:
+            # event has type WhatsThisClicked
+            webbrowser.open(event.href(), new=2)
+            QtWidgets.QWhatsThis.hideText()
+            event.accept()
+            return True
         return super().event(event)
 
     ## @brief Context menu event handler.
@@ -3736,7 +3841,12 @@ class MainWindow(QtWidgets.QMainWindow):
     @pluggable('general')
     @QtCore.pyqtSlot(bool)
     def on_act_help(self, checked):
-        webbrowser.open(os.path.join(DOCS_FOLDER, 'index.htm'), new=2)
+        if getosname() == 'Windows':
+            # prefer CHM for Windows OS
+            run_exe(make_abspath('UserGuide.chm', 'doc/manual/chm'), True, False, shell=True)
+        else:
+            # prefer HTML help for other OS (Linux / OSX)
+            webbrowser.open(os.path.join(DOCS_FOLDER, 'index.htm'), new=2)
 
     ## @brief Slot for MainWindow::act_apiref: shows API reference in browser.
     @pluggable('general')

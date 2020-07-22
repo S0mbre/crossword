@@ -26,7 +26,7 @@ DEBUGGING = False
 ## current app version
 # @warning This constant is used by setup.py to generate version-specific
 # Python distributions; so it must be checked and modified regularly!
-APP_VERSION = '0.4.0.2'
+APP_VERSION = '0.4.0.3'
 
 ## app name
 # @warning This constant is used by setup.py to generate version-specific

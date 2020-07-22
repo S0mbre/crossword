@@ -1460,7 +1460,7 @@ class Crossword:
         def filt(sug):
             # check if word is not in USED list
             not_in_used = not sug in self.used
-            # combine that with custom self.wordfilter function, if set
+            # combine that with custom self.wordfilter function, if set            
             return (not_in_used and self.wordfilter(sug)) if self.wordfilter else not_in_used
         
         # get suggestions (list) from word source
