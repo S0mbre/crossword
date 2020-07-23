@@ -2685,7 +2685,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def event(self, event: QtCore.QEvent):
         if event.type() == QtCore.QEvent.WhatsThisClicked:
             # event has type WhatsThisClicked
-            webbrowser.open(event.href(), new=2)
+            webbrowser.open('file:///' + event.href(), new=2)
             QtWidgets.QWhatsThis.hideText()
             event.accept()
             return True

@@ -290,7 +290,7 @@ class BasicDialog(QtWidgets.QDialog):
     def event(self, event: QtCore.QEvent):
         if event.type() == QtCore.QEvent.WhatsThisClicked:
             # event has type WhatsThisClicked
-            webbrowser.open(event.href(), new=2)
+            webbrowser.open('file:///' + event.href(), new=2)
             QtWidgets.QWhatsThis.hideText()
             event.accept()
             return True
@@ -323,12 +323,20 @@ class BasicDialog(QtWidgets.QDialog):
         self.btn_cancel = QtWidgets.QPushButton(QtGui.QIcon(f"{ICONFOLDER}/multiply-1.png"), _('Cancel'), None)
         self.btn_cancel.setMaximumWidth(150)
         self.btn_cancel.clicked.connect(self.on_btn_cancel_clicked)
-
+        ## `QtWidgets.QAction` WhatsThis action
+        self.act_whatsthis = QtWidgets.QWhatsThis.createAction(self)
+        self.act_whatsthis.setToolTip(_('Click on a control to show help'))
+        self.act_whatsthis.setIcon(QtGui.QIcon(f"{ICONFOLDER}/whatsthis.png"))
+        ## `QtWidgets.QToolButton` WhatsThis button
+        self.btn_whatsthis = QtWidgets.QToolButton()
+        self.btn_whatsthis.setDefaultAction(self.act_whatsthis)
         ## `QtWidgets.QHBoxLayout` bottom layout for OK and Cancel buttons
         self.layout_bottom = QtWidgets.QHBoxLayout()
         self.layout_bottom.setSpacing(10)
         self.layout_bottom.addWidget(self.btn_OK)
         self.layout_bottom.addWidget(self.btn_cancel)
+        self.layout_bottom.addStretch()
+        self.layout_bottom.addWidget(self.btn_whatsthis)
 
         ## `QtWidgets.QVBoxLayout` window layout
         self.layout_main = QtWidgets.QVBoxLayout()
@@ -2160,6 +2168,7 @@ class WordDBManager(QtWidgets.QMainWindow):
         self.combo_selectdb = QtWidgets.QComboBox()
         self.combo_selectdb.setEditable(False)
         self.combo_selectdb.setMaximumWidth(250)
+        self.combo_selectdb.setPlaceholderText(_('Select database:'))
         self.combo_selectdb.currentIndexChanged.connect(self.on_combo_selectdb)
         lo_w2top.addRow(_('Select database:'), self.combo_selectdb)
         lo_w2.addLayout(lo_w2top)
@@ -2242,51 +2251,58 @@ class WordDBManager(QtWidgets.QMainWindow):
         if stopcheck and stopcheck(): return
 
         if self.db_model: self.db_model.clear()
+        self.combo_selectdb.currentIndexChanged.disconnect()
         self.combo_selectdb.clear()
 
         r = 0
         for dic in self.dics:
-            isinstalled = bool(dic['path'])
-            item_lang = QtGui.QStandardItem(dic['lang_full'])
-            item_lang.setData(dic, QtCore.Qt.UserRole + 1)
-            item_lang.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_lang.setCheckable(True)
-            item_lang.setUserTristate(isinstalled)
-            item_lang.setCheckState(QtCore.Qt.PartiallyChecked if isinstalled else QtCore.Qt.Unchecked)
-            item_status = QtGui.QStandardItem(_('Installed') if isinstalled else _('Not installed'))
-            item_status.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_entries = QtGui.QStandardItem(str(dic['entries']) if dic['entries'] else '')
-            item_entries.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-            item_posrules = QtGui.QStandardItem('')
-            item_posrules.setFlags(QtCore.Qt.ItemIsSelectable)
-            item_posstrict = QtGui.QStandardItem('')
-            item_posstrict.setFlags(QtCore.Qt.ItemIsSelectable)
-            item_posstrict.setCheckable(True)
-            item_posdelim = QtGui.QStandardItem('/')
-            item_posdelim.setFlags(QtCore.Qt.ItemIsSelectable)
-            item_replace = QtGui.QStandardItem('')
-            item_replace.setFlags(QtCore.Qt.ItemIsSelectable)
-            item_exclpos = QtGui.QStandardItem('')
-            item_exclpos.setFlags(QtCore.Qt.ItemIsSelectable)
-            item_exclwd = QtGui.QStandardItem('')
-            item_exclwd.setFlags(QtCore.Qt.ItemIsSelectable)
-            item_startrow = QtGui.QStandardItem('')
-            item_startrow.setFlags(QtCore.Qt.ItemIsSelectable)
-            item_startrow.setData(0, QtCore.Qt.UserRole + 1)
-            item_endrow = QtGui.QStandardItem('')
-            item_endrow.setFlags(QtCore.Qt.ItemIsSelectable)
-            item_endrow.setData(-1, QtCore.Qt.UserRole + 1)
-            self.dics_model.appendRow([item_lang, item_status, item_entries,
-                                       item_posrules, item_posstrict, item_posdelim,
-                                       item_replace, item_exclpos, item_exclwd,
-                                       item_startrow, item_endrow])
-            self.reformat_dic_model_row(r)
+            try:
+                isinstalled = bool(dic['path'])
+                item_lang = QtGui.QStandardItem(dic['lang_full'])
+                item_lang.setData(dic, QtCore.Qt.UserRole + 1)
+                item_lang.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+                item_lang.setCheckable(True)
+                item_lang.setUserTristate(isinstalled)
+                item_lang.setCheckState(QtCore.Qt.PartiallyChecked if isinstalled else QtCore.Qt.Unchecked)
+                item_status = QtGui.QStandardItem(_('Installed') if isinstalled else _('Not installed'))
+                item_status.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+                item_entries = QtGui.QStandardItem(str(dic['entries']) if dic['entries'] else '')
+                item_entries.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+                item_posrules = QtGui.QStandardItem('')
+                item_posrules.setFlags(QtCore.Qt.ItemIsSelectable)
+                item_posstrict = QtGui.QStandardItem('')
+                item_posstrict.setFlags(QtCore.Qt.ItemIsSelectable)
+                item_posstrict.setCheckable(True)
+                item_posdelim = QtGui.QStandardItem('/')
+                item_posdelim.setFlags(QtCore.Qt.ItemIsSelectable)
+                item_replace = QtGui.QStandardItem('')
+                item_replace.setFlags(QtCore.Qt.ItemIsSelectable)
+                item_exclpos = QtGui.QStandardItem('')
+                item_exclpos.setFlags(QtCore.Qt.ItemIsSelectable)
+                item_exclwd = QtGui.QStandardItem('')
+                item_exclwd.setFlags(QtCore.Qt.ItemIsSelectable)
+                item_startrow = QtGui.QStandardItem('')
+                item_startrow.setFlags(QtCore.Qt.ItemIsSelectable)
+                item_startrow.setData(0, QtCore.Qt.UserRole + 1)
+                item_endrow = QtGui.QStandardItem('')
+                item_endrow.setFlags(QtCore.Qt.ItemIsSelectable)
+                item_endrow.setData(-1, QtCore.Qt.UserRole + 1)
+                self.dics_model.appendRow([item_lang, item_status, item_entries,
+                                        item_posrules, item_posstrict, item_posdelim,
+                                        item_replace, item_exclpos, item_exclwd,
+                                        item_startrow, item_endrow])
+                self.reformat_dic_model_row(r)
 
-            if isinstalled:
-                self.combo_selectdb.addItem(dic['lang_full'], dic)
+                if isinstalled:
+                    self.combo_selectdb.addItem(dic['lang_full'], dic)
 
-            r += 1
+                r += 1
+            except:
+                continue
             if stopcheck and stopcheck(): break
+        
+        self.combo_selectdb.setCurrentIndex(-1)
+        self.combo_selectdb.currentIndexChanged.connect(self.on_combo_selectdb)
 
     ## OnRun callback for WordDBManager::dics_model_thread forcing update from server.
     @QtCore.pyqtSlot()
