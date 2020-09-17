@@ -3846,7 +3846,7 @@ class MainWindow(QtWidgets.QMainWindow):
             run_exe(make_abspath('UserGuide.chm', 'doc/manual/chm'), True, False, shell=True)
         else:
             # prefer HTML help for other OS (Linux / OSX)
-            webbrowser.open(os.path.join(DOCS_FOLDER, 'index.htm'), new=2)
+            webbrowser.open(os.path.join('file:///', DOCS_FOLDER, 'index.htm'), new=2)
 
     ## @brief Slot for MainWindow::act_apiref: shows API reference in browser.
     @pluggable('general')

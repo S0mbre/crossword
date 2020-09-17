@@ -567,6 +567,8 @@ class HunspellImportTask(QtCore.QRunnable):
                         dic_iterate = (row for i, row in enumerate(dic) if i >= self.rows[0])
                 # iterate rows (words)
                 for row in dic_iterate:
+                    row = row.strip()
+                    #print(f"ROW = [{row}]")
                     # check stop request
                     if stopped or \
                             (self.on_stopcheck and \
@@ -580,7 +582,10 @@ class HunspellImportTask(QtCore.QRunnable):
                     # extract POS (empty string if none)
                     pos = w[1] if len(w) > 1 else ''
                     # skip non-AZ words
-                    if not word.isalpha(): continue
+                    #print(f"WORD = [{word}], POS = [{pos}]")
+                    if not word.isalpha(): 
+                        #print(f'{word}: NOT A-Z!')
+                        continue
                     # make self.replacements in word
                     if self.remove_hyphens:
                         word = word.replace('-', '')
@@ -974,6 +979,7 @@ class HunspellImport:
         if isinstance(commit_each, list) and len(commit_each) != len(dics):
             print('ERROR! Number of elements in "commit_each" must be equal to "dics"!')
             return
+
 
         #old_dbpath = getattr(self.db, 'dbpath', None)
         self.db.disconnect()

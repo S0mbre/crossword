@@ -3644,7 +3644,7 @@ class SettingsDialog(BasicDialog):
         self.layout_gb_pos = QtWidgets.QVBoxLayout()
         self.lw_pos = QtWidgets.QListWidget()
         self.lw_pos.setToolTip(_('Check / uncheck items to include in search (valid only for sources with POS data)'))
-        for p in POS[:-1]:
+        for p in POS:
             lwitem = QtWidgets.QListWidgetItem(p[1])
             lwitem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
             #lwitem.setData(QtCore.Qt.EditRole, p[0])
